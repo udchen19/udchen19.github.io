@@ -72,7 +72,7 @@ skills:
       - name: Cycling
         description: ''
         percent: 90
-        icon: person-cycling
+        icon: person-biking
         icon_pack: fas
       - name: Jogging
         description: ''
