@@ -1,12 +1,12 @@
 ---
 # Display name
-title: 陳威達
+title: 陳威達 (Denny)
 
 # Name pronunciation (optional)
-name_pronunciation: Uei Dar "UD" Chen (Denny)
+name_pronunciation: Uei-Dar "UD" Chen
 
 # Full name (for SEO)
-first_name: Uei Dar
+first_name: Uei-Dar
 last_name: Chen
 
 # Status emoji
