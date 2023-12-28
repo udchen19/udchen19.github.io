@@ -45,14 +45,14 @@ education:
 skills:
   - name: Technical
     items:
-      - name: Android
+      - name: Android (Kotlin)
         description: ''
-        percent: 80
+        percent: 85
         icon: android
         icon_pack: fab
-      - name: Python
+      - name: Python (Pandas, Numpy, PyTorch)
         description: ''
-        percent: 70
+        percent: 75
         icon: python
         icon_pack: fab
       - name: C++
@@ -60,7 +60,7 @@ skills:
         percent: 40
         icon: terminal
         icon_pack: fas
-      - name: React
+      - name: React.js
         description: ''
         percent: 30
         icon: code
