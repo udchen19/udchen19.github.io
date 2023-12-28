@@ -1,9 +1,9 @@
 ---
 # Display name
-title: 陳威達 (Denny)
+title: 陳威達
 
 # Name pronunciation (optional)
-name_pronunciation: Uei-Dar "UD" Chen
+name_pronunciation: Uei-Dar Chen
 
 # Full name (for SEO)
 first_name: Uei-Dar
