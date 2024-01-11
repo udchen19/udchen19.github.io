@@ -25,7 +25,7 @@ organizations:
     url: https://www.facebook.com/muilabatnctu/
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests lie in  .
+bio: I convey information to people as timely as possible.
 
 # Interests to show in About widget
 interests:
@@ -99,8 +99,8 @@ social:
     label: Follow me on Twitter
     display:
       header: true
-  - icon: graduation-cap # Alternatively, use `google-scholar` icon from `ai` icon pack
-    icon_pack: fas
+  - icon: google-scholar # Alternatively, use `google-scholar` icon from `ai` icon pack
+    icon_pack: ai
     link: https://scholar.google.com/citations?user=8PeTv_8AAAAJ
   - icon: github
     icon_pack: fab
@@ -108,17 +108,19 @@ social:
   - icon: linkedin
     icon_pack: fab
     link: https://www.linkedin.com/udchen
-  # Link to a PDF of your resume/CV.
-  # To use: copy your resume to `static/uploads/resume.pdf`, enable `ai` icons in `params.yaml`,
-  # and uncomment the lines below.
   - icon: cv
     icon_pack: ai
     link: uploads/CV.pdf
+  - icon: facebook
+    icon_pack: fab
+    link: https://www.facebook.com/dchencgps
 
 # Highlight the author in author lists? (true/false)
 highlight_name: true
 ---
 
 Uei-Dar Chen is a research assistant whose interests lie in the field of **Human-Computer Interaction (HCI)**, specifically on how to support user's attention when retrieving and acting upon information when interacting with everyday devices. Working with [Dr. Yung-Ju (Stanley) Chang](https://www.armuro.info/) at the Mobile Ubiquitous Interaction (MUI) Lab, his recent works focused on evaluating user experiences while provided a GPT-generated text summary of smartphone notifications, and it could be tweaked to meet individual preferences on glancing information in different scenarios.
+
+**We are recently looking for undergraduates in NYCU CS to join our research project. If you're interested in Android/Kotlin development, generative AI, or HCI research in general, feel free to email or DM me on social media platforms!**
 
 {style="text-align: justify;"}
