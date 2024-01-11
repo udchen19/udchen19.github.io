@@ -84,6 +84,19 @@ skills:
         percent: 60
         icon: book-open
         icon_pack: fas
+  - name: Languages
+    color: '#eeac02'
+    color_border: '#f0bf23'
+    items:
+      - name: Chinese (Mandarin)
+        description: ''
+        percent: 98.7
+      - name: English
+        description: ''
+        percent: 90
+      - name: Japanese
+        description: ''
+        percent: 60
 
 # Social/Academic Networking
 # For available icons, see: https://docs.hugoblox.com/getting-started/page-builder/#icons
