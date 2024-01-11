@@ -1,6 +1,7 @@
 ---
 title: 'From Overwhelmed to Overview: Understanding Users’ Practices, Experiences,
-  and Challenges with an App Offering GPT-Powered Mobile Notification Summaries'
+  and Challenges with an App Offering GPT-Powered Mobile Notification Summaries 
+  *(Under Submission at ACM IMWUT)*'
 authors:
 - Uei-Dar Chen
 - Peng-Jui Wang

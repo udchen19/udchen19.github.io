@@ -1,6 +1,7 @@
 ---
 title: 'Pinning, Sorting, Categorizing Notifications: A Mixed-methods Study of Usage
-  and Experience with Mobile Notification Management Features'
+  and Experience with Mobile Notification Management Features 
+  *(Under Submission at ACM IMWUT)*'
 authors:
 - Yong-Han Lin
 - Li-Ting Su
