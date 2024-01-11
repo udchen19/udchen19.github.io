@@ -126,7 +126,7 @@ sections:
     design:
       # Choose a layout view
       view: compact
-      columns: '2'
+      columns: '1'
   - block: contact
     id: contact
     content:
@@ -154,5 +154,5 @@ sections:
           # Enable CAPTCHA challenge to reduce spam?
           captcha: true
     design:
-      columns: '2'
+      columns: '1'
 ---
