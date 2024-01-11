@@ -1,5 +1,6 @@
 ---
 title: Experiences
+type: landing
 
 sections:
   - block: experience
