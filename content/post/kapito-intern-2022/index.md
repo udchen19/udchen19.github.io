@@ -11,7 +11,8 @@ categories: ["work"]
 
 ## Company Info & Interview
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -19,21 +20,23 @@ categories: ["work"]
 
 &emsp;&emsp;如同我面試的另一家新創公司，面試的Lucas (技術長)跟Tina (營運長，我後來的mentor)都是公司的創辦人，但沒有我預期的緊張感，在個人Project的細節討論間穿插一些閒聊。我跟專題隊友的project重疊率太高還在兩分鐘內一起送履歷，所以被看出來應該互相認識，後兩個面試的超怕講錯話還互相複習之前的project怎麼分工的:sweat:。三個人面完都覺得有希望，但全部拿到offer絕對是意料之外。我面的另一家新創公司也有收到offer，但既然開必拓是抱團實習而且面試氛圍不錯，why not give it a go?
 
-{{< /detail-tag >}}
+</details>
 
 ## Original Expectations
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
 &emsp;&emsp;做為一個把Github當Google Drive，`fork`跟`merge`基本上沒用過的人，去實習的一個期望應該就是看一個公司怎麼維護大型軟體架構；發PR應該是基本，我兩個隊友後來還玩到CI/CD。聽了Tina的Day1簡報後感覺的確是這樣，把既有的Script自動化看起來會吃掉整個七月。一開始進度還算上軌道，前兩週發了2個PR，後來也有一次review的機會 (Thanks Henry :slightly_smiling_face:)，不過我整個暑假的既有軟體維護就到這了......？
 
-{{< /detail-tag >}}
+</details>
 
 ## New Project
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+  <summary>CLICK ME</summary>
 
 <br>
 
@@ -41,11 +44,12 @@ categories: ["work"]
 
 &emsp;&emsp;這些事情通常發生在瑕疵數量激增或大減，或是瑕疵大量集中在同一個點的時候。第一週的星期三，Tina就安排了一日黑客松，希望我嘗試這樣的Anomaly Detection，找出潛在的異常產線並回報優先序給資料專員優先巡線。
 
-{{< /detail-tag >}}
+</details>
 
 ## Challenges
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -67,11 +71,12 @@ categories: ["work"]
 
 &emsp;&emsp;哪些產線有異常應該怎麼呈現也是個探討許久的課題。最簡單的做法就是把篩出來的異常產線直接用`pandas`輸出成csv檔，但顯然易讀性極差。進一步的做法是用Python輸出一個簡單的HTML，把csv的表格輸出，同時附上一些統計圖表的連結，但因為資訊太亂，自己都覺得不堪用了就得另尋做法。最後發現`plotly`可以結合表格、互動式圖表跟HTML，也就用了這個框架完成前端的資料視覺化。要放哪些圖表，則是查了[The Data Visualization Catalogue](https://datavizcatalogue.com/)找靈感，再跟資料專員討論決定。
 
-{{< /detail-tag >}}
+</details>
 
 ## Results
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -89,11 +94,12 @@ categories: ["work"]
 
 &emsp;&emsp;熱區圖對應鏡頭的實際空間分布，可辨識瑕疵是否集中在同一位置。
 
-{{< /detail-tag >}}
+</details>
 
 ## Takeaways
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -113,11 +119,12 @@ categories: ["work"]
 
 &emsp;&emsp;Intern Midterm Chat的時候，Lucas跟Tina有提出遇到問題或需要選擇的情境時，跟上司或周圍的人如何回報跟決定。自己後來在工作和其他情境都練習過這樣討論事情，的確對整體效率進展不差。雖然好像發表自己看法好像有點帶風向，但決定不出來的時候拋出點意見或許能加速決定。
 
-{{< /detail-tag >}}
+</details>
 
 ## Thoughts
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -140,11 +147,12 @@ categories: ["work"]
 5. Data Science + ?
    雖然如此，我不想單純找有商業價值，或是對公司有益的finding。實習的兩個月雖然是待在做智能品控的公司，但我對這個應用相對不感興趣；同時我也覺得單純做Data Science的衝勁可能可以讓我做兩個月，但很可能撐不了十年。現在想到最可行的解法，就是找有興趣的領域結合目前所學的Data Science。很多人對我大四不打算修任何資工系的課的決定感到訝異，但我可能需要透過這年的修課來探索之後想玩的應用。
 
-{{< /detail-tag >}}
+</details>
 
 ## Special Thanks
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -158,11 +166,12 @@ categories: ["work"]
 
 &emsp;&emsp;最後謝謝Lucas跟Tina這個暑假給我們到開必拓實習的機會，還有Tina過去兩個月的mentoring和data science相關知識的分享。雖然沒有訂下明確的時間deadline，但透過提出來的想法跟workload讓我知道有哪些東西是有機會做出來的。兼顧optimistic跟realistic的規劃，絕對是這次實習帶得走的心態。
 
-{{< /detail-tag >}}
+</details>
 
 ## Teasers
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -240,7 +249,8 @@ categories: ["work"]
 
 #### Setbacks
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+      <summary>CLICK ME</summary>
 
 <br>
 
@@ -248,6 +258,6 @@ categories: ["work"]
 
 &emsp;&emsp;還有一個就是，辦公室偏安靜，但認真工作的空間就是這樣吧。顯然我太吵了:thinking:
 
-{{< /detail-tag >}}
+</details>
 
-{{< /detail-tag >}}
+</details>
