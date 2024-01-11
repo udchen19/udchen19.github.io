@@ -17,6 +17,6 @@ date: '2023-04-01'
 publishDate: '2023-12-28T03:59:51.977405Z'
 publication_types:
 - paper-conference
-publication: *CHI '23*
+publication: "*CHI '23*"
 doi: 10.1145/3544548.3580731
 ---

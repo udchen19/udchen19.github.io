@@ -10,7 +10,7 @@ authors:
 - Yung-Ju Chang
 date: '2023-10-01'
 publishDate: '2023-12-28T03:59:51.971342Z'
-publication: *UbiComp/ISWC '23*
+publication: "*UbiComp/ISWC '23*"
 publication_types:
 - paper-conference
 doi: 10.1145/3594739.3610699
