@@ -8,7 +8,8 @@ categories: ["books", "review"]
 
 ## 幹話
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+  <summary>CLICK ME</summary>
 
 &emsp;&emsp;21 ~~today~~ a few days ago. (補：這篇我27號修完的@@) 謝謝 Facebook、Messenger、Instagram、LINE、Discord、Gmail(就算他有我FB)、LinkedIn(**對，這人也有我FB**) 上的各位，還有突襲慶生的，突然送卡片的，跟球隊梅竹拜拜同一天生日所以多塞一罐仙草蜜的，晚上嗑達美樂的...。Thanks to all, and wish you a good year onwards.
 
@@ -16,7 +17,7 @@ categories: ["books", "review"]
 
 &emsp;&emsp;之前說要一週一篇文，上學期開學直接破功，不過看那時候同時開blog的I同學好像也沒好到哪裡去。雙語文章大概太嚴苛了，可是有些東西用英文打感覺意義上精準很多...看狀況吧，能持續寫比較重要。這篇想聊點重要的東西，就來寫中文吧。
 
-{{< /detail-tag >}}
+</details>
 
 ## Why I'm writing this
 
@@ -28,13 +29,15 @@ categories: ["books", "review"]
 
 ## Book Summary
 
-{{< detail-tag "7500+字 慎入" >}}
+<details>
+  <summary>7500+字 慎入</summary>
 
 &emsp;&emsp;工業革命開始後，人類追求的目標就是透過機械化生產來賺更多錢。要賺更多錢，你可以選擇創新跟開拓新的市場，或者是把產品做得越多或越快。後者顯然比前者容易有所進展，也成為企業家追求成功的大方向，但也分別在教育、生活、工作和科技層面上衍生出幾個專注力相關的問題。作者前半論述了我們能獨善其身的方法，後半探討環境的大問題，但我想反過來先介紹比較難解的，再來講我們能做的。畢竟我還是個大學生，所以哪些事可能可以做會以這個背景為基準。自己很看數字說話，所以即使跟自己相關程度不大，只要能加強論點我就會把幾個提到的研究數據放上來。
 
 ### 個人層面不容易控制的
 
-{{< detail-tag "1500+字 慎入" >}}
+<details>
+  <summary>1500+字 慎入</summary>
 
 ##### 環境汙染與加工食品
 
@@ -60,11 +63,12 @@ categories: ["books", "review"]
 
 &emsp;&emsp;過去可能小朋友有較多自由玩樂的機會，過程中能發揮創意(想遊戲)、學會社交(找朋友玩並溝通要玩什麼)和臨機應變（多方嘗試和冒險）能力，而這都是不同形式的專注，而且是具有內在動機的自發性學習。為了訓練能協助機械化生產的勞工，工業革命後出現的現代學校把每個學生訂在一張書桌前，遵從指示讀書，學生問為什麼老師也說"讀就對了"，鮮少過問學生喜不喜歡這些知識。近二十年即使犯罪率降到歷史新低，家長卻不願放小孩出去玩。介入與管控遊玩的程度增加，在校的玩樂時間也被剝奪去上課；少了遊玩帶來的專注力訓練，得過動症的比例也隨之增加，甚至連玩都不會玩了。某間英國的學校決定某一天改成Play Day，打算放置各項玩具給學生任意玩一整天，卻發現他們完全不知所措。想做的事被壓抑，又被大人強加外在動機施壓讀書，比起基因，限制學童遊玩的環境才是讓專注力下降的原因。
 
-{{< /detail-tag >}}
+</details>
 
 ### 個人層面可以部份控制的
 
-{{< detail-tag "5500+字 慎入" >}}
+<details>
+  <summary>5500+字 慎入</summary>
 
 ##### 資訊爆炸與多工
 
@@ -155,13 +159,14 @@ categories: ["books", "review"]
 5. 這些網站會讓你覺得你在一個易怒的環境，並加強這一點。
 6. 這些網站足以破壞這個社會，2016美國大選和2018巴西大選是血淋淋的例子。
 
-{{< /detail-tag >}}
+</details>
 
-{{< /detail-tag >}}
+</details>
 
 ### Personal Experiences and Thoughts
 
-{{< detail-tag "2000+字 慎入" >}}
+<details>
+  <summary>2000+字 慎入</summary>
 
 &emsp;&emsp;我想從書上所提的幾個面向來探討我的經驗和看法。
 
@@ -190,11 +195,12 @@ categories: ["books", "review"]
 
 &emsp;&emsp;認知到社群媒體對我個人的影響，以及它可以怎麼被利用來迷惑世界後，我很確定我學AI跟演算法，不應該拿來浪費別人的生命。
 
-{{< /detail-tag >}}
+</details>
 
 ## Reflection on 20 and Retrospection on 21
 
-{{< detail-tag "CLICK ME" >}}
+<details>
+  <summary>CLICK ME</summary>
 
 &emsp;I'm gonna use English here to choose words more precisely (well, at least for me).
 
@@ -202,6 +208,6 @@ categories: ["books", "review"]
 
 &emsp;As for this year, I'm going to start off with ideas that came off the book I finished days before my birthday. Like I stated, it's an experiment and I won't know how this will go. Nevertheless, it's better than scrolling around all day and watch time flowing by. I'm interested on how this pans out when February nears next year. Apart from finishing homework and resting in the dorm, I've been trying and challenging myself in college. With the last year coming around, let's leave no stones unturned and end it on a high. 
 
-{{< /detail-tag >}}
+</details>
 
 <br><br>
