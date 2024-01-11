@@ -48,7 +48,7 @@ sections:
               Course lectured by [Prof. Kai-Chiang Wu](https://people.cs.nycu.edu.tw/~kcw/)
               * Produced 10+ algorithmic programming tasks and managed the exam system.
       design:
-        columns: '1'
+        columns: '2'
   - block: experience
     content:
       title: Working Experience
@@ -70,6 +70,6 @@ sections:
           date_end: '2022-09-02'
           description: Initiated a data visualization platform using Plotly to discover potential breakdowns in visual defect detectors.
     design:
-      columns: '1'
+      columns: '2'
 
 ---
