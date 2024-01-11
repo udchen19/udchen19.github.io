@@ -1,9 +1,9 @@
 ---
 # Display name
-title: 陳威達
+title: Uei-Dar Chen
 
 # Name pronunciation (optional)
-name_pronunciation: Uei-Dar Chen
+name_pronunciation: 陳威達
 
 # Full name (for SEO)
 first_name: Uei-Dar

@@ -26,8 +26,8 @@ sections:
           description: |2-
               * Conducted semi-structured interviews to understand why, when, and how smartphone users would like a summary of their notifications, along with a public app implemented for users to inspire user’s thoughts on the concept.
               * Implemented a mobile notification drawer with extra features to study its effects on user interactions and experience.
-      design:
-        columns: '2'
+    design:
+      columns: '2'
   - block: experience
     content:
       title: Teaching Experience
@@ -49,8 +49,8 @@ sections:
           description: |2-
               Course lectured by [Prof. Kai-Chiang Wu](https://people.cs.nycu.edu.tw/~kcw/)
               * Produced 10+ algorithmic programming tasks and managed the exam system.
-      design:
-        columns: '2'
+    design:
+      columns: '2'
   - block: experience
     content:
       title: Working Experience
