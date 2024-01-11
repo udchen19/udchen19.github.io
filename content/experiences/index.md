@@ -23,7 +23,7 @@ sections:
           company_logo: muilab
           location: Hsinchu, Taiwan
           date_start: '2021-07-01'
-          description: Test if this works. # |2-
+          description: |2-
               * Conducted semi-structured interviews to understand why, when, and how smartphone users would like a summary of their notifications, along with a public app implemented for users to inspire user’s thoughts on the concept.
               * Implemented a mobile notification drawer with extra features to study its effects on user interactions and experience.
   - block: experience
