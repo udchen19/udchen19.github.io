@@ -5,7 +5,7 @@ title: 'Pinning, Sorting, Categorizing Notifications: A Mixed-methods Study of U
 authors:
 - Yong-Han Lin
 - Li-Ting Su
-- Uei-Dar Chen
+- admin
 - Yi-Chi Lee
 - Peng-Jui Wang
 - Yung-Ju Chang

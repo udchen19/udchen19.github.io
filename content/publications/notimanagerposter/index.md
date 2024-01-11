@@ -4,7 +4,7 @@ title: Automatic, Manual, or Hybrid? A Preliminary Investigation of Users' Perce
 authors:
 - Yong-Han Lin
 - Li-Ting Su
-- Uei-Dar Chen
+- admin
 - Peng-Jui Wang
 - Yi-Chi Lee
 - Yung-Ju Chang
