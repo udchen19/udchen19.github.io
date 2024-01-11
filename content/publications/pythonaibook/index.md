@@ -1,5 +1,6 @@
 ---
-title: '用Python學AI理論與實務應用 (Learning AI Theory and Practical Applications with Python)'
+title: '用Python學AI理論與實務應用 
+(Learning AI Theory and Practical Applications with Python)'
 authors:
 - Chi-Lung Lee
 - Uei-Dar Chen
