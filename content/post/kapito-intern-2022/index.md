@@ -1,5 +1,6 @@
 ---
 title: "Kapito Inc. Internship, Summer 2022"
+summary: A fruitful two months in a software startup.
 date: 2022-09-24T20:30:00+08:00
 draft: false
 type: posts

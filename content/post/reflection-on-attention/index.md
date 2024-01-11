@@ -1,5 +1,6 @@
 ---
 title: "Stolen Focus: Why You Can't Pay Attention--and How to Think Deeply Again 讀後感"
+summary: Reflection on attention and media.
 date: 2022-02-19T03:20:00+08:00
 draft: false
 tags: ["birthday"]

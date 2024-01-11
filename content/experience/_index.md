@@ -25,7 +25,7 @@ sections:
               * Conducted semi-structured interviews to understand why, when, and how smartphone users would like a summary of their notifications, along with a public app implemented for users to inspire user’s thoughts on the concept.
               * Implemented a mobile notification drawer with extra features to study its effects on user interactions and experience.
     design:
-      columns: '2'
+      columns: '1'
   - block: experience
     content:
       title: Teaching Experience
@@ -47,6 +47,8 @@ sections:
           description: |2-
               Course lectured by [Prof. Kai-Chiang Wu](https://people.cs.nycu.edu.tw/~kcw/)
               * Produced 10+ algorithmic programming tasks and managed the exam system.
+      design:
+        columns: '1'
   - block: experience
     content:
       title: Working Experience
@@ -67,5 +69,6 @@ sections:
           date_start: '2022-07-01'
           date_end: '2022-09-02'
           description: Initiated a data visualization platform using Plotly to discover potential breakdowns in visual defect detectors.
-
+      design:
+        columns: '1'
 ---
