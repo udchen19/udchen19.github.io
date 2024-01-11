@@ -25,7 +25,7 @@ organizations:
     url: https://www.facebook.com/muilabatnctu/
 
 # Short bio (displayed in user profile at end of posts)
-bio: I convey information to people as timely as possible.
+bio: I think crazy and try to implement them.
 
 # Interests to show in About widget
 interests:
@@ -102,18 +102,18 @@ social:
   - icon: google-scholar # Alternatively, use `google-scholar` icon from `ai` icon pack
     icon_pack: ai
     link: https://scholar.google.com/citations?user=8PeTv_8AAAAJ
-  - icon: github
-    icon_pack: fab
-    link: https://github.com/udchen19
-  - icon: linkedin
-    icon_pack: fab
-    link: https://www.linkedin.com/udchen
   - icon: cv
     icon_pack: ai
     link: uploads/CV.pdf
-  - icon: facebook
+  - icon: linkedin
     icon_pack: fab
-    link: https://www.facebook.com/dchencgps
+    link: https://www.linkedin.com/udchen
+  - icon: github
+    icon_pack: fab
+    link: https://github.com/udchen19
+  - icon: facebook-messenger
+    icon_pack: fab
+    link: https://m.me/dchencgps
 
 # Highlight the author in author lists? (true/false)
 highlight_name: true
@@ -121,6 +121,6 @@ highlight_name: true
 
 Uei-Dar Chen is a research assistant whose interests lie in the field of **Human-Computer Interaction (HCI)**, specifically on how to support user's attention when retrieving and acting upon information when interacting with everyday devices. Working with [Dr. Yung-Ju (Stanley) Chang](https://www.armuro.info/) at the Mobile Ubiquitous Interaction (MUI) Lab, his recent works focused on evaluating user experiences while provided a GPT-generated text summary of smartphone notifications, and it could be tweaked to meet individual preferences on glancing information in different scenarios.
 
-**We are recently looking for undergraduates in NYCU CS to join our research project. If you're interested in Android/Kotlin development, generative AI, or HCI research in general, feel free to email or DM me on social media platforms!**
+We are recently looking for **undergraduates in NYCU CS** to join our research project. If you're interested in **Android/Kotlin development**, **generative AI**, or **HCI research** in general, feel free to email or DM me on Facebook or Twitter!
 
 {style="text-align: justify;"}
