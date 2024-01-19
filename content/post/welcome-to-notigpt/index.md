@@ -3,6 +3,7 @@ title: "團隊有點缺人所以我來賣藥了"
 summary: 我們想寫個ChatGPT優化過的智慧通知APP，有興趣歡迎入坑。
 date: 2024-01-19T13:30:00+08:00
 draft: false
+categories: ["research"]
 ---
 
 如題，我是來拉人入坑的。先放點基本資訊，後面再解釋我們會做些什麼。

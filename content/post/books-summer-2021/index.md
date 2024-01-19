@@ -3,8 +3,7 @@ title: "Books I read in Summer 2021"
 summary: Time to cool down for deep thinking.
 date: 2021-08-30T14:10:00+08:00
 draft: false
-tags: ["books", "summer"]
-categories: ["weekly"]
+categories: ["books"]
 ---
 
 &emsp;&emsp;好，我知道，星期一。正式拖稿。下次星期六就該寫了。
