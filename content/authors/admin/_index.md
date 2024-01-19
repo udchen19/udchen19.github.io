@@ -134,6 +134,6 @@ highlight_name: true
 
 Uei-Dar Chen is a research assistant whose interests lie in the field of **Human-Computer Interaction (HCI)**, specifically on how to support user's attention when retrieving and acting upon information when interacting with everyday devices. Working with [Dr. Yung-Ju (Stanley) Chang](https://www.armuro.info/) at the Mobile Ubiquitous Interaction (MUI) Lab, his recent works focused on evaluating user experiences while provided a GPT-generated text summary of smartphone notifications, and it could be tweaked to meet individual preferences on glancing information in different scenarios.
 
-🚨 We are recently looking for **undergraduates in NYCU CS** to join our research project. If you're interested in **Android/Kotlin development**, **generative AI**, or **HCI research** in general, feel free to email or DM me on Facebook or Twitter!
+🚨 We are recently looking for **undergraduates in NYCU CS** to join our research project ([click here for details](udchen.tw/post/welcome-to-notigpt/)). If you're interested in **Android/Kotlin development**, **generative AI**, or **HCI research** in general, feel free to email or DM me on Facebook or Twitter!
 
 {style="text-align: justify;"}
