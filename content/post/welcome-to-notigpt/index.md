@@ -73,4 +73,4 @@ HCI的研究多了「人」的元素，如何在有脈絡的對談中問出使�
 我們不會咬人。應該啦。
 
 # If you're interested,
-# welcome to the club [👋](m.me/dchencgps)
+# welcome onboard [👋](m.me/dchencgps)
