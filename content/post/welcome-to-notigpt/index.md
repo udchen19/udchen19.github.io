@@ -17,7 +17,7 @@ categories: ["research"]
 
 團隊招募以目前**交大大學部**為主，不過如果你有興趣了解我們的project也歡迎跟我們聊聊。
 
-**If interested, [email me](mailto:ueidarchen@gmail.com) or [DM me](m.me/dchencgps).**
+**If interested, [email me](mailto:ueidarchen@gmail.com) or [DM me](https://m.me/dchencgps).**
 
 我會盡速聯絡，但最近比較忙，可能約2月底左右來討論。
 
@@ -75,4 +75,4 @@ HCI的研究多了「人」的元素，如何在有脈絡的對談中問出使�
 
 我們不會咬人。應該啦。
 
-# Welcome to NotiGPT [👋](m.me/dchencgps)
+# Welcome to NotiGPT [👋](https://m.me/dchencgps)
