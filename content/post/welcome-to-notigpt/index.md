@@ -75,4 +75,4 @@ HCI的研究多了「人」的元素，如何在有脈絡的對談中問出使�
 
 我們不會咬人。應該啦。
 
-Welcome onboard [👋](m.me/dchencgps)
+# Welcome to NotiGPT [👋](m.me/dchencgps)
