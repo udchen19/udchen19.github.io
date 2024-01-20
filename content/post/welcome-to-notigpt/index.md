@@ -10,15 +10,14 @@ categories: ["research"]
 
 ## 團隊招募 & 聯絡方式
 
-- 想投入 HCI研究 的人
+- **<font color="#f00">有意願長期投入 HCI研究 的人</font>**
+- 你除了寫扣，也想了解潛在使用者
+- 你希望自己寫出來的東西能有 impact
 - 對 Android開發 或 玩ChatGPT 感興趣的人
-- 你希望自己寫出來的東西能有潛在的 impact
-- 你扣寫多了想多跟人接觸
-- 有意願長期參與本專案者 (可以的話至少一年以上)
 
 團隊招募以目前**交大大學部**為主，不過如果你有興趣了解我們的project也歡迎跟我們聊聊。
 
-聯絡方式： [email me](mailto:ueidarchen@gmail.com) or [DM me](m.me/dchencgps)
+聯絡方式： [email me](mailto:ueidarchen@gmail.com) or [DM me](m.me/dchencgps) 。我會盡速聯絡，但最近比較忙，可能約2月底左右來討論。
 
 ## 我們在幹嘛 - 用ChatGPT優化手機通知系統
 
