@@ -1,5 +1,5 @@
 ---
-title: "團隊有點缺人所以我來賣藥了"
+title: "團隊有點缺人所以我來賣藥了 - 來開發 ChatGPT 強化的手機通知 APP"
 summary: 我們想寫個ChatGPT優化過的智慧通知APP，有興趣歡迎入坑。
 date: 2024-01-19T13:30:00+08:00
 draft: false
