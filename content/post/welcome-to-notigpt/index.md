@@ -10,11 +10,13 @@ categories: ["research"]
 
 ## 團隊招募 & 聯絡方式
 
-- 對 Android開發 、 HCI研究 或 玩ChatGPT 感興趣的人
+- 想投入 HCI研究 的人
+- 對 Android開發 或 玩ChatGPT 感興趣的人
 - 你希望自己寫出來的東西能有潛在的 impact
 - 你扣寫多了想多跟人接觸
+- 有意願長期參與本專案者 (可以的話至少一年以上)
 
-團隊招募以目前**交大資工大學部**為主，不過如果你有興趣了解我們的project也歡迎跟我們聊聊。
+團隊招募以目前**交大大學部**為主，不過如果你有興趣了解我們的project也歡迎跟我們聊聊。
 
 聯絡方式： [email me](mailto:ueidarchen@gmail.com) or [DM me](m.me/dchencgps)
 
