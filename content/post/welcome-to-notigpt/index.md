@@ -17,7 +17,7 @@ categories: ["research"]
 
 團隊招募以目前**交大大學部**為主，不過如果你有興趣了解我們的project也歡迎跟我們聊聊。
 
-註：如果你是交大資工學生，投入這個project可以作為畢業專題；有這個打算的話，加入團隊時我們會幫你跟教授轉達。
+註：**如果你是交大資工學生，投入這個project可以作為畢業專題**；有這個打算的話，加入團隊時我們會幫你跟教授轉達。
 
 **If interested, [email me](mailto:ueidarchen@gmail.com) or [DM me](https://m.me/dchencgps).**
 
