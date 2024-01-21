@@ -10,7 +10,7 @@ categories: ["research"]
 
 ## 團隊招募 & 聯絡方式
 
-- **<font color="#f00">有意願長期投入 HCI研究 的人</font>**
+- **<font color="#f00">有意願長期投入 HCI(人機互動)研究 的人</font>**
 - 你除了寫扣，也想了解潛在使用者
 - 你希望自己寫出來的東西能有 impact
 - 對 Android開發 或 玩ChatGPT 感興趣的人
