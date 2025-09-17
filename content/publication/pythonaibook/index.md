@@ -1,6 +1,5 @@
 ---
-title: '用Python學AI理論與實務應用 
-(Learning AI Theory and Practical Applications with Python)'
+title: '用Python學AI理論與實務應用 (Learning AI Theory and Practical Applications with Python: Includes Practice Questions for the Certiport ITS AI International Certification)'
 authors:
 - Chi-Lung Lee
 - admin

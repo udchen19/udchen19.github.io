@@ -127,7 +127,7 @@ Quitting social media? We'll have a talk on this later.
 
 &emsp;The 5 second rule uses a countdown to erase your doubts and take action immediately. I've seen the speech the author did at TED, and a concept in both the book and speech is that feelings aren't important, since you won't feel like it when you're trying to be who you wish to become. So just do it.
 
-### [Atomic Time]((https://www.books.com.tw/products/0010897780))
+### [Atomic Time](https://www.books.com.tw/products/0010897780)
 > by H.Ryu
 
 &emsp;While the author has a main job as vet, she is also a YouTuber and stage-actor, who insists that creating a second life after work is better than lying on the couch watching Netflix. A good thought is that repeating tasks over a long period is more important than doing it perfect, and don't leave the stuff to the weekend while you can do it today.

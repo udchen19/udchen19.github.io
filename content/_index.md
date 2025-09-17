@@ -4,126 +4,98 @@ title: ''
 date: 2022-10-24
 type: landing
 
+design:
+  # Default section spacing
+  spacing: '1rem'
+
 sections:
-  - block: about
-    id: about
+  # Biography block - Uses the new, more comprehensive resume-biography-3 block.
+  # It pulls data from your `content/authors/admin/_index.md` file.
+  - block: resume-biography
+    id: about # Added ID to match your navigation menu
     content:
-      title: Biography
-      # Choose a user profile to display (a folder name within `content/authors/`)
       username: admin
+      text: ''
+      headings:
+        about: ''
+        education: ''
+        interests: ''
     design:
-      columns: '1'
-  - block: portfolio
+      css_class: hbx-bg-gradient
+      avatar:
+        size: medium
+        shape: circle
+      columns: "1"
+
+  # Projects block - Restored from your old homepage.
+  - block: collection
     id: projects
     content:
       title: Projects
       filters:
         folders:
           - project
-      # Default filter index (e.g. 0 corresponds to the first `filter_button` instance below).
-      default_button_index: 0
-      # Filter toolbar (optional).
-      # Add or remove as many filters (`filter_button` instances) as you like.
-      # To show all items, set `tag` to "*".
-      # To filter by a specific tag, set `tag` to an existing tag name.
-      # To remove the toolbar, delete the entire `filter_button` block.
-      buttons:
-        - name: All
-          tag: '*'
-        - name: HCI
-          tag: HCI
-        - name: Others
-          tag: Demo
     design:
-      # Choose how many columns the section has. Valid values: '1' or '2'.
-      columns: '1'
-      view: showcase
-      # For Showcase view, flip alternate rows?
-      flip_alt_rows: false
-  - block: skills
+      view: article-grid
+      fill_image: false
+      columns: "2"
+      show_date: false
+      show_read_time: false
+      show_read_more: false
+
+  # Featured Publications block - A useful addition from the new theme for an academic site.
+  # To feature a publication, set `featured: true` in its front matter.
+  - block: collection
+    id: publications
     content:
-      title: Skills
-      text: ''
-      # Choose a user to display skills from (a folder name within `content/authors/`)
-      username: admin
+      title: Featured Publications
+      filters:
+        folders:
+          - publication
+        featured_only: true
+
     design:
-      columns: '3'
-  # - block: markdown
+      view: citation
+      show_read_more: true
+
+  # Skills block - Restored from your old homepage.
+  # - block: resume-skills
   #   content:
-  #     title: Gallery
-  #     subtitle: ''
-  #     text: |-
-  #       {{< gallery album="demo" >}}
+  #     title: Skills
+  #     text: ''
+  #     username: admin
+  #   design:
+  #     columns: '3'
+
+  # - block: resume-experience
+  #   content:
+  #     username: admin
+  #   design:
+  #     # Hugo date format
+  #     date_format: 'January 2006'
+  #     # Education or Experience section first?
+  #     is_education_first: false
+
+  # - block: resume-languages
+  #   content:
+  #     title: Languages
+  #     text: ''
+  #     username: admin
   #   design:
   #     columns: '1'
-  # - block: collection
-  #   id: talks
-  #   content:
-  #     title: Recent & Upcoming Talks
-  #     filters:
-  #       folders:
-  #         - event
-  #   design:
-  #     columns: '2'
-  #     view: compact
-  # - block: tag_cloud
-  #   content:
-  #     title: Popular Topics
-  #   design:
-  #     columns: '2'
+
+  # Recent Posts block - Adapted from your old homepage settings.
   - block: collection
     id: posts
     content:
       title: Recent Posts
-      subtitle: ''
-      text: ''
-      # Choose how many pages you would like to display (0 = all pages)
-      count: 5
-      # Filter on criteria
+      count: 6
       filters:
         folders:
           - post
-        author: ""
-        category: ""
-        tag: ""
-        exclude_featured: false
-        exclude_future: false
-        exclude_past: false
-        publication_type: ""
-      # Choose how many pages you would like to offset by
-      offset: 0
-      # Page order: descending (desc) or ascending (asc) date.
       order: desc
     design:
-      # Choose a layout view
-      view: compact
-      columns: '1'
-  - block: contact
-    id: contact
-    content:
-      title: Contact
-      # Contact (add or remove contact options as necessary)
-      email: ueidarchen@gmail.com
-      phone: +886 983 047 940
-      contact_links:
-        - icon: twitter
-          icon_pack: fab
-          name: DM Me
-          link: 'https://twitter.com/udchen19'
-        - icon: facebook-messenger
-          icon_pack: fab
-          name: DM Me
-          link: 'https://m.me/dchencgps'
-      # Automatically link email and phone or display as text?
-      autolink: true
-      # Email form provider
-      form:
-        provider: netlify
-        formspree:
-          id:
-        netlify:
-          # Enable CAPTCHA challenge to reduce spam?
-          captcha: true
-    design:
-      columns: '1'
+      view: article-grid
+      columns: '2'
+
 ---
