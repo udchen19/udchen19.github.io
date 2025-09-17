@@ -17,12 +17,12 @@ status:
 superuser: true
 
 # Role/position/tagline
-role: Research Assistant
+role: Post-Baccalaureate Research Assistant
 
 # Organizations/Affiliations to show in About widget
 organizations:
-  - name: MUI Lab, National Yang Ming Chiao Tung University
-    url: https://www.facebook.com/muilabatnctu/
+  - name: AIMEX Lab, National Yang Ming Chiao Tung University
+    url: https://www.armuro.info/
 
 # Short bio (displayed in user profile at end of posts)
 bio: I brainstorm crazy stuff and try to craft them.
@@ -30,7 +30,8 @@ bio: I brainstorm crazy stuff and try to craft them.
 # Interests to show in About widget
 interests:
   - Human-Computer Interaction
-  - Information Retrieval
+  - Personal Informatics
+  - Per
   - Sensemaking
 
 # Education to show in About widget
@@ -50,18 +51,18 @@ skills:
         percent: 85
         icon: android
         icon_pack: fab
-      - name: Python (Pandas, Numpy, PyTorch)
+      - name: Python (FastAPI, Pandas, Numpy, PyTorch)
         description: ''
         percent: 75
         icon: python
         icon_pack: fab
       - name: C++
-        description: ''
+        description: 'I did competitive programming in high school.'
         percent: 40
         icon: terminal
         icon_pack: fas
       - name: React.js
-        description: ''
+        description: 'Coded a few fun sites and projects with my friends.'
         percent: 30
         icon: code
         icon_pack: fas
@@ -70,7 +71,7 @@ skills:
     color_border: '#f0bf23'
     items:
       - name: Cycling
-        description: ''
+        description: 'I can make citybikes go as fast as motorbikes.'
         percent: 90
         icon: person-biking
         icon_pack: fas
@@ -80,7 +81,7 @@ skills:
         icon: person-running
         icon_pack: fas
       - name: Reading
-        description: ''
+        description: 'Trying my best with the attention span I have.'
         percent: 60
         icon: book-open
         icon_pack: fas
@@ -89,13 +90,13 @@ skills:
     color_border: '#f0bf23'
     items:
       - name: Chinese (Mandarin)
-        description: ''
+        description: 'My mother tongue.'
         percent: 98.7
       - name: English
-        description: ''
+        description: '4 years of my childhood was in London.'
         percent: 90
       - name: Japanese
-        description: ''
+        description: 'Helps me watch Japanese baseball.'
         percent: 60
 
 # Social/Academic Networking
@@ -132,8 +133,6 @@ social:
 highlight_name: true
 ---
 
-Uei-Dar Chen is a research assistant whose interests lie in the field of **Human-Computer Interaction (HCI)**, specifically on how to support user's attention when retrieving and acting upon information when interacting with everyday devices. Working with [Dr. Yung-Ju (Stanley) Chang](https://www.armuro.info/) at the Mobile Ubiquitous Interaction (MUI) Lab, his recent works focused on evaluating user experiences while provided a GPT-generated text summary of smartphone notifications, and it could be tweaked to meet individual preferences on glancing information in different scenarios.
-
-🚨 We are recently looking for **undergraduates in NYCU CS** to join our research project ([click here for details](post/welcome-to-notigpt/)). If you're interested in **Android/Kotlin development**, **generative AI**, or **HCI research** in general, feel free to email or DM me on Facebook or Twitter!
+Uei-Dar Chen is a post-baccalaureate research assistant in National Yang Ming Chiao Tung University (Taiwan), whose interests lie in the field of **Human-Computer Interaction (HCI)**, specifically on intelligent agents that support personal information management, or using long-term personal data to prompt reflections on real-life behavior changes. Working with [Prof. Yung-Ju (Stanley) Chang](https://www.armuro.info/) at the Mobile Ubiquitous Interaction (MUI) Lab, Uei-Dar currently leads the project of a RAG-based smartphone notification system that dynamically adapts to users’ preferences via human-in-the-loop feedback and prompts reflection by presenting visualizations of LLM-learned preferences. 
 
 {style="text-align: justify;"}

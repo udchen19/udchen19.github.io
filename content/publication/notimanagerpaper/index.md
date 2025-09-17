@@ -10,7 +10,7 @@ authors:
 - Yung-Ju Chang
 date: 2024-08-01
 publishDate: '2023-12-28T03:59:51.958977Z'
-publication: "**In Submission** to *ACM IMWUT*"
+publication: "*ACM IMWUT '24*"
 publication_types:
 - manuscript
 ---
