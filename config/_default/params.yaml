@@ -6,7 +6,7 @@
 # Appearance
 appearance:
   mode: system
-  color: sky # Adapted from your theme_day: minimal
+  color: cyan
 
 # SEO
 marketing:
@@ -14,7 +14,7 @@ marketing:
     site_type: Person
     local_business_type: ''
     org_name: ''
-    description: 'A highly-customizable Hugo academic resume theme powered by Hugo Blox Builder.'
+    description: 'Uei-Dar Chen is an HCI researcher and developer studying personal agents that integrate, interpret, and safeguard information across devices and services.'
     twitter: 'udchen19' # Updated from GetResearchDev to your personal handle
   analytics:
     google_analytics: ''
@@ -35,12 +35,12 @@ header:
     show_search: true
     show_theme_chooser: true
     logo:
-      text: "UD's Log"
+      text: "U-D-C"
 
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Me. This work is licensed under {license}'
+    notice: '© {year} Uei-Dar Chen · Usually Depends on Context'
     license:
       enable: true
       allow_derivatives: false

@@ -1,0 +1,164 @@
+{{ $author := site.GetPage "/authors/admin" }}
+{{ $avatar := $author.Resources.GetMatch "avatar*" }}
+{{ if $avatar }}{{ $avatar = $avatar.Fill "560x560 Center webp" }}{{ end }}
+
+<main class="udc-site" data-udc-copy>
+  <section class="udc-hero" aria-labelledby="udc-hero-title">
+    <div class="udc-wrap udc-hero-grid">
+      <div class="udc-hero-copy">
+        <p class="udc-eyebrow">U-D-C <span aria-hidden="true">—</span> Usually Depends on Context</p>
+        <h1 id="udc-hero-title">
+          <span class="udc-en">I study people and build personal agents.</span>
+          <span class="udc-zh">我研究人，也動手打造個人智慧助理。</span>
+        </h1>
+        <p class="udc-lede">
+          <span class="udc-en">My research explores how intelligent systems can help people manage information across everyday contexts while adapting to individual needs and preferences.</span>
+          <span class="udc-zh">我的研究探索智慧系統如何整合、理解並保護散落在不同情境中的個人資訊，同時適應每個人的需求與偏好。</span>
+        </p>
+        <p class="udc-affiliation">
+          <span class="udc-en">M.S. student in Computer Science at the University of Illinois Urbana-Champaign. Previously a research assistant at AIMEX Lab, NYCU.</span>
+          <span class="udc-zh">伊利諾大學香檳分校電腦科學碩士生；曾任陽明交大 AIMEX Lab 研究助理。</span>
+        </p>
+        <div class="udc-actions" aria-label="Primary links">
+          <a class="udc-button udc-button-primary" href="#research">
+            <span class="udc-en">See my research</span><span class="udc-zh">看我的研究</span>
+          </a>
+          <a class="udc-button" href="#garden">UD's Log</a>
+          <a class="udc-text-link" href="/uploads/uei-dar-chen-cv.pdf">
+            <span class="udc-en">CV</span><span class="udc-zh">履歷</span><span aria-hidden="true"> ↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="udc-portrait-wrap">
+        {{ with $avatar }}
+          <img class="udc-portrait" src="{{ .RelPermalink }}" width="560" height="560" alt="Portrait of Uei-Dar Chen">
+        {{ end }}
+        <p class="udc-portrait-note">
+          <span class="udc-en">Uei-Dar Chen · HCI researcher & developer</span>
+          <span class="udc-zh">陳威達 · HCI 研究者與開發者</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="news" class="udc-section udc-section-compact">
+    <div class="udc-wrap udc-two-col">
+      <div>
+        <p class="udc-kicker"><span class="udc-en">Now & next</span><span class="udc-zh">現在與接下來</span></p>
+        <h2><span class="udc-en">News</span><span class="udc-zh">近況</span></h2>
+      </div>
+      <ol class="udc-news-list">
+        <li><time datetime="2026-08">Aug 2026</time><p><span class="udc-en">Started my M.S. in Computer Science at UIUC.</span><span class="udc-zh">開始在 UIUC 就讀電腦科學碩士。</span></p></li>
+        <li><time datetime="2026-08-31">Aug–Sep 2026</time><p><span class="udc-en">Presenting <em>“I Want It to Do More Than Deliver”</em> at MobileHCI 2026 in Swansea.</span><span class="udc-zh">將在英國 Swansea 的 MobileHCI 2026 報告〈I Want It to Do More Than Deliver〉。</span></p></li>
+        <li><time datetime="2026-04">Apr 2026</time><p><span class="udc-en">Presented our preference-feedback work at CHI 2026 in Barcelona.</span><span class="udc-zh">在巴塞隆納 CHI 2026 報告智慧通知偏好回饋研究。</span></p></li>
+        <li><time datetime="2025-09">Sep 2025</time><p><span class="udc-en">Presented NotiSummary at MobileHCI 2025 in Egypt.</span><span class="udc-zh">在埃及 MobileHCI 2025 報告 NotiSummary。</span></p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="research" class="udc-section udc-section-tint">
+    <div class="udc-wrap">
+      <div class="udc-section-head">
+        <p class="udc-kicker"><span class="udc-en">Observe, interpret, implement</span><span class="udc-zh">觀察、理解、實作</span></p>
+        <h2><span class="udc-en">Selected research</span><span class="udc-zh">精選研究</span></h2>
+        <p><span class="udc-en">I use studies, interviews, and literature to understand what people need—then build systems to see whether those ideas can actually work.</span><span class="udc-zh">我用研究、訪談與文獻理解人真正需要什麼，也會自己把系統做出來，看看那些想法到底能不能成立。</span></p>
+      </div>
+      <div class="udc-card-grid">
+        <article class="udc-card">
+          <div class="udc-card-meta"><span>2024–2026</span><span><span class="udc-en">Project lead · Principal developer</span><span class="udc-zh">Project Lead · 主要開發者</span></span></div>
+          <h3><a href="/project/notillm/">Noti</a></h3>
+          <p><span class="udc-en">An intelligent notification agent that learns individual preferences across summarization, prioritization, task extraction, and other everyday notification needs.</span><span class="udc-zh">整合摘要、排序、任務擷取等功能，並持續學習個人偏好的智慧通知助理。</span></p>
+          <a class="udc-arrow-link" href="/project/notillm/"><span class="udc-en">Project details</span><span class="udc-zh">專案內容</span><span aria-hidden="true"> →</span></a>
+        </article>
+        <article class="udc-card">
+          <div class="udc-card-meta"><span>2023–2025</span><span><span class="udc-en">Project lead · Research & development</span><span class="udc-zh">Project Lead · 研究與開發</span></span></div>
+          <h3><a href="/project/notisummary/">NotiSummary</a></h3>
+          <p><span class="udc-en">A study and open-source Android app examining what makes notification summaries useful, controllable, and personally appropriate.</span><span class="udc-zh">透過研究與開源 Android app，探索什麼樣的通知摘要才真正有用、可控，也符合個人需求。</span></p>
+          <a class="udc-arrow-link" href="/project/notisummary/"><span class="udc-en">Project details</span><span class="udc-zh">專案內容</span><span aria-hidden="true"> →</span></a>
+        </article>
+        <article class="udc-card">
+          <div class="udc-card-meta"><span>2026</span><span><span class="udc-en">Data reanalysis · Paper development</span><span class="udc-zh">資料再分析 · 論文發展</span></span></div>
+          <h3><a href="/project/intelligent-notification-systems/">I Want It to Do More Than Deliver</a></h3>
+          <p><span class="udc-en">A reanalysis of interview and design-workshop data on how people imagine future notification systems as proactive, context-aware agents.</span><span class="udc-zh">重新分析訪談與設計工作坊資料，理解人們如何想像主動、理解情境的下一代通知助理。</span></p>
+          <a class="udc-arrow-link" href="/project/intelligent-notification-systems/"><span class="udc-en">Project details</span><span class="udc-zh">專案內容</span><span aria-hidden="true"> →</span></a>
+        </article>
+      </div>
+      <div class="udc-section-more"><a class="udc-arrow-link" href="/projects/"><span class="udc-en">All research projects</span><span class="udc-zh">全部研究專案</span><span aria-hidden="true"> →</span></a></div>
+    </div>
+  </section>
+
+  <section id="publications" class="udc-section">
+    <div class="udc-wrap udc-two-col">
+      <div class="udc-section-head udc-section-head-sticky">
+        <p class="udc-kicker"><span class="udc-en">A few papers to start with</span><span class="udc-zh">可以從這幾篇開始</span></p>
+        <h2><span class="udc-en">Selected publications</span><span class="udc-zh">精選論文</span></h2>
+        <p><span class="udc-en">The complete list includes full papers, posters, workshops, and one book that proves I once knew how to explain Python.</span><span class="udc-zh">完整清單收錄 full papers、posters、workshops，還有一本證明我曾經會解釋 Python 的書。</span></p>
+        <a class="udc-arrow-link" href="/publication/"><span class="udc-en">All publications</span><span class="udc-zh">全部出版品</span><span aria-hidden="true"> →</span></a>
+      </div>
+      <div class="udc-publication-list">
+        <article>
+          <p class="udc-pub-venue">PACM HCI · MobileHCI 2026</p>
+          <h3><a href="/publication/intelligent-notification-systems/">“I Want It to Do More Than Deliver”: Users’ Desires for Intelligent Notification Systems</a></h3>
+          <p><span class="udc-en">Equal contribution · Led reanalysis and development of the resulting paper.</span><span class="udc-zh">共同第一作者 · 主導資料再分析與後續論文發展。</span></p>
+        </article>
+        <article>
+          <p class="udc-pub-venue">CHI 2026</p>
+          <h3><a href="/publication/preference-feedback/">“Tell Me Why You’re Asking”: Exploring How to Increase Engagement in Preference Feedback for Intelligent Notification Systems</a></h3>
+          <p><span class="udc-en">Contributed to interviews and led the revise-and-resubmit process.</span><span class="udc-zh">參與訪談，並主導 revise-and-resubmit。</span></p>
+        </article>
+        <article>
+          <p class="udc-pub-venue">PACM HCI · MobileHCI 2025</p>
+          <h3><a href="/publication/notisummarypaper/">From Overwhelmed to Overview: Understanding Smartphone Users’ Preferences and Expectations in Relieving Notification Overload via Text Summarization</a></h3>
+          <p><span class="udc-en">Project lead · Led interviews, qualitative analysis, and paper writing.</span><span class="udc-zh">Project Lead · 主導訪談、質化分析與論文撰寫。</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="garden" class="udc-section udc-section-tint">
+    <div class="udc-wrap">
+      <div class="udc-section-head">
+        <p class="udc-kicker"><span class="udc-en">Usually written when I feel like it</span><span class="udc-zh">通常是想寫的時候才寫</span></p>
+        <h2>UD's Log</h2>
+        <p><span class="udc-en">Research process, technology observations, life in the U.S., conference detours, books, bikes, and whatever else does not fit in a paper.</span><span class="udc-zh">研究過程、科技觀察、美國生活、conference 繞路、書、單車，以及任何不適合塞進 paper 的東西。</span></p>
+      </div>
+      {{ $posts := where site.RegularPages "Section" "post" }}
+      <div class="udc-post-grid">
+        {{ range first 4 $posts.ByDate.Reverse }}
+          <article class="udc-post-card">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+            <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+            {{ with .Params.summary }}<p>{{ . }}</p>{{ end }}
+            <a class="udc-arrow-link" href="{{ .RelPermalink }}"><span class="udc-en">Read</span><span class="udc-zh">閱讀</span><span aria-hidden="true"> →</span></a>
+          </article>
+        {{ end }}
+      </div>
+      <div class="udc-garden-footer">
+        <a class="udc-arrow-link" href="/post/"><span class="udc-en">Enter the garden</span><span class="udc-zh">進入 Garden</span><span aria-hidden="true"> →</span></a>
+        <a class="udc-strava" href="https://www.strava.com/athletes/97007229" rel="me noopener" target="_blank"><span class="udc-en">Some thoughts happen on two wheels — Strava</span><span class="udc-zh">有些想法是在兩個輪子上發生的 — Strava</span><span aria-hidden="true"> ↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="udc-section udc-contact">
+    <div class="udc-wrap udc-contact-grid">
+      <div>
+        <p class="udc-kicker"><span class="udc-en">Say hello</span><span class="udc-zh">來聊聊</span></p>
+        <h2><span class="udc-en">Research idea, collaboration, or a good question?</span><span class="udc-zh">有研究想法、合作機會，或一個好問題？</span></h2>
+      </div>
+      <div>
+        <p><span class="udc-en">Email is the most reliable way to reach me. Messenger also works if a formal subject line feels like too much commitment.</span><span class="udc-zh">Email 最可靠；如果想不到正式的主旨，Messenger 也可以。</span></p>
+        <div class="udc-actions">
+          <a class="udc-button udc-button-primary" href="mailto:ueidarc2@illinois.edu">ueidarc2@illinois.edu</a>
+          <a class="udc-button" href="https://m.me/dchencgps"><span class="udc-en">Message me</span><span class="udc-zh">敲我訊息</span></a>
+        </div>
+        <nav class="udc-socials" aria-label="Social profiles">
+          <a href="https://scholar.google.com/citations?user=8PeTv_8AAAAJ">Google Scholar</a>
+          <a href="https://github.com/udchen19">GitHub</a>
+          <a href="https://www.linkedin.com/in/udchen">LinkedIn</a>
+          <a href="https://www.strava.com/athletes/97007229">Strava</a>
+        </nav>
+      </div>
+    </div>
+  </section>
+</main>

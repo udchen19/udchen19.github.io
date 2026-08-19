@@ -1,9 +1,9 @@
 ---
 title: NotiSummary
-summary: An open-sourced app for Android users to summarize their own notifications via GPT. 
+summary: An open-source Android app and study of what people expect from AI-generated notification summaries.
 tags:
   - HCI
-date: '2023-09-15'
+date: '2025-09-10'
 
 # Optional external URL for project (replaces project detail page).
 external_link: ''
@@ -13,13 +13,12 @@ image:
   focal_point: Smart
 
 links:
-  - icon: brands/google-play
-    name: Try the app
-    url: https://play.google.com/store/apps/details?id=org.muilab.noti.summary
   - icon: academicons/acm
     name: Paper (MobileHCI '25)
     url: https://dl.acm.org/doi/10.1145/3743703/
-url_code: 'https://github.com/noti-summary/NotiSummary'
+  - type: code
+    name: Code
+    url: 'https://github.com/noti-summary/NotiSummary'
 url_pdf: ''
 url_slides: ''
 url_video: ''
@@ -32,4 +31,8 @@ url_video: ''
 slides: ""
 ---
 
-An open-sourced app for Android users to summarize their own notifications via GPT. This prototype app supported our study that further investigated the underlying factors that constitutes an ideal notification summary in the user's perspective.
+NotiSummary is an open-source Android app that lets people summarize their own notifications with GPT. The prototype supported our study of what makes a notification summary useful: not only brevity, but also timing, scope, control, and fit with the user's situation.
+
+**My role:** Project lead. I contributed to app development, led the interviews, conducted the main qualitative analysis, and led the writing of the resulting paper.
+
+The app is a research prototype rather than a product I am currently asking people to install. Its code remains available for anyone interested in how the study was implemented.

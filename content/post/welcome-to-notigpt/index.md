@@ -1,10 +1,14 @@
 ---
-title: "研究團隊缺人所以我來賣藥了 - 來開發 ChatGPT 強化的手機通知 APP"
-summary: 我們想寫個ChatGPT優化過的智慧通知APP，有興趣歡迎入坑。
+title: "[結案] 研究團隊缺人所以我來賣藥了 - 來開發 ChatGPT 強化的手機通知 APP"
+summary: 這篇是 2024 年的研究招募紀錄，現已結案；內文保留當時我們對智慧通知 APP 的想像。
 date: 2024-01-19T13:30:00+08:00
 draft: false
 categories: ["research"]
 ---
+
+{{% callout warning %}}
+**這項招募已經結束。** 文章保留作為當時研究方向與團隊形成過程的紀錄；如果想聊現在的研究或合作，請改寄 [ueidarc2@illinois.edu](mailto:ueidarc2@illinois.edu)。
+{{% /callout %}}
 
 如題，我是來抓人入坑的。先上招募資訊，細節後面講。
 

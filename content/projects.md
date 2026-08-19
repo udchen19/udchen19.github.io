@@ -1,5 +1,5 @@
 ---
-title: 'Projects'
+title: 'Research Projects'
 date: 2024-05-19
 type: landing
 
@@ -11,15 +11,15 @@ design:
 sections:
   - block: collection
     content:
-      title: Selected Projects
-      text: I enjoy making things. Here are a selection of projects that I have worked on over the years.
+      title: Research Projects
+      text: Studies and systems for understanding how personal agents can support information, attention, and action across everyday contexts.
       filters:
         folders:
           - project
     design:
       view: article-grid
       fill_image: false
-      columns: 3
+      columns: 2
       show_date: false
       show_read_time: false
       show_read_more: false

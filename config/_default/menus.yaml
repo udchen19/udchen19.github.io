@@ -1,23 +1,19 @@
-# Navigation Links
-#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
-  #     desired widget in your `content/home/` folder.
-  #   The weight parameter defines the order that the links will appear in.
-
-# Navigation Links
 main:
   - name: Home
-    url: '/#about'
+    url: '/#top'
     weight: 10
-  - name: Projects
-    url: '/#projects'
+  - name: Research
+    url: '/#research'
     weight: 20
-  - name: Experiences
-    url: experiences/ # This links to a separate page now
-    weight: 30
   - name: Publications
-    url: publication/
+    url: '/publication/'
+    weight: 30
+  - name: UD's Log
+    url: '/post/'
     weight: 40
-  # The 'Contact' link is removed as contact info is now in the 'about' section.
-  - name: CV
-    url: uploads/CV.pdf
+  - name: About
+    url: '/experiences/'
     weight: 50
+  - name: CV
+    url: '/uploads/uei-dar-chen-cv.pdf'
+    weight: 60

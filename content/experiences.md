@@ -1,5 +1,5 @@
 ---
-title: 'Experiences'
+title: 'About'
 date: 2023-10-24
 type: landing
 
@@ -10,6 +10,19 @@ design:
 
 # Page sections
 sections:
+  - block: resume-biography
+    content:
+      username: admin
+      text: ''
+      headings:
+        about: About
+        education: Education
+        interests: Research Interests
+    design:
+      avatar:
+        size: medium
+        shape: circle
+      columns: '1'
   - block: resume-experience
     content:
       username: admin
@@ -20,7 +33,7 @@ sections:
       is_education_first: false
   - block: resume-skills
     content:
-      title: Skills & Hobbies
+      title: Research, Building & Elsewhere
       username: admin
     design:
       show_skill_percentage: false

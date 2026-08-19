@@ -5,8 +5,10 @@
   "packageManager": "pnpm@10.14.0",
   "description": "Academic CV starter template for Hugo Blox with Tailwind CSS v4",
   "scripts": {
+    "predev": "node scripts/ensure-tailwind-cli.mjs",
     "dev": "hugo server --disableFastRender",
-    "build": "hugo --minify"
+    "prebuild": "node scripts/ensure-tailwind-cli.mjs",
+    "build": "hugo --minify --cleanDestinationDir"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.12",
