@@ -10,7 +10,7 @@ categories: ["books", "review"]
 ## 幹話
 
 <details>
-  <summary>CLICK ME</summary>
+  <summary>展開本節</summary>
 
 &emsp;&emsp;21 ~~today~~ a few days ago. (補：這篇我27號修完的@@) 謝謝 Facebook、Messenger、Instagram、LINE、Discord、Gmail(就算他有我FB)、LinkedIn(**對，這人也有我FB**) 上的各位，還有突襲慶生的，突然送卡片的，跟球隊梅竹拜拜同一天生日所以多塞一罐仙草蜜的，晚上嗑達美樂的...。Thanks to all, and wish you a good year onwards.
 
@@ -201,7 +201,7 @@ categories: ["books", "review"]
 ## Reflection on 20 and Retrospection on 21
 
 <details>
-  <summary>CLICK ME</summary>
+  <summary>展開本節</summary>
 
 &emsp;I'm gonna use English here to choose words more precisely (well, at least for me).
 

@@ -1,4 +1,4 @@
-# U-D-C — Usually Depends on Context
+# Uei-Dar Chen — Usually Depends on Context
 
 Personal website of Uei-Dar Chen, an HCI researcher and developer studying personal agents, information management, and context-aware systems.
 

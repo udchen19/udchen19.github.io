@@ -1,5 +1,7 @@
 ---
 title: Noti
+reading_time: false
+show_date_updated: false
 summary: An intelligent smartphone notification agent that learns and adapts to individual preferences.
 tags:
   - HCI

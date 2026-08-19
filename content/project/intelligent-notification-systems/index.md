@@ -1,5 +1,7 @@
 ---
 title: I Want It to Do More Than Deliver
+reading_time: false
+show_date_updated: false
 summary: What people want future notification systems to become when they act as intelligent, context-aware agents.
 tags:
   - HCI

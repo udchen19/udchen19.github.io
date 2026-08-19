@@ -2,7 +2,6 @@
   const storageKey = 'udc-ui-language';
   const root = document.documentElement;
   const navLabels = {
-    home: { en: 'Home', zh: '首頁' },
     research: { en: 'Research', zh: '研究' },
     publications: { en: 'Publications', zh: '出版品' },
     garden: { en: "UD's Log", zh: "UD's Log" },
@@ -37,7 +36,7 @@
 
   const tagNavigation = () => {
     const rules = [
-      ['/#top', 'home'], ['/#research', 'research'], ['/publication/', 'publications'],
+      ['/#research', 'research'], ['/publication/', 'publications'],
       ['/post/', 'garden'], ['/experiences/', 'about'], ['/uploads/uei-dar-chen-cv.pdf', 'cv'],
     ];
     document.querySelectorAll('header a, nav a').forEach((link) => {
@@ -53,7 +52,7 @@
     button.type = 'button';
     button.className = 'udc-language-toggle';
     button.dataset.udcLanguageToggle = '';
-    button.innerHTML = '<span class="udc-en">中文</span><span class="udc-zh">EN</span>';
+    button.innerHTML = '<span class="udc-en">中文</span><span class="udc-zh">English</span>';
     button.addEventListener('click', () => {
       applyLanguage(root.dataset.udcUiLang === 'zh' ? 'en' : 'zh');
     });
@@ -63,8 +62,8 @@
       themeButton.parentElement.insertBefore(button, themeButton);
       return;
     }
-    const headerNav = document.querySelector('header nav');
-    if (headerNav) headerNav.appendChild(button);
+    const headerTools = document.querySelector('header nav > .order-1, header nav');
+    if (headerTools) headerTools.appendChild(button);
   };
 
   const init = () => {

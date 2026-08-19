@@ -1,19 +1,16 @@
 main:
-  - name: Home
-    url: '/#top'
-    weight: 10
   - name: Research
     url: '/#research'
-    weight: 20
+    weight: 10
   - name: Publications
     url: '/publication/'
-    weight: 30
+    weight: 20
   - name: UD's Log
     url: '/post/'
-    weight: 40
+    weight: 30
   - name: About
     url: '/experiences/'
-    weight: 50
+    weight: 40
   - name: CV
     url: '/uploads/uei-dar-chen-cv.pdf'
-    weight: 60
+    weight: 50

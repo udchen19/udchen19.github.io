@@ -1,5 +1,7 @@
 ---
 title: NotiSummary
+reading_time: false
+show_date_updated: false
 summary: An open-source Android app and study of what people expect from AI-generated notification summaries.
 tags:
   - HCI

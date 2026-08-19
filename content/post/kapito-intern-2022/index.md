@@ -13,7 +13,7 @@ categories: ["work"]
 ## Company Info & Interview
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -26,7 +26,7 @@ categories: ["work"]
 ## Original Expectations
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -37,7 +37,7 @@ categories: ["work"]
 ## New Project
 
 <details>
-  <summary>CLICK ME</summary>
+  <summary>展開本節</summary>
 
 <br>
 
@@ -50,7 +50,7 @@ categories: ["work"]
 ## Challenges
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -77,7 +77,7 @@ categories: ["work"]
 ## Results
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -100,7 +100,7 @@ categories: ["work"]
 ## Takeaways
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -125,7 +125,7 @@ categories: ["work"]
 ## Thoughts
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -153,7 +153,7 @@ categories: ["work"]
 ## Special Thanks
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -172,7 +172,7 @@ categories: ["work"]
 ## Teasers
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
@@ -251,7 +251,7 @@ categories: ["work"]
 #### Setbacks
 
 <details>
-      <summary>CLICK ME</summary>
+      <summary>展開本節</summary>
 
 <br>
 
