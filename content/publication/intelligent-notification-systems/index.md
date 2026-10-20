@@ -9,7 +9,7 @@ authors:
 date: '2026-08-18'
 publication: '*Proceedings of the ACM on Human-Computer Interaction, MobileHCI 2026*'
 publication_types:
-  - manuscript
+  - article-journal
 featured: true
 links:
   - type: pdf

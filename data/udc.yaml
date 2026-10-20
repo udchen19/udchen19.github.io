@@ -1,0 +1,64 @@
+bio:
+  affiliation:
+    en: I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign, advised by Yang Wang.
+    zh: 我目前就讀伊利諾大學香檳分校電腦科學碩士班，由 Yang Wang 教授指導。
+  paragraphs:
+    - en: My primary research interest is **personal AI agents**—how they can integrate, interpret, and safeguard information across devices and services while adapting to individual needs and preferences.
+      zh: 我的主要研究興趣是 **personal AI agents**：它們如何整合、理解並保護散落在不同裝置與服務中的資訊，同時適應每個人的需求與偏好。
+    - en: I’m currently exploring **contextual privacy in human–agent and agent–agent interactions within multi-agent AI systems**.
+      zh: 目前，我正在探索 **multi-agent AI systems 中，人與代理、以及代理彼此互動時的 contextual privacy（情境隱私）**。
+    - en: Previously, I worked with Yung-Ju Chang at AIMEX Lab, National Yang Ming Chiao Tung University, on **intelligent smartphone notification systems**. My research explored how these systems could help people make sense of incoming information and support their everyday needs. This involved understanding what makes notification summaries useful and personally appropriate, and how agents can learn and adapt to individual preferences through feedback. I also studied how people envision future notification systems taking a more proactive, context-aware role beyond delivering messages.
+      zh: 過去，我在陽明交大 AIMEX Lab 與張永儒教授合作，研究**智慧型手機通知系統**如何幫助人們理解收到的資訊，並支持日常需求。這些研究包含：什麼樣的通知摘要對使用者有用、符合個人需求，以及助理如何透過回饋學習並適應不同人的偏好。我也研究人們如何想像未來的通知系統，期待它們在傳遞訊息之外，扮演更主動、能理解情境的角色。
+    - en: Across this work, I combined interviews and qualitative analysis with hands-on system building, developing Android prototypes to explore how these ideas could work in everyday use.
+      zh: 在這些工作中，我結合訪談、質性分析與系統實作，開發 Android 原型，探索這些想法在日常使用中如何運作。
+
+news:
+  - date: '2026-08-31'
+    label: Aug–Sep 2026
+    label_zh: 2026 年 8–9 月
+    en: Presented *“I Want It to Do More Than Deliver”* at MobileHCI 2026 in Swansea.
+    zh: 在 Swansea 的 MobileHCI 2026 報告〈I Want It to Do More Than Deliver〉。
+  - date: '2026-08-01'
+    label: Aug 2026
+    label_zh: 2026 年 8 月
+    en: Started my M.S. in Computer Science at UIUC.
+    zh: 開始在 UIUC 就讀電腦科學碩士。
+
+work:
+  - page: /project/notillm/
+    title: Noti
+    meta: 2024–2026
+    en: A smartphone notification agent that learns individual preferences for summarization, prioritization, and task extraction. I led the project and its development.
+    zh: 學習個人偏好的手機通知助理，支援摘要、優先排序與任務擷取。我負責專案與開發工作的主導。
+    links:
+      - en: Project
+        zh: 專案
+        url: /project/notillm/
+  - page: /project/notisummary/
+    title: NotiSummary
+    meta: MobileHCI 2025
+    en: An Android app and study of what people want from notification summaries. My work included app development, interviews, qualitative analysis, and paper writing.
+    zh: 透過 Android app 與使用者研究，了解人們對通知摘要的需求。我的工作包含 app 開發、訪談、質性分析與論文撰寫。
+    links:
+      - en: Paper
+        zh: 論文
+        url: /publication/notisummarypaper/
+      - en: Code
+        zh: 程式碼
+        url: https://github.com/noti-summary/NotiSummary
+      - en: Project
+        zh: 專案
+        url: /project/notisummary/
+  - page: /project/intelligent-notification-systems/
+    title: '“I Want It to Do More Than Deliver”: Users’ Desires for Intelligent Notification Systems'
+    meta: MobileHCI 2026 · Equal contribution
+    meta_zh: MobileHCI 2026 · 共同第一作者
+    en: A study of how people envision future notification systems. I led the reanalysis of interview and design-workshop data and the development of the paper.
+    zh: 研究人們如何想像未來的通知系統。我主導訪談與設計工作坊資料的再分析，以及後續論文發展。
+    links:
+      - en: Paper
+        zh: 論文
+        url: /publication/intelligent-notification-systems/
+      - en: Project
+        zh: 專案
+        url: /project/intelligent-notification-systems/

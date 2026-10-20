@@ -6,7 +6,7 @@
 # Appearance
 appearance:
   mode: system
-  color: cyan
+  color: udc
 
 # SEO
 marketing:
@@ -33,14 +33,14 @@ header:
     block: 'navbar'
     fixed_to_top: true
     show_search: false
-    show_theme_chooser: false
+    show_theme_chooser: true
     logo:
       text: "Uei-Dar Chen"
 
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Uei-Dar Chen · Usually Depends on Context'
+    notice: '© {year} Uei-Dar Chen'
     license:
       enable: true
       allow_derivatives: false

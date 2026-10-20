@@ -39,7 +39,7 @@ education:
     institution: University of Illinois Urbana-Champaign
     date_start: '2026-08-01'
     date_end: '2028-05-31'
-    summary: Expected May 2028.
+    summary: 'Expected May 2028. Advised by Prof. Yang Wang. Thesis direction: contextual privacy in human–agent and agent–agent interactions within multi-agent AI systems.'
   - area: B.Sc. in Computer Science, Credit Program of Psychology
     institution: National Yang Ming Chiao Tung University
     date_start: '2019-09-01'
@@ -47,6 +47,12 @@ education:
     summary: Dean's List twice; three Foundation Course Awards.
 
 work:
+  - position: Teaching Assistant, CS 225 — Data Structures
+    company_name: University of Illinois Urbana-Champaign
+    date_start: '2026-08-01'
+    date_end: '2026-12-31'
+    summary: |
+      Lead weekly labs and office hours, helping students reason through data structures and debug C++ programs. Grade exams and provide feedback on algorithms and runtime analysis.
   - position: Research Assistant
     company_name: AIMEX Lab, National Yang Ming Chiao Tung University
     company_url: 'https://www.armuro.info/'

@@ -1,0 +1,12 @@
+<div class="udc-wrap udc-reading-column udc-archive">
+  <h1>{{ .Title }}</h1>
+  {{ with .Content }}<div class="prose">{{ . }}</div>{{ end }}
+  {{ $view := .Params.view | default "date-title-summary" }}
+  {{ $paginator := .Paginate .Pages.ByDate.Reverse }}
+  <div class="udc-archive-list">
+    {{ range $paginator.Pages }}
+      {{ partial (printf "views/%s.html" $view) (dict "page" . "item" .) }}
+    {{ end }}
+  </div>
+  {{ partial "components/paginator" . }}
+</div>

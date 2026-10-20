@@ -5,7 +5,6 @@ authors:
   - admin
   - Yu-Shiun Wu
   - Yi-Jyeie Chen
-  - Jo-Han Huang
   - Yung-Ju Chang
 date: '2026-04-13'
 publication: "*CHI '26*"

@@ -1,0 +1,37 @@
+{{ $author := site.GetPage "/authors/admin" }}
+{{ $bio := site.Data.udc.bio }}
+<div class="udc-wrap udc-reading-column udc-about" lang="en">
+  <h1>About</h1>
+  <div class="udc-about-bio">
+    <p>{{ $bio.affiliation.en }}</p>
+    {{ range $bio.paragraphs }}<p>{{ .en | markdownify }}</p>{{ end }}
+  </div>
+  <section aria-labelledby="education-title">
+    <h2 id="education-title">Education</h2>
+    {{ range $author.Params.education }}
+    <div class="udc-cv-item">
+      <h3>{{ .institution }}</h3><p>{{ .area }}</p>
+      <p class="udc-cv-date">{{ time.Format "2006" .date_start }}–{{ time.Format "2006" .date_end }}</p>
+      {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
+    </div>
+    {{ end }}
+  </section>
+  <section aria-labelledby="experience-title">
+    <h2 id="experience-title">Experience</h2>
+    {{ range $author.Params.work }}
+    <div class="udc-cv-item">
+      <h3>{{ .position }}</h3>
+      <p>{{ if .company_url }}<a href="{{ .company_url }}">{{ .company_name }}</a>{{ else }}{{ .company_name }}{{ end }}</p>
+      <p class="udc-cv-date">{{ time.Format "Jan 2006" .date_start }} – {{ if .date_end }}{{ time.Format "Jan 2006" .date_end }}{{ else }}Present{{ end }}</p>
+      {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
+    </div>
+    {{ end }}
+  </section>
+  {{ range $author.Params.skills }}
+  <section><h2>{{ .name }}</h2><dl>{{ range .items }}<dt>{{ .name }}</dt>{{ with .description }}<dd>{{ . }}</dd>{{ end }}{{ end }}</dl></section>
+  {{ end }}
+  <section aria-labelledby="languages-title"><h2 id="languages-title">Languages</h2>
+    <dl class="udc-language-list">{{ range $author.Params.languages }}<div><dt>{{ .name }}</dt><dd>{{ .description }}</dd></div>{{ end }}</dl>
+  </section>
+  <p><a href="/uploads/uei-dar-chen-cv.pdf">Full CV (PDF)</a></p>
+</div>

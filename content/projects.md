@@ -5,11 +5,11 @@ type: landing
 
 design:
   # Section spacing
-  spacing: '5rem'
+  spacing: '0'
 
 # Page sections
 sections:
-  - block: collection
+  - block: udc-projects
     content:
       title: Research Projects
       text: Studies and systems for understanding how personal agents can support information, attention, and action across everyday contexts.
