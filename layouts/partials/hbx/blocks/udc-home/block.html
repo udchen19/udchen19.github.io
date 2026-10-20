@@ -2,6 +2,7 @@
 {{ $avatar := $author.Resources.GetMatch "avatar*" }}
 {{ if $avatar }}{{ $avatar = $avatar.Fill "560x560 Center webp" }}{{ end }}
 {{ $copy := site.Data.udc }}
+{{ partial "udc-ink-filter.html" . }}
 <div class="udc-site" data-udc-home>
   <section class="udc-hero" aria-labelledby="udc-hero-title">
     <div class="udc-wrap udc-hero-grid">
