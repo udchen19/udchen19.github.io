@@ -281,7 +281,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-post-list time { font-size: 13px; color: var(--udc-muted); }
 .udc-post-list a { color: var(--udc-ink); font-size: 15px; line-height: 1.65; }
 /* A shared photographic coordinate system keeps the flag planted in the outfield. */
-.udc-flag-impression { position: absolute; pointer-events: none; left: 59%; top: 32%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png') center/contain no-repeat; opacity: .32; }
+.udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png') center/contain no-repeat; opacity: .32; }
 .dark .udc-flag-impression { opacity: .26; }
 /* The scene sits behind the log and footer, contributing no document height. */
 .udc-site { z-index: 1; }
