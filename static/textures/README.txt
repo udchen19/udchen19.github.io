@@ -20,7 +20,14 @@ forced colors, and print use solid text without paper backgrounds.
 Photographic halftones (not original procedural textures):
 stadium-g2-halftone.png: Uni-Lions-provided photograph, SETN / Mirror Media,
 https://www.mirrormedia.mg/external/setn_1920526 (2026-10-10).
+Full frame retained. Grayscale, CLAHE 15x15%+128+2, resize to 1600px wide,
+then h4x4a clustered-dot dithering; white becomes transparent. Local contrast
+preserves the stands, roof beams, and infield instead of flattening the field
+with a single global threshold. Compared ten treatments before selection.
 flag-halftone.png: user-supplied photograph of the 外野那群人 flag; isolated
-flag and pole, grayscale contrast and ordered 8x8 dithering. No redrawn letters.
+flag and pole. Red-channel separation distinguishes black lettering from the
+orange cloth; sigmoidal contrast 12x42%, h4x4a clustered dots, then the existing
+flag/pole silhouette mask and 380x385+48+62 crop. Compared six treatments.
+No redrawn letters or invented stadium lines.
 See /design-credits/ for attribution. These photographs are excluded from the
 site's Creative Commons license.

@@ -281,14 +281,14 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-post-list time { font-size: 13px; color: var(--udc-muted); }
 .udc-post-list a { color: var(--udc-ink); font-size: 15px; line-height: 1.65; }
 /* A shared photographic coordinate system keeps the flag planted in the outfield. */
-.udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png') center/contain no-repeat; opacity: .32; }
+.udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png?v=2') center/contain no-repeat; opacity: .32; }
 .dark .udc-flag-impression { opacity: .26; }
 /* The scene sits behind the log and footer, contributing no document height. */
 .udc-site { z-index: 1; }
 .udc-footer-home { padding-top: 0; margin-top: 0; isolation: isolate; z-index: 0; }
 .udc-stadium { position: absolute; z-index: -1; bottom: 0; left: 0; width: 100%; height: clamp(360px,45vw,620px); overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent,#000 26%,#000 78%,transparent); }
 .udc-stadium-field { position: absolute; left: 50%; bottom: 0; width: max(100%,700px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(#000 78%,transparent); }
-.udc-stadium-ink { position: absolute; inset: 0; background: var(--udc-green); opacity: .23; mask: url('/textures/stadium-g2-halftone.png') center/contain no-repeat; }
+.udc-stadium-ink { position: absolute; inset: 0; background: var(--udc-green); opacity: .23; mask: url('/textures/stadium-g2-halftone.png?v=2') center/contain no-repeat; }
 .dark .udc-stadium-ink { background: var(--udc-ink); opacity: .15; }
 .udc-footer-home > .udc-wrap { position: relative; margin-top: 0; border-top-width: 1px; }
 .udc-image-credit { white-space: nowrap; }
