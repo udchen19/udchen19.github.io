@@ -1,13 +1,13 @@
 :root {
-  --hb-primary-50-rgb: 239 245 249;
-  --hb-primary-100-rgb: 218 231 240;
-  --hb-primary-200-rgb: 185 208 226;
-  --hb-primary-300-rgb: 149 187 216;
-  --hb-primary-400-rgb: 112 162 200;
-  --hb-primary-500-rgb: 61 116 159;
-  --hb-primary-600-rgb: 36 87 138;
-  --hb-primary-700-rgb: 30 70 112;
-  --hb-primary-800-rgb: 23 52 81;
-  --hb-primary-900-rgb: 19 42 67;
-  --hb-primary-950-rgb: 13 29 47;
+  --hb-primary-50-rgb: 242 246 237;
+  --hb-primary-100-rgb: 228 237 223;
+  --hb-primary-200-rgb: 203 220 195;
+  --hb-primary-300-rgb: 166 193 155;
+  --hb-primary-400-rgb: 125 161 111;
+  --hb-primary-500-rgb: 91 133 84;
+  --hb-primary-600-rgb: 66 106 64;
+  --hb-primary-700-rgb: 49 84 54;
+  --hb-primary-800-rgb: 37 68 46;
+  --hb-primary-900-rgb: 25 67 51;
+  --hb-primary-950-rgb: 16 39 28;
 }
