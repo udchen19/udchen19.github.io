@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="384" viewBox="0 0 384 384">
+  <defs>
+    <filter id="fiber" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".64" numOctaves="3" seed="31" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 .42  0 0 0 0 .35  0 0 0 0 .26  1 0 0 0 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+    <filter id="flecks" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".38" numOctaves="3" seed="11" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 .30  0 0 0 0 .25  0 0 0 0 .18  1 0 0 0 0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="6" intercept="-3.4"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <g opacity=".05"><path d="M0 0h384v384H0z" fill="#fff" filter="url(#fiber)"/></g>
+  <g opacity=".055"><path d="M0 0h384v384H0z" fill="#fff" filter="url(#flecks)"/></g>
+</svg>

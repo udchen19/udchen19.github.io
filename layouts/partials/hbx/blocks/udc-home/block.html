@@ -54,7 +54,7 @@
     <a class="udc-all-projects" href="/projects/"><span class="udc-en">All research projects</span><span class="udc-zh">全部研究專案</span></a>
   </section>
   <section id="garden" class="udc-wrap udc-section udc-reading-column" aria-labelledby="udc-log-title">
-    <div class="udc-section-heading"><h2 id="udc-log-title">UD’s Log</h2><a href="/post/"><span class="udc-en">All posts</span><span class="udc-zh">全部文章</span></a></div>
+    <div class="udc-section-heading"><h2 id="udc-log-title" class="udc-script-title">UD’s Log</h2><a href="/post/"><span class="udc-en">All posts</span><span class="udc-zh">全部文章</span></a></div>
     <ul class="udc-post-list">
       {{ $posts := where site.RegularPages "Section" "post" }}
       {{ range first 4 $posts.ByDate.Reverse }}

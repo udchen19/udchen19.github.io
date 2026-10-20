@@ -18,3 +18,11 @@ Noto Serif TC 600–700
 
 Barlow Condensed — Jeremy Tribby: https://github.com/jpt/barlow
 Display type: 600/700/800 upright, 700/800 italic. Self-hosted Google Fonts subsets in display.css; SIL OFL included.
+
+Lobster Two — Pablo Impallari: https://github.com/impallari/The-Lobster-Font
+Log heading only: 700 italic, self-hosted Latin subset in accent.css; SIL OFL included.
+Noto Sans TC 900 — a Google Fonts text subset for the Chinese name and homepage
+section headings, exposed as "UDC Display TC" to keep the body type independent.
+Both accent families were downloaded from the official Google Fonts CSS API on
+2026-10-19. Font binaries are unmodified; the Noto Sans TC license already included
+in this directory also applies to its display subset.

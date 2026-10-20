@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/fonts/fonts.css">
 <link rel="stylesheet" href="/fonts/display.css">
+<link rel="stylesheet" href="/fonts/accent.css">
 {{ $early := resources.Get "js/udc-preferences.js" | minify | fingerprint }}
 <script src="{{ $early.RelPermalink }}" integrity="{{ $early.Data.Integrity }}"></script>

@@ -24,7 +24,7 @@
   --udc-soft: #292a2b;
 }
 html { scroll-behavior: smooth; scrollbar-gutter: stable; }
-body.page-wrapper { background: var(--udc-paper); color: var(--udc-ink); font-family: var(--udc-body); font-size: 18px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+body.page-wrapper { background: var(--udc-paper) url("/textures/paper-grain.svg") 0 0 / 384px 384px; color: var(--udc-ink); font-family: var(--udc-body); font-size: 18px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
 body, button, input, textarea { font-family: var(--udc-body); }
 a { color: var(--udc-link); text-underline-offset: .2em; text-decoration-thickness: 1px; }
 a:hover { text-decoration: underline; }
@@ -38,7 +38,7 @@ html[data-udc-ui-lang="zh"] p.udc-zh { display: block !important; }
 p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-wrap { width: min(1040px, calc(100% - 64px)); margin-inline: auto; }
 .udc-reading-column { max-width: 720px; }
-.udc-header { background: var(--udc-paper); border-bottom: 1px solid var(--udc-line); }
+.udc-header { background: var(--udc-paper) url("/textures/paper-grain.svg") 0 0 / 384px 384px; border-bottom: 1px solid var(--udc-line); }
 .udc-nav { display: flex; align-items: center; gap: 28px; min-height: 76px; }
 .udc-brand { flex-shrink: 0; color: var(--udc-heading); font-family: var(--udc-display); font-size: 26px; font-weight: 700; font-style: italic; letter-spacing: -.025em; }
 .udc-navigation { display: flex; align-items: center; gap: 23px; margin: 0 0 0 auto; padding: 0; list-style: none; font-size: 16px; }
@@ -262,11 +262,23 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
   .udc-affiliation { font-size: 16px; line-height: 1.6; }
 }
 
-/* Print treatment is confined to the large name and hero background. */
+/* Worn ink on the identity; paper grain stays behind the live text. */
 .udc-filter-defs { position: absolute; overflow: hidden; pointer-events: none; }
 .udc-name { filter: url(#udc-worn-ink); -webkit-text-stroke: .7px #fff0d5; paint-order: stroke fill; }
 .udc-name .udc-initial { -webkit-text-stroke: 1.4px #fff0d5; }
+.udc-name-zh { font-family: "UDC Display TC", "Noto Sans TC", sans-serif; font-weight: 900; font-size: 29px; letter-spacing: .08em; transform: skewX(-12deg); transform-origin: left bottom; filter: url(#udc-worn-ink); }
+.udc-section h2:not(.udc-script-title) { font-weight: 800; font-style: italic; }
+.udc-section h2 .udc-zh { font-family: "UDC Display TC", "Noto Sans TC", sans-serif; font-weight: 900; font-style: normal; }
+html[data-udc-ui-lang="zh"] .udc-section h2:not(.udc-script-title) { font-size: 30px; transform: skewX(-10deg); transform-origin: left bottom; }
+.udc-section h2.udc-script-title, .udc-archive h1.udc-script-title { font-family: "Lobster Two", cursive; font-weight: 700; font-style: italic; font-size: 44px; line-height: 1.3; letter-spacing: 0; color: var(--udc-heading); -webkit-text-stroke: 1.5px var(--udc-paper); paint-order: stroke fill; text-shadow: 1.5px 1.5px 0 var(--udc-orange); }
+@media (max-width: 560px) {
+  .udc-name-zh { font-size: 27px; }
+  html[data-udc-ui-lang="zh"] .udc-section h2:not(.udc-script-title) { font-size: 28px; }
+  .udc-section h2.udc-script-title, .udc-archive h1.udc-script-title { font-size: 40px; }
+}
 @media print, (forced-colors: active) {
-  .udc-name { filter: none; }
+  body.page-wrapper, .udc-header, .udc-hero, .udc-hero-grid::before { background-image: none; }
+  .udc-name, .udc-name-zh { filter: none; }
   .udc-name, .udc-name .udc-initial { -webkit-text-stroke: 0; }
+  .udc-section h2.udc-script-title, .udc-archive h1.udc-script-title { -webkit-text-stroke: 0; text-shadow: none; }
 }
