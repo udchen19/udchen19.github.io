@@ -1,0 +1,8 @@
+@font-face {
+  font-family: 'UDC Display TC';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(/fonts/accent-4aa50d6a4caeeadb.woff2) format('woff2');
+  unicode-range: U+4f5c, U+5a01, U+5be6, U+6cc1, U+7814, U+7a76, U+7cbe, U+8207, U+8fd1, U+9054, U+9078, U+9673;
+}

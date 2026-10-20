@@ -1,6 +1,6 @@
 <header id="site-header" class="udc-header">
-  <nav class="udc-nav udc-wrap" aria-label="Main navigation" data-udc-ui>
-    <a class="udc-brand" href="/">Uei-Dar Chen</a>
+  <nav class="udc-nav udc-wrap{{ if .IsHome }} udc-nav-home{{ end }}" aria-label="Main navigation" data-udc-ui>
+    <a class="udc-brand" href="/"{{ if .IsHome }} aria-label="Uei-Dar Chen home"{{ end }}>{{ if .IsHome }}UDC<span class="udc-brand-dot">.</span>{{ else }}Uei-Dar Chen{{ end }}</a>
     <ul id="udc-navigation" class="udc-navigation">
       {{ $current := . }}
       {{ range site.Menus.main }}

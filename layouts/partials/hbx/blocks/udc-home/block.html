@@ -1,44 +1,41 @@
 {{ $author := site.GetPage "/authors/admin" }}
 {{ $avatar := $author.Resources.GetMatch "avatar*" }}
-{{ if $avatar }}{{ $avatar = $avatar.Fill "560x620 Center webp" }}{{ end }}
+{{ if $avatar }}{{ $avatar = $avatar.Resize "480x webp q88" }}{{ end }}
 {{ $copy := site.Data.udc }}
 <div class="udc-site" data-udc-home>
-  <section class="udc-hero" aria-labelledby="udc-hero-title">
-    <div class="udc-wrap udc-hero-grid">
-      <div class="udc-identity">
-        <h1 id="udc-hero-title"><span class="udc-name"><span class="udc-name-en">Uei-Dar Chen</span><span class="udc-name-zh" lang="zh-Hant">陳威達</span></span></h1>
+  <section class="udc-wrap udc-intro" aria-labelledby="udc-hero-title">
+    <aside class="udc-identity">
+      {{ with $avatar }}<img class="udc-portrait" src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="Uei-Dar Chen" fetchpriority="high">{{ end }}
+      <nav class="udc-profile-links" aria-label="Contact and profiles">
+        {{ range first 4 $author.Params.profiles }}
+        {{ $label := .label | default (cond (in .url "scholar.google") "Google Scholar" "GitHub") }}
+        <a href="{{ .url }}" aria-label="{{ $label }}" title="{{ $label }}">{{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</a>
+        {{ end }}
+      </nav>
+      <div id="news" class="udc-news" aria-labelledby="udc-news-title">
+        <h2 id="udc-news-title"><span class="udc-en">News</span><span class="udc-zh">近況</span></h2>
+        <ol class="udc-news-list">
+        {{ range $copy.news }}
+          <li><time datetime="{{ .date }}"><span class="udc-en">{{ .label }}</span><span class="udc-zh">{{ .label_zh }}</span></time><p><span class="udc-en" lang="en">{{ .en | markdownify }}</span><span class="udc-zh" lang="zh-Hant">{{ .zh | markdownify }}</span></p></li>
+        {{ end }}
+        </ol>
+      </div>
+    </aside>
+    <div class="udc-bio">
+      <header>
+        <h1 id="udc-hero-title" class="udc-name"><span class="udc-name-en">Uei-Dar Chen</span><span class="udc-name-zh" lang="zh-Hant">陳威達</span></h1>
         <p class="udc-tagline" lang="en"><span class="udc-initial">U</span>sually <span class="udc-initial">D</span>epends on <span class="udc-initial">C</span>ontext</p>
-      </div>
-      {{ with $avatar }}<img class="udc-portrait" src="{{ .RelPermalink }}" width="560" height="620" alt="Uei-Dar Chen" fetchpriority="high">{{ end }}
-      <div class="udc-hero-details">
         <p class="udc-affiliation"><span class="udc-en" lang="en">{{ $copy.bio.affiliation.en }}</span><span class="udc-zh" lang="zh-Hant">{{ $copy.bio.affiliation.zh }}</span></p>
-      </div>
-        <nav class="udc-profile-links" aria-label="Contact and profiles">
-          {{ range first 4 $author.Params.profiles }}
-          {{ $label := .label | default (cond (in .url "scholar.google") "Google Scholar" "GitHub") }}
-          <a href="{{ .url }}" aria-label="{{ $label }}" title="{{ $label }}">{{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</a>
-          {{ end }}
-        </nav>
-    </div>
-  </section>
-  <section class="udc-wrap udc-editorial udc-intro" aria-labelledby="udc-intro-title">
-    <h2 id="udc-intro-title" class="udc-margin-title"><span class="udc-en">Research interests</span><span class="udc-zh">研究興趣</span></h2>
-    <div class="udc-intro-copy">
-    {{ range $copy.bio.paragraphs }}
-    <p class="udc-en" lang="en">{{ .en | markdownify }}</p>
-    <p class="udc-zh" lang="zh-Hant">{{ .zh | markdownify }}</p>
-    {{ end }}
-    </div>
-  </section>
-  <section id="news" class="udc-wrap udc-section udc-editorial" aria-labelledby="udc-news-title">
-    <h2 id="udc-news-title"><span class="udc-en">News</span><span class="udc-zh">近況</span></h2>
-    <ol class="udc-news-list">
-      {{ range $copy.news }}
-      <li><time datetime="{{ .date }}"><span class="udc-en">{{ .label }}</span><span class="udc-zh">{{ .label_zh }}</span></time><p><span class="udc-en" lang="en">{{ .en | markdownify }}</span><span class="udc-zh" lang="zh-Hant">{{ .zh | markdownify }}</span></p></li>
+      </header>
+      <div class="udc-intro-copy">
+      {{ range $copy.bio.paragraphs }}
+        <p class="udc-en" lang="en">{{ .en | markdownify }}</p>
+        <p class="udc-zh" lang="zh-Hant">{{ .zh | markdownify }}</p>
       {{ end }}
-    </ol>
+      </div>
+    </div>
   </section>
-  <section id="research" class="udc-wrap udc-section udc-editorial" aria-labelledby="udc-work-title">
+  <section id="research" class="udc-wrap udc-section udc-home-work" aria-labelledby="udc-work-title">
     <div class="udc-section-heading">
       <h2 id="udc-work-title"><span class="udc-en">Selected work</span><span class="udc-zh">精選研究與實作</span></h2>
       <a href="/publication/"><span class="udc-en">All publications</span><span class="udc-zh">全部出版品</span></a>
@@ -55,7 +52,7 @@
     </div>
     <a class="udc-all-projects" href="/projects/"><span class="udc-en">All research projects</span><span class="udc-zh">全部研究專案</span> <span aria-hidden="true">↗</span></a>
   </section>
-  <section id="garden" class="udc-wrap udc-section udc-editorial" aria-labelledby="udc-log-title">
+  <section id="garden" class="udc-wrap udc-section udc-home-log" aria-labelledby="udc-log-title">
     <div class="udc-section-heading"><h2 id="udc-log-title">UD’s Log</h2><a href="/post/"><span class="udc-en">All posts</span><span class="udc-zh">全部文章</span></a></div>
     <ul class="udc-post-list">
       {{ $posts := where site.RegularPages "Section" "post" }}

@@ -3,3 +3,6 @@
 <link rel="stylesheet" href="{{ $type.RelPermalink }}" integrity="{{ $type.Data.Integrity }}">
 {{ $early := resources.Get "js/udc-preferences.js" | minify | fingerprint }}
 <script src="{{ $early.RelPermalink }}" integrity="{{ $early.Data.Integrity }}"></script>
+
+{{ $accent := resources.Get "css/udc-accent.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $accent.RelPermalink }}" integrity="{{ $accent.Data.Integrity }}">

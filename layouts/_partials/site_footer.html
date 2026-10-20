@@ -1,4 +1,5 @@
-<footer class="udc-footer">
+<footer class="udc-footer{{ if .IsHome }} udc-footer-home{{ end }}">
+  {{ if .IsHome }}<div class="udc-flag-impression" aria-hidden="true"></div><div class="udc-stadium" aria-hidden="true"><div class="udc-stadium-ink"></div></div>{{ end }}
   <div class="udc-wrap">
     <nav class="udc-footer-links" aria-label="More ways to connect">
       <a href="mailto:ueidarc2@illinois.edu" aria-label="Email" title="ueidarc2@illinois.edu">{{ partial "functions/get_icon" (dict "name" "at-symbol" "attributes" "aria-hidden=\"true\"") }}</a>
@@ -8,6 +9,6 @@
     </nav>
     <div class="udc-footer-fineprint"><p class="udc-footer-credit">© {{ now.Year }} Uei-Dar Chen
       {{ with resources.Get "media/ryan-head.png" }}{{ $head := .Fit "96x96 webp" }}<img class="udc-footer-mascot" src="{{ $head.RelPermalink }}" width="{{ $head.Width }}" height="{{ $head.Height }}" loading="lazy" alt="" aria-hidden="true">{{ end }}
-      <span>· <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a></span></p><p>Made with <a href="https://hugoblox.com/">Hugo Blox</a></p></div>
+      <span>· <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a></span></p><p>{{ if .IsHome }}<a href="/design-credits/" class="udc-image-credit">Image credits</a> · {{ end }}Made with <a href="https://hugoblox.com/">Hugo Blox</a></p></div>
   </div>
 </footer>
