@@ -1,7 +1,0 @@
-<div class="udc-wrap udc-reading-column udc-archive udc-projects">
-  <h1>{{ .wcBlock.content.title }}</h1>
-  {{ with .wcBlock.content.text }}<div class="udc-projects-intro">{{ . | markdownify }}</div>{{ end }}
-  {{ range (where site.RegularPages "Section" "project").ByDate.Reverse }}
-    {{ partial "views/date-title-summary.html" (dict "item" .) }}
-  {{ end }}
-</div>

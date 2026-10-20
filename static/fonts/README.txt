@@ -15,3 +15,6 @@ Archivo 600–800
 Source Sans 3 400–700 (normal and italic)
 Noto Sans TC 400–700
 Noto Serif TC 600–700
+
+Barlow Condensed — Jeremy Tribby: https://github.com/jpt/barlow
+Display type: 600/700/800 upright, 700/800 italic. Self-hosted Google Fonts subsets in display.css; SIL OFL included.

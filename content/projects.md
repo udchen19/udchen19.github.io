@@ -9,14 +9,18 @@ design:
 
 # Page sections
 sections:
-  - block: udc-projects
+  - block: collection
     content:
-      title: Research Projects
+      title: '# Research Projects'
+      count: 0
       text: Studies and systems for understanding how personal agents can support information, attention, and action across everyday contexts.
       filters:
         folders:
           - project
     design:
+      css_class: udc-projects-collection
+      spacing:
+        padding: ['50px', '0', '20px', '0']
       view: date-title-summary
       columns: 1
       show_date: false

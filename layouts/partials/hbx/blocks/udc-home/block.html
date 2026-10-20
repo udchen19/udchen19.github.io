@@ -12,13 +12,13 @@
       {{ with $avatar }}<img class="udc-portrait" src="{{ .RelPermalink }}" width="560" height="560" alt="Uei-Dar Chen" fetchpriority="high">{{ end }}
       <div class="udc-hero-details">
         <p class="udc-affiliation"><span class="udc-en" lang="en">{{ $copy.bio.affiliation.en }}</span><span class="udc-zh" lang="zh-Hant">{{ $copy.bio.affiliation.zh }}</span></p>
-        <nav class="udc-profile-links" aria-label="Contact and profiles">
-          <a href="mailto:ueidarc2@illinois.edu">Email</a>
-          <a href="/uploads/uei-dar-chen-cv.pdf"><span class="udc-en">CV</span><span class="udc-zh">履歷</span></a>
-          <a href="https://scholar.google.com/citations?user=8PeTv_8AAAAJ">Google Scholar</a>
-          <a href="https://github.com/udchen19">GitHub</a>
-        </nav>
       </div>
+        <nav class="udc-profile-links" aria-label="Contact and profiles">
+          {{ range first 4 $author.Params.profiles }}
+          {{ $label := .label | default (cond (in .url "scholar.google") "Google Scholar" "GitHub") }}
+          <a href="{{ .url }}" aria-label="{{ $label }}" title="{{ $label }}">{{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</a>
+          {{ end }}
+        </nav>
     </div>
   </section>
   <div class="udc-wrap udc-reading-column udc-intro">
@@ -46,7 +46,7 @@
         <p class="udc-work-meta"><span class="udc-en">{{ .meta }}</span><span class="udc-zh">{{ .meta_zh | default .meta }}</span></p>
         <h3><a href="{{ .page }}">{{ .title }}</a></h3>
         <p class="udc-work-description"><span class="udc-en" lang="en">{{ .en }}</span><span class="udc-zh" lang="zh-Hant">{{ .zh }}</span></p>
-        <div class="udc-work-links">{{ range .links }}<a href="{{ .url }}"><span class="udc-en">{{ .en }}</span><span class="udc-zh">{{ .zh }}</span></a>{{ end }}</div>
+        <div class="udc-work-links">{{ range .links }}{{ $icon := "arrow-up-right" }}{{ if eq .en "Paper" }}{{ $icon = "document-text" }}{{ else if eq .en "Code" }}{{ $icon = "brands/github" }}{{ end }}<a href="{{ .url }}">{{ partial "functions/get_icon" (dict "name" $icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}<span class="udc-en">{{ .en }}</span><span class="udc-zh">{{ .zh }}</span></a>{{ end }}</div>
       </article>
       {{ end }}
     </div>
