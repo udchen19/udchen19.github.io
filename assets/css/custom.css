@@ -45,6 +45,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-nav-controls { display: flex; align-items: center; gap: 1px; }
 .udc-nav-controls button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 0; color: var(--udc-ink); padding: 8px; font-size: 14px; font-weight: 600; }
 .udc-nav-controls button:hover { background: var(--udc-soft); }
+.udc-nav-controls .udc-language-toggle { white-space: nowrap; padding-inline: 6px; }
 .udc-icon-sun, .dark .udc-icon-moon { display: none; }
 .dark .udc-icon-sun { display: block; }
 .udc-nav-controls .udc-menu-toggle { display: none; }
@@ -68,6 +69,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-intro p:last-child, .udc-intro p:nth-last-child(2) { margin-bottom: 0; }
 .udc-intro strong { font-weight: 650; }
 .udc-section { padding: 38px 0 44px; border-top: 1px solid var(--udc-line); }
+.udc-section, .page-body :where(h2, h3, h4)[id] { scroll-margin-top: 90px; }
 .udc-section h2, .udc-about h1, .udc-about h2 { font-family: var(--udc-display); font-weight: 700; color: var(--udc-ink); font-size: 30px; line-height: 1.25; letter-spacing: -.025em; margin: 0 0 26px; }
 .udc-section h2:has(.udc-zh), html[data-udc-ui-lang="zh"] .udc-section h2 { line-height: 1.45; }
 .udc-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
