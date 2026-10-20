@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="8" height="12" viewBox="0 0 8 12">
+  <!-- Fine, staggered mesh apertures rather than a decorative knit pattern. -->
+  <g fill="#fff0d5" opacity=".025">
+    <ellipse cx="2" cy="2.6" rx=".8" ry="1.2"/>
+    <ellipse cx="6" cy="8.6" rx=".8" ry="1.2"/>
+  </g>
+  <g fill="#041b31" opacity=".14">
+    <ellipse cx="2" cy="2" rx=".65" ry="1"/>
+    <ellipse cx="6" cy="8" rx=".65" ry="1"/>
+  </g>
+</svg>

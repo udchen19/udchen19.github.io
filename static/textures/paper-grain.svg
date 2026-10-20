@@ -11,6 +11,6 @@
       <feComponentTransfer><feFuncA type="linear" slope="6" intercept="-3.4"/></feComponentTransfer>
     </filter>
   </defs>
-  <g opacity=".05"><path d="M0 0h384v384H0z" fill="#fff" filter="url(#fiber)"/></g>
-  <g opacity=".055"><path d="M0 0h384v384H0z" fill="#fff" filter="url(#flecks)"/></g>
+  <g opacity=".03"><path d="M0 0h384v384H0z" fill="#fff" filter="url(#fiber)"/></g>
+  <g opacity=".03"><path d="M0 0h384v384H0z" fill="#fff" filter="url(#flecks)"/></g>
 </svg>
