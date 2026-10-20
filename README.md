@@ -10,7 +10,7 @@ Research lists use Hugo Blox’s Collection block; icons use its built-in icon r
 
 The homepage uses warm paper, orange type and rules, and green details. Fraunces and Chiron Sung HK form a shared English/Traditional Chinese type system across navigation, headings, and body text, including existing articles. The full introduction, news, selected work, and posts share an editorial margin. See `static/fonts/README.txt` for sources and licenses. Light and dark paper textures live in `static/textures/field-paper*.svg`. They combine pulp variation, grain, and fibers. Display headings use `ink-density.svg` and a luminance mask (`ink-wear.svg`) for mottled ink and small irregular gaps; body text and controls remain solid. Print, forced-colors, and increased-contrast preferences disable these effects. The small footer mascot is built from `assets/media/ryan-head.png` into a 96px WebP, displayed at 28px.
 
-The homepage ends with a full-width stadium halftone that fades into the paper at both edges, with a small orange impression of the original 外野那群人 flag in the upper margin. Both are decorative and hidden from assistive technology. Sources are listed on `/design-credits/`.
+A stadium halftone sits behind the homepage’s log and footer without adding page height. Its orange 外野那群人 flag shares the photograph’s coordinates, with the pole planted in the outfield stands; mobile crops the same composition rather than moving the flag independently. Both are decorative and hidden from assistive technology. Sources are listed on `/design-credits/`.
 
 ## Local development
 
