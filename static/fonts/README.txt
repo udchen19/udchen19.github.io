@@ -1,6 +1,27 @@
 Self-hosted fonts for udchen.tw
 
-Active display fonts (2026-10-20)
+Active type system (2026-10-20)
+------------------------------
+Fraunces — Undercase Type / Phaedra Charles and Flavia Zimbardi
+https://fraunces.undercase.xyz/
+https://github.com/google/fonts/tree/main/ofl/fraunces
+Roman and italic, weight 400–750 with optical sizing 9–144.
+Files: fraunces-*.woff2. License: OFL-fraunces.txt.
+
+Chiron Sung HK (昭源宋體) — Tamcy
+https://github.com/chiron-fonts/chiron-sung-hk
+https://github.com/google/fonts/tree/main/ofl/chironsunghk
+Traditional Chinese reading and display type, weight 400–700.
+Files: chiron-sung-*.woff2. License: OFL-chironsunghk.txt.
+
+Retrieved from the official Google Fonts CSS API on 2026-10-20.
+The supplied unicode subsets were losslessly converted to WOFF2 with
+fontTools; outlines, naming and variable axes were not altered.
+assets/css/udc-type.css retains the distributed unicode ranges so browsers
+request only the subsets needed on each page. Fonts are served locally.
+The same families cover navigation, headings and body text throughout the site.
+
+Previous display fonts (retained, no longer loaded)
 --------------------------------
 Anybody — Tyler Finck / Etcetera Type Company
 https://github.com/Etcetera-Type-Co/Anybody
@@ -16,12 +37,12 @@ Based on Artakana's Dela Gothic One; see MantouSans-OFL.txt.
 Subsetting and WOFF2 conversion use fontTools. The modified font name is
 "UDC Field TC", respecting the original font's reserved names.
 Included text: 陳威達近況精選研究與實作關於文章履歷興趣出版品
-Other Chinese text falls back to Noto Sans TC.
-These display faces are declared in assets/css/udc-type.css.
+This earlier display system used Noto Sans TC as its fallback.
+These display faces are no longer declared in the active stylesheet.
 
 Reading fonts and earlier display assets
 ---------------------------------------
-Source Sans 3 and Noto Sans TC remain active for reading.
+Source Sans 3 and Noto Sans TC are retained but no longer loaded.
 Earlier display files below are retained but display.css/accent.css are
 no longer loaded by the site.
 
