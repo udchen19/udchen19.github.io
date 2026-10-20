@@ -6,6 +6,8 @@
       <a href="https://m.me/dchencgps" aria-label="Messenger" title="Messenger">{{ partial "functions/get_icon" (dict "name" "brands/facebook" "attributes" "aria-hidden=\"true\"") }}</a>
       <a href="https://www.strava.com/athletes/97007229" aria-label="Strava" title="Strava">{{ partial "functions/get_icon" (dict "name" "brands/strava" "attributes" "aria-hidden=\"true\"") }}</a>
     </nav>
-    <div class="udc-footer-fineprint"><p>© {{ now.Year }} Uei-Dar Chen · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a></p><p>Made with <a href="https://hugoblox.com/">Hugo Blox</a></p></div>
+    <div class="udc-footer-fineprint"><p class="udc-footer-credit">© {{ now.Year }} Uei-Dar Chen
+      {{ with resources.Get "media/ryan-head.png" }}{{ $head := .Fit "96x96 webp" }}<img class="udc-footer-mascot" src="{{ $head.RelPermalink }}" width="{{ $head.Width }}" height="{{ $head.Height }}" loading="lazy" alt="" aria-hidden="true">{{ end }}
+      <span>· <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a></span></p><p>Made with <a href="https://hugoblox.com/">Hugo Blox</a></p></div>
   </div>
 </footer>

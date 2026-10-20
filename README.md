@@ -8,6 +8,8 @@ The approved English/Traditional Chinese introduction, news and selected work li
 
 Research lists use Hugo Blox’s Collection block; icons use its built-in icon renderer and profile data. Visual styles and preference controls live under `assets/`. Fonts are self-hosted under `static/fonts/`, with their source information and licenses included. New visitors follow their system color scheme and browser language; manual choices are remembered locally.
 
+The homepage uses an orange masthead and a shared editorial margin for the full introduction, news, selected work, and posts. Anybody is the Latin display family; a renamed, limited Mantou Sans subset supplies the Chinese name and short section headings. Source Sans 3 and Noto Sans TC remain the reading fonts. See `static/fonts/README.txt` for sources and licenses. Light and dark paper textures live in `static/textures/field-paper*.svg`. The small footer mascot is built from `assets/media/ryan-head.png` into a 96px WebP, displayed at 28px.
+
 ## Local development
 
 ```bash

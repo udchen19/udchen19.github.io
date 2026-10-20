@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="/fonts/fonts.css">
-<link rel="stylesheet" href="/fonts/display.css">
-<link rel="stylesheet" href="/fonts/accent.css">
+{{ $type := resources.Get "css/udc-type.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $type.RelPermalink }}" integrity="{{ $type.Data.Integrity }}">
 {{ $early := resources.Get "js/udc-preferences.js" | minify | fingerprint }}
 <script src="{{ $early.RelPermalink }}" integrity="{{ $early.Data.Integrity }}"></script>

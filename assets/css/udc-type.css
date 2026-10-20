@@ -1,0 +1,26 @@
+/* OFL fonts, self-hosted. Provenance and licenses are in static/fonts/. */
+@font-face {
+  font-family: "Anybody";
+  src: url("/fonts/anybody-roman.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anybody";
+  src: url("/fonts/anybody-italic.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
+  font-display: swap;
+}
+/* A renamed subset of Mantou Sans, for the name and interface headings only. */
+@font-face {
+  font-family: "UDC Field TC";
+  src: url("/fonts/udc-field-tc.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  unicode-range: U+4f5c,U+5a01,U+5be6,U+6cc1,U+7814,U+7a76,U+7cbe,U+8207,U+8fd1,U+9054,U+9078,U+9673,U+95dc,U+65bc,U+6587,U+7ae0,U+5c65,U+6b77,U+8208,U+8da3,U+51fa,U+7248,U+54c1;
+}
