@@ -1,14 +1,14 @@
 bio:
   affiliation:
-    en: I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign, advised by Yang Wang.
-    zh: 我目前就讀伊利諾大學香檳分校電腦科學碩士班，由 Yang Wang 教授指導。
+    en: I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign, advised by [Prof. Yang Wang](https://yangwang.ischool.illinois.edu/).
+    zh: 我目前就讀伊利諾大學香檳分校電腦科學碩士班，由[汪洋教授](https://yangwang.ischool.illinois.edu/)指導。
   paragraphs:
     - en: My primary research interest is **personal AI agents**—how they can integrate, interpret, and safeguard information across devices and services while adapting to individual needs and preferences.
       zh: 我的主要研究興趣是 **personal AI agents**：它們如何整合、理解並保護散落在不同裝置與服務中的資訊，同時適應每個人的需求與偏好。
     - en: I’m currently exploring **contextual privacy in human–agent and agent–agent interactions within multi-agent AI systems**.
       zh: 目前，我正在探索 **multi-agent AI systems 中，人與代理、以及代理彼此互動時的 contextual privacy（情境隱私）**。
-    - en: Previously, I worked with Yung-Ju Chang at AIMEX Lab, National Yang Ming Chiao Tung University, on **intelligent smartphone notification systems**. My research explored how these systems could help people make sense of incoming information and support their everyday needs. This involved understanding what makes notification summaries useful and personally appropriate, and how agents can learn and adapt to individual preferences through feedback. I also studied how people envision future notification systems taking a more proactive, context-aware role beyond delivering messages.
-      zh: 過去，我在陽明交大 AIMEX Lab 與張永儒教授合作，研究**智慧型手機通知系統**如何幫助人們理解收到的資訊，並支持日常需求。這些研究包含：什麼樣的通知摘要對使用者有用、符合個人需求，以及助理如何透過回饋學習並適應不同人的偏好。我也研究人們如何想像未來的通知系統，期待它們在傳遞訊息之外，扮演更主動、能理解情境的角色。
+    - en: Previously, I worked with [Prof. Yung-Ju Chang](https://www.armuro.info/) at AIMEX Lab, National Yang Ming Chiao Tung University, on **intelligent smartphone notification systems**. My research explored how these systems could help people make sense of incoming information and support their everyday needs. This involved understanding what makes notification summaries useful and personally appropriate, and how agents can learn and adapt to individual preferences through feedback. I also studied how people envision future notification systems taking a more proactive, context-aware role beyond delivering messages.
+      zh: 過去，我在陽明交大 AIMEX Lab 與[張永儒教授](https://www.armuro.info/)合作，研究**智慧型手機通知系統**如何幫助人們理解收到的資訊，並支持日常需求。這些研究包含：什麼樣的通知摘要對使用者有用、符合個人需求，以及助理如何透過回饋學習並適應不同人的偏好。我也研究人們如何想像未來的通知系統，期待它們在傳遞訊息之外，扮演更主動、能理解情境的角色。
     - en: Across this work, I combined interviews and qualitative analysis with hands-on system building, developing Android prototypes to explore how these ideas could work in everyday use.
       zh: 在這些工作中，我結合訪談、質性分析與系統實作，開發 Android 原型，探索這些想法在日常使用中如何運作。
 

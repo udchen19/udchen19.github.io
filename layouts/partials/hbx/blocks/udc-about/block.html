@@ -3,7 +3,7 @@
 <div class="udc-wrap udc-reading-column udc-about" lang="en">
   <h1>About</h1>
   <div class="udc-about-bio">
-    <p>{{ $bio.affiliation.en }}</p>
+    <p>{{ $bio.affiliation.en | markdownify }}</p>
     {{ range $bio.paragraphs }}<p>{{ .en | markdownify }}</p>{{ end }}
   </div>
   <section aria-labelledby="education-title">

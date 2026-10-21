@@ -27,7 +27,7 @@
       <header>
         <h1 id="udc-hero-title" class="udc-name"><span class="udc-name-en">Uei-Dar Chen</span><span class="udc-name-zh" lang="zh-Hant">陳威達</span></h1>
         <p class="udc-tagline" lang="en"><span class="udc-initial">U</span>sually <span class="udc-initial">D</span>epends on <span class="udc-initial">C</span>ontext</p>
-        <p class="udc-affiliation"><span class="udc-en" lang="en">{{ $copy.bio.affiliation.en }}</span><span class="udc-zh" lang="zh-Hant">{{ $copy.bio.affiliation.zh }}</span></p>
+        <p class="udc-affiliation"><span class="udc-en" lang="en">{{ $copy.bio.affiliation.en | markdownify }}</span><span class="udc-zh" lang="zh-Hant">{{ $copy.bio.affiliation.zh | markdownify }}</span></p>
       </header>
       <div class="udc-intro-copy">
       {{ range $copy.bio.paragraphs }}
@@ -59,7 +59,7 @@
     <ul class="udc-post-list">
       {{ $posts := where site.RegularPages "Section" "post" }}
       {{ range first 4 $posts.ByDate.Reverse }}
-      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006.01.02" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format site.Params.locale.date_format }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
       {{ end }}
     </ul>
   </section>

@@ -4,7 +4,9 @@
     <ul id="udc-navigation" class="udc-navigation">
       {{ $current := . }}
       {{ range site.Menus.main }}
-      <li><a href="{{ .URL }}" data-udc-nav="{{ .Identifier }}"{{ if eq $current.RelPermalink .URL }} aria-current="page"{{ end }}>{{ .Name }}</a></li>
+      {{ $exact := eq $current.RelPermalink .URL }}
+      {{ $section := or (and (eq .Identifier "research") (or (eq $current.Section "project") (eq $current.RelPermalink "/projects/"))) (and (eq .Identifier "publications") (eq $current.Section "publication")) (and (eq .Identifier "garden") (eq $current.Section "post")) }}
+      <li><a href="{{ .URL }}" data-udc-nav="{{ .Identifier }}"{{ if $exact }} aria-current="page"{{ else if $section }} aria-current="location"{{ end }}>{{ .Name }}</a></li>
       {{ end }}
     </ul>
     <div class="udc-nav-controls">

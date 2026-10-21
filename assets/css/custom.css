@@ -47,7 +47,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-brand { flex-shrink: 0; color: var(--udc-ink); font-family: var(--udc-display); font-size: 20px; font-weight: 650; letter-spacing: -.035em; }
 .udc-navigation { display: flex; align-items: center; gap: 24px; margin: 0 0 0 auto; padding: 0; list-style: none; font-size: 16px; }
 .udc-navigation a { color: var(--udc-ink); white-space: nowrap; }
-.udc-navigation [aria-current="page"] { color: var(--udc-link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
+.udc-navigation [aria-current] { color: var(--udc-link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; }
 .udc-nav-controls { display: flex; align-items: center; gap: 1px; }
 .udc-nav-controls button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 0; color: var(--udc-ink); padding: 8px; font-size: 14px; font-weight: 600; }
 .udc-nav-controls svg { width: 20px; height: 20px; }
@@ -58,7 +58,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-nav-controls .udc-menu-toggle { display: none; }
 
 .udc-footer { position: relative; margin-top: 32px; padding: 30px 0 26px; font-size: 15px; }
-.udc-footer > .udc-wrap { border-top: 3px solid var(--udc-orange); padding-top: 22px; }
+.udc-footer > .udc-wrap { border-top: 1px solid var(--udc-orange); padding-top: 22px; }
 .udc-footer-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
 .udc-footer-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); }
 .udc-footer-links a:hover { color: var(--udc-link); }
@@ -68,10 +68,11 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-footer-fineprint a { color: inherit; }
 .udc-footer-credit { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .udc-footer-mascot { display: inline-block; width: 28px; height: auto; }
-.udc-about { padding-block: 60px 20px; }
-.udc-about h1 { font-size: 46px; }
-.udc-about-bio { margin-bottom: 44px; }
+.udc-about { padding-block: 40px 20px; }
+.udc-about-bio { margin-bottom: 44px; line-height: 1.8; }
 .udc-about-bio p { margin: 0 0 20px; }
+.udc-about-bio strong { font-weight: 650; }
+.udc-bio a, .udc-about-bio a { text-decoration: underline; white-space: nowrap; }
 .udc-about section { border-top: 1px solid var(--udc-line); padding: 32px 0 26px; }
 .udc-about section h2 { font-size: 27px; margin-bottom: 24px; }
 .udc-cv-item { margin-bottom: 30px; }
@@ -116,7 +117,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .page-body .w-fit { width: min(720px, calc(100% - 48px)); min-width: 0; max-width: 720px; }
 .udc-list-item { display: grid; grid-template-columns: 108px minmax(0,1fr); gap: 20px; margin: 0 0 32px; }
 .udc-list-item.udc-list-no-date { grid-template-columns: 1fr; }
-.udc-list-item time { font-family: var(--udc-display); font-size: 17px; font-weight: 600; letter-spacing: .025em; font-variant-numeric: tabular-nums; color: var(--udc-muted); padding-top: 3px; }
+.udc-list-item time { font-size: 14px; font-weight: 400; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--udc-muted); padding-top: 5px; }
 .udc-list-item h2 { margin: 0 0 8px; font-size: 23px; line-height: 1.45; font-weight: 650; }
 .udc-list-item h2 a { color: var(--udc-ink); }
 .udc-list-item p { margin: 0; font-size: 17px; color: var(--udc-muted); line-height: 1.7; }
@@ -126,6 +127,9 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .pub-list-item .li-cite-author { color: var(--udc-muted); }
 .pub-list-item .li-cite-author .font-bold { color: var(--udc-ink); }
 .pub-list-item > .flex { margin-top: 8px; row-gap: 8px; }
+/* Match native Blox attachment actions to the homepage's icon-and-label links. */
+.page-body .hb-attachment-link { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 4px 0; margin-right: 14px; font-family: var(--udc-body); font-size: 14px; font-weight: 400; line-height: 1.5; text-transform: none; color: var(--udc-link); }
+.page-body .hb-attachment-link svg { width: 16px; height: 16px !important; flex-shrink: 0; }
 .page-body > .mx-auto.flex.max-w-screen-xl { max-width: 1040px; padding-inline: 24px; }
 .page-body .hb-sidebar-container { display: none; }
 .page-body > .mx-auto.flex.max-w-screen-xl > article { padding-right: 0; min-height: 0; }
@@ -160,7 +164,6 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
   .udc-footer-fineprint { flex-direction: column; align-items: flex-start; gap: 8px; }
   .udc-footer-credit { gap: 6px; }
   .udc-about { padding-top: 34px; }
-  .udc-about h1 { font-size: 36px; }
   .udc-language-list { display: block; }
   .page-body > .max-w-prose, .page-body .w-fit { width: calc(100% - 40px); }
   .page-body > .mx-auto.flex.max-w-screen-xl { padding-inline: 20px; }
@@ -177,16 +180,19 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
   .udc-nav-controls button { width: 40px; }
 
 }
-.udc-archive h1 { font-family: var(--udc-display); font-size: 42px; font-weight: 650; line-height: 1.3; letter-spacing: -.045em; margin: 0 0 38px; }
+.udc-about h1, .udc-archive h1, .udc-projects-collection h1 { font-family: var(--udc-display); font-size: 42px; font-weight: 650; line-height: 1.3; letter-spacing: -.045em; margin: 0 0 32px; }
 .udc-archive .udc-list-item { margin-bottom: 32px; }
 /* Keep Hugo Blox's native Collection queries and controls. */
 .udc-projects-collection > div { width: min(720px, calc(100% - 48px)); max-width: 720px; margin-inline: auto; padding-inline: 0; align-items: stretch; }
 .udc-projects-collection > div:has(h1) { margin-bottom: 36px; gap: 0; }
-.udc-projects-collection h1 { font-family: var(--udc-display); font-size: 42px; font-weight: 650; line-height: 1.2; letter-spacing: -.045em; color: var(--udc-ink); }
+.udc-projects-collection { padding-top: 40px !important; }
+.udc-projects-collection > div:has(h1) > div:has(> h1) { margin: 0; }
+.udc-projects-collection h1 { color: var(--udc-ink); }
 .udc-projects-collection .w-fit { width: 100%; margin-top: 0; }
 @media (max-width: 680px) {
   .udc-projects-collection > div { width: calc(100% - 40px); }
-  .udc-archive h1 { font-size: 34px; margin-bottom: 30px; }
+  .udc-about h1, .udc-archive h1, .udc-projects-collection h1 { font-size: 34px; margin-bottom: 28px; }
+  .udc-projects-collection { padding-top: 34px !important; }
 }
 /* Local ink loss stays on display type. Body copy and interactive controls stay solid. */
 .udc-name-en { display: inline-block; }
@@ -280,19 +286,20 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-home-log { margin-top: 42px; padding-bottom: 30px; }
 .udc-post-list { margin: 0; padding: 0; list-style: none; }
 .udc-post-list li { display: grid; grid-template-columns: 110px 1fr; gap: 20px; padding: 13px 0; border-bottom: 1px solid color-mix(in srgb,var(--udc-line),transparent 50%); }
-.udc-post-list time { font-size: 13px; color: var(--udc-muted); }
+.udc-post-list time { font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--udc-muted); }
 .udc-post-list a { color: var(--udc-ink); font-size: 15px; line-height: 1.65; }
-/* A shared photographic coordinate system keeps the flag planted in the outfield. */
+/* All three layers use this same photograph-relative coordinate system at every viewport. */
 .udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png?v=2') center/contain no-repeat; opacity: .32; }
 .dark .udc-flag-impression { opacity: .26; }
-/* Original manga ink, screened into the sky above right outfield. */
-.udc-sawamura-impression { position: absolute; pointer-events: none; left: 65%; top: 26%; width: 20%; aspect-ratio: 640/814; background: #234f87; opacity: .5; mask: url('/textures/sawamura-halftone.png') center/contain no-repeat; }
-.dark .udc-sawamura-impression { background: #87a9db; opacity: .32; }
+/* Smaller manga impression on the open right side of the infield; its lower ink fades into the grass. */
+.udc-sawamura-impression { position: absolute; pointer-events: none; left: 58%; top: 54%; width: 11%; aspect-ratio: 640/814; background: #234f87; opacity: .42; mask: url('/textures/sawamura-halftone.png') center/contain no-repeat, linear-gradient(#000 36%,rgb(0 0 0 / .85) 58%,transparent 92%); mask-composite: intersect; }
+.dark .udc-sawamura-impression { background: #87a9db; opacity: .28; }
 /* The scene sits behind the log and footer, contributing no document height. */
 .udc-site { z-index: 1; }
 .udc-footer-home { padding-top: 0; margin-top: 0; isolation: isolate; z-index: 0; }
-.udc-stadium { position: absolute; z-index: -1; bottom: 0; left: 0; width: 100%; height: clamp(360px,45vw,620px); overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent,#000 26%,#000 78%,transparent); }
-.udc-stadium-field { position: absolute; left: 50%; bottom: 0; width: max(100%,700px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(#000 78%,transparent); }
+/* Anchor to the footer's top rule so wrapped credits cannot push the scene through it. */
+.udc-stadium { position: absolute; z-index: -1; top: calc(130px - clamp(360px,45vw,620px)); left: 0; width: 100%; height: clamp(360px,45vw,620px); overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent,#000 26%,#000 78%,transparent); }
+.udc-stadium-field { position: absolute; left: 50%; bottom: 0; width: max(100%,600px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(transparent,#000 15%,#000 78%,transparent); }
 .udc-stadium-ink { position: absolute; inset: 0; background: var(--udc-green); opacity: .23; mask: url('/textures/stadium-g2-halftone.png?v=2') center/contain no-repeat; }
 .dark .udc-stadium-ink { background: var(--udc-ink); opacity: .15; }
 .udc-footer-home > .udc-wrap { position: relative; margin-top: 0; border-top-width: 1px; }
@@ -340,10 +347,9 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
   .udc-section-heading > a { font-size: 12px; }
   .udc-work-description { font-size: 16px; }
   .udc-post-list li { grid-template-columns: 1fr; gap: 4px; }
-  .udc-stadium { height: 410px; }
-  .udc-stadium-field { bottom: 50px; }
-  .udc-sawamura-impression { left: 52%; top: 18%; width: 23%; opacity: .3; }
-  .dark .udc-sawamura-impression { opacity: .23; }
+  .udc-stadium { height: 410px; top: -250px; }
+  /* Reframe the entire scene, never reposition or resize its individual layers. */
+  .udc-stadium-field { bottom: 75px; }
 }
 @media print,(forced-colors:active),(prefers-contrast:more) {
   .udc-site { background: none; }

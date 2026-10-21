@@ -2,6 +2,6 @@
 {{ $summary := $item.Params.summary | default $item.Params.description | default $item.Summary }}
 {{ $show_date := ne $item.Section "project" }}
 <article class="udc-list-item{{ if not $show_date }} udc-list-no-date{{ end }}">
-  {{ if $show_date }}<time datetime="{{ $item.Date.Format "2006-01-02" }}">{{ $item.Date.Format "Jan 2, 2006" }}</time>{{ end }}
+  {{ if $show_date }}<time datetime="{{ $item.Date.Format "2006-01-02" }}">{{ $item.Date.Format site.Params.locale.date_format }}</time>{{ end }}
   <div><h2><a href="{{ $item.RelPermalink }}">{{ $item.Title }}</a></h2>{{ with $summary }}<p>{{ . | $item.RenderString }}</p>{{ end }}</div>
 </article>
