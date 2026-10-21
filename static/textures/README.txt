@@ -31,3 +31,15 @@ flag/pole silhouette mask and 380x385+48+62 crop. Compared six treatments.
 No redrawn letters or invented stadium lines.
 See /design-credits/ for attribution. These photographs are excluded from the
 site's Creative Commons license.
+
+sawamura-halftone.png: Sawamura Eijun illustration, Yuji Terajima / Kodansha.
+Source: https://img1.gtimg.com/comic/pics/hv1/165/120/1948/126699465.jpg
+Exhibition report: https://bbs.kdays.net/read/60013 (2015-10-21).
+Original 640x814 frame retained, including its existing left glove-edge crop.
+No generative redraw, upscaling, or invented missing details. Grayscale,
+level 5%,97%, sigmoidal contrast 4x48%, then a luminance fade before h4x4a
+clustered-dot screening. The fade thins the dots across the lower 44% and
+outer left/right 7%/4%; it reaches paper at 90% of the image height.
+Threshold 50% after screening makes white fully transparent. CSS supplies
+Seido-inspired blue #234f87 and its dark-theme tint #87a9db. The illustration
+is excluded from the site's Creative Commons license.

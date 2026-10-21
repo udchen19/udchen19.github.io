@@ -285,6 +285,9 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 /* A shared photographic coordinate system keeps the flag planted in the outfield. */
 .udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png?v=2') center/contain no-repeat; opacity: .32; }
 .dark .udc-flag-impression { opacity: .26; }
+/* Original manga ink, screened into the sky above right outfield. */
+.udc-sawamura-impression { position: absolute; pointer-events: none; left: 65%; top: 26%; width: 20%; aspect-ratio: 640/814; background: #234f87; opacity: .5; mask: url('/textures/sawamura-halftone.png') center/contain no-repeat; }
+.dark .udc-sawamura-impression { background: #87a9db; opacity: .32; }
 /* The scene sits behind the log and footer, contributing no document height. */
 .udc-site { z-index: 1; }
 .udc-footer-home { padding-top: 0; margin-top: 0; isolation: isolate; z-index: 0; }
@@ -339,6 +342,8 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
   .udc-post-list li { grid-template-columns: 1fr; gap: 4px; }
   .udc-stadium { height: 410px; }
   .udc-stadium-field { bottom: 50px; }
+  .udc-sawamura-impression { left: 52%; top: 18%; width: 23%; opacity: .3; }
+  .dark .udc-sawamura-impression { opacity: .23; }
 }
 @media print,(forced-colors:active),(prefers-contrast:more) {
   .udc-site { background: none; }
