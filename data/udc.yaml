@@ -23,6 +23,11 @@ news:
     label_zh: 2026 年 8 月
     en: Started my M.S. in Computer Science at UIUC.
     zh: 開始在 UIUC 就讀電腦科學碩士。
+  - date: '2025-09-10'
+    label: Sep 2025
+    label_zh: 2025 年 9 月
+    en: 'Our [NotiSummary paper](/publication/notisummarypaper/) on notification summarization was published in PACM MHCI for MobileHCI 2025.'
+    zh: '我們探討通知摘要的 [NotiSummary 論文](/publication/notisummarypaper/) 發表於 PACM MHCI（MobileHCI 2025）。'
 
 work:
   - page: /project/notillm/

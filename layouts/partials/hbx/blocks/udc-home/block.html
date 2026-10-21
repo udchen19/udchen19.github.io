@@ -14,11 +14,13 @@
       </nav>
       <div id="news" class="udc-news" aria-labelledby="udc-news-title">
         <h2 id="udc-news-title"><span class="udc-en">News</span><span class="udc-zh">近況</span></h2>
+        <div class="udc-news-scroll" tabindex="0" role="region" aria-labelledby="udc-news-title">
         <ol class="udc-news-list">
         {{ range $copy.news }}
           <li><time datetime="{{ .date }}"><span class="udc-en">{{ .label }}</span><span class="udc-zh">{{ .label_zh }}</span></time><p><span class="udc-en" lang="en">{{ .en | markdownify }}</span><span class="udc-zh" lang="zh-Hant">{{ .zh | markdownify }}</span></p></li>
         {{ end }}
         </ol>
+        </div>
       </div>
     </aside>
     <div class="udc-bio">
