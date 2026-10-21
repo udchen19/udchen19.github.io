@@ -291,16 +291,16 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 /* All three layers use this same photograph-relative coordinate system at every viewport. */
 .udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png?v=2') center/contain no-repeat; opacity: .32; }
 .dark .udc-flag-impression { opacity: .26; }
-/* The portrait rises above right outfield, with its lower ink fading into the top of the stands. */
-.udc-sawamura-impression { position: absolute; pointer-events: none; left: 64%; top: 26%; width: 18%; aspect-ratio: 640/814; background: #234f87; opacity: .62; mask: url('/textures/sawamura-halftone.png') center/contain no-repeat, linear-gradient(#000 32%,rgb(0 0 0 / .7) 48%,transparent 68%); mask-composite: intersect; }
-.dark .udc-sawamura-impression { background: #87a9db; opacity: .4; }
+/* Fit the gap just right of the outfield tower; keep the head and 青道 above the lower fade. */
+.udc-sawamura-impression { position: absolute; pointer-events: none; left: 56%; top: 28%; width: 14%; aspect-ratio: 640/814; background: #234f87; opacity: .7; mask: url('/textures/sawamura-halftone.png?v=2') center/contain no-repeat, linear-gradient(#000 80%,transparent 100%); mask-composite: intersect; }
+.dark .udc-sawamura-impression { background: #87a9db; opacity: .5; }
 /* The scene sits behind the log and footer, contributing no document height. */
 .udc-site { z-index: 1; }
 .udc-footer-home { padding-top: 0; margin-top: 0; isolation: isolate; z-index: 0; }
 /* Anchor to the footer's top rule so wrapped credits cannot push the scene through it. */
 .udc-stadium { position: absolute; z-index: -1; top: calc(130px - clamp(360px,45vw,620px)); left: 0; width: 100%; height: clamp(360px,45vw,620px); overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent,#000 26%,#000 78%,transparent); }
 /* On wide displays, reframe the whole panorama downward to keep the sky below the research text. */
-.udc-stadium-field { position: absolute; left: 50%; bottom: min(0px,calc(504px - 35vw)); width: max(100%,500px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(transparent,#000 15%,#000 78%,transparent); }
+.udc-stadium-field { position: absolute; left: 50%; bottom: min(0px,calc(576px - 40vw)); width: max(100%,600px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(transparent,#000 15%,#000 78%,transparent); }
 .udc-stadium-ink { position: absolute; inset: 0; background: var(--udc-green); opacity: .23; mask: url('/textures/stadium-g2-halftone.png?v=2') center/contain no-repeat; }
 .dark .udc-stadium-ink { background: var(--udc-ink); opacity: .15; }
 .udc-footer-home > .udc-wrap { position: relative; margin-top: 0; border-top-width: 1px; }

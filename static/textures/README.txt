@@ -38,8 +38,11 @@ Exhibition report: https://bbs.kdays.net/read/60013 (2015-10-21).
 Original 640x814 frame retained, including its existing left glove-edge crop.
 No generative redraw, upscaling, or invented missing details. Grayscale,
 level 5%,97%, sigmoidal contrast 4x48%, then a luminance fade before h4x4a
-clustered-dot screening. The fade thins the dots across the lower 44% and
-outer left/right 7%/4%; it reaches paper at 90% of the image height.
+clustered-dot screening. The lower fade starts at 78% and reaches paper at
+96% of the image height, preserving both 青道 characters. Outer left/right
+7%/4% fades remain. A local lower-left fade removes the already cropped glove:
+it ramps over y=52–62% and x=30–42%, leaving the head and jersey intact.
+CSS adds a final fade below 80%, beneath the lettering rather than through it.
 Threshold 50% after screening makes white fully transparent. CSS supplies
 Seido-inspired blue #234f87 and its dark-theme tint #87a9db. The illustration
 is excluded from the site's Creative Commons license.
