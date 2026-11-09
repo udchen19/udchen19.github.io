@@ -33,6 +33,9 @@ flag-halftone.png: user-supplied photograph of the 外野那群人 flag; isolate
 flag and pole. Red-channel separation distinguishes black lettering from the
 orange cloth; sigmoidal contrast 12x42%, h4x4a clustered dots, then the existing
 flag/pole silhouette mask and 380x385+48+62 crop. Compared six treatments.
+flag-color.jpg: the user's original 447x447 color photo, cropped by the exact
+same 380x385+48+62 coordinates. CSS restores its colors through the unchanged
+flag-halftone.png mask, retaining the isolated flag/pole silhouette.
 No redrawn letters or invented stadium lines.
 See /design-credits/ for attribution. These photographs are excluded from the
 site's Creative Commons license.
@@ -48,6 +51,7 @@ clustered-dot screening. The lower fade starts at 78% and reaches paper at
 7%/4% fades remain. A local lower-left fade removes the already cropped glove:
 it ramps over y=52–62% and x=30–42%, leaving the head and jersey intact.
 CSS adds a final fade below 80%, beneath the lettering rather than through it.
-Threshold 50% after screening makes white fully transparent. CSS supplies
-Seido-inspired blue #234f87 and its dark-theme tint #87a9db. The illustration
+Threshold 50% after screening makes white fully transparent. sawamura-color.jpg
+is the unchanged 640x814 original, aligned behind that same mask to restore
+the original blue uniform, skin tones and yellow 青道 lettering. The illustration
 is excluded from the site's Creative Commons license.

@@ -289,18 +289,21 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
 .udc-post-list time { font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--udc-muted); }
 .udc-post-list a { color: var(--udc-ink); font-size: 15px; line-height: 1.65; }
 /* All three layers use this same photograph-relative coordinate system at every viewport. */
-.udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: 30%; width: 12%; aspect-ratio: 380/385; background: var(--udc-orange); mask: url('/textures/flag-halftone.png?v=2') center/contain no-repeat; opacity: .32; }
-.dark .udc-flag-impression { opacity: .26; }
+.udc-flag-impression { position: absolute; pointer-events: none; left: 30%; top: calc(30% - var(--udc-art-lift)); width: 12%; aspect-ratio: 380/385; background: url('/textures/flag-color.jpg') center/contain no-repeat; mask: url('/textures/flag-halftone.png?v=2') center/contain no-repeat; opacity: .4; }
+.dark .udc-flag-impression { opacity: .65; }
 /* Fit the gap just right of the outfield tower; keep the head and 青道 above the lower fade. */
-.udc-sawamura-impression { position: absolute; pointer-events: none; left: 56%; top: 28%; width: 14%; aspect-ratio: 640/814; background: #234f87; opacity: .7; mask: url('/textures/sawamura-halftone.png?v=2') center/contain no-repeat, linear-gradient(#000 80%,transparent 100%); mask-composite: intersect; }
-.dark .udc-sawamura-impression { background: #87a9db; opacity: .5; }
+.udc-sawamura-impression { position: absolute; pointer-events: none; left: 56%; top: calc(28% - var(--udc-art-lift)); width: 14%; aspect-ratio: 640/814; background: url('/textures/sawamura-color.jpg') center/contain no-repeat; opacity: .45; mask: url('/textures/sawamura-halftone.png?v=2') center/contain no-repeat, linear-gradient(#000 80%,transparent 100%); mask-composite: intersect; }
+.dark .udc-sawamura-impression { opacity: .65; }
 /* The scene sits behind the log and footer, contributing no document height. */
 .udc-site { z-index: 1; }
 .udc-footer-home { padding-top: 0; margin-top: 0; isolation: isolate; z-index: 0; }
 /* Anchor to the footer's top rule so wrapped credits cannot push the scene through it. */
-.udc-stadium { position: absolute; z-index: -1; top: calc(130px - clamp(360px,45vw,620px)); left: 0; width: 100%; height: clamp(360px,45vw,620px); overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent,#000 26%,#000 78%,transparent); }
+.udc-stadium { --udc-scene-height: clamp(360px,45vw,620px); --udc-scene-top: calc(130px - var(--udc-scene-height)); position: absolute; z-index: -1; top: var(--udc-scene-top); left: 0; width: 100%; height: var(--udc-scene-height); overflow: hidden; pointer-events: none; mask-image: linear-gradient(transparent,#000 26%,#000 78%,transparent); }
+/* Same canvas geometry, without the stadium's upper crop/fade cutting off the raised artwork. */
+.udc-stadium-art { top: calc(var(--udc-scene-top) - 200px); height: calc(var(--udc-scene-height) + 200px); mask-image: none; }
 /* On wide displays, reframe the whole panorama downward to keep the sky below the research text. */
-.udc-stadium-field { position: absolute; left: 50%; bottom: min(0px,calc(576px - 40vw)); width: max(100%,600px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(transparent,#000 15%,#000 78%,transparent); }
+/* 30% of the portrait height, expressed in the shared 800:451 canvas coordinates. */
+.udc-stadium-field { --udc-art-lift: calc(14% * 814 / 640 * 800 / 451 * .3); position: absolute; left: 50%; bottom: min(0px,calc(576px - 40vw)); width: max(100%,600px); aspect-ratio: 800/451; transform: translateX(-50%); mask-image: linear-gradient(transparent,#000 15%,#000 78%,transparent); }
 /* Restore the photograph's colors through the unchanged binary dot mask. */
 .udc-stadium-ink { position: absolute; inset: 0; background: url('/textures/stadium-g2-color.jpg') center/contain no-repeat; opacity: .38; mask: url('/textures/stadium-g2-halftone.png?v=2') center/contain no-repeat; }
 .dark .udc-stadium-ink { opacity: .52; }
@@ -349,7 +352,7 @@ p:lang(zh-Hant), [data-udc-home]:lang(zh-Hant) { line-height: 1.8; }
   .udc-section-heading > a { font-size: 12px; }
   .udc-work-description { font-size: 16px; }
   .udc-post-list li { grid-template-columns: 1fr; gap: 4px; }
-  .udc-stadium { height: 410px; top: -250px; }
+  .udc-stadium { --udc-scene-height: 410px; --udc-scene-top: -250px; }
   /* Reframe the entire scene, never reposition or resize its individual layers. */
   .udc-stadium-field { bottom: 75px; }
 }
