@@ -24,6 +24,11 @@ Full frame retained. Grayscale, CLAHE 15x15%+128+2, resize to 1600px wide,
 then h4x4a clustered-dot dithering; white becomes transparent. Local contrast
 preserves the stands, roof beams, and infield instead of flattening the field
 with a single global threshold. Compared ten treatments before selection.
+stadium-g2-color.jpg: unchanged 800x451 original of the same stadium photograph.
+CSS places its RGB colors behind stadium-g2-halftone.png, with both layers
+aligned center/contain in the same frame. The existing binary alpha mask is
+unchanged: dot positions, sizes, transparency, and framing remain identical.
+Only overall opacity differs between light (.38) and dark (.52) paper.
 flag-halftone.png: user-supplied photograph of the 外野那群人 flag; isolated
 flag and pole. Red-channel separation distinguishes black lettering from the
 orange cloth; sigmoidal contrast 12x42%, h4x4a clustered dots, then the existing
