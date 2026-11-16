@@ -1,25 +1,9 @@
 {{ define "main" }}
-{{/* UD's Log: standing columns first (permanent homes, independent of posting), then the
-     dated stream. Briefs (brief: true) print in full, like newspaper briefs. */}}
-{{- $columns := where site.RegularPages "Params.udc_column" true -}}
+{{/* UD's Log: the dated stream. Briefs (brief: true) print in full, like newspaper briefs. */}}
 {{- $posts := union (where site.RegularPages "Section" "post") (where site.RegularPages "Params.udc_log" true) -}}
 <main id="main" class="udc-list udc-wrap udc-log-index">
   <h1 class="udc-page-title udc-ink">{{ .Title }}</h1>
   {{ with .Params.summary }}<p class="udc-list-dek">{{ . | markdownify }}</p>{{ end }}
-  {{ with $columns }}
-  <section class="udc-columns" aria-labelledby="udc-columns-title">
-    <h2 id="udc-columns-title" class="udc-label">Standing columns</h2>
-    <div class="udc-columns-grid">
-      {{ range . }}
-      <article class="udc-column">
-        <h3 class="udc-column-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-        {{ with .Summary }}<div class="udc-column-text">{{ . }}</div>{{ end }}
-      </article>
-      {{ end }}
-    </div>
-  </section>
-  <hr class="udc-rule-heavy" aria-hidden="true">
-  {{ end }}
   <div class="udc-stream">
     {{ range $posts.ByDate.Reverse }}
     {{- $zh := gt (len (findRE `\p{Han}` .Title)) 3 -}}

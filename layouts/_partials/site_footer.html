@@ -3,7 +3,7 @@
      carries the icons and fine print in paper colour. No footer on 404. */}}
 {{- $p := . -}}
 {{- $key := "home" -}}
-{{- if or (eq $p.Section "post") $p.Params.udc_column }}{{ $key = "jingu" }}
+{{- if eq $p.Section "post" }}{{ $key = "jingu" }}
 {{- else if or (eq $p.Section "publication") (eq $p.Section "project") (eq $p.RelPermalink "/projects/") }}{{ $key = "hogwarts" }}
 {{- else if eq $p.RelPermalink "/experiences/" }}{{ $key = "thames" }}
 {{- end -}}
