@@ -1,18 +1,18 @@
 {{/* About (plan v2, 4.8, reshaped by UD 2026-11-16). A year strip on top: one lane per kind, each
      entry a bar over its dates that jumps to its description; under it, one timeline, newest first.
-     Every lane name is a filter. The work lanes (education, research, teaching, industry; work entries
-     carry udc_lane in the author page) start on; the life lanes (data/udc.yaml life_lanes) start off.
+     Every lane name is a filter. The work lanes (education, research, teaching, industry; experience
+     entries carry udc_lane in data/authors/admin.yaml) start on; the life lanes (data/udc.yaml life_lanes) start off.
      Turning a lane on shows its bars and puts its entries in line with the others. Without the script
      everything shows. CS 225 TA appears here and nowhere else on the site. */}}
-{{- $author := site.GetPage "/authors/admin" -}}
+{{- $author := partial "functions/get_author_profile" (dict "slug" "admin") -}}
 {{- $life := hugo.Data.udc.life | default slice -}}
 {{- $lifeLanes := cond (gt (len $life) 0) (hugo.Data.udc.life_lanes | default slice) slice -}}
 {{- $rows := slice -}}
-{{- range $author.Params.education }}
-{{- $rows = $rows | append (dict "key" .date_start "kind" "edu" "lane" "education" "s" (time .date_start) "e" (time .date_end) "head" .institution "sub" .area "url" "" "text" .summary) }}
+{{- range $author.education }}
+{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "head" .institution "sub" .degree "url" "" "text" .summary) }}
 {{- end }}
-{{- range $author.Params.work }}
-{{- $rows = $rows | append (dict "key" .date_start "kind" "work" "s" (time .date_start) "e" (time (.date_end | default (now.Format "2006-01-02"))) "open" (not .date_end) "lane" (.udc_lane | default "industry") "head" .position "sub" .company_name "url" .company_url "text" .summary) }}
+{{- range $author.experience }}
+{{- $rows = $rows | append (dict "key" .start "kind" "work" "s" (time .start) "e" (time (.end | default (now.Format "2006-01-02"))) "open" (not .end) "lane" (.udc_lane | default "industry") "head" .role "sub" .org "url" .org_url "text" .summary) }}
 {{- end }}
 {{- range $life }}
 {{- $s := time (printf "%s-01" .date) }}{{ $e := time (printf "%s-01" (.end | default .date)) }}
@@ -124,11 +124,11 @@
   </ol>
   </div>
   <div class="udc-about-rest">
-    {{- range $author.Params.skills }}
-    <section><h2 class="udc-label">{{ .name }}</h2><dl>{{ range .items }}<dt>{{ .name }}</dt>{{ with .description }}<dd>{{ . }}</dd>{{ end }}{{ end }}</dl></section>
+    {{- range $author.skills }}
+    <section><h2 class="udc-label">{{ .name }}</h2><dl>{{ range .items }}<dt>{{ .label }}</dt>{{ with .description }}<dd>{{ . }}</dd>{{ end }}{{ end }}</dl></section>
     {{- end }}
     <section aria-labelledby="languages-title"><h2 id="languages-title" class="udc-label">Languages</h2>
-      <dl>{{ range $author.Params.languages }}<dt>{{ .name }}</dt><dd>{{ .description }}</dd>{{ end }}</dl>
+      <dl>{{ range $author.languages }}<dt>{{ .name }}</dt><dd>{{ .label }}</dd>{{ end }}</dl>
     </section>
   </div>
 </div>

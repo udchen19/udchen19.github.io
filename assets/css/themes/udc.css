@@ -1,4 +1,6 @@
-/* Navy ramp for Hugo Blox's --hb-primary-* (plan 1.1); replaces the old green one. 900 ≈ --udc-ink. */
+/* Navy ramp for Hugo Blox's primary colour (plan 1.1); replaces the old green one. 900 ≈ --udc-ink.
+   Blox Kit reads --color-primary-*; the -rgb values stay for the classes that still use them.
+   Loaded by the head-end hook, after Blox's generated theme, so these values win. */
 :root {
   --hb-primary-50-rgb: 238 240 245;
   --hb-primary-100-rgb: 220 225 235;
@@ -11,4 +13,15 @@
   --hb-primary-800-rgb: 34 44 66;
   --hb-primary-900-rgb: 27 36 54;
   --hb-primary-950-rgb: 17 26 43;
+  --color-primary-50: rgb(var(--hb-primary-50-rgb));
+  --color-primary-100: rgb(var(--hb-primary-100-rgb));
+  --color-primary-200: rgb(var(--hb-primary-200-rgb));
+  --color-primary-300: rgb(var(--hb-primary-300-rgb));
+  --color-primary-400: rgb(var(--hb-primary-400-rgb));
+  --color-primary-500: rgb(var(--hb-primary-500-rgb));
+  --color-primary-600: rgb(var(--hb-primary-600-rgb));
+  --color-primary-700: rgb(var(--hb-primary-700-rgb));
+  --color-primary-800: rgb(var(--hb-primary-800-rgb));
+  --color-primary-900: rgb(var(--hb-primary-900-rgb));
+  --color-primary-950: rgb(var(--hb-primary-950-rgb));
 }

@@ -1,61 +1,53 @@
-# SITE SETUP
-# Guide: https://docs.hugoblox.com/tutorial/
+# SITE SETUP (Hugo Blox Kit, config schema v2)
 # Documentation: https://docs.hugoblox.com/
-# This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
+# Migrated 2026-11-16 from the v1 keys (appearance, marketing, header.navbar, footer, locale, features);
+# each value below is the one the v1 file had. Keys the v1 file did not set are left to Blox's defaults.
 
-# Appearance
-appearance:
-  mode: system
-  color: udc
+hugoblox:
+  schema: "2.0"
 
-# SEO
-marketing:
-  seo:
-    site_type: Person
-    local_business_type: ''
-    org_name: ''
+  identity:
+    name: "Uei-Dar Chen"
+    type: person
     description: 'Uei-Dar Chen is an HCI researcher at the University of Illinois Urbana-Champaign studying personal AI agents and contextual privacy in human–agent and agent–agent interactions.'
-    twitter: 'udchen19' # Updated from GetResearchDev to your personal handle
-  analytics:
-    google_analytics: ''
-    baidu_tongji: ''
-    plausible: ''
-    fathom: ''
-    pirsch: ''
-  verification:
-    google: ''
-    baidu: ''
+    social:
+      twitter: 'udchen19'
 
-# Site header
-header:
-  navbar:
+  seo:
+    title: 'Uei-Dar Chen — HCI Researcher'   # the tab title the v1 site took from hugo.yaml's title
+
+  # The navy ramp for --color-primary-* lives in assets/css/themes/udc.css (plan 1.1), loaded by the
+  # head-end hook; the pack here only gives Blox a base to generate from.
+  theme:
+    mode: system
+    pack: "default"
+
+  # The navbar is the site's own (layouts/_partials/components/headers/navbar.html).
+  header:
     enable: true
-    block: 'navbar'
-    fixed_to_top: false  # a newspaper index line scrolls with the page; also keeps the press layer still
-    show_search: false
-    show_theme_chooser: true
-    logo:
-      text: "Uei-Dar Chen"
+    sticky: false        # a newspaper index line scrolls with the page; also keeps the press layer still
+    search: false
+    theme_toggle: true
 
-# Site footer
-footer:
   copyright:
     notice: '© {year} Uei-Dar Chen'
     license:
-      enable: true
+      type: cc
       allow_derivatives: false
       share_alike: true
       allow_commercial: false
 
-# Localization
-locale:
-  date_format: '2006.01.02'
-  time_format: '3:04 PM'
-  address_format: en-us
+  content:
+    math:
+      enable: true
 
-# Site features
-features:
-  math:
-    enable: true
-  privacy_pack:
+  search:
+    enable: false
+
+  locale:
+    date_format: '2006.01.02'
+    time_format: '3:04 PM'
+    address_format: en-us
+
+  privacy:
     enable: false

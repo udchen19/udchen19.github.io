@@ -1,18 +1,28 @@
----
-title: Uei-Dar Chen
-name_pronunciation: 陳威達
-first_name: Uei-Dar
-last_name: Chen
-pronouns: he/him
-superuser: true
-highlight_name: true
+# Author profile in Hugo Blox Kit's format (schema hugoblox/author/v1; upstream example:
+# templates/academic-cv/data/authors/me.yaml). Moved 2026-11-16 from content/authors/admin/_index.md,
+# values unchanged. The slug stays `admin` because the publications list their authors by it.
+# Two fields are the site's own and are read only by the About block
+# (layouts/partials/hbx/blocks/udc-about/block.html): `udc_lane` (which lane an entry sits in)
+# and `org_url` (the link on an organisation's name).
+schema: hugoblox/author/v1
+slug: admin
+is_owner: true
+name:
+  display: Uei-Dar Chen
+  given: Uei-Dar
+  family: Chen
+  alternate: 陳威達
+  pronouns: he/him
 
 role: M.S. Student in Computer Science
-organizations:
+bio: |
+  I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign. My research is on personal AI agents, the assistants that work with a person’s own information across their devices and services, and on contextual privacy in human–agent and agent–agent interactions. My work combines qualitative research with system building, from interviews to Android apps used in daily life.
+
+affiliations:
   - name: University of Illinois Urbana-Champaign
     url: https://cs.illinois.edu/
 
-profiles:
+links:
   - icon: at-symbol
     url: 'mailto:ueidarc2@illinois.edu'
     label: Email me
@@ -35,83 +45,80 @@ interests:
   - Privacy and Context-Aware Systems
 
 education:
-  - area: M.S. in Computer Science
+  - degree: M.S. in Computer Science
     institution: University of Illinois Urbana-Champaign
-    date_start: '2026-08-01'
-    date_end: '2028-05-31'
+    start: '2026-08-01'
+    end: '2028-05-31'
     summary: 'Expected May 2028. Advised by Prof. Yang Wang. Thesis direction: contextual privacy in human–agent and agent–agent interactions within multi-agent AI systems.'
-  - area: B.Sc. in Computer Science, Credit Program of Psychology
+  - degree: B.Sc. in Computer Science, Credit Program of Psychology
     institution: National Yang Ming Chiao Tung University
-    date_start: '2019-09-01'
-    date_end: '2023-06-30'
+    start: '2019-09-01'
+    end: '2023-06-30'
     summary: Dean's List twice; three Foundation Course Awards.
-  - area: Computer Science Class, the first cohort
+  - degree: Computer Science Class, the first cohort
     institution: The Affiliated High School of National Taiwan Normal University
-    date_start: '2016-08-01'
-    date_end: '2019-06-30'
-  - area: Math & Science Gifted Class, the third cohort
+    start: '2016-08-01'
+    end: '2019-06-30'
+  - degree: Math & Science Gifted Class, the third cohort
     institution: Linkou Junior High School
-    date_start: '2013-08-01'
-    date_end: '2016-06-30'
+    start: '2013-08-01'
+    end: '2016-06-30'
   - institution: Chang Gung Primary School
-    date_start: '2010-08-01'
-    date_end: '2013-06-30'
+    start: '2010-08-01'
+    end: '2013-06-30'
   - institution: Peter Hills Primary School
-    date_start: '2006-09-01'
-    date_end: '2010-06-30'
+    start: '2006-09-01'
+    end: '2010-06-30'
 
-work:
-  - position: Teaching Assistant, CS 225 — Data Structures
+experience:
+  - role: Teaching Assistant, CS 225 — Data Structures
     udc_lane: teaching
-    company_name: University of Illinois Urbana-Champaign
-    date_start: '2026-08-01'
-    date_end: '2026-12-31'
+    org: University of Illinois Urbana-Champaign
+    start: '2026-08-01'
+    end: '2026-12-31'
     summary: |
       Lead weekly labs and office hours, helping students reason through data structures and debug C++ programs. Grade exams and provide feedback on algorithms and runtime analysis.
-  - position: Research Assistant
+  - role: Research Assistant
     udc_lane: research
-    company_name: AIMEX Lab, National Yang Ming Chiao Tung University
-    company_url: 'https://www.armuro.info/'
-    date_start: '2021-07-01'
-    date_end: '2026-08-01'
+    org: AIMEX Lab, National Yang Ming Chiao Tung University
+    org_url: 'https://www.armuro.info/'
+    start: '2021-07-01'
+    end: '2026-08-01'
     summary: |
       Led research and development of intelligent notification systems, combining user studies, qualitative analysis, and Android prototyping.
-  - position: Software Engineering Intern
+  - role: Software Engineering Intern
     udc_lane: industry
-    company_name: Kapito Inc.
-    company_url: 'https://www.fastable.ai/'
-    date_start: '2022-07-01'
-    date_end: '2022-09-02'
+    org: Kapito Inc.
+    org_url: 'https://www.fastable.ai/'
+    start: '2022-07-01'
+    end: '2022-09-02'
     summary: |
       Initiated and developed a data visualization platform for identifying potential failures in manufacturing visual-defect detection systems.
-  - position: Teaching Assistant, Introduction to Algorithms
+  - role: Teaching Assistant, Introduction to Algorithms
     udc_lane: teaching
-    company_name: Department of Computer Science, NYCU
-    date_start: '2021-08-01'
-    date_end: '2022-01-31'
+    org: Department of Computer Science, NYCU
+    start: '2021-08-01'
+    end: '2022-01-31'
     summary: |
       Designed programming problems, administered online exams, and hosted English-medium office hours.
 
 skills:
   - name: Research & Building
     items:
-      - name: User research
+      - label: User research
         description: Interviews, qualitative analysis, literature review, and study design.
         icon: hero/chat-bubble-left-right
-      - name: Prototyping
+      - label: Prototyping
         description: Android, Kotlin, Python, TypeScript, and the glue required to make studies run.
         icon: hero/code-bracket
 
 languages:
   - name: Taiwanese Mandarin
-    description: Native
+    label: Native
     percent: 100
   - name: English
-    description: TOEFL iBT 115/120
+    label: TOEFL iBT 115/120
     percent: 95
   - name: Japanese
-    description: JLPT N3
+    label: JLPT N3
     percent: 60
----
-
-I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign. My research is on personal AI agents, the assistants that work with a person’s own information across their devices and services, and on contextual privacy in human–agent and agent–agent interactions. My work combines qualitative research with system building, from interviews to Android apps used in daily life.

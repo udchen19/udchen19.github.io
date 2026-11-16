@@ -1,12 +1,12 @@
 {{/* The columnist block (plan v2, 4.4): portrait, name and links are one unit. No frame.
      陳威達 is one image (3.6) with the 5b brush line; swapping the file needs no code change. */}}
-{{- $author := site.GetPage "/authors/admin" -}}
+{{- $author := partial "functions/get_author_profile" (dict "slug" "admin") -}}
 <div class="udc-columnist">
   <figure class="udc-portrait"><img src="/textures/portrait.webp" width="282" height="294" alt="Uei-Dar Chen, smiling, one arm raised" fetchpriority="high"></figure>
   <div class="udc-columnist-id">
     <p class="udc-byname"><span class="udc-name-en">Uei-Dar Chen</span> <span class="udc-name-zh" role="img" aria-label="陳威達" lang="zh-Hant"></span></p>
     <nav class="udc-profile-links" aria-label="Contact and profiles">
-      {{- range first 4 $author.Params.profiles }}
+      {{- range first 4 $author.links }}
       {{- $label := .label | default (cond (in .url "scholar.google") "Google Scholar" "GitHub") }}
       <a href="{{ .url }}" aria-label="{{ $label }}" title="{{ $label }}">{{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</a>
       {{- end }}

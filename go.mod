@@ -1,8 +1,8 @@
-module github.com/HugoBlox/hugo-blox-builder/starters/academic-cv
+module github.com/HugoBlox/kit/templates/academic-cv
 
 go 1.19
 
 require (
-	github.com/HugoBlox/hugo-blox-builder/modules/blox-plugin-netlify v0.0.0-20231109145828-d9695efa098f
-	github.com/HugoBlox/hugo-blox-builder/modules/blox-tailwind v0.0.0-20250907220443-1675dd45f046
+	github.com/HugoBlox/kit/modules/integrations/netlify v0.0.0-20260327032542-ef8ed449c7e8
+	github.com/HugoBlox/kit/modules/blox v0.0.0-20260527025321-61f41d3667f1
 )

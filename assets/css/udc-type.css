@@ -2,6 +2,14 @@
    Nameplate: Manufacturing Consent. Headline: Ultra. Label: Libre Franklin. Text: Libre Baskerville.
    Motto: IM Fell DW Pica italic. 繁體中文: Noto Serif TC 400/700 (text) and 900 (titles).
    Lettering (陳威達, 衝啥) ships as images, not fonts. */
+
+/* Blox Kit's typography pack points body and nav at Inter (inline <style>, printed after custom.css;
+   this file loads after it), and its base layer gives every h1–h6 Inter, weight 700, line-height 1.2
+   and -0.02em tracking. Under the old Blox, Tailwind's reset (layer base) let headings inherit all four.
+   Restore that in the same layer: it follows Blox's rule, so it wins over it, and it stays below the
+   prose styles and every unlayered rule of the site's own, as the old reset did. */
+:root { --hb-font-heading: var(--udc-text); --hb-font-body: var(--udc-text); --hb-font-nav: var(--udc-text); }
+@layer base { h1, h2, h3, h4, h5, h6 { font-family: inherit; font-weight: inherit; line-height: inherit; letter-spacing: inherit; } }
 @font-face {
   font-family: 'Manufacturing Consent';
   font-style: normal;

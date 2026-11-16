@@ -130,6 +130,9 @@ body.page-wrapper {
    image, Ryan and the footer images sit above it (61–62); the worn edges stay on top (63). */
 .udc-portrait img, .udc-name-zh, .udc-brand .udc-emblem { position: relative; z-index: 61; }
 .udc-sheet-layer > .udc-edge { z-index: 63; }
+/* Blox Kit isolates every section (its own stacking context), which would keep those z-indexes
+   inside the section and under the press. The site uses no section-level overlays, so undo it. */
+.hbb-section { isolation: auto; }
 body.page-wrapper::after {
   content: ""; position: absolute; inset: 0; z-index: 60; pointer-events: none;
   background: var(--udc-paper);
@@ -146,7 +149,8 @@ body.page-wrapper::after {
 .udc-ink-b, .udc-intro, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)) { filter: url(#udc-ink-b); }
 
 /* ======================================================================= base */
-/* Tailwind/Blox default families point at the site's text face: no Inter download. */
+/* Tailwind/Blox default families point at the site's text face: no Inter download.
+   Blox Kit's own typography variables are reset in udc-type.css, which loads after Blox's inline styles. */
 :root { --font-sans: var(--udc-text); --font-serif: var(--udc-text); --default-font-family: var(--udc-text); }
 /* Below-the-fold tiers are laid out (and their fonts fetched) only when they come near. */
 .udc-home > .udc-tier { content-visibility: auto; contain-intrinsic-size: auto 480px; }
@@ -469,7 +473,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-prose h4 { font-weight: 650; font-size: 1rem; margin: 1.1em 0 .3em; }
 .udc-single[lang="zh-Hant"] .udc-prose :is(h2, h3) { font-family: var(--udc-text); font-weight: 700; }
 .udc-prose strong { font-weight: 650; }
-.udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-orange); color: var(--udc-ink); }
+.udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-orange); color: var(--udc-ink); font-style: normal; }
 .udc-prose ul, .udc-prose ol { padding-left: 1.3em; }
 .udc-prose ul { list-style: disc; }
 .udc-prose ol { list-style: decimal; }
@@ -556,7 +560,8 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-tl-row.is-off { display: none; }
 /* Flight map: collapsed by default (a native details element); printed like the rest. */
 .udc-map { margin: -8px 0 20px; }
-.udc-map-summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; list-style: none;
+/* .udc-map > : outranks Blox's `.dark details>summary` colour. */
+.udc-map > .udc-map-summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; list-style: none;
   font-family: var(--udc-sign); font-weight: 500; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--udc-ink); }
 .udc-map-summary::-webkit-details-marker { display: none; }
 .udc-map-summary:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
