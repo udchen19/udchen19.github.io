@@ -8,9 +8,9 @@ authors:
 - Peng-Jui Wang
 - Yi-Chi Lee
 - Yung-Ju Chang
-date: '2023-10-01'
+date: '2023-10-08'
 publishDate: '2023-12-28T03:59:51.971342Z'
-publication: "*UbiComp/ISWC '23*"
+publication: "*UbiComp/ISWC ’23 Adjunct*"
 publication_types:
 - paper-conference
 links:

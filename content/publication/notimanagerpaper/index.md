@@ -8,12 +8,12 @@ authors:
 - Yi-Chi Lee
 - Peng-Jui Wang
 - Yung-Ju Chang
-date: 2024-08-01
+date: 2024-08-22
 publishDate: '2024-08-01T03:59:51.958977Z'
-publication: "*ACM IMWUT '24*"
+publication: "*ACM IMWUT ’24*"
 featured: true
 publication_types:
-- manuscript
+- article-journal
 hugoblox:
   ids:
     doi: 10.1145/3678579

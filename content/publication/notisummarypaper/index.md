@@ -7,11 +7,11 @@ authors:
 - Yong-Han Lin
 - Yu-Ling Chou
 - Yung-Ju Chang
-date: 2025-09-10
+date: 2025-09-09
 publishDate: '2023-12-28T03:59:51.950138Z'
-publication: "*PACM MHCI '25*"
+publication: "*PACM HCI (MobileHCI ’25)*"
 publication_types:
-- paper-conference
+- article-journal
 featured: true
 hugoblox:
   ids:

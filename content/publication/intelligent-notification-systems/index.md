@@ -7,7 +7,7 @@ authors:
   - Li-Ting Su
   - Yung-Ju Chang
 date: '2026-08-18'
-publication: '*Proceedings of the ACM on Human-Computer Interaction, MobileHCI 2026*'
+publication: "*PACM HCI (MobileHCI ’26)*"
 publication_types:
   - article-journal
 featured: true

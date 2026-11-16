@@ -13,7 +13,7 @@ authors:
   - Joseph Bayer
   - Yung-Ju Chang
 date: '2025-10-12'
-publication: "*UbiComp/ISWC '25 Adjunct*"
+publication: "*UbiComp/ISWC ’25 Companion*"
 publication_types:
   - paper-conference
 hugoblox:

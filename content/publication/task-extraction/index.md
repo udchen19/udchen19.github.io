@@ -7,7 +7,7 @@ authors:
   - Yi-Chia Wang
   - Yung-Ju Chang
 date: '2026-04-13'
-publication: "*CHI EA '26*"
+publication: "*CHI EA ’26*"
 publication_types:
   - paper-conference
 links:

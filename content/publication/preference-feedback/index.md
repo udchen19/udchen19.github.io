@@ -7,7 +7,7 @@ authors:
   - Yi-Jyeie Chen
   - Yung-Ju Chang
 date: '2026-04-13'
-publication: "*CHI '26*"
+publication: "*CHI ’26*"
 publication_types:
   - paper-conference
 featured: true

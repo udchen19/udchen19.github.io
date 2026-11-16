@@ -21,4 +21,4 @@ This work asks what people would want if notification systems did more than deli
 
 **My role:** I did not participate in the original study. I led the reanalysis of the existing dataset and the development and writing of the resulting paper, working from material that had been waiting for a second life for roughly two years.
 
-The paper was accepted to PACM HCI and will be presented at MobileHCI 2026 in Swansea.
+The paper was accepted to PACM HCI and presented at MobileHCI 2026 in Swansea.
