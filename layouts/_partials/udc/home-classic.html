@@ -1,0 +1,23 @@
+{{/* Classic (C): the control. Conventional researcher structure in the same system. */}}
+<div class="udc-home udc-classic udc-wrap" data-udc-home>
+  <section class="udc-classic-top" aria-labelledby="udc-name">
+    <aside class="udc-classic-side" aria-label="Portrait, profiles and news">
+      {{ partial "udc/identity.html" . }}
+      {{ partial "udc/news.html" . }}
+    </aside>
+    <div class="udc-classic-main">
+      <h1 id="udc-name" class="udc-page-title udc-ink udc-w1 udc-tilt udc-t3">Uei-Dar Chen <span class="udc-name-zh" lang="zh-Hant">陳威達</span></h1>
+      {{ partial "udc/intro.html" (dict "dropcap" false) }}
+    </div>
+  </section>
+  <hr class="udc-rule-heavy" aria-hidden="true">
+  <section id="research" class="udc-tier udc-research" aria-labelledby="udc-research-title">
+    <div class="udc-tier-head"><h2 id="udc-research-title" class="udc-label">Selected work</h2><a class="udc-more" href="/publication/">All publications</a></div>
+    {{ partial "udc/work-list.html" . }}
+  </section>
+  <hr class="udc-rule-heavy" aria-hidden="true">
+  {{ partial "udc/log-titles.html" . }}
+  <hr class="udc-rule-heavy" aria-hidden="true">
+  {{ partial "udc/plates.html" . }}
+  {{ partial "udc/entrance.html" . }}
+</div>

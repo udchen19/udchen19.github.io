@@ -1,1 +1,22 @@
-{{ define "main" }}{{ partial "udc-archive.html" . }}{{ end }}
+{{ define "main" }}
+{{/* Publications: year plates; title in the text face; his name in full ink; venue italic. */}}
+<div class="udc-list udc-wrap udc-publications">
+  <h1 class="udc-page-title udc-ink udc-w1 udc-tilt udc-t3">{{ .Title }}</h1>
+  {{ with .Params.summary }}<p class="udc-list-dek">{{ . | markdownify }}</p>{{ end }}
+  {{ range (.Pages.GroupByDate "2006") }}
+  <section class="udc-year" aria-labelledby="y{{ .Key }}">
+    <h2 id="y{{ .Key }}" class="udc-year-plate udc-tilt udc-t{{ add 1 (mod (int .Key) 5) }}">{{ .Key }}</h2>
+    <ol class="udc-pubs">
+      {{ range .Pages }}
+      <li class="udc-pub"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
+        <h3 class="udc-pub-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p class="udc-pub-authors" lang="en">{{ partial "page_metadata_authors" . }}</p>
+        {{ with (.Params.publication_short | default .Params.publication) }}<p class="udc-pub-venue" lang="en">{{ . | markdownify }}</p>{{ end }}
+        {{ if partial "functions/has_attachments" . }}<div class="udc-pub-links" lang="en">{{ partial "page_links" (dict "page" . "is_list" 1) }}</div>{{ end }}
+      </li>
+      {{ end }}
+    </ol>
+  </section>
+  {{ end }}
+</div>
+{{ end }}

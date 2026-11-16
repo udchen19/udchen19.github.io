@@ -1,0 +1,34 @@
+{{/* Dev only (hugo server). Never rendered in a production build. */}}
+<nav class="udc-dev" aria-label="Variation switch (development only)">
+  <span>Variation</span>
+  {{ range slice (slice "A" "1313") (slice "B" "1314") (slice "C" "1315") }}
+  <a data-port="{{ index . 1 }}" href="http://localhost:{{ index . 1 }}{{ $.RelPermalink }}">{{ index . 0 }}</a>
+  {{ end }}
+  <span>type</span><button type="button" data-k="type" data-v="x">x</button><button type="button" data-k="type" data-v="y">y</button>
+  <span>dusk</span><button type="button" data-k="dusk" data-v="thames">thames</button><button type="button" data-k="dusk" data-v="postgame">postgame</button>
+  <span>wear</span><button type="button" data-k="wear" data-v="none">none</button><button type="button" data-k="wear" data-v="light">light</button><button type="button" data-k="wear" data-v="medium">medium</button>
+  <span>tilt</span><button type="button" data-k="tilt" data-v="none">none</button><button type="button" data-k="tilt" data-v="light">light</button><button type="button" data-k="tilt" data-v="medium">medium</button>
+  <button type="button" data-reset>reset</button>
+</nav>
+<style>
+.udc-dev{position:fixed;z-index:100;right:8px;bottom:8px;display:flex;flex-wrap:wrap;align-items:center;gap:4px;max-width:calc(100% - 16px);padding:6px 8px;background:#000;color:#fff;font:12px/1.2 system-ui,sans-serif;opacity:.9}
+.udc-dev a,.udc-dev button{color:#fff;background:#333;border:0;padding:3px 6px;text-decoration:none;font:inherit;cursor:pointer}
+.udc-dev [aria-current=true]{background:#d26a2b}
+.udc-dev span{opacity:.7;margin-left:6px}
+</style>
+<script>
+(function(){
+  var r=document.documentElement, nav=document.currentScript.previousElementSibling.previousElementSibling;
+  function mark(){
+    nav.querySelectorAll('[data-k]').forEach(function(b){ b.setAttribute('aria-current', String(r.dataset['udc'+b.dataset.k[0].toUpperCase()+b.dataset.k.slice(1)]===b.dataset.v)); });
+    nav.querySelectorAll('[data-port]').forEach(function(a){ a.setAttribute('aria-current', String(a.dataset.port===location.port)); a.href='http://localhost:'+a.dataset.port+location.pathname; });
+  }
+  nav.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.hasAttribute('data-reset')){ ['type','dusk','wear','tilt'].forEach(function(k){try{sessionStorage.removeItem('udc-'+k)}catch(_){}}); location.reload(); return; }
+    var k=b.dataset.k; r.dataset['udc'+k[0].toUpperCase()+k.slice(1)]=b.dataset.v; try{sessionStorage.setItem('udc-'+k,b.dataset.v)}catch(_){}
+    mark();
+  });
+  mark();
+})();
+</script>

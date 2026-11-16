@@ -1,8 +1,40 @@
-<link rel="preload" href="/fonts/fraunces-120.woff2" as="font" type="font/woff2" crossorigin>
+{{- $udc := site.Params.udc | default dict -}}
+{{- $type := $udc.type | default "x" -}}
+{{- $dusk := $udc.dusk | default "thames" -}}
+{{- $wear := $udc.wear | default "light" -}}
+{{- $tilt := $udc.tilt | default "light" -}}
+<script>
+(function (d) {
+  var r = d.documentElement, s = {type: {{ $type }}, dusk: {{ $dusk }}, wear: {{ $wear }}, tilt: {{ $tilt }}, home: {{ $udc.home | default "front" }} };
+  {{- if hugo.IsServer }}
+  /* Dev only: ?type=y&dusk=postgame (kept for this tab in sessionStorage). */
+  try {
+    var q = new URLSearchParams(location.search), k;
+    for (k in s) { if (q.get(k)) sessionStorage.setItem('udc-' + k, q.get(k)); var v = sessionStorage.getItem('udc-' + k); if (v && k !== 'home') s[k] = v; }
+  } catch (e) {}
+  {{- end }}
+  r.dataset.udcType = s.type; r.dataset.udcDusk = s.dusk; r.dataset.udcWear = s.wear; r.dataset.udcTilt = s.tilt;
+  {{- if .IsHome }}
+  /* Home entrance: once per session, never under reduced motion; skipped by JS on any input. */
+  var pos = {{ $udc.entrance | default "corner" }};
+  {{- if hugo.IsServer }}try { var qe = new URLSearchParams(location.search).get('entrance'); if (qe) { pos = qe; sessionStorage.removeItem('udc-entered'); } } catch (e) {}{{ end }}
+  r.dataset.udcEntrance = pos;
+  try {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('udc-entered')) {
+      r.classList.add('udc-entering'); sessionStorage.setItem('udc-entered', '1');
+    }
+  } catch (e) {}
+  {{- end }}
+})(document);
+</script>
+<link rel="preload" href="/fonts/udc-metro.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/udc-newsreader.woff2" as="font" type="font/woff2" crossorigin>
 {{ $type := resources.Get "css/udc-type.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $type.RelPermalink }}" integrity="{{ $type.Data.Integrity }}">
-{{ $early := resources.Get "js/udc-preferences.js" | minify | fingerprint }}
-<script src="{{ $early.RelPermalink }}" integrity="{{ $early.Data.Integrity }}"></script>
-
-{{ $accent := resources.Get "css/udc-accent.css" | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $accent.RelPermalink }}" integrity="{{ $accent.Data.Integrity }}">
+{{- if eq .Type "specimen" }}
+<meta name="robots" content="noindex, nofollow">
+{{ $spec := resources.Get "css/udc-specimen-fonts.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $spec.RelPermalink }}">
+{{ $specCss := resources.Get "css/udc-specimen.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $specCss.RelPermalink }}">
+{{- end }}

@@ -3,6 +3,14 @@
 # Documentation: https://docs.hugoblox.com/
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
+# Redesign variation knobs (plan 0 / 6.2). Environments va|vb|vc override these.
+udc:
+  type: x
+  dusk: thames
+  home: front
+  wear: light
+  tilt: light
+
 # Appearance
 appearance:
   mode: system
@@ -31,7 +39,7 @@ header:
   navbar:
     enable: true
     block: 'navbar'
-    fixed_to_top: true
+    fixed_to_top: false  # a newspaper index line scrolls with the page; also keeps the press layer still
     show_search: false
     show_theme_chooser: true
     logo:

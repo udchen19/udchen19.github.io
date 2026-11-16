@@ -1,13 +1,14 @@
+/* Navy ramp for Hugo Blox's --hb-primary-* (plan 1.1); replaces the old green one. 900 ≈ --udc-ink. */
 :root {
-  --hb-primary-50-rgb: 242 246 237;
-  --hb-primary-100-rgb: 228 237 223;
-  --hb-primary-200-rgb: 203 220 195;
-  --hb-primary-300-rgb: 166 193 155;
-  --hb-primary-400-rgb: 125 161 111;
-  --hb-primary-500-rgb: 91 133 84;
-  --hb-primary-600-rgb: 66 106 64;
-  --hb-primary-700-rgb: 49 84 54;
-  --hb-primary-800-rgb: 37 68 46;
-  --hb-primary-900-rgb: 25 67 51;
-  --hb-primary-950-rgb: 16 39 28;
+  --hb-primary-50-rgb: 238 240 245;
+  --hb-primary-100-rgb: 220 225 235;
+  --hb-primary-200-rgb: 186 195 214;
+  --hb-primary-300-rgb: 145 158 186;
+  --hb-primary-400-rgb: 104 120 155;
+  --hb-primary-500-rgb: 74 90 125;
+  --hb-primary-600-rgb: 55 70 102;
+  --hb-primary-700-rgb: 42 54 82;
+  --hb-primary-800-rgb: 34 44 66;
+  --hb-primary-900-rgb: 27 36 54;
+  --hb-primary-950-rgb: 17 26 43;
 }

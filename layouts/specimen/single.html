@@ -1,0 +1,195 @@
+{{ define "main" }}
+{{- $d := site.Data.udc -}}
+{{- $p3 := index $d.bio.paragraphs 2 -}}
+{{- $p3 := $p3.text | default $p3.en -}}
+{{- $post := site.GetPage "/post/books-summer-2021" -}}
+{{- $postParas := first 2 (findRE `(?s)<p>.*?</p>` $post.Content) -}}
+{{- $headline := "When agents talk to agents, what stays in context?" -}}
+{{- $paper := "“I Want It to Do More Than Deliver”: Users’ Desires for Intelligent Notification Systems" -}}
+
+
+
+
+<div class="udc-specimen udc-wrap">
+  <header class="spec-head">
+    <p class="spec-tag">Branch only · not indexed · plan Section 5</p>
+    <h1 class="spec-title">Type and print specimen</h1>
+    <p class="spec-note">Real fonts, real texture, real content. Rows 1–8 compare <b>X</b> (Underground + brush) and <b>Y</b> (Shōwa heavy + Underground) side by side. Row 10 follows the page’s type theme (port 1313 = X, 1314 = Y). Toggle light/dark with the moon icon.</p>
+  </header>
+
+  <section class="spec-row">
+    <h2 class="spec-n">01 · Field strip with tagline, seam, initials and the printed Ryan emblem</h2>
+    <div class="spec-cols spec-cols-1">
+      <div class="udc-pressed spec-cell" data-udc-type="x"><p class="spec-cap">X — Metropolitan Line</p>{{ partial "inline/spec-field.html" . }}</div>
+      <div class="udc-pressed spec-cell" data-udc-type="y"><p class="spec-cap">Y — Dela Gothic One</p>{{ partial "inline/spec-field.html" . }}</div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">02 · Headline draft 1 at lead size <span class="udc-draft-mark">Draft</span></h2>
+    <div class="spec-cols spec-cols-3">
+      <div class="udc-pressed spec-cell" data-udc-type="x"><p class="spec-cap">X — Metropolitan Line (one weight)</p><p class="udc-kicker">Current research</p><p class="udc-lead-head udc-ink udc-tilt udc-t1">{{ $headline }}</p></div>
+      <div class="udc-pressed spec-cell" data-udc-type="x"><p class="spec-cap">X alt — Hammersmith One (heavier Johnston-like, plan 1.2 flag 1)</p><p class="udc-kicker">Current research</p><p class="udc-lead-head udc-ink udc-w3 udc-tilt udc-t3 spec-hammer">{{ $headline }}</p></div>
+      <div class="udc-pressed spec-cell" data-udc-type="y"><p class="spec-cap">Y — Dela Gothic One</p><p class="udc-kicker">Current research</p><p class="udc-lead-head udc-ink udc-w2 udc-tilt udc-t2">{{ $headline }}</p></div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">03 · Byline and the vertical 陳威達 plate</h2>
+    <div class="spec-cols spec-cols-2">
+      {{ range slice (slice "x" "X — UDC Brush TC (莫大毛筆 Bold subset), ink on paper") (slice "y" "Y — UDC Field TC (Mantou Sans subset), reversed plate") }}
+      <div class="udc-pressed spec-cell" data-udc-type="{{ index . 0 }}"><p class="spec-cap">{{ index . 1 }}</p>
+        <div class="spec-lead">
+          <p class="udc-nameplate udc-ink udc-tilt udc-t5" lang="zh-Hant">陳威達</p>
+          <div><p class="udc-lead-head udc-ink spec-lead-small">{{ $headline }}</p><p class="udc-byline">by <b>Uei-Dar Chen</b></p></div>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">04 · Intro paragraph 3 from data/udc.yaml, verbatim — reading faces</h2>
+    <div class="spec-cols spec-cols-3">
+      {{ range slice (slice "Newsreader (proposed)" "") (slice "Source Serif 4 (runner-up)" "spec-ss4") (slice "Fraunces (current baseline)" "spec-fraunces") }}
+      <div class="udc-pressed spec-cell"><p class="spec-cap">{{ index . 0 }}</p><p class="spec-body {{ index . 1 }}">{{ $p3 | markdownify }}</p></div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">05 · A paper title</h2>
+    <div class="spec-cols spec-cols-3">
+      <div class="udc-pressed spec-cell"><p class="spec-cap">Text face semibold (list titles)</p><p class="spec-paper-text">{{ $paper }}</p></div>
+      <div class="udc-pressed spec-cell" data-udc-type="x"><p class="spec-cap">X display</p><p class="udc-page-title udc-ink udc-w3 spec-paper-display">{{ $paper }}</p></div>
+      <div class="udc-pressed spec-cell" data-udc-type="y"><p class="spec-cap">Y display</p><p class="udc-page-title udc-ink udc-w2 spec-paper-display">{{ $paper }}</p></div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">06 · News box with the three real items</h2>
+    <div class="spec-cols spec-cols-2 spec-narrow">
+      <div class="udc-pressed spec-cell" data-udc-type="x"><p class="spec-cap">X — label set on a rule</p>{{ partial "inline/spec-news.html" $d }}</div>
+      <div class="udc-pressed spec-cell" data-udc-type="y"><p class="spec-cap">Y — reversed plate label</p>{{ partial "inline/spec-news.html" $d }}</div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">07 · Keyword field (draft list from plan 3.1; list and ranking are yours to edit)</h2>
+    <div class="spec-cols spec-cols-2 spec-narrow">
+      <div class="udc-pressed spec-cell" data-udc-type="x"><p class="spec-cap">X</p>{{ partial "inline/spec-keywords.html" . }}</div>
+      <div class="udc-pressed spec-cell" data-udc-type="y"><p class="spec-cap">Y</p>{{ partial "inline/spec-keywords.html" . }}</div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">08 · Opening of “{{ $post.Title }}”, verbatim — 繁體中文 reading faces (36-character measure, 1.85 leading)</h2>
+    <p class="spec-cap">Noto Serif TC and Chiron Sung HK are both built on Source Han Serif. Across all 1,316 distinct characters in your posts, only the 10 in the large line are drawn differently: Taiwan standard (Noto) vs Hong Kong standard (Chiron).</p>
+    <div class="spec-cols spec-cols-3">
+      {{ range slice (slice "Noto Serif TC (proposed)" "spec-noto") (slice "Chiron Sung HK (current baseline)" "spec-chiron") (slice "Iansui 芫荽 (short notes only?)" "spec-iansui") }}
+      <div class="udc-pressed spec-cell"><p class="spec-cap">{{ index . 0 }}</p><div class="spec-zh {{ index . 1 }}" lang="zh-Hant">{{ range $postParas }}{{ . | safeHTML }}{{ end }}<p class="spec-glyphs">片次也北公花突化名心</p></div></div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">09 · Navigation line, a date, a label, link states</h2>
+    <div class="udc-pressed spec-cell">
+      <div class="spec-index"><span>Uei-Dar Chen</span><span class="spec-index-items"><a href="#">Research</a> · <a href="#" class="is-current">Publications</a> · <a href="#">UD’s Log</a> · <a href="#">About</a> · <a href="#">CV</a></span></div>
+      <div class="spec-states">
+        <p><span class="spec-cap">Date</span> <time class="spec-date">Aug–Sep 2026</time> · <time class="spec-date">2025.09.10</time></p>
+        <p><span class="spec-cap">Label</span></p><p class="udc-label spec-label-demo">Selected work</p>
+        <p class="spec-body"><span class="spec-cap">Links</span> body link <a href="#">at rest</a>, <a href="#" class="is-hover">on hover</a>, <a href="#" class="is-focus">with keyboard focus</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">10 · Print levels — you pick. Rows 2, 4 and 6 at wear none / light / medium; then tilt</h2>
+    <div class="spec-cols spec-cols-3">
+      {{ range slice "none" "light" "medium" }}
+      <div class="udc-pressed spec-cell" data-udc-wear="{{ . }}">
+        <p class="spec-cap">Wear: {{ . }}</p>
+        <p class="udc-lead-head udc-ink udc-w1 spec-lead-small">{{ $headline }}</p>
+        <p class="spec-body">{{ $p3 | markdownify }}</p>
+        {{ partial "inline/spec-news.html" $d }}
+      </div>
+      {{ end }}
+    </div>
+    <div class="spec-cols spec-cols-3 spec-tilts">
+      {{ range slice "none" "light" "medium" }}
+      <div class="udc-pressed spec-cell" data-udc-tilt="{{ . }}">
+        <p class="spec-cap">Tilt: {{ . }}</p>
+        <div class="spec-makeup">
+          <p class="udc-label udc-tilt udc-t3">Research</p>
+          <p class="udc-page-title udc-ink udc-w2 udc-tilt udc-t1">NotiSummary</p>
+          <div class="udc-box udc-f2 udc-tilt udc-t4"><p class="spec-small">An Android app and study of what people want from notification summaries.</p></div>
+          <p class="udc-nameplate udc-ink udc-tilt udc-t6 spec-np-h" lang="zh-Hant">陳威達</p>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">11 · Paper — from a real paper scan (ambientCG Paper002, CC0) vs the best generated version</h2>
+    <div class="spec-cols spec-cols-2">
+      <div class="udc-sheet udc-pressed spec-paper spec-paper-scan"><p class="spec-cap">From the scan</p><p class="spec-body">{{ $p3 | markdownify }}</p></div>
+      <div class="udc-sheet udc-pressed spec-paper spec-paper-gen"><p class="spec-cap">Generated (no scan)</p><p class="spec-body">{{ $p3 | markdownify }}</p></div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">12 · Images: 亞太球場 halftone with the orange plate, flag plate, Ryan emblem at size</h2>
+    <div class="spec-plates udc-pressed spec-cell">
+      <figure class="udc-plate spec-stadium udc-tilt udc-t2" style="--ink:url(/textures/stadium-ink.png);--ink-night:url(/textures/stadium-ink-night.png);--orange:url(/textures/stadium-orange.png)"><span class="udc-plate-orange"></span><span class="udc-plate-ink" role="img" aria-label="The outfield stands of the Asia-Pacific International Baseball Stadium, full of fans in orange"></span></figure>
+      <figure class="udc-plate spec-flag udc-tilt udc-t5" style="--ink:url(/textures/flag-ink.png);--ink-night:url(/textures/flag-ink-night.png)"><span class="udc-plate-ink" role="img" aria-label="A hand-painted flag reading 外野那群人"></span></figure>
+      <div class="spec-emblems"><p class="spec-cap">Ryan at 56 / 44 / 40 px</p><span class="udc-emblem"></span><span class="udc-emblem" style="width:44px"></span><span class="udc-emblem" style="width:40px"></span></div>
+    </div>
+  </section>
+
+  <section class="spec-row">
+    <h2 class="spec-n">13 · Glyph coverage — every fixed string × every font (generated by fontTools)</h2>
+    <table class="spec-table">
+      <thead><tr><th>Font</th><th>String</th><th>Distinct characters</th><th>Missing</th></tr></thead>
+      <tbody>{{ range site.Data.specimen_glyphs }}<tr><td>{{ .font }}</td><td>{{ .string }}</td><td>{{ .chars }}</td><td>{{ with .missing }}<b class="spec-miss">{{ . }}</b>{{ else }}none{{ end }}</td></tr>{{ end }}</tbody>
+    </table>
+  </section>
+</div>
+{{ end }}
+
+{{- define "_partials/inline/spec-field.html" -}}
+<div class="udc-masthead">
+  <span class="udc-emblem" role="img" aria-label="Ryan, the Uni-Lions mascot"></span>
+  <div class="udc-field">
+    <p class="udc-field-text udc-ink udc-w2"><span><b>U</b>napologetically</span><span class="udc-seam" aria-hidden="true"></span><span><b>D</b>epends on <b>C</b>ontext</span></p>
+  </div>
+</div>
+{{- end -}}
+{{- define "_partials/inline/spec-news.html" -}}
+<div class="udc-box udc-tilt udc-t2 spec-news">
+  <h3 class="udc-label">News</h3>
+  <ol class="udc-news-list">
+    {{ range .news }}<li><time datetime="{{ .date }}">{{ .label }}</time><p>{{ (.text | default .en) | markdownify }}</p></li>{{ end }}
+  </ol>
+</div>
+{{- end -}}
+{{- define "_partials/inline/spec-keywords.html" -}}
+<div class="udc-keywords" aria-hidden="true">
+  <span class="udc-kw-method">interviews</span>
+  <span class="udc-kw-current udc-tilt udc-t1">human–agent</span>
+  <span class="udc-kw-past">notification summaries</span>
+  <span class="udc-kw-primary">personal AI agents</span>
+  <span class="udc-kw-current udc-kw-vert">agent–agent</span>
+  <span class="udc-kw-method">qualitative analysis</span>
+  <span class="udc-kw-focus udc-tilt udc-t4">contextual privacy</span>
+  <span class="udc-kw-past udc-kw-box">feedback</span>
+  <span class="udc-kw-primary-2">integrate, interpret, safeguard, adapt</span>
+  <span class="udc-kw-past">individual preferences</span>
+  <span class="udc-kw-current udc-kw-plate">multi-agent AI systems</span>
+  <span class="udc-kw-method">system building</span>
+  <span class="udc-kw-past udc-tilt udc-t5">proactive, context-aware</span>
+  <span class="udc-kw-past">intelligent smartphone notification systems</span>
+  <span class="udc-kw-method">Android prototypes</span>
+</div>
+{{- end -}}

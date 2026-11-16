@@ -1,0 +1,15 @@
+{{/* Three distinct projects, exactly as written in data/udc.yaml. */}}
+<div class="udc-work-list">
+  {{- range site.Data.udc.work }}
+  <article class="udc-work">
+    <p class="udc-work-meta">{{ .meta }}</p>
+    <h3 class="udc-work-title"><a href="{{ .page }}">{{ .title }}</a></h3>
+    <p class="udc-work-text">{{ .text }}</p>
+    <p class="udc-work-links">
+      {{- range .links }}{{ $icon := "arrow-up-right" }}{{ if eq .label "Paper" }}{{ $icon = "document-text" }}{{ else if eq .label "Code" }}{{ $icon = "brands/github" }}{{ end }}
+      <a href="{{ .url }}">{{ partial "functions/get_icon" (dict "name" $icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}{{ .label }}</a>
+      {{- end }}
+    </p>
+  </article>
+  {{- end }}
+</div>

@@ -1,0 +1,5 @@
+{{/* One halftone plate in its own reserved slot. dict: class, ink, ink_night, orange, alt, ratio */}}
+<figure class="udc-plate {{ .class }}" style="--ink: url({{ .ink }});{{ with .ink_night }} --ink-night: url({{ . }});{{ end }}{{ with .orange }} --orange: url({{ . }});{{ end }}">
+  {{- if .orange }}<span class="udc-plate-orange"></span>{{ end }}
+  <span class="udc-plate-ink" role="img" aria-label="{{ .alt }}"></span>
+</figure>

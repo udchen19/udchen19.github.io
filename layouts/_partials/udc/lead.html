@@ -1,0 +1,6 @@
+{{/* Lead story: kicker → research question (DRAFT until chosen) → byline → affiliation + intro. */}}
+{{- $d := site.Data.udc -}}
+{{- $draft := not $d.lead.headline -}}
+{{- $headline := $d.lead.headline | default (index $d.lead.headline_drafts 0) -}}
+<p class="udc-kicker">Current research</p>
+<p class="udc-lead-head udc-ink udc-w1 udc-tilt udc-t3">{{ $headline }}{{ if $draft }}<span class="udc-draft-mark" title="Headline draft 1 of 3, not yet chosen">Draft</span>{{ end }}</p>

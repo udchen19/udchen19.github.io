@@ -1,0 +1,10 @@
+{{/* UD's Log on the home page: up to three titles, never dates (plan 2). */}}
+{{- $posts := where site.RegularPages "Section" "post" -}}
+<section id="garden" class="udc-tier udc-log" aria-labelledby="udc-log-title">
+  <div class="udc-tier-head"><h2 id="udc-log-title" class="udc-label">UD’s Log</h2><a class="udc-more" href="/post/">All posts</a></div>
+  <ul class="udc-log-titles">
+    {{- range first 3 $posts.ByDate.Reverse }}
+    <li{{ if gt (countrunes (replaceRE `[\x00-\x7F]` "" .Title)) 3 }} lang="zh-Hant"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{- end }}
+  </ul>
+</section>

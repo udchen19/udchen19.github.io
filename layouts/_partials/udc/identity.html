@@ -1,0 +1,14 @@
+{{/* Headshot (4:5, natural colour with grain) + profile links. */}}
+{{- $author := site.GetPage "/authors/admin" -}}
+{{- $avatar := $author.Resources.GetMatch "avatar*" -}}
+<figure class="udc-headshot udc-tilt udc-t2">
+  {{- with $avatar }}{{ $img := .Fill "440x550 webp q86 Center" }}
+  <img src="{{ $img.RelPermalink }}" width="220" height="275" alt="Portrait of Uei-Dar Chen" fetchpriority="high">
+  {{- end }}
+</figure>
+<nav class="udc-profile-links" aria-label="Contact and profiles">
+  {{- range first 4 $author.Params.profiles }}
+  {{- $label := .label | default (cond (in .url "scholar.google") "Google Scholar" "GitHub") }}
+  <a href="{{ .url }}" aria-label="{{ $label }}" title="{{ $label }}">{{ partial "functions/get_icon" (dict "name" .icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</a>
+  {{- end }}
+</nav>

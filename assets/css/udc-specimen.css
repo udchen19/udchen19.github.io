@@ -1,0 +1,64 @@
+/* Specimen page only (branch, removed with plan 6.3). The working sheet is plain on purpose;
+   the system pieces inside each cell come from custom.css. */
+body.page-wrapper:has(.udc-specimen)::after { display: none; }
+.udc-specimen { padding-block: 28px 40px; }
+.spec-head { border-bottom: 3px double var(--udc-ink); padding-bottom: 14px; margin-bottom: 8px; }
+.spec-tag, .spec-cap, .spec-n { font-family: system-ui, sans-serif; font-size: 12px; letter-spacing: .02em; color: var(--udc-ink-2); margin: 0 0 8px; }
+.spec-title { font-family: system-ui, sans-serif; font-size: 22px; margin: 0 0 6px; }
+.spec-note { font-family: system-ui, sans-serif; font-size: 14px; max-width: 80ch; margin: 0; }
+.spec-row { padding: 22px 0 18px; border-bottom: 1px solid var(--udc-rule); }
+.spec-n { font-size: 13px; color: var(--udc-ink); font-weight: 600; margin-bottom: 12px; }
+.spec-n .udc-draft-mark { font-family: system-ui, sans-serif; font-size: 11px; vertical-align: 1px; }
+.spec-cols { display: grid; gap: 18px; }
+.spec-cols-1 { grid-template-columns: 1fr; }
+.spec-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.spec-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.spec-narrow { max-width: 760px; }
+.spec-cell { padding: 10px 2px; }
+.spec-hammer { font-family: "UDC Spec Hammer", var(--udc-display); }
+.spec-body { font-size: 1rem; line-height: 1.65; max-width: 68ch; margin: 0 0 12px; }
+.spec-ss4 { font-family: "UDC Spec Source Serif", serif; }
+.spec-fraunces { font-family: "Fraunces", serif; }
+.spec-paper-text { font-family: var(--udc-text); font-weight: 600; font-size: 1.05rem; line-height: 1.35; margin: 0; }
+.spec-paper-display { font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem); }
+.spec-lead { display: flex; gap: 14px; align-items: flex-start; }
+.spec-lead-small { font-size: clamp(1.6rem, 1rem + 1.8vw, 2.4rem); }
+.spec-news { max-width: 300px; }
+.spec-zh { font-size: 1rem; line-height: 1.85; max-width: 36em; }
+.spec-zh p { margin: 0 0 .9em; }
+.spec-noto { font-family: "UDC Spec Noto Serif TC", serif; }
+.spec-chiron { font-family: "Chiron Sung HK", serif; }
+.spec-iansui { font-family: "UDC Spec Iansui", serif; }
+.spec-index { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-family: var(--udc-sign); font-size: .9rem; border-bottom: 3px double var(--udc-ink); padding: 10px 0; flex-wrap: wrap; }
+.spec-index a { text-decoration: none; }
+.spec-index a.is-current { color: var(--udc-orange-text); text-decoration: underline 2px var(--udc-orange); text-underline-offset: .3em; }
+.spec-states { padding-top: 12px; }
+.spec-states .spec-cap { display: inline; margin-right: 8px; }
+.spec-date { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
+.spec-label-demo { max-width: 420px; margin-bottom: 14px; }
+a.is-hover { text-decoration-thickness: 2px; }
+a.is-focus { outline: 2px solid var(--udc-orange); outline-offset: 3px; }
+.spec-tilts { margin-top: 18px; }
+.spec-makeup { display: grid; grid-template-columns: minmax(0, 1fr) 52px; gap: 8px 10px; align-items: start; }
+.spec-makeup > :not(.udc-nameplate) { grid-column: 1; }
+.spec-makeup .udc-nameplate { grid-column: 2; grid-row: 1 / span 3; font-size: 1.6rem; }
+.spec-small { margin: 0; font-size: .9375rem; line-height: 1.5; }
+.spec-paper { padding: 22px 24px; min-height: 300px; }
+.spec-paper-scan { --udc-sheet: linear-gradient(transparent, transparent), url("/textures/newsprint-show.webp"), url("/textures/newsprint-fibres.webp"), url("/textures/newsprint-tone.png"); --udc-sheet-pos: 0 0, 0 0, 0 0, 0 0; }
+.spec-paper-gen { --udc-sheet: linear-gradient(transparent, transparent), url("/textures/newsprint-show.webp"), url("/textures/newsprint-fibres-generated.webp"), url("/textures/newsprint-tone.png"); --udc-sheet-pos: 0 0, 0 0, 0 0, 0 0; }
+.spec-plates { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+.spec-stadium { aspect-ratio: 3 / 1; }
+.spec-flag { aspect-ratio: 760 / 770; }
+.spec-emblems { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; max-width: 200px; }
+.spec-emblems .spec-cap { flex-basis: 100%; }
+.spec-table { border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 13px; width: 100%; max-width: 900px; }
+.spec-table th, .spec-table td { text-align: left; padding: 4px 10px 4px 0; border-bottom: 1px solid var(--udc-rule); }
+.spec-miss { color: var(--udc-orange-text); }
+@media (max-width: 900px) {
+  .spec-cols-3, .spec-cols-2 { grid-template-columns: 1fr; }
+  .spec-plates { grid-template-columns: minmax(0, 1fr); }
+  .spec-flag { width: 50%; }
+}
+.spec-glyphs { font-size: 2.2rem; line-height: 1.3; letter-spacing: .05em; margin-top: .4em !important; }
+.spec-makeup .udc-label { justify-self: start; }
+.spec-makeup .udc-page-title { font-size: clamp(1.5rem, 1rem + 1.4vw, 2.2rem); overflow-wrap: anywhere; }

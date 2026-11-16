@@ -1,0 +1,22 @@
+{{/* Ink spread: rough edges at pixel scale. A displacement, then a steep alpha curve so
+     edges stay crisp (printed), never soft (blurred). */}}
+<svg class="udc-filters" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <filter id="udc-spread-1" x="-2%" y="-8%" width="104%" height="116%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="16" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feComponentTransfer in="d"><feFuncA type="linear" slope="1.5" intercept="-.12"/></feComponentTransfer>
+  </filter>
+  <filter id="udc-spread-2" x="-2%" y="-8%" width="104%" height="116%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="23" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="d"/>
+    <feComponentTransfer in="d"><feFuncA type="linear" slope="1.8" intercept="-.2"/></feComponentTransfer>
+  </filter>
+</svg>
+{{ $ui := resources.Get "js/udc-ui.js" | minify | fingerprint }}
+<script src="{{ $ui.RelPermalink }}" integrity="{{ $ui.Data.Integrity }}" defer></script>
+{{- if .IsHome }}
+<button type="button" class="udc-phrase" data-udc-phrase aria-label="Bring the page back">I solemnly swear that I am up to no good.</button>
+{{ $js := resources.Get "js/udc-entrance.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{- end }}
+{{ if hugo.IsServer }}{{ partial "udc/dev-switch.html" . }}{{ end }}

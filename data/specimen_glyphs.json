@@ -1,0 +1,218 @@
+[
+ {
+  "font": "Metropolitan Line",
+  "string": "Tagline",
+  "chars": 17,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Headline draft 1",
+  "chars": 18,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "DRAFT mark",
+  "chars": 5,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Byline",
+  "chars": 12,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Name (Latin)",
+  "chars": 10,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Field: section names",
+  "chars": 18,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Labels",
+  "chars": 14,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Navigation",
+  "chars": 23,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Paper title",
+  "chars": 28,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Dates",
+  "chars": 23,
+  "missing": ""
+ },
+ {
+  "font": "Metropolitan Line",
+  "string": "Keywords",
+  "chars": 30,
+  "missing": ""
+ },
+ {
+  "font": "Hammersmith One",
+  "string": "Tagline",
+  "chars": 17,
+  "missing": ""
+ },
+ {
+  "font": "Hammersmith One",
+  "string": "Headline draft 1",
+  "chars": 18,
+  "missing": ""
+ },
+ {
+  "font": "Hammersmith One",
+  "string": "Paper title",
+  "chars": 28,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "Tagline",
+  "chars": 17,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "Headline draft 1",
+  "chars": 18,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "DRAFT mark",
+  "chars": 5,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "Field: section names",
+  "chars": 18,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "Labels",
+  "chars": 14,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "Paper title",
+  "chars": 28,
+  "missing": ""
+ },
+ {
+  "font": "Dela Gothic One",
+  "string": "Keywords",
+  "chars": 30,
+  "missing": ""
+ },
+ {
+  "font": "莫大毛筆 Bold",
+  "string": "Name (繁體中文)",
+  "chars": 3,
+  "missing": ""
+ },
+ {
+  "font": "Mantou Sans (UDC Field TC subset)",
+  "string": "Name (繁體中文)",
+  "chars": 3,
+  "missing": ""
+ },
+ {
+  "font": "Newsreader",
+  "string": "Paper title",
+  "chars": 28,
+  "missing": ""
+ },
+ {
+  "font": "Newsreader",
+  "string": "Dates",
+  "chars": 23,
+  "missing": ""
+ },
+ {
+  "font": "Newsreader",
+  "string": "Keywords",
+  "chars": 30,
+  "missing": ""
+ },
+ {
+  "font": "Newsreader",
+  "string": "Byline",
+  "chars": 12,
+  "missing": ""
+ },
+ {
+  "font": "Newsreader",
+  "string": "Research text (data/udc.yaml)",
+  "chars": 67,
+  "missing": ""
+ },
+ {
+  "font": "Source Serif 4",
+  "string": "Paper title",
+  "chars": 28,
+  "missing": ""
+ },
+ {
+  "font": "Source Serif 4",
+  "string": "Dates",
+  "chars": 23,
+  "missing": ""
+ },
+ {
+  "font": "Source Serif 4",
+  "string": "Keywords",
+  "chars": 30,
+  "missing": ""
+ },
+ {
+  "font": "Source Serif 4",
+  "string": "Research text (data/udc.yaml)",
+  "chars": 67,
+  "missing": ""
+ },
+ {
+  "font": "Noto Serif TC",
+  "string": "Name (繁體中文)",
+  "chars": 3,
+  "missing": ""
+ },
+ {
+  "font": "Noto Serif TC",
+  "string": "Post opening (books-summer-2021)",
+  "chars": 107,
+  "missing": ""
+ },
+ {
+  "font": "Iansui",
+  "string": "Name (繁體中文)",
+  "chars": 3,
+  "missing": ""
+ },
+ {
+  "font": "Iansui",
+  "string": "Post opening (books-summer-2021)",
+  "chars": 107,
+  "missing": ""
+ }
+]

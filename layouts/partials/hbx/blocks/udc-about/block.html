@@ -1,23 +1,29 @@
+{{/* About: the existing structure, set in the newspaper make-up. CS 225 TA appears only here. */}}
 {{ $author := site.GetPage "/authors/admin" }}
 {{ $bio := site.Data.udc.bio }}
-<div class="udc-wrap udc-reading-column udc-about" lang="en">
-  <h1>About</h1>
-  <div class="udc-about-bio">
-    <p>{{ $bio.affiliation.en | markdownify }}</p>
-    {{ range $bio.paragraphs }}<p>{{ .en | markdownify }}</p>{{ end }}
-  </div>
-  <section aria-labelledby="education-title">
-    <h2 id="education-title">Education</h2>
-    {{ range $author.Params.education }}
-    <div class="udc-cv-item">
-      <h3>{{ .institution }}</h3><p>{{ .area }}</p>
-      <p class="udc-cv-date">{{ time.Format "2006" .date_start }}–{{ time.Format "2006" .date_end }}</p>
-      {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
+<div class="udc-list udc-wrap udc-about" lang="en">
+  <h1 class="udc-page-title udc-ink udc-w3 udc-tilt udc-t3">About</h1>
+  <div class="udc-about-top">
+    <div class="udc-about-bio">
+      <p>{{ $bio.affiliation.text | markdownify }}</p>
+      {{ range $bio.paragraphs }}<p>{{ .text | markdownify }}</p>{{ end }}
+      <p class="udc-about-cv"><a href="/uploads/uei-dar-chen-cv.pdf">Full CV (PDF)</a></p>
     </div>
-    {{ end }}
-  </section>
-  <section aria-labelledby="experience-title">
-    <h2 id="experience-title">Experience</h2>
+    <section class="udc-box udc-about-edu udc-tilt udc-t6" aria-labelledby="education-title">
+      <h2 id="education-title" class="udc-label">Education</h2>
+      {{ range $author.Params.education }}
+      <div class="udc-cv-item">
+        <h3>{{ .institution }}</h3><p>{{ .area }}</p>
+        <p class="udc-cv-date">{{ time.Format "2006" .date_start }}–{{ time.Format "2006" .date_end }}</p>
+        {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
+      </div>
+      {{ end }}
+    </section>
+  </div>
+  <hr class="udc-rule-heavy" aria-hidden="true">
+  <section class="udc-about-exp" aria-labelledby="experience-title">
+    <h2 id="experience-title" class="udc-label">Experience</h2>
+    <div class="udc-cv-grid">
     {{ range $author.Params.work }}
     <div class="udc-cv-item">
       <h3>{{ .position }}</h3>
@@ -26,12 +32,15 @@
       {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
     </div>
     {{ end }}
+    </div>
   </section>
-  {{ range $author.Params.skills }}
-  <section><h2>{{ .name }}</h2><dl>{{ range .items }}<dt>{{ .name }}</dt>{{ with .description }}<dd>{{ . }}</dd>{{ end }}{{ end }}</dl></section>
-  {{ end }}
-  <section aria-labelledby="languages-title"><h2 id="languages-title">Languages</h2>
-    <dl class="udc-language-list">{{ range $author.Params.languages }}<div><dt>{{ .name }}</dt><dd>{{ .description }}</dd></div>{{ end }}</dl>
-  </section>
-  <p><a href="/uploads/uei-dar-chen-cv.pdf">Full CV (PDF)</a></p>
+  <hr class="udc-rule-heavy" aria-hidden="true">
+  <div class="udc-about-rest">
+    {{ range $author.Params.skills }}
+    <section><h2 class="udc-label">{{ .name }}</h2><dl>{{ range .items }}<dt>{{ .name }}</dt>{{ with .description }}<dd>{{ . }}</dd>{{ end }}{{ end }}</dl></section>
+    {{ end }}
+    <section aria-labelledby="languages-title"><h2 id="languages-title" class="udc-label">Languages</h2>
+      <dl>{{ range $author.Params.languages }}<dt>{{ .name }}</dt><dd>{{ .description }}</dd>{{ end }}</dl>
+    </section>
+  </div>
 </div>

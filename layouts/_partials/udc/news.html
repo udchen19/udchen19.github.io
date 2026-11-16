@@ -1,0 +1,9 @@
+{{/* News: boxed item; all items visible, scrolling only past four (plan 3.1). */}}
+<section id="news" class="udc-box udc-news udc-tilt udc-t6{{ if gt (len site.Data.udc.news) 4 }} is-long{{ end }}" aria-labelledby="udc-news-title">
+  <h2 id="udc-news-title" class="udc-label">News</h2>
+  <ol class="udc-news-list">
+    {{- range site.Data.udc.news }}
+    <li><time datetime="{{ .date }}">{{ .label }}</time><p>{{ .text | markdownify }}</p></li>
+    {{- end }}
+  </ol>
+</section>

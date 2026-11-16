@@ -1,0 +1,8 @@
+{{- $bio := site.Data.udc.bio -}}
+<div class="udc-intro">
+  {{- $aff := $bio.affiliation.text | markdownify }}
+  <p class="udc-affiliation">{{ if .dropcap }}{{ replaceRE `^(\pL)` `<span class="udc-dropcap" aria-hidden="true">$1</span><span class="udc-visually-hidden">$1</span>` $aff 1 | safeHTML }}{{ else }}{{ $aff }}{{ end }}</p>
+  {{- range $bio.paragraphs }}
+  <p>{{ .text | markdownify }}</p>
+  {{- end }}
+</div>

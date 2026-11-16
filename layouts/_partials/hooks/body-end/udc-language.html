@@ -1,2 +1,0 @@
-{{ $script := resources.Get "js/udc-language.js" | minify | fingerprint }}
-<script src="{{ $script.RelPermalink }}" integrity="{{ $script.Data.Integrity }}"></script>
