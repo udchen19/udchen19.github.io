@@ -12,6 +12,7 @@ external_link: ''
 
 image:
   caption: APP Screenshot
+  alt_text: 'NotiSummary banner: a phone lock screen showing a summary notification, beside the tagline “Your AI-powered Notification Summarizer”.'
   focal_point: Smart
 
 links:
