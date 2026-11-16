@@ -8,8 +8,8 @@
 {{- $hasPlate := fileExists (printf "static/%s" $plate) -}}
 <article class="udc-single udc-wrap udc-single-{{ .Section }}"{{ if $zh }} lang="zh-Hant"{{ end }}>
   <header class="udc-single-head">
-    <h1 class="udc-page-title udc-ink udc-w{{ add 1 (mod (len .Title) 3) }} udc-tilt udc-t3"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}>{{ .Title }}</h1>
-    <div class="udc-box udc-meta udc-tilt udc-t2" lang="en">
+    <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}>{{ .Title }}</h1>
+    <div class="udc-meta" lang="en">
       {{- if eq .Section "publication" }}
       <p class="udc-meta-authors">{{ partial "page_metadata_authors" . }}</p>
       {{- with .Params.publication }}<p class="udc-meta-venue">{{ . | markdownify }}</p>{{ end }}
@@ -19,13 +19,14 @@
       {{- else }}
       {{- with .Params.summary }}<p class="udc-meta-summary">{{ . | markdownify }}</p>{{ end }}
       {{- end }}
-      {{- if partial "functions/has_attachments" . }}
+      {{- /* Blox has_attachments does not look at hugoblox.ids (DOI-only pages showed no link). */}}
+      {{- if or (partial "functions/has_attachments" .) .Params.hugoblox.ids }}
       <div class="udc-meta-links">{{ partial "page_links" (dict "page" . "is_list" 0) }}</div>
       {{- end }}
     </div>
   </header>
   {{- if $hasPlate }}
-  {{ partial "udc/plate.html" (dict "class" "udc-featured udc-tilt udc-t4" "ink" (printf "/%s" $plate) "ink_night" (replace (printf "/%s" $plate) "-ink.png" "-ink-night.png") "alt" (.Params.image.alt_text | default (printf "%s, featured image" .Title))) }}
+  {{ partial "udc/plate.html" (dict "class" "udc-featured" "ink" (printf "/%s" $plate) "ink_night" (replace (printf "/%s" $plate) "-ink.png" "-ink-night.png") "alt" (.Params.image.alt_text | default (printf "%s, featured image" .Title))) }}
   {{- end }}
   <div class="udc-prose">
     {{ .Content }}

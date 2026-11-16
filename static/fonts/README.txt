@@ -1,57 +1,38 @@
 Self-hosted fonts for udchen.tw
 
-Redesign 2026-11 (branch redesign/2026-11-variations)
-=====================================================
-All files below were downloaded on 2026-11-11, checked for glyph coverage against the
-exact fixed strings (table: data/specimen_glyphs.json, shown on /specimen/), then
-subset and converted to WOFF2 with fontTools 4.55. All are SIL Open Font License 1.1.
-None of the licence files declares a Reserved Font Name except Hammersmith One;
-subsets of that font, and every specimen-only subset, ship under new names anyway.
+Redesign 2026-11, plan v2 (branch redesign/2026-11-variations)
+==============================================================
+Downloaded 2026-11-16 from github.com/google/fonts (the licence file beside each font was read),
+subset and converted to WOFF2 with fontTools 4.55 by docs/design/tools/fonts.py.
 
-Metropolitan Line (= Railway Sans) — Justin Howes, Greg Fleming, Alexei Vanyashin
-  Source: https://github.com/googlefonts/metropolitan-line (fonts/ttf/MetropolitanLine-Regular.ttf)
-  The googlefonts/railway-sans repository now redirects here; the README states it is a
-  derivative of Railway Sans, drawn from Johnston's 1916 proofs, not from TfL's New Johnston.
-  One weight only (Regular): font-synthesis is off, no faux bold.
-  File: udc-metro.woff2 (Latin subset, 19 KB). Licence: MetropolitanLine-OFL.txt.
+Manufacturing Consent (The Manufacturing Consent Project Authors; designer Fredrick Brennan)
+  ofl/manufacturingconsent/ManufacturingConsent-Regular.ttf. Nameplate only: subset to the letters of
+  "The Usually Daily Chronicle". udc-nameplate.woff2. SIL OFL 1.1: ManufacturingConsent-OFL.txt.
+Ultra (Astigmatic) — headline, page titles, research heads, 404
+  apache/ultra/Ultra-Regular.ttf. Basic Latin + Latin-1 punctuation + general punctuation.
+  udc-ultra.woff2. Apache License 2.0 (not OFL): Ultra-LICENSE-Apache-2.0.txt.
+Libre Franklin (The Libre Franklin Project Authors; Impallari Type) — menu, labels, dates
+  ofl/librefranklin/LibreFranklin[wght].ttf, instanced to static 500 and 700, same subset as Ultra.
+  udc-franklin-500.woff2, udc-franklin-700.woff2. SIL OFL 1.1: LibreFranklin-OFL.txt.
+Libre Baskerville (Impallari Type) — reading text, served as "UDC Text"
+  ofl/librebaskerville/LibreBaskerville[wght].ttf and -Italic[wght].ttf, instanced to 400, 700 and
+  italic 400; Latin range. Its licence declares the Reserved Font Name "Libre Baskerville", so the
+  modified (subset) files are renamed "UDC Text". udc-baskerville-{400,700,italic}.woff2.
+  SIL OFL 1.1: LibreBaskerville-OFL.txt.
+IM Fell DW Pica italic (Igino Marini) — the motto and the nameplate's "not"
+  ofl/imfelldwpica/IMFePIit28P.ttf, subset to those strings. udc-motto.woff2. SIL OFL 1.1: IMFellDWPica-OFL.txt.
+Noto Serif TC 900 (Google) — 繁體中文 titles
+  github.com/notofonts/noto-cjk Serif/Variable/TTF/Subset/NotoSerifTC-VF.ttf, instanced to 900 and cut
+  into the same 111 unicode-range slices as 400/700 (docs/design/tools/noto_slices.py):
+  noto-serif-tc-900-N.woff2. SIL OFL 1.1: notoseriftc-OFL.txt.
+Noto Serif TC 400/700 — 繁體中文 reading text (2026-11-11; unchanged): noto-serif-tc-{400,700}-N.woff2.
+莫大毛筆 Bakudai Bold (max32002) — used only to render 衝啥 as an image (static/textures/chongsha.png);
+  no font file ships. Licence: Bakudai-OFL.txt. (The earlier "UDC Brush TC" subset was removed 2026-11-16.)
+Not shipped: 玉ねぎ楷書「激」 (玉点堂). Its licence allows use as an image but forbids redistributing the
+  font file, so only the rendered lettering is in static/textures/.
 
-Newsreader — Production Type
-  Source: https://github.com/google/fonts/tree/main/ofl/newsreader (variable opsz 6–72, wght 200–800)
-  Latin subset; optical size pinned at 16 and weight limited with fontTools.varLib.instancer:
-  roman keeps wght 400–700 (variable), italic is a static 400 (the only italic used).
-  Files: udc-newsreader.woff2 (41 KB), udc-newsreader-italic.woff2 (25 KB). Licence: Newsreader-OFL.txt.
-
-Dela Gothic One — syakuzen (Dela Gothic Project)
-  Source: https://github.com/google/fonts/tree/main/ofl/delagothicone
-  Latin subset for type theme Y. File: udc-dela-latin.woff2 (16 KB). Licence: DelaGothicOne-OFL.txt.
-
-UDC Brush TC — subset of 莫大毛筆 Bakudai Bold v1.48 (max32002), based on 衡山毛筆フォント
-  by 青柳衡山. Source: https://github.com/max32002/bakudaifont (tw/Bakudai-Bold.ttf)
-  Included text: 陳威達 only. Renamed "UDC Brush TC". File: udc-brush-tc.woff2 (5 KB).
-  Licence: Bakudai-OFL.txt (the repository's SIL_Open_Font_License_1.1.txt).
-
-UDC Field TC — existing subset of Mantou Sans (see the earlier entry below); used by
-  type theme Y for 陳威達. Glyphs 陳威達 confirmed present.
-
-Specimen-only comparison faces (removed with the specimen page, plan 6.3)
-  UDC Spec Hammer — Hammersmith One, Sorkin Type (RFN "Hammersmith", hence renamed).
-    https://github.com/google/fonts/tree/main/ofl/hammersmithone · spec-hammer.woff2 · HammersmithOne-OFL.txt
-  UDC Spec Source Serif — Source Serif 4, Adobe. https://github.com/google/fonts/tree/main/ofl/sourceserif4
-    spec-sourceserif.woff2 · SourceSerif4-OFL.txt
-  UDC Spec Noto Serif TC — Noto Serif TC (variable), Google. https://github.com/google/fonts/tree/main/ofl/notoseriftc
-    Subset to the opening of content/post/books-summer-2021 + 陳威達片次也北公花突化名心.
-    spec-notoserif-tc.woff2 · notoseriftc-OFL.txt
-  UDC Spec Iansui — 芫荽 Iansui v1.020, ButTaiwan. https://github.com/ButTaiwan/iansui
-    Same subset text. spec-iansui.woff2 · Iansui-OFL.txt
-  Fraunces (earlier baseline, below) is declared only in assets/css/udc-specimen-fonts.css.
-
-Noto Serif TC — Google (Source Han Serif TC). Chosen on the specimen 2026-11-11 as the 繁體中文
-  reading face (Taiwan-standard forms). Source: google/fonts ofl/notoseriftc (NotoSerifTC[wght].ttf).
-  Cut into 111 unicode-range slices (same slicing as the Google Fonts TC slices) and instanced to
-  static 400 and 700: noto-serif-tc-400-N.woff2 / noto-serif-tc-700-N.woff2 (docs/design/tools/
-  noto_slices.py). A page downloads only the slices its characters need. Licence: notoseriftc-OFL.txt.
-Chiron Sung HK is no longer loaded by the site; it stays only as the specimen baseline
-  (assets/css/udc-specimen-fonts.css) until the removal plan.
+Removed 2026-11-16 with the variations: Metropolitan Line, Newsreader, Dela Gothic One, Hammersmith One,
+Source Serif 4, Iansui, Fraunces, Chiron Sung HK, and the spec-* specimen subsets.
 
 Earlier entries
 ===============

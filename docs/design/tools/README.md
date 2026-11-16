@@ -1,20 +1,22 @@
-# Build tools for the 2026-11 redesign (branch only)
+# Build tools for the 2026-11 redesign
 
-Scripts that produced the fonts, textures and screenshots. Downloads go to a scratch
-folder outside the repo (`<dl>` below); only their outputs land in `static/`.
+Scripts that produce the fonts, textures, plates and captures, and that run the checks. Downloads and
+non-redistributable sources live outside the repo (`<dl>`, and `docs/design/v2/sources/`, which is never
+committed); only outputs land in `static/` and `data/`. Python: fontTools, brotli, numpy, scipy, PIL,
+pyyaml; ImageMagick 7 (`magick`) for ordered dithering. Hugo 0.165 (what CI pins).
 
-| Script | Makes | Run |
+| Script | Makes or checks | Run |
 |---|---|---|
-| `fonts.py` | Glyph-coverage table `data/specimen_glyphs.json` + WOFF2 subsets in `static/fonts/` | `python fonts.py <repo> <dl>` (fontTools, brotli) |
-| `cjk_spec.py` | Specimen-only 繁體中文 subsets (Noto Serif TC, Iansui) | `python cjk_spec.py <repo> <dl>` |
-| `hk_tw.py` | Which characters in the posts differ between Noto Serif TC (Taiwan) and Chiron Sung HK (Hong Kong) | `python hk_tw.py <repo> <noto-400.ttf>` |
-| `textures.py` | Paper, show-through, press and wear textures | `python textures.py <repo> <Paper002_Color.jpg> <Newsreader.ttf> <MetropolitanLine.ttf>` |
-| `paper_generated.py` | Procedural paper for the specimen comparison | `python paper_generated.py <repo>` |
-| `halftone.py` | Stadium, flag and Ryan plates (day and night) | `python halftone.py <repo>` |
-| `noto_slices.py` | Noto Serif TC static 400/700 unicode-range slices | `python noto_slices.py <repo> <NotoSerifTC.ttf>` |
-| `frames.mjs` | Entrance test: frames, skip, exit, second visit | `node frames.mjs <url> <out> frames|skip|exit|second` |
-| `weights.mjs` / `check.mjs` | First-view font weight; 320px overflow and field lettering | `node weights.mjs <url> <width>` |
-| `shoot.mjs` | Full-page screenshots via headless Chrome (no packages) | `node shoot.mjs jobs.json` |
+| `fonts.py` | WOFF2 subsets of the six faces (static/fonts/) | `python fonts.py <repo> <dl>` |
+| `noto_slices.py` | Noto Serif TC unicode-range slices for any weight | `python noto_slices.py <repo> <NotoSerifTC-VF.ttf> 900` |
+| `textures.py` | Paper base layers; `sheet`: creases and worn edges; `night`: night fibre layer | `python textures.py <repo> sheet <Paper005 displacement.jpg>` |
+| `halftone.py` | Plates: ryan, portrait, stadium, flag, jingu, hogwarts, thames, pages, figure404, night | `python halftone.py <repo> <plate> …` |
+| `lettering.py` | 陳威達 and 衝啥 rendered as images (fonts never shipped) | `python lettering.py <repo> name <font.ttf>` |
+| `flightmap.py` | About flight map: land dots + data/flight_map.json | `python flightmap.py <repo> <ne_110m_land.shp> <ne_10m_airports.shp>` |
+| `paper_contrast.py` | Paper-only per-pixel contrast check, light or dark | `python paper_contrast.py <url> <outdir> [light\|dark]` |
+| `shoot.mjs` | Screenshots and page measurements via headless Chrome | `node shoot.mjs jobs.json` |
+| `weights.mjs` | First-view font and image bytes | `node weights.mjs <url> <width>` |
+| `sharing-card.html` | Layout of the social preview card (assets/media/sharing.jpg) | serve a build, capture `.c` at 1200×630 |
 
-Local server: Hugo 0.165 (what CI pins). Homebrew Hugo 0.168 rejects the Hugo Blox module's
-`includeFiles` key, so `HUGO=/path/to/hugo-0.165 scripts/variations.sh`.
+Removed 2026-11-16 with the variations: check.mjs, cjk_spec.py, frames.mjs, hk_tw.py, paper_generated.py
+(recoverable from commit 178802a).

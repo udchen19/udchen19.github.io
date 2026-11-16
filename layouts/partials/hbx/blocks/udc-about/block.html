@@ -1,44 +1,132 @@
-{{/* About: the existing structure, set in the newspaper make-up. CS 225 TA appears only here. */}}
-{{ $author := site.GetPage "/authors/admin" }}
-{{ $bio := site.Data.udc.bio }}
+{{/* About (plan v2, 4.8, reshaped by UD 2026-11-16). A year strip on top: one lane per kind, each
+     entry a bar over its dates that jumps to its description; under it, one timeline, newest first.
+     Every lane name is a filter. The work lanes (education, research, teaching, industry; work entries
+     carry udc_lane in the author page) start on; the life lanes (data/udc.yaml life_lanes) start off.
+     Turning a lane on shows its bars and puts its entries in line with the others. Without the script
+     everything shows. CS 225 TA appears here and nowhere else on the site. */}}
+{{- $author := site.GetPage "/authors/admin" -}}
+{{- $life := hugo.Data.udc.life | default slice -}}
+{{- $lifeLanes := cond (gt (len $life) 0) (hugo.Data.udc.life_lanes | default slice) slice -}}
+{{- $rows := slice -}}
+{{- range $author.Params.education }}
+{{- $rows = $rows | append (dict "key" .date_start "kind" "edu" "lane" "education" "s" (time .date_start) "e" (time .date_end) "head" .institution "sub" .area "url" "" "text" .summary) }}
+{{- end }}
+{{- range $author.Params.work }}
+{{- $rows = $rows | append (dict "key" .date_start "kind" "work" "s" (time .date_start) "e" (time (.date_end | default (now.Format "2006-01-02"))) "open" (not .date_end) "lane" (.udc_lane | default "industry") "head" .position "sub" .company_name "url" .company_url "text" .summary) }}
+{{- end }}
+{{- range $life }}
+{{- $s := time (printf "%s-01" .date) }}{{ $e := time (printf "%s-01" (.end | default .date)) }}
+{{- $e = $e.AddDate 0 1 -1 }}
+{{- $when := $s.Format "Jan 2006" }}{{ with .end }}{{ $when = printf "%s – %s" ($s.Format "Jan 2006") ((time (printf "%s-01" .)).Format "Jan 2006") }}{{ end }}
+{{- $rows = $rows | append (dict "key" (printf "%s-01" .date) "date" .date "kind" "life" "lane" .lane "s" $s "e" $e "years" $when "text" .text) }}
+{{- end }}
+{{- $all := sort $rows "key" "desc" -}}
+{{- $names := dict "education" "Education" "research" "Research" "teaching" "Teaching" "industry" "Industry" -}}
+{{- range $lifeLanes }}{{ $names = merge $names (dict .key .name) }}{{ end -}}
 <div class="udc-list udc-wrap udc-about" lang="en">
-  <h1 class="udc-page-title udc-ink udc-w3 udc-tilt udc-t3">About</h1>
-  <div class="udc-about-top">
-    <div class="udc-about-bio">
-      <p>{{ $bio.affiliation.text | markdownify }}</p>
-      {{ range $bio.paragraphs }}<p>{{ .text | markdownify }}</p>{{ end }}
-      <p class="udc-about-cv"><a href="/uploads/uei-dar-chen-cv.pdf">Full CV (PDF)</a></p>
+  <h1 class="udc-page-title udc-ink-d">About</h1>
+  {{- if hugo.IsServer }}
+  <p class="udc-about-line"><span class="udc-ud-write">[UD to write]</span> one line; links to the <a href="/">front page</a> and the <a href="/uploads/uei-dar-chen-cv.pdf">CV (PDF)</a>.</p>
+  {{- end }}
+  <div class="udc-tl" data-udc-tl>
+  <h2 class="udc-visually-hidden">Timeline</h2>
+  {{- /* Year strip: positions in % of the span from the earliest start year to the latest end year. */}}
+  {{- $y0 := 9999 }}{{ $y1 := 0 }}
+  {{- range $all }}{{ $y0 = math.Min $y0 .s.Year }}{{ $y1 = math.Max $y1 (add .e.Year 1) }}{{ end }}
+  {{- $y0 = int $y0 }}{{ $y1 = int $y1 }}{{ $span := float (sub $y1 $y0) }}
+  {{- $work := slice "education" "research" "teaching" "industry" }}
+  <nav class="udc-ys" aria-label="Years at a glance, and which kinds of entry to show" style="--years: {{ sub $y1 $y0 }}">
+    <div class="udc-ys-lane udc-ys-head" aria-hidden="true"><span class="udc-ys-name"></span><span class="udc-ys-ticks">{{ range seq $y0 (sub $y1 1) }}<span>{{ if eq (mod . 2) 0 }}<i>{{ div . 100 }}</i>{{ printf "%02d" (mod . 100) }}{{ end }}</span>{{ end }}</span></div>
+    {{- $groups := slice (dict "lanes" $work "on" true) }}
+    {{- with $lifeLanes }}{{ $keys := slice }}{{ range . }}{{ $keys = $keys | append .key }}{{ end }}{{ $groups = $groups | append (dict "lanes" $keys "on" false "label" "Away from the desk") }}{{ end }}
+    {{- range $groups }}
+    {{- $on := .on }}
+    {{- with .label }}<p class="udc-ys-group">{{ . }}</p>{{ end }}
+    {{- range .lanes }}
+    {{- $lane := . }}
+    <div class="udc-ys-lane" data-lane="{{ $lane }}">
+      <span class="udc-ys-name"><button type="button" class="udc-ys-filter" data-lane="{{ $lane }}" aria-pressed="{{ $on }}">{{ index $names $lane }}</button></span>
+      <span class="udc-ys-track">
+      {{- range $i, $r := $all }}{{ if eq $r.lane $lane }}
+        {{- $a := add (float $r.s.Year) (div (float (sub $r.s.YearDay 1)) 365.0) }}
+        {{- $b := add (float $r.e.Year) (div (float (sub $r.e.YearDay 1)) 365.0) }}
+        <a class="udc-ys-bar" href="#tl-{{ $i }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.head | default $r.text | plainify }}">
+          <span class="udc-visually-hidden">{{ $r.head | default $r.text | plainify }}</span></a>
+      {{- end }}{{ end }}
+      </span>
     </div>
-    <section class="udc-box udc-about-edu udc-tilt udc-t6" aria-labelledby="education-title">
-      <h2 id="education-title" class="udc-label">Education</h2>
-      {{ range $author.Params.education }}
-      <div class="udc-cv-item">
-        <h3>{{ .institution }}</h3><p>{{ .area }}</p>
-        <p class="udc-cv-date">{{ time.Format "2006" .date_start }}–{{ time.Format "2006" .date_end }}</p>
-        {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
+    {{- end }}
+    {{- end }}
+  </nav>
+  {{- /* Flight map (UD, 2026-11-16): collapsed by default. It marks places, not routes: the places
+         in data/flights.yaml print in orange with their notes in a key below; every flight prints faint.
+         Hovering any airport shows its code and name. Data: data/flight_map.json
+         (docs/design/tools/flightmap.py), airports and years only. */}}
+  {{- with hugo.Data.flight_map }}
+  {{- $m := . }}
+  {{- $yrs := slice }}{{ range $m.routes }}{{ $yrs = $yrs | append .years }}{{ end }}{{ $yrs = sort (uniq $yrs) }}
+  <details class="udc-map">
+    <summary class="udc-map-summary">Flights, {{ index $yrs 0 }}–{{ index $yrs (sub (len $yrs) 1) }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</summary>
+    <figure class="udc-map-fig">
+      <div class="udc-map-plate" style="aspect-ratio: {{ $m.w }} / {{ $m.h }}">
+      <span class="udc-map-land" aria-hidden="true"></span>
+      <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
+        {{- range $m.routes }}
+        <path class="udc-map-leg" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
+        {{- end }}
+        {{- range $m.airports }}
+        <circle class="udc-map-port" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
+        {{- end }}
+        {{- range $i, $p := $m.places }}
+        <g class="udc-map-place"><title>{{ $p.name }}: {{ $p.note }}</title>
+          {{- range $p.dots }}<circle cx="{{ index . 0 }}" cy="{{ index . 1 }}" r="8"/>{{ end }}
+          {{- $w := in (slice "nw" "sw") $p.label }}{{ $south := in (slice "sw" "se") $p.label }}
+          <text x="{{ cond $w (sub $p.x 13) (add $p.x 13) }}" y="{{ cond $south (add $p.y 30) (sub $p.y 8) }}"{{ if $w }} text-anchor="end"{{ end }}>{{ $p.name }}</text>
+        </g>
+        {{- end }}
+      </svg>
       </div>
-      {{ end }}
-    </section>
+      <figcaption id="udc-map-cap" class="udc-map-cap">
+        <dl class="udc-map-key">
+          {{- /* Places that share a note share one entry in the key. */}}
+          {{- $notes := slice }}{{ range $m.places }}{{ $notes = $notes | append .note }}{{ end }}
+          {{- range uniq $notes }}{{ $n := . }}{{ $names := slice }}{{ range where $m.places "note" $n }}{{ $names = $names | append .name }}{{ end }}
+          <div><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
+          {{- end }}
+        </dl>
+        <p>Every flight since {{ index $yrs 0 }} in grey; hover a dot for the airport.</p>
+      </figcaption>
+    </figure>
+  </details>
+  {{- end }}
+  <ol class="udc-tl-rows" id="udc-tl-rows" aria-live="polite">
+    {{- range $i, $_ := $all }}
+    <li class="udc-tl-row{{ if eq .kind "life" }} is-life{{ end }}" id="tl-{{ $i }}" data-lane="{{ .lane }}">
+      <p class="udc-tl-date"><span class="udc-tl-lane">{{ index $names .lane }}</span>
+        {{- if eq .kind "life" }}{{ .years }}
+        {{- else if eq .kind "edu" }}{{ .s.Format "2006" }} – {{ .e.Format "2006" }}
+        {{- else if .open }}{{ .s.Format "Jan 2006" }} – Present
+        {{- else if eq .s.Year .e.Year }}{{ .s.Format "Jan" }} – {{ .e.Format "Jan 2006" }}
+        {{- else }}{{ .s.Format "Jan 2006" }} – {{ .e.Format "Jan 2006" }}{{ end }}</p>
+      <span class="udc-tl-node" aria-hidden="true"></span>
+      <div class="udc-tl-desk">
+        {{- if eq .kind "life" }}
+        <p>{{ .text | markdownify }}</p>
+        {{- else }}
+        <h3 class="udc-tl-{{ .kind }}">{{ .head }}</h3>
+        {{- $sub := .sub }}{{ $url := .url }}
+        {{- with $sub }}<p class="udc-tl-sub">{{ with $url }}<a href="{{ . }}">{{ $sub }}</a>{{ else }}{{ $sub }}{{ end }}</p>{{ end }}
+        {{- with .text }}<div class="udc-tl-text">{{ . | markdownify }}</div>{{ end }}
+        {{- end }}
+      </div>
+    </li>
+    {{- end }}
+  </ol>
   </div>
-  <hr class="udc-rule-heavy" aria-hidden="true">
-  <section class="udc-about-exp" aria-labelledby="experience-title">
-    <h2 id="experience-title" class="udc-label">Experience</h2>
-    <div class="udc-cv-grid">
-    {{ range $author.Params.work }}
-    <div class="udc-cv-item">
-      <h3>{{ .position }}</h3>
-      <p>{{ if .company_url }}<a href="{{ .company_url }}">{{ .company_name }}</a>{{ else }}{{ .company_name }}{{ end }}</p>
-      <p class="udc-cv-date">{{ time.Format "Jan 2006" .date_start }} – {{ if .date_end }}{{ time.Format "Jan 2006" .date_end }}{{ else }}Present{{ end }}</p>
-      {{ with .summary }}<div class="udc-cv-summary">{{ . | markdownify }}</div>{{ end }}
-    </div>
-    {{ end }}
-    </div>
-  </section>
-  <hr class="udc-rule-heavy" aria-hidden="true">
   <div class="udc-about-rest">
-    {{ range $author.Params.skills }}
+    {{- range $author.Params.skills }}
     <section><h2 class="udc-label">{{ .name }}</h2><dl>{{ range .items }}<dt>{{ .name }}</dt>{{ with .description }}<dd>{{ . }}</dd>{{ end }}{{ end }}</dl></section>
-    {{ end }}
+    {{- end }}
     <section aria-labelledby="languages-title"><h2 id="languages-title" class="udc-label">Languages</h2>
       <dl>{{ range $author.Params.languages }}<dt>{{ .name }}</dt><dd>{{ .description }}</dd>{{ end }}</dl>
     </section>

@@ -1,6 +1,30 @@
-<footer class="udc-footer">
-  <div class="udc-wrap">
-    <hr class="udc-rule-heavy" aria-hidden="true">
+{{/* Image footer (plan v2, 4.6): one construction, one image per section. The halftone image spans
+     the sheet, fades up into the paper (the fade is in the plate), and ends in a flat ink band that
+     carries the icons and fine print in paper colour. No footer on 404. */}}
+{{- $p := . -}}
+{{- $key := "home" -}}
+{{- if or (eq $p.Section "post") $p.Params.udc_column }}{{ $key = "jingu" }}
+{{- else if or (eq $p.Section "publication") (eq $p.Section "project") (eq $p.RelPermalink "/projects/") }}{{ $key = "hogwarts" }}
+{{- else if eq $p.RelPermalink "/experiences/" }}{{ $key = "thames" }}
+{{- end -}}
+{{- $img := dict
+  "home" (dict "ink" "/textures/stadium-ink.png" "inkn" "/textures/stadium-ink-night.png" "two" "/textures/stadium-orange.png" "twon" "/textures/stadium-orange.png" "alt" "The stands of the Asia-Pacific International Baseball Stadium in Taiwan, full of fans in orange, with a hand-painted flag reading 外野那群人 in the far outfield stand")
+  "jingu" (dict "ink" "/textures/footer-jingu-ink.png" "inkn" "/textures/footer-jingu-ink-night.png" "two" "/textures/footer-jingu-2.png" "twon" "/textures/footer-jingu-2-night.png" "alt" "Meiji Jingu Stadium in Tokyo, the stands and the field")
+  "hogwarts" (dict "ink" "/textures/footer-hogwarts-ink.png" "inkn" "/textures/footer-hogwarts-ink-night.png" "two" "/textures/footer-hogwarts-2.png" "twon" "/textures/footer-hogwarts-2-night.png" "alt" "Hogwarts castle above the lake, from a Fantastic Beasts film still")
+  "thames" (dict "ink" "/textures/footer-thames-ink.png" "inkn" "/textures/footer-thames-ink-night.png" "two" "/textures/footer-thames-2.png" "twon" "/textures/footer-thames-2-night.png" "alt" "London along the Thames by day")
+-}}
+{{- $i := index $img $key -}}
+{{- if ne $p.Kind "404" }}
+<footer class="udc-footer udc-footer-{{ $key }}">
+  <div class="udc-footer-img" role="img" aria-label="{{ $i.alt }}">
+    <span class="udc-fi udc-fi-2" style="--m: url({{ $i.two }}); --m2n: url({{ $i.twon }})"></span>
+    <span class="udc-fi udc-fi-ink" style="--m: url({{ $i.ink }}); --mn: url({{ $i.inkn }})"></span>
+    {{- if eq $key "home" }}
+    <span class="udc-flag"><i class="udc-flag-pole"></i><i class="udc-flag-cloth"></i><i class="udc-flag-outline"></i><i class="udc-flag-ink"></i></span>
+    {{- end }}
+    <span class="udc-footer-creases"></span>
+  </div>
+  <div class="udc-footer-band">
     <nav class="udc-footer-links" aria-label="More ways to connect">
       <a href="mailto:ueidarc2@illinois.edu" aria-label="Email" title="ueidarc2@illinois.edu">{{ partial "functions/get_icon" (dict "name" "at-symbol" "attributes" "aria-hidden=\"true\"") }}</a>
       <a href="https://www.linkedin.com/in/udchen" aria-label="LinkedIn" title="LinkedIn">{{ partial "functions/get_icon" (dict "name" "brands/linkedin" "attributes" "aria-hidden=\"true\"") }}</a>
@@ -13,3 +37,4 @@
     </div>
   </div>
 </footer>
+{{- end }}

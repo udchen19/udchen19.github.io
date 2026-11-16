@@ -45,15 +45,31 @@ education:
     date_start: '2019-09-01'
     date_end: '2023-06-30'
     summary: Dean's List twice; three Foundation Course Awards.
+  - area: Computer Science Class, the first cohort
+    institution: The Affiliated High School of National Taiwan Normal University
+    date_start: '2016-08-01'
+    date_end: '2019-06-30'
+  - area: Math & Science Gifted Class, the third cohort
+    institution: Linkou Junior High School
+    date_start: '2013-08-01'
+    date_end: '2016-06-30'
+  - institution: Chang Gung Primary School
+    date_start: '2010-08-01'
+    date_end: '2013-06-30'
+  - institution: Peter Hills Primary School
+    date_start: '2006-09-01'
+    date_end: '2010-06-30'
 
 work:
   - position: Teaching Assistant, CS 225 — Data Structures
+    udc_lane: teaching
     company_name: University of Illinois Urbana-Champaign
     date_start: '2026-08-01'
     date_end: '2026-12-31'
     summary: |
       Lead weekly labs and office hours, helping students reason through data structures and debug C++ programs. Grade exams and provide feedback on algorithms and runtime analysis.
   - position: Research Assistant
+    udc_lane: research
     company_name: AIMEX Lab, National Yang Ming Chiao Tung University
     company_url: 'https://www.armuro.info/'
     date_start: '2021-07-01'
@@ -61,6 +77,7 @@ work:
     summary: |
       Led research and development of intelligent notification systems, combining user studies, qualitative analysis, and Android prototyping.
   - position: Software Engineering Intern
+    udc_lane: industry
     company_name: Kapito Inc.
     company_url: 'https://www.fastable.ai/'
     date_start: '2022-07-01'
@@ -68,6 +85,7 @@ work:
     summary: |
       Initiated and developed a data visualization platform for identifying potential failures in manufacturing visual-defect detection systems.
   - position: Teaching Assistant, Introduction to Algorithms
+    udc_lane: teaching
     company_name: Department of Computer Science, NYCU
     date_start: '2021-08-01'
     date_end: '2022-01-31'
@@ -83,17 +101,9 @@ skills:
       - name: Prototyping
         description: Android, Kotlin, Python, TypeScript, and the glue required to make studies run.
         icon: hero/code-bracket
-  - name: Away from the desk
-    items:
-      - name: Cycling & running
-        description: Occasionally makes city bikes faster than motorbikes.
-        icon: custom/person-biking
-      - name: Reading
-        description: Several books in progress is still a reading strategy.
-        icon: hero/book-open
 
 languages:
-  - name: Mandarin Chinese
+  - name: Taiwanese Mandarin
     description: Native
     percent: 100
   - name: English
@@ -104,4 +114,4 @@ languages:
     percent: 60
 ---
 
-I am an HCI researcher and developer studying how personal agents can integrate, interpret, and safeguard information across devices and services. My work combines empirical research with hands-on system building: I conduct studies to understand how people make sense of information and preferences, then implement prototypes to test how those ideas behave in everyday life.
+I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign. My research is on personal AI agents, the assistants that work with a person’s own information across their devices and services, and on contextual privacy in human–agent and agent–agent interactions. My work combines qualitative research with system building, from interviews to Android apps used in daily life.

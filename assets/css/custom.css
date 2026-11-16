@@ -1,30 +1,28 @@
 /* udchen.tw — one newspaper page, printed on grey-white newsprint.
-   Order: tokens → type themes → paper and press → base → rules, boxes, plates, field,
-   labels → navigation, footer → (pages: added per build step) → accessibility/print.
-   Plan: docs/design/2026-11-redesign-plan.md */
+   Order: tokens → type roles → sheet (paper, creases, edges) → ink → base → rules, plates →
+   header → footer → pages → accessibility/print.
+   Plan: docs/design/2026-11-redesign-plan-v2.md */
 
 /* ===================================================================== tokens */
 :root {
-  --udc-paper: #D9D6CA;
-  --udc-paper-2: #CCC8BA;
+  --udc-paper: #E2DDD1;
+  --udc-paper-2: #D3CDBF;
   --udc-ink: #1B2436;
-  --udc-ink-2: #4A5262;
+  --udc-ink-2: #3A4252;
   --udc-rule: #B9B5A7;
   --udc-orange: #B5501F;
   --udc-orange-text: #9A3E15;
-  --udc-on-field: #F1EEE4;
-  --udc-on-field-ink: #1B2436;
-  /* the one field */
-  --udc-field-bg: var(--udc-orange);
-  --udc-field-text: var(--udc-on-field);
-  --udc-field-initial: var(--udc-on-field-ink);
-  --udc-field-line: transparent;
-  /* emblem plates */
+  --udc-surround: #131A28;
+  --udc-ink-jingu: #3A76B0;
+  --udc-ink-hogwarts: #B8862B;
+  --udc-ink-thames: #A8553B;
+  /* the pages showing behind the sheet's right edge (values from the approved mock, mk/make-jobs12) */
+  --udc-sheet-under: #D9D3C6;
+  --udc-sheet-line: #6F6A5C;
   --udc-plate-ink: var(--udc-ink);
-  --udc-plate-orange: var(--udc-orange);
   color-scheme: light;
 }
-/* Night edition 1: Thames at dusk — navy dominant, orange as points of light. */
+/* Night edition (plan 5; tuned in Phase 7): Thames at dusk. */
 .dark {
   --udc-paper: #111A2B;
   --udc-paper-2: #18233A;
@@ -33,356 +31,384 @@
   --udc-rule: #2A3550;
   --udc-orange: #DB8448;
   --udc-orange-text: #DB8448;
-  --udc-field-bg: var(--udc-paper-2);
-  --udc-field-text: var(--udc-ink);
-  --udc-field-initial: var(--udc-orange);
-  --udc-field-line: var(--udc-orange);
+  --udc-surround: #04060A;
+  --udc-sheet-under: #18233A;
+  --udc-sheet-line: #2A3550;
   color-scheme: dark;
 }
-/* Night edition 2: after the game — warm, dim. */
-.dark[data-udc-dusk="postgame"], .dark [data-udc-dusk="postgame"] {
-  --udc-paper: #1C1B19;
-  --udc-paper-2: #262421;
-  --udc-ink: #C8C4B8;
-  --udc-ink-2: #9A968B;
-  --udc-rule: #38352F;
-  --udc-orange: #D08146;
-  --udc-orange-text: #D08146;
-  --udc-field-bg: #74351A;
-  --udc-field-text: #E0DCCF;
-  --udc-field-initial: #F0B985;
-  --udc-field-line: transparent;
-}
-.dark [data-udc-dusk="thames"] {
-  --udc-paper: #111A2B; --udc-paper-2: #18233A; --udc-ink: #C9C6BA; --udc-ink-2: #8F96A3;
-  --udc-rule: #2A3550; --udc-orange: #DB8448; --udc-orange-text: #DB8448;
-  --udc-field-bg: var(--udc-paper-2); --udc-field-text: var(--udc-ink);
-  --udc-field-initial: var(--udc-orange); --udc-field-line: var(--udc-orange);
-}
 
-/* ================================================================ type themes */
-:root, [data-udc-type="x"] {
-  --udc-sign: "Metropolitan Line", "Noto Sans TC", system-ui, sans-serif;
-  --udc-display: "Metropolitan Line", "Noto Sans TC", system-ui, sans-serif;
-  --udc-display-weight: 400;
-  --udc-display-track: -0.005em;
-  --udc-name-font: "UDC Brush TC", "Noto Serif TC", serif;
-  --udc-text: "Newsreader", "Noto Serif TC", serif;
-  --udc-lead-size: clamp(2rem, 1.2rem + 3.6vw, 3.75rem);
-  --udc-lead-lh: 1.02;
-}
-[data-udc-type="y"] {
-  --udc-display: "Dela Gothic One", "UDC Field TC", "Noto Sans TC", sans-serif;
-  --udc-display-track: 0;
-  --udc-name-font: "UDC Field TC", "Noto Sans TC", sans-serif;
-  --udc-lead-size: clamp(1.75rem, 1rem + 3vw, 3.25rem);
-  --udc-lead-lh: 1.12;
-}
-
-/* ============================================================ paper and press */
-/* Wear / tilt levels (chosen on the specimen page; light until then). */
-:root, [data-udc-wear="light"] {
-  --udc-press: url("/textures/press-light.png"); --udc-press-display: block;
-  --udc-spread: url("#udc-spread-1");
-  --udc-wear-a: url("/textures/wear-1-light.png");
-  --udc-wear-b: url("/textures/wear-2-light.png");
-  --udc-wear-c: url("/textures/wear-3-light.png");
-}
-[data-udc-wear="medium"] {
-  --udc-press: url("/textures/press-medium.png"); --udc-press-display: block;
-  --udc-spread: url("#udc-spread-2");
-  --udc-wear-a: url("/textures/wear-1-medium.png");
-  --udc-wear-b: url("/textures/wear-2-medium.png");
-  --udc-wear-c: url("/textures/wear-3-medium.png");
-}
-[data-udc-wear="none"] {
-  --udc-press: none; --udc-press-display: none; --udc-spread: none;
-  --udc-wear-a: none; --udc-wear-b: none; --udc-wear-c: none;
-}
-:root, [data-udc-tilt="light"] { --udc-tilt-k: 1; }
-[data-udc-tilt="none"] { --udc-tilt-k: 0; }
-[data-udc-tilt="medium"] { --udc-tilt-k: 2.2; }
-
-/* The sheet: fibres from a real paper scan, faint show-through of the reverse page,
-   slightly uneven tone and one soft fold. soft-light keeps 50% grey neutral. */
+/* ================================================================= type roles */
+/* Sans marks, serif reads (plan 3.2). The sans is never set above 0.9rem. */
 :root {
-  --udc-sheet:
-    linear-gradient(180deg, rgb(128 128 128 / 0) 0, rgb(255 255 255 / var(--udc-fold-hi)) 46%, rgb(0 0 0 / var(--udc-fold-lo)) 54%, rgb(128 128 128 / 0) 100%),
-    url("/textures/newsprint-show.webp"),
-    url("/textures/newsprint-fibres.webp"),
-    url("/textures/newsprint-tone.png");
-  --udc-sheet-size: 100% 36px, 1400px 1900px, 794px 1024px, 1600px 1600px;
-  --udc-sheet-pos: 0 calc(100svh - 40px), 0 0, 0 0, 0 0;
-  --udc-sheet-repeat: no-repeat, repeat, repeat, repeat;
-  --udc-fold-hi: .5; --udc-fold-lo: .3;
+  --udc-nameplate: "Manufacturing Consent", serif;
+  --udc-display: "Ultra", "Noto Serif TC", serif;          /* 繁體中文 falls to Noto Serif TC 900 */
+  --udc-sign: "Libre Franklin", "Noto Serif TC", system-ui, sans-serif;
+  --udc-text: "UDC Text", "Noto Serif TC", serif;          /* Libre Baskerville, renamed subset */
+  --udc-motto-face: "IM Fell DW Pica", "UDC Text", serif;
+  --udc-display-weight: 900;                               /* Ultra has one weight; 900 picks Noto Serif TC 900 */
+  --udc-display-track: 0;
 }
-.dark { --udc-fold-hi: .12; --udc-fold-lo: .35; }
-.udc-sheet, body.page-wrapper {
+
+/* ===================================================================== sheet */
+/* The visitor sees a physical sheet with worn edges, lying on a dark surface (plan 3.4). */
+:root {
+  --udc-edge-l: 22px; --udc-edge-r: 32px; --udc-edge-t: 12px; --udc-gutter: 18px;
+  --udc-crease-tile: 1500px; --udc-crease-side: 12%; --udc-crease-side-end: 28%;
+  --udc-press: url("/textures/press-light.png");
+  /* Base layers: fibres from a real paper scan, faint show-through of the reverse page,
+     slightly uneven tone. soft-light keeps 50% grey neutral. No fold line (plan 2, row 16). */
+  --udc-sheet: url("/textures/newsprint-show.webp"), url("/textures/newsprint-fibres.webp"), url("/textures/newsprint-tone.png");
+  --udc-sheet-size: 1400px 1900px, 794px 1024px, 1600px 1600px;
+}
+@media (max-width: 640px) {
+  :root { --udc-edge-l: 9px; --udc-edge-r: 19px; --udc-edge-t: 6px; --udc-gutter: 12px;
+    --udc-crease-tile: 900px; --udc-crease-side: 10%; --udc-crease-side-end: 24%; }
+}
+html { background: var(--udc-surround); }
+body.page-wrapper {
+  position: relative; isolation: isolate; min-height: 100vh;
   background-color: var(--udc-paper);
   background-image: var(--udc-sheet);
   background-size: var(--udc-sheet-size);
-  background-position: var(--udc-sheet-pos);
-  background-repeat: var(--udc-sheet-repeat);
+  background-repeat: repeat;
   background-blend-mode: soft-light;
 }
+#page-bg { display: none; }
+/* No z-index on the wrapper: each layer must blend with the body's paper, not inside its own group. */
+.udc-sheet-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.udc-sheet-layer > i { position: absolute; z-index: -1; display: block; }
+/* Creases lie under the content (-2); the worn edges are raised above the footer image below. */
+.udc-sheet-layer > .udc-crease { z-index: -2; }
+/* Creases: Paper 005 height map, shadow only (multiply), full strength at the four edges and
+   fading inward; in the centre only the deepest ones, faint (textures.py sheet). */
+.udc-crease { inset: 0; background-size: var(--udc-crease-tile) var(--udc-crease-tile); mix-blend-mode: multiply; }
+.udc-crease-edge {
+  background-image: url("/textures/crease-edge.webp");
+  -webkit-mask-image:
+    linear-gradient(to right, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
+    linear-gradient(to left, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
+    linear-gradient(to bottom, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px),
+    linear-gradient(to top, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px);
+  mask-image:
+    linear-gradient(to right, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
+    linear-gradient(to left, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
+    linear-gradient(to bottom, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px),
+    linear-gradient(to top, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px);
+}
+.udc-crease-centre {
+  background-image: url("/textures/crease-centre.webp");
+  -webkit-mask-image:
+    linear-gradient(to right, transparent var(--udc-crease-side), #000 var(--udc-crease-side-end), #000 calc(100% - var(--udc-crease-side-end)), transparent calc(100% - var(--udc-crease-side))),
+    linear-gradient(to bottom, transparent 170px, #000 380px, #000 calc(100% - 380px), transparent calc(100% - 170px));
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent var(--udc-crease-side), #000 var(--udc-crease-side-end), #000 calc(100% - var(--udc-crease-side-end)), transparent calc(100% - var(--udc-crease-side))),
+    linear-gradient(to bottom, transparent 170px, #000 380px, #000 calc(100% - 380px), transparent calc(100% - 170px));
+  mask-composite: intersect;
+}
+/* Worn edges: masks coloured by tokens, so the night edition recolours them. */
+.udc-edge { -webkit-mask-repeat: repeat-y; mask-repeat: repeat-y; }
+.udc-edge-l { left: 0; top: 0; bottom: 0; width: var(--udc-edge-l); background: var(--udc-surround);
+  -webkit-mask-image: url("/textures/edge-left-wide.svg"); mask-image: url("/textures/edge-left-wide.svg"); -webkit-mask-size: 22px 918px; mask-size: 22px 918px; }
+.udc-edge-r, .udc-edge-r-pages, .udc-edge-r-lines { right: 0; top: 0; bottom: 0; width: var(--udc-edge-r); -webkit-mask-size: 32px 1035px; mask-size: 32px 1035px; }
+.udc-edge-r { background: var(--udc-surround); -webkit-mask-image: url("/textures/edge-right-surround-wide.svg"); mask-image: url("/textures/edge-right-surround-wide.svg"); }
+.udc-edge-r-pages { background: var(--udc-sheet-under); -webkit-mask-image: url("/textures/edge-right-pages-wide.svg"); mask-image: url("/textures/edge-right-pages-wide.svg"); }
+.udc-edge-r-lines { background: var(--udc-sheet-line); -webkit-mask-image: url("/textures/edge-right-lines-wide.svg"); mask-image: url("/textures/edge-right-lines-wide.svg"); }
+.udc-edge-t { left: 0; right: 0; top: 0; height: var(--udc-edge-t); background: var(--udc-surround);
+  -webkit-mask: url("/textures/edge-top-wide.svg") 0 0 / 1000px 12px repeat-x; mask: url("/textures/edge-top-wide.svg") 0 0 / 1000px 12px repeat-x; }
+@media (max-width: 640px) {
+  .udc-edge-l { -webkit-mask-image: url("/textures/edge-left-narrow.svg"); mask-image: url("/textures/edge-left-narrow.svg"); -webkit-mask-size: 9px 918px; mask-size: 9px 918px; }
+  .udc-edge-r, .udc-edge-r-pages, .udc-edge-r-lines { -webkit-mask-size: 19px 1035px; mask-size: 19px 1035px; }
+  .udc-edge-r { -webkit-mask-image: url("/textures/edge-right-surround-narrow.svg"); mask-image: url("/textures/edge-right-surround-narrow.svg"); }
+  .udc-edge-r-pages { -webkit-mask-image: url("/textures/edge-right-pages-narrow.svg"); mask-image: url("/textures/edge-right-pages-narrow.svg"); }
+  .udc-edge-r-lines { -webkit-mask-image: url("/textures/edge-right-lines-narrow.svg"); mask-image: url("/textures/edge-right-lines-narrow.svg"); }
+  .udc-edge-t { -webkit-mask: url("/textures/edge-top-narrow.svg") 0 0 / 1000px 6px repeat-x; mask: url("/textures/edge-top-narrow.svg") 0 0 / 1000px 6px repeat-x; }
+}
 /* One press over the whole sheet: paper-coloured specks knocked out of every ink,
-   and the paper's own light fibres showing through ink. Scrolls with the page. */
-body.page-wrapper { position: relative; min-height: 100vh; }
-body.page-wrapper::after, .udc-pressed::after {
-  content: "";
-  display: var(--udc-press-display, block);
-  position: absolute;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
+   and the paper's own light fibres showing through ink. Scrolls with the page (z-index 60).
+   Images keep their own print and stay out of it: the portrait (its own colour halftone), the name
+   image, Ryan and the footer images sit above it (61–62); the worn edges stay on top (63). */
+.udc-portrait img, .udc-name-zh, .udc-brand .udc-emblem { position: relative; z-index: 61; }
+.udc-sheet-layer > .udc-edge { z-index: 63; }
+body.page-wrapper::after {
+  content: ""; position: absolute; inset: 0; z-index: 60; pointer-events: none;
   background: var(--udc-paper);
   -webkit-mask: var(--udc-press) 0 0 / 512px 512px repeat;
   mask: var(--udc-press) 0 0 / 512px 512px repeat;
 }
-.udc-pressed { position: relative; isolation: isolate; }
-.udc-pressed::after { z-index: 2; }
-#page-bg { display: none; }
 
-/* Display ink: rough edges at pixel scale (not blur) + one of three wear masks.
-   Mask tiles are 12em, so a hole never outgrows the stroke at any size. */
-.udc-ink {
-  filter: var(--udc-spread);
-  -webkit-mask: var(--udc-wear-a) var(--udc-wear-pos, 0 0) / 12em 12em repeat;
-  mask: var(--udc-wear-a) var(--udc-wear-pos, 0 0) / 12em 12em repeat;
-  padding-block: .12em; margin-block: -.12em;
+/* ======================================================================= ink */
+/* One press prints all type, lighter as type gets smaller (plan 3.3): display, label, body.
+   Solid ink with small hard-edged holes; filters in hooks/body-end/udc.html. Never on the name
+   image, 衝啥, the portrait or any halftone plate. */
+.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title { filter: url(#udc-ink-d); }
+.udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-news-list, .udc-work, .udc-log-titles, .udc-motto > span, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags { filter: url(#udc-ink-m); }
+.udc-ink-b, .udc-intro, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)) { filter: url(#udc-ink-b); }
+
+/* ======================================================================= base */
+/* Tailwind/Blox default families point at the site's text face: no Inter download. */
+:root { --font-sans: var(--udc-text); --font-serif: var(--udc-text); --default-font-family: var(--udc-text); }
+/* Below-the-fold tiers are laid out (and their fonts fetched) only when they come near. */
+.udc-home > .udc-tier { content-visibility: auto; contain-intrinsic-size: auto 480px; }
+html { font-size: 18px; scrollbar-gutter: stable; }
+@media (max-width: 640px) { html { font-size: 17px; } }
+body.page-wrapper, .dark body.page-wrapper {
+  color: var(--udc-ink);
+  font-family: var(--udc-text);
+  font-size: .9rem;
+  line-height: 1.58;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
 }
-.udc-ink.udc-w2 { -webkit-mask-image: var(--udc-wear-b); mask-image: var(--udc-wear-b); }
-.udc-ink.udc-w3 { -webkit-mask-image: var(--udc-wear-c); mask-image: var(--udc-wear-c); }
+* { font-synthesis: none; }
+:lang(zh-Hant) { line-height: 1.85; }
+a { color: inherit; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
+a:hover { text-decoration-thickness: 2px; }
+:where(a, button, summary, [tabindex]):focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 3px; }
+::selection { background: var(--udc-ink); color: var(--udc-paper); }
+/* Content sits inside the sheet: between the worn edges, plus a gutter. */
+.udc-wrap {
+  width: min(1200px, 100% - var(--udc-edge-l) - var(--udc-edge-r) - 2 * var(--udc-gutter));
+  margin-inline: auto; position: relative; left: calc((var(--udc-edge-l) - var(--udc-edge-r)) / 2);
+}
+.udc-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* Off-square: every block gets its own small tilt. */
-.udc-tilt { rotate: calc(var(--t, .4deg) * var(--udc-tilt-k)); }
-.udc-t1 { --t: -.45deg; } .udc-t2 { --t: .3deg; } .udc-t3 { --t: -.25deg; }
-.udc-t4 { --t: .55deg; } .udc-t5 { --t: -.6deg; } .udc-t6 { --t: .35deg; }
-
-/* Hand-cut edges (px jitter, so they hold at every width). */
+/* ================================================================ rules, plates */
 :root {
-  --udc-cut-strip: polygon(0 3px, 7% 0, 23% 2px, 38% 0, 52% 3px, 69% 1px, 84% 0, 100% 2px, calc(100% - 3px) 48%, 100% calc(100% - 2px), 88% 100%, 71% calc(100% - 3px), 55% 100%, 37% calc(100% - 1px), 19% 100%, 4% calc(100% - 2px), 0 100%, 2px 52%);
   --udc-cut-plate: polygon(1px 2px, 34% 0, 71% 1px, 100% 0, calc(100% - 2px) 55%, 100% 100%, 62% calc(100% - 2px), 27% 100%, 0 calc(100% - 1px), 2px 40%);
-  --udc-cut-plate-2: polygon(0 0, 46% 2px, 100% 1px, 100% 38%, calc(100% - 1px) 100%, 40% calc(100% - 1px), 2px 100%, 0 61%);
-  --udc-cut-photo: polygon(0 1px, 18% 0, 47% 2px, 79% 0, 100% 1px, calc(100% - 2px) 33%, 100% 71%, calc(100% - 1px) 100%, 66% calc(100% - 2px), 31% 100%, 0 calc(100% - 1px), 1px 58%);
   --udc-frame-1: polygon(evenodd, 0 1px, 30% 0, 62% 2px, 100% 0, calc(100% - 1px) 40%, 100% 100%, 58% calc(100% - 1px), 21% 100%, 1px 100%, 0 55%, 0 1px,
     2px 3px, 2px 40%, 3px calc(100% - 2px), 35% calc(100% - 2.5px), calc(100% - 2px) calc(100% - 3px), calc(100% - 3px) 60%, calc(100% - 2px) 2px, 45% 2.5px, 2px 3px);
   --udc-frame-2: polygon(evenodd, 1px 0, 52% 1px, 100% 1px, 100% 47%, calc(100% - 1px) 100%, 33% 100%, 0 calc(100% - 1px), 1px 38%, 1px 0,
     3px 2px, 3px 38%, 2px calc(100% - 3px), 33% calc(100% - 2px), calc(100% - 3px) calc(100% - 2px), calc(100% - 2px) 47%, calc(100% - 2px) 3px, 52% 3px, 3px 2px);
   --udc-cut-heavy: polygon(0 1px, 9% 0, 26% 1px, 44% 0, 63% 1px, 81% 0, 100% 1px, 100% 100%, 86% calc(100% - 1px), 64% 100%, 47% calc(100% - 1px), 28% 100%, 11% calc(100% - 1px), 0 100%);
 }
-
-/* ======================================================================= base */
-/* Tailwind/Blox default families point at the system: no Inter download. */
-:root { --font-sans: var(--udc-text); --font-serif: var(--udc-text); --default-font-family: var(--udc-text); }
-/* Below-the-fold tiers are laid out (and their fonts fetched) only when they come near. */
-.udc-home > .udc-tier, .udc-home > .udc-plates { content-visibility: auto; contain-intrinsic-size: auto 480px; }
-html { font-size: 18px; scrollbar-gutter: stable; }
-@media (max-width: 639px) { html { font-size: 17px; } }
-body.page-wrapper, .dark body.page-wrapper {
-  color: var(--udc-ink);
-  font-family: var(--udc-text);
-  font-size: 1rem;
-  line-height: 1.65;
-  font-optical-sizing: auto;
-  font-synthesis: none;
-  -webkit-font-smoothing: antialiased;
-}
-:lang(zh-Hant) { line-height: 1.85; }
-a { color: inherit; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
-a:hover { text-decoration-thickness: 2px; }
-:where(a, button, summary, [tabindex]):focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 3px; }
-::selection { background: var(--udc-orange); color: var(--udc-on-field); }
-.udc-wrap { width: min(1200px, 100% - 32px); margin-inline: auto; }
-.udc-h1-name { font-family: var(--udc-name-font-only, "UDC Brush TC"), var(--udc-sign); }
-.udc-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.udc-draft-mark { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; color: var(--udc-orange-text); border: 1px solid currentColor; padding: 0 .35em; vertical-align: .35em; margin-left: .4em; white-space: nowrap; }
-
-/* ================================================== rules, boxes, plates, field */
 .udc-hairline { border: 0; border-top: 1px solid var(--udc-rule); margin: 0; }
-.udc-colrule { border-left: 1px solid var(--udc-ink); }
 .udc-rule-heavy { position: relative; height: 9px; margin: 0; border: 0; }
 .udc-rule-heavy::before, .udc-rule-heavy::after { content: ""; position: absolute; left: 0; right: 0; background: var(--udc-ink); }
 .udc-rule-heavy::before { top: 0; height: 5px; clip-path: var(--udc-cut-heavy); }
 .udc-rule-heavy::after { bottom: 0; height: 1px; }
-.udc-rule-double { border: 0; border-top: 3px double var(--udc-ink); margin: 0; }
+hr.udc-rule-heavy { display: block; margin-block: 10px; }
+hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 
 .udc-box { position: relative; padding: 12px 14px 14px; }
 .udc-box::before { content: ""; position: absolute; inset: 0; background: var(--udc-ink); clip-path: var(--udc-frame-1); pointer-events: none; }
 .udc-box.udc-f2::before { clip-path: var(--udc-frame-2); }
 
-/* Labels — X: set on a rule. Y: reversed plate. */
+/* Labels: Libre Franklin caps on a rule. */
 .udc-label {
-  font-family: var(--udc-sign); font-size: .8125rem; line-height: 1.3; letter-spacing: .12em;
-  text-transform: uppercase; font-weight: 400; margin: 0;
+  font-family: var(--udc-sign); font-weight: 700; font-size: .74rem; line-height: 1.3; letter-spacing: .1em;
+  text-transform: uppercase; margin: 0;
   display: flex; align-items: center; gap: 10px;
 }
 .udc-label::after { content: ""; flex: 1; height: 2px; background: var(--udc-ink); clip-path: var(--udc-cut-heavy); }
-[data-udc-type="y"] .udc-label, :root[data-udc-type="y"] .udc-label {
-  display: inline-block; background: var(--udc-ink); color: var(--udc-paper);
-  font-family: var(--udc-display); letter-spacing: .08em; padding: .3em .7em .25em; clip-path: var(--udc-cut-plate);
-}
-[data-udc-type="y"] .udc-label::after { content: none; }
-[data-udc-type="y"] [data-udc-type="x"] .udc-label { display: flex; background: none; color: inherit; font-family: var(--udc-sign); letter-spacing: .12em; padding: 0; clip-path: none; }
-[data-udc-type="y"] [data-udc-type="x"] .udc-label::after { content: ""; }
-
-/* Vertical name plate 陳威達 — X brush ink on paper in a box; Y reversed plate. */
-.udc-nameplate {
-  writing-mode: vertical-rl; text-orientation: upright;
-  font-family: var(--udc-name-font); font-size: 2.1rem; line-height: 1; letter-spacing: .05em;
-  width: 48px; padding: 10px 0; display: flex; align-items: center; justify-content: flex-start;
-  margin: 0;
-}
-[data-udc-type="y"] .udc-nameplate { background: var(--udc-ink); color: var(--udc-paper); clip-path: var(--udc-cut-plate-2); font-size: 1.9rem; }
-[data-udc-type="y"] [data-udc-type="x"] .udc-nameplate { background: none; color: inherit; clip-path: none; font-size: 2.1rem; }
-
-/* The one orange field + the printed Ryan emblem beside it. */
-.udc-masthead { display: flex; align-items: center; gap: 12px; }
-.udc-emblem { position: relative; flex: none; width: 56px; aspect-ratio: 180 / 128; rotate: -2.5deg; }
-.udc-emblem::before, .udc-emblem::after { content: ""; position: absolute; inset: 0; -webkit-mask: center / contain no-repeat; mask: center / contain no-repeat; }
-.udc-emblem::before { background: var(--udc-plate-orange); -webkit-mask-image: url("/textures/ryan-orange.png"); mask-image: url("/textures/ryan-orange.png"); translate: 2px 1px; }
-.udc-emblem::after { background: var(--udc-plate-ink); -webkit-mask-image: url("/textures/ryan-ink.png"); mask-image: url("/textures/ryan-ink.png"); }
-.udc-field {
-  position: relative; flex: 1; min-width: 0; min-height: 52px; max-height: 64px;
-  display: flex; align-items: center; padding: 6px 18px 6px 16px;
-  background: var(--udc-field-bg); clip-path: var(--udc-cut-strip);
-}
-.udc-field::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--udc-field-line); }
-.udc-field-text {
-  margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight);
-  font-size: clamp(1.5rem, 6.4vw, 2rem); line-height: 1.1; letter-spacing: var(--udc-display-track);
-  color: var(--udc-field-text); white-space: nowrap; display: flex; align-items: center;
-}
-.udc-field-text b { font-weight: inherit; color: var(--udc-field-initial); }
-.udc-seam { display: inline-block; width: 1px; align-self: stretch; margin: 2px .6em; background: var(--udc-field-initial); }
-@media (max-width: 639px) {
-  .udc-emblem { width: 42px; }
-  .udc-field { max-height: none; padding-block: 8px; }
-  .udc-field-text { display: block; white-space: normal; }
-  .udc-field-text > span { display: block; white-space: nowrap; }
-  .udc-seam { display: none; }
-  .udc-masthead { gap: 8px; }
-  .udc-emblem { width: 36px; }
-  .udc-field { padding-inline: 10px 12px; }
-  /* Y: Dela at the 24px floor is wider than a phone (measured). It drops below the floor
-     rather than clip: a recorded failure of Y, not of the floor. */
-  [data-udc-type="y"] .udc-field-text { font-size: min(1.5rem, 6.1vw); }
-  /* Y: let the second line wrap rather than clip. */
-  [data-udc-type="y"] .udc-field-text > span:last-child { white-space: normal; }
-}
 
 /* Halftone plates (images in their own reserved slots). */
 .udc-plate { position: relative; margin: 0; background: var(--udc-paper-2); }
 .udc-plate-ink, .udc-plate-orange { position: absolute; inset: 0; -webkit-mask: center / 100% 100% no-repeat; mask: center / 100% 100% no-repeat; }
 .udc-plate-ink { background: var(--udc-plate-ink); -webkit-mask-image: var(--ink); mask-image: var(--ink); }
-.udc-plate-orange { background: var(--udc-plate-orange); translate: 2px -1px; -webkit-mask-image: var(--orange); mask-image: var(--orange); }
-/* Night: light ink on dark paper must carry the image's light, or photos print as negatives. */
+.udc-plate-orange { background: var(--udc-orange); -webkit-mask-image: var(--orange); mask-image: var(--orange); }
 .dark .udc-plate-ink { -webkit-mask-image: var(--ink-night, var(--ink)); mask-image: var(--ink-night, var(--ink)); }
-.dark .udc-emblem::after { -webkit-mask-image: url("/textures/ryan-ink-night.png"); mask-image: url("/textures/ryan-ink-night.png"); }
 .udc-plate.is-loaded, .udc-plate:has(.udc-plate-ink) { background: none; }
 
-/* ============================================================ navigation, footer */
-.page-header { z-index: 70 !important; }
-.udc-header { position: relative; background-color: var(--udc-paper); background-image: var(--udc-sheet); background-size: var(--udc-sheet-size); background-repeat: var(--udc-sheet-repeat); background-blend-mode: soft-light; }
-.udc-header::after { content: ""; display: var(--udc-press-display, block); position: absolute; inset: 0; pointer-events: none; background: var(--udc-paper); -webkit-mask: var(--udc-press) 0 0 / 512px 512px repeat; mask: var(--udc-press) 0 0 / 512px 512px repeat; }
-.udc-nav { position: relative;
-  display: flex; align-items: center; gap: 18px; min-height: 52px;
-  border-bottom: 3px double var(--udc-ink);
-  font-family: var(--udc-sign); font-size: .9rem;
-}
-.udc-brand { flex: none; font-family: var(--udc-sign); font-size: 1rem; letter-spacing: .04em; text-decoration: none; color: var(--udc-ink); }
-.udc-navigation { display: flex; align-items: center; margin: 0 0 0 auto; padding: 0; list-style: none; }
-.udc-navigation li + li::before { content: "·"; color: var(--udc-ink-2); padding-inline: .6em; }
+/* ===================================================================== header */
+/* Ryan: single ink, depth by dots (halftone.py ryan); recoloured by its mask in both editions. */
+.udc-emblem { flex: none; display: block; width: 1.05em; aspect-ratio: 336 / 239; background: var(--udc-ink);
+  -webkit-mask: url("/textures/ryan-ink.png") center / contain no-repeat; mask: url("/textures/ryan-ink.png") center / contain no-repeat; }
+.udc-header { position: relative; padding-top: calc(var(--udc-edge-t) + 12px); }
+.udc-masthead { display: grid; align-items: center; }
+.udc-brand { display: flex; align-items: center; gap: .18em; color: var(--udc-ink); text-decoration: none; line-height: 1; }
+.udc-brand:hover { text-decoration: none; }
+/* Nameplate: one line at every width (plan 4.1). "The" at 62%; "not" tiny, above the gap,
+   in the motto's italic, with a pen-stroke caret under it. */
+.udc-np { font-family: var(--udc-nameplate); font-weight: 400; white-space: nowrap; letter-spacing: 0; line-height: 1; }
+.udc-np-the { font-size: .62em; }
+.udc-np-gap { position: relative; display: inline-block; width: max(.34em, calc(1.9 * max(11px, .17em))); height: .9em; }
+/* Offsets in % of the gap (.9em of the nameplate): em inside "not" would mean its own 11px. */
+.udc-np-caret { position: absolute; left: 50%; bottom: 15%; translate: -50% 0; width: calc(max(11px, .17em) * .78); height: auto; fill: currentColor; }
+.udc-np-not { position: absolute; left: 50%; bottom: calc(15% + .65em + 1px); translate: -50% 0;
+  font-family: var(--udc-motto-face); font-style: italic; font-size: max(11px, .17em); line-height: 1; }
+/* Menu: Libre Franklin caps. The current page is ink with an orange underline (no orange text under 24px). */
+.udc-navigation { display: flex; align-items: center; justify-content: center; margin: 0; padding: 0; list-style: none;
+  font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; }
+.udc-navigation li + li::before { content: "·"; color: var(--udc-ink-2); padding-inline: .7em; }
 .udc-navigation a { text-decoration: none; color: var(--udc-ink); white-space: nowrap; }
-.udc-navigation a:hover { text-decoration: underline 2px var(--udc-orange); }
-.udc-navigation [aria-current] { color: var(--udc-orange-text); text-decoration: underline 2px var(--udc-orange); text-underline-offset: .3em; }
-.udc-nav-controls { display: flex; align-items: center; }
-.udc-nav-controls button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 0; color: var(--udc-ink); padding: 10px; }
-.udc-nav-controls svg { width: 20px; height: 20px; }
+.udc-navigation a:hover { text-decoration: underline 2px var(--udc-orange); text-underline-offset: .3em; }
+.udc-navigation [aria-current] { color: var(--udc-ink); text-decoration: underline 2px var(--udc-orange); text-underline-offset: .3em; }
+.udc-navigation .udc-menu-theme { display: none; }
+.udc-nav-controls { display: flex; align-items: center; justify-content: flex-end; }
+.udc-nav-controls > button, .udc-menu-theme button { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: none; border: 0; color: var(--udc-ink); padding: 10px; cursor: pointer; }
+.udc-theme-toggle svg { width: 20px; height: 20px; }
 .udc-icon-sun, .dark .udc-icon-moon { display: none; }
 .dark .udc-icon-sun { display: block; }
 .udc-menu-toggle { display: none !important; }
-@media (max-width: 760px) {
+/* The motto (plan 4.2): a button; hover, focus or a tap swaps it for "Mischief managed."
+   The old line is wiped right-to-left, the new one written left-to-right, in steps, 400 ms in all. */
+.udc-nav-controls > .udc-motto { display: grid; justify-items: end; width: auto; height: auto; padding: 4px 6px; white-space: nowrap;
+  font-family: var(--udc-motto-face); font-style: italic; font-size: 1.08rem; line-height: 1.2; color: var(--udc-ink); }
+.udc-motto > span { grid-area: 1 / 1; clip-path: inset(0 0 0 0); transition: clip-path .2s steps(8, end) .2s; }
+.udc-motto > .udc-motto-b { color: var(--udc-orange-text); clip-path: inset(0 100% 0 0); transition-delay: 0s; }
+.udc-motto:is(:hover, :focus-visible, .is-managed) > .udc-motto-a { clip-path: inset(0 100% 0 0); transition-delay: 0s; }
+.udc-motto:is(:hover, :focus-visible, .is-managed) > .udc-motto-b { clip-path: inset(0 0 0 0); transition-delay: .2s; }
+
+/* Home, ≥641px: nameplate row, then menu (centred) · motto · theme on one row between two rules.
+   The row needs about 1240px; narrower, the motto takes its own centred line under the menu. */
+.udc-header-home .udc-masthead { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+.udc-header-home .udc-masthead::before { content: ""; grid-row: 2; grid-column: 1 / -1; align-self: stretch; border-block: 1px solid var(--udc-ink); }
+.udc-header-home .udc-brand { grid-row: 1; grid-column: 1 / -1; justify-self: center; font-size: min(80px, 6.25vw); padding-bottom: 12px; }
+.udc-header-home .udc-brand .udc-emblem { width: 1.05em; margin-right: .1em; }
+.udc-header-home .udc-nav { grid-row: 2; grid-column: 2; padding-block: 8px; }
+.udc-header-home .udc-nav-controls { grid-row: 2; grid-column: 3; }
+@media (min-width: 641px) and (max-width: 1239px) {
+  .udc-header-home .udc-nav-controls { display: contents; }
+  .udc-header-home .udc-theme-row { grid-row: 2; grid-column: 3; justify-self: end; }
+  .udc-header-home .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: center; justify-items: center; padding-top: 6px; }
+}
+/* Inner pages, ≥641px: a compact folio. Row 1: Ryan + a smaller nameplate (about 40px at 1280) at
+   the left, motto and theme at the right. Row 2: the menu, centred between two rules. */
+.udc-header-inner .udc-masthead { grid-template-columns: minmax(0, 1fr) auto; column-gap: 18px; }
+.udc-header-inner .udc-masthead::before { content: ""; grid-row: 2; grid-column: 1 / -1; align-self: stretch; border-block: 1px solid var(--udc-ink); }
+.udc-header-inner .udc-brand { grid-row: 1; grid-column: 1; font-size: min(40px, 3.1vw); padding-bottom: 8px; }
+.udc-header-inner .udc-brand .udc-emblem { width: 1.15em; margin-right: .1em; }
+.udc-header-inner .udc-nav-controls { grid-row: 1; grid-column: 2; padding-bottom: 8px; }
+.udc-header-inner .udc-nav { grid-row: 2; grid-column: 1 / -1; justify-self: center; padding-block: 6px; }
+@media (min-width: 641px) and (max-width: 899px) {
+  .udc-header-inner .udc-nav-controls { display: contents; }
+  .udc-header-inner .udc-theme-row { grid-row: 1; grid-column: 2; align-self: center; }
+  .udc-header-inner .udc-brand { font-size: min(40px, 4.4vw); }
+  .udc-header-inner .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: center; justify-items: center; padding-top: 6px; font-size: .95rem; }
+}
+.udc-header .udc-rule-heavy { margin-top: 6px; }
+
+/* Phones: one row (Ryan · nameplate · menu button); the motto under it; theme inside the menu. */
+@media (max-width: 640px) {
+  .udc-header .udc-masthead { grid-template-columns: minmax(0, 1fr) auto; column-gap: 4px; }
+  .udc-header .udc-masthead::before { content: none; }
+  /* Fills the row: (viewport − edges − gutters − emblem − gaps − menu button − the gap under "not",
+     which stays 21px because "not" never goes under 11px) over the rest of the nameplate's width,
+     9.5em (measured with the fonts loaded). The menu button reaches into the right gutter. */
+  .udc-header .udc-brand { grid-row: 1; grid-column: 1; justify-self: start; padding: 0; gap: 6px;
+    font-size: calc((100vw - var(--udc-edge-l) - var(--udc-edge-r) - var(--udc-gutter) - 36px - 6px - 4px - 34px - 21px) / 9.5); }
+  .udc-header .udc-menu-toggle { margin-right: calc(-1 * var(--udc-gutter)); }
+  .udc-header .udc-brand .udc-emblem { width: 36px; margin: 0; }
+  .udc-header .udc-nav-controls { display: contents; }
+  .udc-header .udc-menu-toggle { grid-row: 1; grid-column: 2; }
+  .udc-header .udc-nav { grid-row: 1; grid-column: 1 / -1; }
+  .udc-header .udc-nav-controls > .udc-theme-row { display: none; }
+  .udc-header .udc-nav-controls > .udc-motto { grid-row: 2; grid-column: 1 / -1; justify-self: center; justify-items: center; font-size: .88rem; padding: 2px 6px 0; }
   .udc-menu-toggle { display: inline-flex !important; }
   .udc-navigation { display: none; }
-  .udc-navigation.is-open { display: flex; flex-direction: column; align-items: flex-start; position: absolute; left: 0; right: 0; top: 100%; padding: 8px 16px 14px; background: var(--udc-paper); border-bottom: 3px double var(--udc-ink); }
+  .udc-navigation.is-open { display: flex; flex-direction: column; align-items: flex-start; position: absolute; z-index: 70; left: 0; right: 0; top: 100%;
+    padding: 6px var(--udc-gutter) 12px; background: var(--udc-paper); border-bottom: 3px double var(--udc-ink); font-size: .8rem; }
   .udc-navigation.is-open li + li::before { content: none; }
-  .udc-navigation.is-open a { display: block; padding: 8px 0; }
+  .udc-navigation.is-open a { display: block; padding: 9px 0; }
+  .udc-navigation.is-open .udc-menu-theme { display: block; margin-left: -10px; }
 }
 
-.udc-footer { margin-top: 40px; padding: 0 0 28px; font-family: var(--udc-sign); font-size: .875rem; color: var(--udc-ink-2); }
-.udc-footer .udc-rule-heavy { margin-bottom: 14px; }
-.udc-footer-links { display: flex; flex-wrap: wrap; gap: 4px 10px; }
-.udc-footer-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); text-decoration: none; }
-.udc-footer-links svg { width: 22px; height: 22px; }
-.udc-footer-fineprint { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin-top: 8px; }
+/* ===================================================================== footer */
+/* One construction, one image per section (plan v2, 4.6): full-bleed halftone, 2.5:1, fading up
+   into the paper (the fade is in the plate). Changed by UD 2026-11-16: nothing covers the image; its
+   last 8% grows in dots into a solid ink strip under it, which carries the icons and fine print in
+   paper colour, on one line where the width allows. Phones see the middle of the same picture at 176vw. */
+.page-footer { position: relative; }
+.udc-footer { position: relative; overflow: hidden; margin-top: 8px; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; color: var(--udc-paper); }
+.udc-footer-img { position: relative; z-index: 61; width: 100%; aspect-ratio: 2.5 / 1; }
+.udc-fi { position: absolute; inset: 0; -webkit-mask: var(--m) 0 0 / 100% 100% no-repeat; mask: var(--m) 0 0 / 100% 100% no-repeat; }
+.udc-fi-ink { background: var(--udc-ink); }
+.udc-footer-home .udc-fi-2 { background: var(--udc-orange); }
+.udc-footer-jingu .udc-fi-2 { background: var(--udc-ink-jingu); }
+.udc-footer-hogwarts .udc-fi-2 { background: var(--udc-ink-hogwarts); }
+.udc-footer-thames .udc-fi-2 { background: var(--udc-ink-thames); }
+/* Creases go on across the image as faint lighter lines, not across the ink strip (3.4). */
+.udc-footer-creases { position: absolute; inset: 0; background: var(--udc-paper); opacity: .3;
+  -webkit-mask: url("/textures/crease-light.webp") 0 0 / var(--udc-crease-tile) var(--udc-crease-tile) repeat;
+  mask: url("/textures/crease-light.webp") 0 0 / var(--udc-crease-tile) var(--udc-crease-tile) repeat; }
+/* The ink strip: flat, so the fine print keeps 11.5:1 (the press specks stay off it). */
+.udc-footer-band { position: relative; z-index: 62; margin-top: -1px; background: var(--udc-ink);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 24px;
+  padding: 4px calc(var(--udc-edge-r) + var(--udc-gutter)) 10px calc(var(--udc-edge-l) + var(--udc-gutter)); }
+.udc-footer-links { display: flex; flex-wrap: wrap; gap: 0 6px; margin-left: -10px; }
+.udc-footer-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-paper); text-decoration: none; }
+.udc-footer-links svg { width: 20px; height: 20px; }
+.udc-footer-fineprint { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 2px 20px; }
 .udc-footer-fineprint p { margin: 0; }
+.udc-footer a { color: var(--udc-paper); }
+/* The flag (home only): far outfield stand, right of the right floodlight; % of the image, so it
+   holds its spot at every width. Rotated −14° about its lower-left corner; a thin pole into the crowd. */
+.udc-flag { position: absolute; left: 66.5%; bottom: 77%; width: 6.2%; aspect-ratio: 1045 / 796; rotate: -14deg; transform-origin: 0 100%; }
+.udc-flag > i { position: absolute; inset: 0; -webkit-mask: 0 0 / 100% 100% no-repeat; mask: 0 0 / 100% 100% no-repeat; }
+.udc-flag-cloth { background: var(--udc-orange); -webkit-mask-image: url("/textures/flag-cloth.png") !important; mask-image: url("/textures/flag-cloth.png") !important; }
+.udc-flag-outline { background: var(--udc-paper); -webkit-mask-image: url("/textures/flag-outline.png") !important; mask-image: url("/textures/flag-outline.png") !important; }
+.udc-flag-ink { background: var(--udc-ink); -webkit-mask-image: url("/textures/flag-ink.png") !important; mask-image: url("/textures/flag-ink.png") !important; }
+.udc-flag > .udc-flag-pole { inset: auto; left: 3%; top: 2%; width: max(1.5px, 2.4%); height: 175%; background: var(--udc-ink); -webkit-mask: none; mask: none; }
+@media (max-width: 640px) {
+  .udc-footer-img { width: 176vw; margin-left: calc(50% - 88vw); }
+  .udc-footer-fineprint { justify-content: flex-start; padding-bottom: 4px; }
+}
 
 /* ======================================================================= home */
-hr.udc-rule-heavy { display: block; margin-block: 10px; }
-hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
-.udc-masthead { margin-top: 10px; }
-.udc-masthead + .udc-rule-heavy { margin-top: 10px; }
-.udc-field-section { text-transform: uppercase; letter-spacing: .04em; }
 .udc-home { padding-top: 14px; }
 .udc-tier { padding-block: 6px 10px; }
 .udc-tier-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
 .udc-tier-head .udc-label { flex: 1; }
-.udc-more { flex: none; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; }
+.udc-more { flex: none; display: inline-flex; align-items: center; min-height: 24px; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; }
 
-/* Lead tier: vertical name plate | story | side, separated by column rules. */
-.udc-front-lead { display: grid; grid-template-columns: 48px minmax(0, 1fr) minmax(0, 29%); align-items: start; }
-.udc-front-lead .udc-nameplate { margin-top: 4px; font-size: 2.3rem; }
-.udc-front-story { padding: 0 22px 8px 18px; border-left: 1px solid var(--udc-ink); min-height: 100%; }
+/* Lead tier (plan v2, 4.3): story column | side column about 29%, separated by a column rule. */
+.udc-front-lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 29%); align-items: start; container-type: inline-size; }
+.udc-front-story { padding: 0 22px 8px 0; min-height: 100%; container-type: inline-size; }
 .udc-front-side { padding-left: 18px; border-left: 1px solid var(--udc-ink); min-height: 100%; }
-.udc-front .udc-lead-head { margin: 2px 0 0; max-width: 17em; }
-.udc-front .udc-lead-head .udc-draft-mark { font-size: .8125rem; }
-.udc-front-byline { margin: 10px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--udc-rule); }
-.udc-byline-zh { display: none; font-family: var(--udc-name-font); }
+/* Headline: each line sized on its own to span the story column (widths measured in Ultra:
+   line 1 = 11.975em, line 2 = 17.763em). CSS only, so the unscripted page is the same. */
+.udc-lead-head { margin: 4px 0 12px; font-family: var(--udc-display); font-weight: 400; line-height: 1.02; color: var(--udc-ink); }
+.udc-lead-head > span { display: block; white-space: nowrap; }
+.udc-lead-l1 { font-size: calc(100cqi / 11.975); line-height: .95; }
+.udc-lead-l2 { font-size: calc(100cqi / 17.763); line-height: 1.05; }
+.udc-lead-l2 b { font-weight: inherit; color: var(--udc-orange-text); }
+/* Reading text: left-aligned, not justified, no hyphenation (plan 3.2). */
 .udc-intro { max-width: 68ch; }
-.udc-intro p { margin: 0 0 .8em; hyphens: manual; }
-.udc-intro strong { font-weight: 650; }
+.udc-intro p { margin: 0 0 .8em; text-align: left; hyphens: none; }
+.udc-intro strong { font-weight: 700; }
 .udc-front .udc-intro { max-width: none; column-count: 2; column-gap: 26px; column-rule: 1px solid var(--udc-rule); }
 .udc-front .udc-intro p { break-inside: auto; orphans: 3; widows: 3; }
-.udc-dropcap { float: left; font-family: var(--udc-display); font-size: 3.4em; line-height: .82; margin: .06em .06em 0 0; color: var(--udc-ink); }
+.udc-dropcap { float: left; font-family: var(--udc-text); font-size: 3.3em; line-height: .8; margin: .07em .07em 0 0; color: var(--udc-ink); }
 @media (max-width: 1099px) { .udc-front .udc-intro { column-count: 1; max-width: 68ch; } }
 
-.udc-headshot { position: relative; margin: 0 0 8px; width: 100%; max-width: 220px; aspect-ratio: 4 / 5; border: 1px solid var(--udc-ink); background: var(--udc-paper-2); overflow: hidden; }
-.udc-headshot img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.88) contrast(1.04); }
-.udc-headshot::after { content: ""; position: absolute; inset: 0; background: url("/textures/photo-grain.png") 0 0 / 128px 128px; mix-blend-mode: soft-light; opacity: .55; pointer-events: none; }
-.udc-profile-links { display: flex; flex-wrap: wrap; gap: 0 2px; margin: 0 0 12px -10px; }
+/* Columnist block (plan v2, 4.4): portrait (no frame), name on one line with 陳威達, icons. */
+.udc-portrait { margin: -14px 0 6px; }
+.udc-portrait img { display: block; width: min(282px, 100%); height: auto; }
+.udc-byname { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 12px; margin: 0; }
+.udc-name-en { font-family: var(--udc-text); font-weight: 700; font-size: 1.5rem; line-height: 1.15; white-space: nowrap; }
+.udc-name-zh { position: relative; display: inline-block; height: 1.45em; aspect-ratio: 489 / 177; font-size: 1.5rem; }
+.udc-name-zh::before { content: ""; position: absolute; inset: 0; background: var(--udc-ink);
+  -webkit-mask: url("/textures/name-chen-weida.png") center / contain no-repeat; mask: url("/textures/name-chen-weida.png") center / contain no-repeat; }
+/* Brush line 5b crosses the foot of the characters (plan 3.6). */
+.udc-name-zh::after { content: ""; position: absolute; left: -7%; right: -22%; bottom: -15.8%; height: 54%; rotate: -2deg;
+  background: var(--udc-orange); mix-blend-mode: multiply; opacity: .93;
+  -webkit-mask: url("/textures/brush-line-5b.svg") 0 0 / 100% 100% no-repeat; mask: url("/textures/brush-line-5b.svg") 0 0 / 100% 100% no-repeat; }
+.udc-profile-links { display: flex; flex-wrap: wrap; gap: 0 2px; margin: 4px 0 12px -10px; }
 .udc-profile-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); text-decoration: none; }
 .udc-profile-links svg { width: 21px; height: 21px; }
-.udc-news { margin-top: 4px; }
-.udc-news .udc-label { margin-bottom: 4px; }
+/* News: a label on a rule, like the other tiers; no box. */
+.udc-news { margin-top: 2px; }
+.udc-news .udc-label { margin-bottom: 2px; }
 .udc-news.is-long .udc-news-list { max-height: 26rem; overflow-y: auto; }
 
-/* Research tier: work list (about 2/3) | keyword field (about 1/3). */
-.udc-research-grid { display: grid; grid-template-columns: minmax(0, 1fr) 270px; align-items: start; }
-.udc-research-grid .udc-keywords { border-left: 1px solid var(--udc-ink); margin-left: 20px; padding-left: 14px; width: auto; }
-/* Make-up: the first entry runs across, the next two sit side by side under a column rule. */
-.udc-work-list { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.udc-work { padding: 10px 0 12px; border-top: 1px solid var(--udc-rule); }
-.udc-work:nth-child(1) { padding-right: 18px; border-top: 0; }
-.udc-work:nth-child(2) { padding-left: 18px; border-left: 1px solid var(--udc-ink); border-top: 0; }
-.udc-work:nth-child(3) { grid-column: 1 / -1; }
-.udc-work-meta { margin: 0; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
-.udc-work-title { margin: 2px 0 4px; font-family: var(--udc-text); font-weight: 600; font-size: 1.2rem; line-height: 1.3; }
+/* Research tier (plan v2, 4.5): three columns separated by column rules; stacked below 761px. */
+.udc-work-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.udc-work { padding: 4px 18px 10px; }
+.udc-work:first-child { padding-left: 0; }
+.udc-work:last-child { padding-right: 0; }
+.udc-work + .udc-work { border-left: 1px solid var(--udc-ink); }
+.udc-work-title { margin: 0 0 6px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.02rem; line-height: 1.2; }
 .udc-work-title a { text-decoration-color: transparent; }
 .udc-work-title a:hover { text-decoration-color: var(--udc-orange); }
-.udc-work-text { margin: 0 0 6px; max-width: 68ch; }
-.udc-work-links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 0; font-family: var(--udc-sign); font-size: .875rem; }
+.udc-work-text { margin: 0 0 6px; }
+.udc-work-links { display: flex; flex-wrap: wrap; gap: 0 14px; margin: 0; font-family: var(--udc-sign); font-weight: 500; font-size: .78rem; }
 .udc-work-links a { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; }
-.udc-work-links svg { width: 16px; height: 16px; flex: none; }
-.udc-work:nth-child(3) .udc-work-title { font-size: 1.45rem; }
+.udc-work-links svg { width: 15px; height: 15px; flex: none; }
+.udc-work-meta { margin: 2px 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; letter-spacing: .04em; color: var(--udc-ink-2); }
 
-/* Keyword field sizes in em so the whole field scales on phones. */
-.udc-keywords { font-size: 1rem; }
-.udc-kw-primary { font-size: 1.55em; } .udc-kw-primary-2 { font-family: var(--udc-sign); font-size: .9em; }
-.udc-kw-current { font-size: 1.02em; } .udc-kw-focus { font-size: 1.2em; }
-.udc-kw-past { font-size: .82em; } .udc-kw-method { font-size: .68em; }
-
-/* UD's Log: one compact tier, three titles, no dates. */
+/* UD's Log: one row of up to three titles, no dates; directly above the footer image. */
+.udc-log { padding-bottom: 28px; }
 .udc-log-titles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .udc-log-titles li { padding: 2px 16px 4px; font-size: 1.05rem; line-height: 1.35; }
 .udc-log-titles li:first-child { padding-left: 0; }
@@ -390,52 +416,30 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-log-titles a { text-decoration-color: transparent; }
 .udc-log-titles a:hover { text-decoration-color: var(--udc-orange); }
 
-/* Plates: stadium 3:1 across about three quarters, flag butted beside it. */
-.udc-plates { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 10px; align-items: end; padding-top: 6px; }
-.udc-stadium { aspect-ratio: 3 / 1; }
-.udc-flag { aspect-ratio: 760 / 770; }
-
-/* Classic (C) */
-.udc-classic-top { display: grid; grid-template-columns: minmax(0, 28%) minmax(0, 1fr); align-items: start; }
-.udc-classic-side { padding-right: 18px; }
-.udc-classic-main { padding-left: 22px; border-left: 1px solid var(--udc-ink); min-height: 100%; }
-.udc-classic-main h1 { margin: 0 0 12px; }
-.udc-name-zh { font-family: var(--udc-name-font); font-size: .8em; margin-left: .2em; }
-
 @media (max-width: 759px) {
-  .udc-front-lead { grid-template-columns: 112px minmax(0, 1fr); column-gap: 14px;
-    grid-template-areas: "kicker kicker" "head head" "photo byline" "photo links" "intro intro" "news news"; }
+  /* Phones: headline, columnist block (portrait left, name, 陳威達 and icons stacked right), intro, News. */
+  .udc-front-lead { grid-template-columns: minmax(0, 1fr); }
   .udc-front-story, .udc-front-side { display: contents; }
-  .udc-front-lead .udc-nameplate { display: none; }
-  .udc-front .udc-kicker { grid-area: kicker; }
-  .udc-front .udc-lead-head { grid-area: head; margin-bottom: 12px; }
-  .udc-front .udc-headshot { grid-area: photo; max-width: 112px; align-self: start; }
-  .udc-front-byline { grid-area: byline; margin: 0; border: 0; align-self: end; }
-  .udc-byline-zh { display: inline; }
-  .udc-front .udc-profile-links { grid-area: links; align-self: start; }
-  .udc-front .udc-intro { grid-area: intro; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--udc-rule); }
-  .udc-front .udc-news { grid-area: news; margin-top: 6px; }
-  .udc-research-grid { grid-template-columns: minmax(0, 1fr); }
-  .udc-research-grid .udc-keywords { order: -1; border: 0; margin: 0 0 6px; padding: 4px 0; width: 100%; min-height: 0; font-size: .7rem; gap: 0 6px; }
+  .udc-front .udc-lead-head { order: 1; margin: 0 0 12px; }
+  .udc-columnist { order: 2; display: grid; grid-template-columns: 112px minmax(0, 1fr); column-gap: 14px; align-items: end; }
+  .udc-portrait { margin: 0; }
+  .udc-portrait img { width: 112px; }
+  .udc-columnist-id { padding-bottom: 2px; }
+  .udc-byname { flex-direction: column; align-items: flex-start; gap: 4px; }
+  /* 1.5rem from 375px up; below that the name shrinks to stay on one line beside the portrait
+     (viewport − edges − gutters − portrait − gap, over its width of 7.4em). Interim: question for UD. */
+  .udc-name-en { font-size: min(1.5rem, (100vw - 178px) / 7.4); }
+  .udc-home { padding-top: 0; }
+  .udc-profile-links { margin: 6px 0 0 -10px; }
+  .udc-front .udc-intro { order: 3; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--udc-rule); }
+  .udc-front .udc-news { order: 4; margin-top: 6px; }
   .udc-work-list { grid-template-columns: minmax(0, 1fr); }
-  .udc-work:nth-child(n) { padding-inline: 0; border-left: 0; border-top: 1px solid var(--udc-rule); }
-  .udc-work:first-child { border-top: 0; }
+  .udc-work:nth-child(n) { padding: 10px 0 12px; }
+  .udc-work + .udc-work { border-left: 0; border-top: 1px solid var(--udc-rule); }
   .udc-log-titles { grid-template-columns: minmax(0, 1fr); }
   .udc-log-titles li { padding: 6px 0; }
   .udc-log-titles li + li { border-left: 0; border-top: 1px solid var(--udc-rule); }
-  .udc-plates { grid-template-columns: minmax(0, 1fr); }
-  .udc-flag { width: 50%; }
-  .udc-classic-top { grid-template-columns: 112px minmax(0, 1fr); column-gap: 14px; }
-  .udc-classic-side, .udc-classic-main { display: contents; }
-  .udc-classic .udc-headshot { grid-column: 1; grid-row: 1 / span 2; max-width: 112px; }
-  .udc-classic-main h1 { grid-column: 2; grid-row: 1; }
-  .udc-classic .udc-profile-links { grid-column: 2; grid-row: 2; }
-  .udc-classic .udc-intro { grid-column: 1 / -1; grid-row: 3; padding-top: 12px; border-top: 1px solid var(--udc-rule); }
-  .udc-classic .udc-news { grid-column: 1 / -1; grid-row: 4; }
 }
-
-[data-udc-type="y"] .udc-tier-head .udc-label { flex: none; }
-[data-udc-type="y"] .udc-tier-head .udc-more { margin-left: auto; }
 
 /* ================================================================ inner pages */
 .page-body.my-10, .page-body { margin-block: 0 !important; }
@@ -443,19 +447,21 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-single, .udc-list { padding-top: 18px; padding-bottom: 8px; }
 .udc-single-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30%); gap: 0 26px; align-items: start; margin-bottom: 20px; }
 .udc-single-head .udc-page-title { max-width: 22em; }
-.udc-meta { font-size: .9375rem; line-height: 1.5; }
+/* Meta: no box (3.7); a column rule separates it from the title, as on the front page. */
+.udc-meta { font-size: .85rem; line-height: 1.5; padding: 4px 0 4px 18px; border-left: 1px solid var(--udc-ink); }
 .udc-meta p { margin: 0 0 6px; }
 .udc-meta-authors { color: var(--udc-ink-2); }
 .udc-meta-authors .font-bold, .udc-pub-authors .font-bold { color: var(--udc-ink); font-weight: 600; }
 .udc-meta-venue em, .udc-pub-venue em { font-style: italic; }
-.udc-meta-line { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
+.udc-meta-line { font-family: var(--udc-sign); font-weight: 500; font-size: .76rem; letter-spacing: .05em; color: var(--udc-ink-2); }
 .udc-meta-links, .udc-pub-links { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 4px; }
 .page-body .hb-attachment-link { text-transform: none; letter-spacing: 0; display: inline-flex; align-items: center; gap: 5px; min-height: 32px; margin: 0; padding: 0; font-family: var(--udc-sign); font-size: .875rem; font-weight: 400; color: var(--udc-ink); background: none; border: 0; border-radius: 0; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
 .page-body .hb-attachment-link svg { width: 16px !important; height: 16px !important; flex: none; }
 .udc-featured { aspect-ratio: 1440 / 703; max-width: 760px; margin: 0 0 22px; }
 
 /* Reading text: one column, controlled measure; the press reaches it lightly (page layer). */
-.udc-prose { max-width: 68ch; font-size: 1rem; line-height: 1.65; }
+.udc-prose { max-width: 68ch; font-size: .9rem; line-height: 1.58; }
+.udc-prose p, .udc-prose li { text-align: left; hyphens: none; }
 .udc-single[lang="zh-Hant"] .udc-prose { max-width: 36em; line-height: 1.85; }
 .udc-prose > * { margin-block: 0 .9em; }
 .udc-prose h2 { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.5rem; line-height: 1.25; margin: 1.6em 0 .5em; padding-top: .4em; border-top: 1px solid var(--udc-ink); }
@@ -465,6 +471,8 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-prose strong { font-weight: 650; }
 .udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-orange); color: var(--udc-ink); }
 .udc-prose ul, .udc-prose ol { padding-left: 1.3em; }
+.udc-prose ul { list-style: disc; }
+.udc-prose ol { list-style: decimal; }
 .udc-prose li { margin: .2em 0; }
 .udc-prose img, .udc-prose video { display: block; max-width: 100%; height: auto; margin: 1em 0; border: 1px solid var(--udc-ink); }
 .udc-prose figcaption { display: none; }
@@ -489,7 +497,11 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-pub-authors { margin: 0; color: var(--udc-ink-2); font-size: .9375rem; }
 .udc-pub-venue { margin: 0; font-size: .9375rem; }
 
-.udc-columns-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 10px 0 6px; }
+.udc-columns-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0; margin: 10px 0 6px; }
+/* Standing columns: no boxes (3.7); column rules between them. */
+.udc-column { padding: 2px 18px 8px; }
+.udc-column:first-child { padding-left: 0; }
+.udc-column + .udc-column { border-left: 1px solid var(--udc-ink); }
 .udc-column-title { margin: 0 0 4px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.3rem; }
 .udc-column-text { font-size: .9375rem; }
 .udc-stream { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 28px; }
@@ -504,81 +516,181 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-brief-text { max-width: 60ch; font-size: .9375rem; }
 .udc-brief-text p { margin: 0 0 .6em; }
 
-/* About */
-.udc-about-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 34%); gap: 0 26px; align-items: start; margin-top: 14px; }
-.udc-about-bio { max-width: 68ch; }
-.udc-about-bio p { margin: 0 0 .8em; }
-.udc-cv-item { margin-bottom: 14px; }
-.udc-cv-item h3 { margin: 0; font-family: var(--udc-text); font-weight: 600; font-size: 1.05rem; line-height: 1.3; }
-.udc-cv-item p { margin: 0; }
-.udc-cv-date { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
-.udc-cv-summary { font-size: .9375rem; margin-top: 4px; }
-.udc-cv-summary p { margin: 0 0 .4em; }
-.udc-about-edu .udc-label, .udc-about-exp .udc-label { margin-bottom: 10px; }
-.udc-cv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 28px; }
-.udc-about-rest { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 28px; }
-.udc-about-rest dl { margin: 8px 0 0; font-size: .9375rem; }
-.udc-about-rest dt { font-weight: 600; margin-top: 6px; }
-.udc-about-rest dd { margin: 0; color: var(--udc-ink-2); }
+/* About (plan v2, 4.8; reshaped by UD 2026-11-16): a year strip, then one timeline (dates | axis
+   with a node per entry | entry). Life outside research is a hidden lane in the strip; expanded, its
+   entries sit in line with the others. Printed, not drawn: bars and axis have hand-cut edges and go
+   through the same press as the type (label strength). */
+.udc-about-line { margin: 8px 0 18px; max-width: 68ch; }
+/* When the years run long (life entries may go back to 2001), the strip scrolls sideways: every year
+   keeps at least --yr of width, the lane names stay put, and it opens at the newest end (udc-ui.js). */
+.udc-ys { --name: 10.5rem; --yr: 56px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; margin: 4px 0 20px; font-family: var(--udc-sign); font-weight: 500; font-size: .7rem; letter-spacing: .04em; color: var(--udc-ink-2); }
+.udc-ys-head { border-bottom: 0; min-height: 0; align-items: end; }
+.udc-ys-ticks { display: grid; grid-template-columns: repeat(var(--years), minmax(0, 1fr)); }
+.udc-ys-ticks > span { padding: 0 0 2px 3px; border-left: 1px solid var(--udc-rule); line-height: 1.2; }
+.udc-ys-ticks i { font-style: normal; }
+.udc-ys-ticks::after { content: ""; grid-column: 1 / -1; height: 2px; background: var(--udc-ink); clip-path: var(--udc-cut-heavy); }
+.udc-ys-lane { display: grid; grid-template-columns: var(--name) minmax(0, 1fr); column-gap: 10px; align-items: center; min-height: 24px; border-bottom: 1px dotted var(--udc-rule);
+  min-width: calc(var(--name) + 10px + var(--years) * var(--yr)); }
+.udc-ys-name { position: sticky; left: 0; z-index: 1; align-self: stretch; display: flex; align-items: center; background: var(--udc-paper); text-transform: uppercase; letter-spacing: .08em; }
+.udc-ys-track { position: relative; height: 24px;
+  background: repeating-linear-gradient(to right, var(--udc-rule) 0 1px, transparent 1px calc(100% / var(--years))); }
+/* Bars: a rough-cut slab of ink, each with its own ragged ends (px jitter, so it holds at every width). */
+.udc-ys-bar { position: absolute; top: 6px; height: 11px; min-width: 7px; background: var(--udc-ink); text-decoration: none;
+  clip-path: polygon(1px 1px, 18% 0, 47% 2px, 76% 0, calc(100% - 1px) 1px, 100% 45%, calc(100% - 2px) 100%, 63% calc(100% - 1px), 31% 100%, 2px calc(100% - 1px), 0 52%); }
+.udc-ys-lane:nth-child(odd) .udc-ys-bar { clip-path: polygon(0 2px, 29% 0, 58% 1px, 100% 0, calc(100% - 2px) 38%, 100% 100%, 71% calc(100% - 2px), 40% 100%, 12% calc(100% - 1px), 1px 100%, 2px 60%); top: 7px; }
+.udc-ys-track, .udc-ys-ticks { filter: url(#udc-ink-m); }
+.udc-ys-bar:hover, .udc-ys-bar:focus-visible { background: var(--udc-orange); }
+/* Larger hit area than the drawn bar: the full lane height and a few px either side (WCAG 2.5.8). */
+.udc-ys-bar::before { content: ""; position: absolute; inset: -7px -6px; }
+.udc-ys-bar:focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 2px; }
+/* Lane filters: a printed tick box before each name; off = hollow box, lighter name. */
+.udc-ys-filter { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 0; background: none; border: 0;
+  color: var(--udc-ink); font: inherit; letter-spacing: inherit; text-transform: inherit; text-align: left; cursor: pointer; }
+.udc-ys-filter::before { content: ""; flex: none; width: 9px; height: 9px; box-shadow: inset 0 0 0 1.5px currentColor; background: currentColor;
+  clip-path: polygon(0 1px, 100% 0, calc(100% - 1px) 100%, 1px calc(100% - 1px)); }
+.udc-ys-filter[aria-pressed="false"] { color: var(--udc-ink-2); }
+.udc-ys-filter[aria-pressed="false"]::before { background: transparent; }
+.udc-ys-filter:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+.udc-ys-group { position: sticky; left: 0; width: max-content; margin: 8px 0 0; padding-left: 15px; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink-2); }
+.udc-ys-lane.is-off .udc-ys-track { visibility: hidden; }
+.udc-tl-row.is-off { display: none; }
+/* Flight map: collapsed by default (a native details element); printed like the rest. */
+.udc-map { margin: -8px 0 20px; }
+.udc-map-summary { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; cursor: pointer; list-style: none;
+  font-family: var(--udc-sign); font-weight: 500; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--udc-ink); }
+.udc-map-summary::-webkit-details-marker { display: none; }
+.udc-map-summary:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+.udc-map-summary svg { width: 13px; height: 13px; rotate: -90deg; transition: rotate .15s; }
+.udc-map[open] .udc-map-summary svg { rotate: none; }   /* not 0deg: the minifier drops the unit and the rule becomes invalid */
+.udc-map-fig { margin: 6px 0 0; }
+.udc-map-plate { position: relative; width: 100%; overflow: hidden; }
+.udc-map-land { position: absolute; inset: 0; background: var(--udc-ink-2);
+  -webkit-mask: url("/textures/map-land.png") 0 0 / 100% 100% no-repeat; mask: url("/textures/map-land.png") 0 0 / 100% 100% no-repeat; }
+.udc-map-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+.udc-map-leg { fill: none; stroke: var(--udc-ink-2); stroke-width: .7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.udc-map-place circle { fill: var(--udc-orange); stroke: var(--udc-paper); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.udc-map-place text { fill: var(--udc-ink); font-family: var(--udc-sign); font-weight: 700; font-size: 24px; letter-spacing: .06em; text-transform: uppercase;
+  paint-order: stroke; stroke: var(--udc-paper); stroke-width: 5px; stroke-linejoin: round; }
+.udc-map-port:hover, .udc-map-place:hover circle { stroke: var(--udc-orange); stroke-width: 2.5; }
+.udc-map-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 6px 20px; margin: 8px 0 6px; }
+.udc-map-key dt { font-weight: 700; color: var(--udc-ink); text-transform: uppercase; letter-spacing: .06em; }
+.udc-map-key dt::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--udc-orange); }
+.udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-ink); }
+.udc-map-cap p { margin: 0; }
+.udc-map-port { fill: var(--udc-ink); stroke: var(--udc-paper); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.udc-map-cap { margin-top: 6px; font-family: var(--udc-sign); font-size: .7rem; color: var(--udc-ink-2); }
+.udc-map-plate { filter: url(#udc-ink-m); }
 
-/* 404 */
-.udc-404-grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 0 28px; align-items: start; padding-block: 10px 30px; }
-.udc-404-slot { margin: 0; aspect-ratio: 4 / 5; border: 1px solid var(--udc-ink); display: grid; place-items: center; }
-.udc-404-slot .udc-emblem { width: 120px; rotate: 0deg; }
-.udc-404-links { padding-left: 1.2em; }
+/* The list */
+.udc-tl-rows { --tl-cols: 9.5rem 22px minmax(0, 1fr); list-style: none; margin: 0; padding: 0; }
+.udc-tl-row { position: relative; display: grid; grid-template-columns: var(--tl-cols); column-gap: 18px; padding: 10px 0 14px; scroll-margin-top: 16px; }
+.udc-tl-row + .udc-tl-row { border-top: 1px solid var(--udc-rule); }
+.udc-tl-date { margin: 2px 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .76rem; letter-spacing: .04em; color: var(--udc-ink-2); text-align: right; }
+.udc-tl-lane { display: block; text-transform: uppercase; letter-spacing: .08em; font-size: .66rem; }
+/* The axis: a rough-cut rule; the node a slightly irregular blot. Both printed. */
+.udc-tl-node { position: relative; filter: url(#udc-ink-m); }
+.udc-tl-node::before { content: ""; position: absolute; left: 50%; top: -10px; bottom: -14px; width: 3px; translate: -50% 0; background: var(--udc-ink);
+  clip-path: polygon(0 0, 100% 1%, 70% 22%, 100% 47%, 80% 71%, 100% 100%, 10% 100%, 30% 76%, 0 52%, 25% 24%); }
+.udc-tl-row:first-child .udc-tl-node::before { top: 12px; }
+.udc-tl-row:last-child .udc-tl-node::before { bottom: auto; height: 12px; }
+.udc-tl-node::after { content: ""; position: absolute; left: 50%; top: 6px; width: 12px; height: 11px; translate: -50% 0;
+  border-radius: 54% 46% 51% 49% / 47% 55% 45% 53%; rotate: 8deg; background: var(--udc-ink); box-shadow: 0 0 0 3px var(--udc-paper); }
+.udc-tl-row:nth-child(even) .udc-tl-node::after { border-radius: 47% 53% 44% 56% / 55% 46% 54% 45%; rotate: -11deg; width: 11px; }
+.udc-tl-row.is-life .udc-tl-node::after { background: var(--udc-paper); box-shadow: inset 0 0 0 2px var(--udc-ink), 0 0 0 3px var(--udc-paper); }
+.udc-tl-row:target .udc-tl-desk > :first-child { text-decoration: underline 2px var(--udc-orange); text-underline-offset: .2em; }
+.udc-tl-desk h3 { margin: 0; line-height: 1.2; }
+.udc-tl-edu { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.15rem; }
+.udc-tl-work { font-family: var(--udc-sign); font-weight: 700; font-size: .9rem; letter-spacing: .01em; }
+.udc-tl-sub { margin: 2px 0 0; font-style: italic; }
+.udc-tl-text { margin-top: 4px; max-width: 62ch; }
+.udc-tl-text p, .udc-tl-desk > p { margin: 0 0 .4em; }
+.udc-tl-row.is-life .udc-tl-desk { font-style: italic; }
+/* Life entries are mostly one line: a tighter row. */
+.udc-tl-row.is-life { padding: 6px 0 8px; }
+.udc-tl-row.is-life .udc-tl-node::before { top: -6px; bottom: -8px; }
+.udc-tl-row.is-life .udc-tl-node::after { top: 5px; }
+.udc-tl-row.is-life .udc-tl-desk .udc-ud-write { font-style: normal; }
+.udc-tl-desk { filter: url(#udc-ink-b); }
+.udc-about-rest { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 28px; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--udc-ink); }
+.udc-about-rest dl { margin: 8px 0 0; }
+.udc-about-rest dt { font-weight: 700; margin-top: 6px; }
+.udc-about-rest dd { margin: 0; color: var(--udc-ink-2); }
+@media (max-width: 760px) {
+  .udc-tl-rows { --tl-cols: 14px minmax(0, 1fr); }
+  .udc-tl-row { column-gap: 12px; }
+  .udc-tl-date { grid-column: 2; grid-row: 1; text-align: left; }
+  .udc-tl-node { grid-column: 1; grid-row: 1 / span 2; }
+  .udc-tl-desk { grid-column: 2; }
+  .udc-tl-node::after { top: 4px; }
+}
+@media (max-width: 640px) {
+  .udc-ys { --name: 6.9rem; --yr: 22px; font-size: .64rem; }
+  .udc-ys-name { line-height: 1.15; }
+  .udc-ys-ticks i { display: none; }
+  .udc-ys-ticks > span:not(:empty)::before { content: "’"; }
+}
+
+/* 404 (plan v2, 4.9): one screen, no header or footer. Desktop: figure-with-衝啥 and text side by
+   side, centred as a group, 44px apart. Phone: stacked and centred. */
+.udc-404 { --cs: .42; box-sizing: border-box; height: 100svh; padding: calc(var(--udc-edge-t) + 16px) 24px 16px;
+  display: flex; align-items: center; justify-content: center; gap: 44px; }
+.udc-404-fig { margin: 0; display: flex; flex-direction: column; align-items: center; height: 100%; }
+.udc-404-fig img { display: block; flex: 1 1 auto; min-height: 0; width: auto; height: auto; max-height: 100%; aspect-ratio: 466 / 1400; }
+.udc-404-cs { display: block; flex: none; width: 13rem; aspect-ratio: 722 / 304; margin-top: 10px; background: var(--udc-ink);
+  -webkit-mask: url("/textures/chongsha.png") center / contain no-repeat; mask: url("/textures/chongsha.png") center / contain no-repeat;
+  position: relative; z-index: 61; }
+.udc-404-fig img { position: relative; z-index: 61; }
+.udc-404-h { margin: 0; font-family: var(--udc-display); font-weight: 400; color: var(--udc-ink); line-height: .9; }
+.udc-404-n { display: block; font-size: min(13rem, 26vh); }
+.udc-404-nf { display: block; font-size: min(3.4rem, 7vh); margin-top: .15em; }
+.udc-404-back { margin: 1.4rem 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
+body:has(.udc-404) .page-body { margin: 0 !important; }
+@media (max-width: 640px) {
+  .udc-404 { flex-direction: column; justify-content: center; gap: 10px; padding: calc(var(--udc-edge-t) + 10px) 16px 12px; text-align: center; }
+  .udc-404-fig { height: auto; flex: 1 1 auto; min-height: 0; }
+  .udc-404-cs { width: 8.5rem; margin-top: 6px; }
+  .udc-404-n { font-size: min(5.2rem, 12vh); }
+  .udc-404-nf { font-size: min(2rem, 5vh); }
+  .udc-404-back { margin-top: .7rem; }
+}
 
 @media (max-width: 759px) {
-  .udc-single-head, .udc-about-top, .udc-cv-grid { grid-template-columns: minmax(0, 1fr); }
+  .udc-single-head { grid-template-columns: minmax(0, 1fr); }
   .udc-single-head .udc-meta { margin-top: 14px; }
-  .udc-about-edu { margin-top: 14px; }
   .udc-year { grid-template-columns: minmax(0, 1fr); }
   .udc-year-plate { margin-bottom: 8px; }
   .udc-stream { grid-template-columns: minmax(0, 1fr); }
   .udc-brief { grid-template-columns: minmax(0, 1fr); }
   .udc-brief-photo { width: 100%; }
-  .udc-404-grid { grid-template-columns: 112px minmax(0, 1fr); gap: 0 14px; }
-  .udc-404-slot .udc-emblem { width: 70px; }
-}
-
-/* ============================================== home entrance and exit (plan 2) */
-.udc-exit { margin: 18px 0 0; text-align: right; }
-.udc-exit-btn, .udc-phrase { background: none; border: 0; padding: 4px 0; cursor: pointer; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .04em; color: var(--udc-ink-2); }
-.udc-exit-btn:hover { color: var(--udc-ink); text-decoration: underline 1px var(--udc-orange); }
-.udc-phrase { display: none; position: fixed; z-index: 80; top: 14px; left: 16px; white-space: nowrap; }
-html[data-udc-entrance="centre"] .udc-phrase { top: 50%; left: 50%; translate: -50% -50%; }
-.udc-entering:not(.udc-reentering) .udc-phrase { display: block; pointer-events: none; clip-path: inset(0 100% 0 0);
-  animation: udc-write .26s steps(14, end) forwards, udc-fade .14s linear .6s forwards; }
-.udc-entering body > :is(.page-header, .page-body, .page-footer) { clip-path: inset(0 0 100% 0); animation: udc-print .36s steps(9, end) .24s forwards; }
-.udc-reentering body > :is(.page-header, .page-body, .page-footer) { animation-delay: 0s; }
-.udc-entering body > .page-body { animation-delay: .3s; }
-.udc-entering body > .page-footer { animation-delay: .5s; }
-.udc-managed .udc-phrase { display: block; }
-.udc-managed body > :is(.page-header, .page-body, .page-footer) { animation: udc-wipe .36s steps(9, end) forwards; }
-@keyframes udc-write { to { clip-path: inset(0 0 0 0); } }
-@keyframes udc-fade { to { opacity: 0; } }
-@keyframes udc-print { to { clip-path: inset(0 0 0 0); } }
-@keyframes udc-wipe { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 100% 0); visibility: hidden; } }
-@media (prefers-reduced-motion: reduce) {
-  .udc-managed body > :is(.page-header, .page-body, .page-footer) { visibility: hidden; }
 }
 
 /* ================================================== accessibility and print */
+/* Higher contrast, forced colours and print: plain sheet, solid type (plan 3.4). No creases, edges,
+   press specks or ink treatment; images keep their own print. */
 @media (prefers-contrast: more), (forced-colors: active), print {
-  body.page-wrapper, .udc-header, .udc-sheet { background-image: none !important; }
-  body.page-wrapper::after, .udc-pressed::after, .udc-header::after { display: none !important; }
-  .udc-ink { filter: none !important; -webkit-mask: none !important; mask: none !important; }
+  body.page-wrapper, .udc-header { background-image: none !important; }
+  body.page-wrapper::after, .udc-header::after { display: none !important; }
+  .udc-sheet-layer { display: none !important; }
+  *, *::before, *::after { filter: none !important; }
+  .udc-portrait img, .udc-404-fig img { filter: none !important; }
 }
+/* Forced colours: shapes coloured through a mask would take the forced background and vanish. Keep the
+   lettering, Ryan, the brush line and the halftone images in the system text colour or their own inks. */
 @media (forced-colors: active) {
-  .udc-field { forced-color-adjust: none; background: Canvas; color: CanvasText; border: 1px solid CanvasText; }
-  .udc-field-text, .udc-field-text b { color: CanvasText; }
-  .udc-box::before, .udc-rule-heavy::before { background: CanvasText; }
+  .udc-box::before, .udc-rule-heavy::before, .udc-rule-heavy::after, .udc-label::after { background: CanvasText; forced-color-adjust: none; }
+  .udc-emblem, .udc-name-zh::before, .udc-404-cs, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land { forced-color-adjust: none; background: CanvasText; }
+  .udc-name-zh::after { forced-color-adjust: none; background: Highlight; }
+  .udc-footer-img, .udc-flag, .udc-footer-band, .udc-map-svg { forced-color-adjust: none; }
+  .udc-ys-filter::before { forced-color-adjust: none; box-shadow: none; border: 1.5px solid ButtonText; background: Canvas; }
+  .udc-ys-filter[aria-pressed="true"]::before { background: ButtonText; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media print { .page-header, .udc-footer-links, .udc-emblem { display: none !important; } body.page-wrapper { background: #fff !important; color: #000 !important; } }
 
 /* ================================================================== headlines */
-.udc-kicker { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .12em; text-transform: uppercase; color: var(--udc-ink-2); margin: 0 0 .5rem; }
 .udc-lead-head { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }
+/* 繁體中文 titles: Noto Serif TC 900 for the whole title (plan 3.2). */
+.udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
 .udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance; }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
@@ -590,19 +702,33 @@ html[data-udc-entrance="centre"] .udc-phrase { top: 50%; left: 50%; translate: -
 .udc-news-list time { display: block; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
 .udc-news-list p { margin: 2px 0 0; }
 
-/* Keyword field: hand-placed word-cloud feel; decorative (aria-hidden). */
-.udc-keywords { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1px 7px; width: 250px; min-height: 190px; padding: 6px; line-height: 1.05; text-align: center; }
-.udc-keywords span { display: inline-block; }
-.udc-kw-primary { font-family: var(--udc-display); font-size: 1.55rem; }
-.udc-kw-primary-2 { font-family: var(--udc-sign); font-size: .95rem; }
-.udc-kw-current { font-family: var(--udc-display); font-size: 1.05rem; }
-.udc-kw-focus { font-family: var(--udc-display); font-size: 1.2rem; color: var(--udc-orange-text); }
-.udc-kw-past { font-family: var(--udc-text); font-style: italic; font-size: .82rem; }
-.udc-kw-method { font-family: var(--udc-sign); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink-2); }
-.udc-kw-vert { writing-mode: vertical-rl; }
-.udc-kw-plate { background: var(--udc-ink); color: var(--udc-paper); padding: .15em .45em; clip-path: var(--udc-cut-plate); }
-.udc-kw-box { position: relative; padding: .15em .4em; }
-.udc-kw-box::before { content: ""; position: absolute; inset: 0; background: currentColor; clip-path: var(--udc-frame-2); }
-[data-udc-type="y"] .udc-kw-primary { font-size: 1.25em; }
-[data-udc-type="y"] .udc-kw-focus { font-size: 1em; }
-[data-udc-type="y"] .udc-kw-current { font-size: .85em; }
+
+
+/* ============================================================ night edition */
+/* Plan v2, 5: the navy night edition. Tokens are in .dark at the top. The press is the same; light
+   ink on dark paper. */
+/* Creases lighten instead of darken: crease depth (crease-light.webp) painted in a lighter tone,
+   inside the same edge/centre fade masks as the day creases. Ceiling checked by paper_contrast.py. */
+.dark .udc-crease { background-image: none; mix-blend-mode: normal; }
+.dark .udc-crease::before { content: ""; position: absolute; inset: 0; background: var(--udc-crease-hi);
+  -webkit-mask: url("/textures/crease-light.webp") 0 0 / var(--udc-crease-tile) var(--udc-crease-tile) repeat;
+  mask: url("/textures/crease-light.webp") 0 0 / var(--udc-crease-tile) var(--udc-crease-tile) repeat; }
+.dark .udc-crease-edge::before { opacity: var(--udc-crease-hi-edge); }
+.dark .udc-crease-centre::before { opacity: var(--udc-crease-hi-centre); }
+.dark { --udc-sheet: url("/textures/newsprint-show.webp"), url("/textures/newsprint-fibres-night.webp"), url("/textures/newsprint-tone.png"); }
+.dark { --udc-crease-hi: #C9C6BA; --udc-crease-hi-edge: .06; --udc-crease-hi-centre: .02; }
+/* Footer plates: the night masks carry the image's light (positive), not its darkness. */
+.dark .udc-fi-ink { -webkit-mask-image: var(--mn); mask-image: var(--mn); }
+.dark .udc-fi-2 { -webkit-mask-image: var(--m2n, var(--m)); mask-image: var(--m2n, var(--m)); }
+.dark .udc-footer-thames .udc-fi-2 { background: var(--udc-orange); }   /* London's lights in the night orange */
+.dark .udc-footer-creases { background: var(--udc-ink); opacity: .1; }
+/* The strip under the footer stays dark at night; the fine print is light. */
+.dark .udc-footer { color: var(--udc-ink); }   /* 9.2:1 on the strip; ink-2 would be 5.1:1, under the 7:1 asked of the fine print */
+.dark .udc-footer-band { background: var(--udc-paper-2); }
+.dark .udc-footer a, .dark .udc-footer-links a { color: var(--udc-ink); }
+/* The flag keeps dark lettering on orange cloth; its outline is light. */
+.dark .udc-flag-ink { background: var(--udc-paper); }
+.dark .udc-flag-outline { background: var(--udc-ink); }
+/* Portrait: same file, a little dimmer so it does not glow on dark paper. */
+.dark .udc-portrait img { filter: brightness(.86); }
+.dark .udc-404-fig img { filter: brightness(.9); }

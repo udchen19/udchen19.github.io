@@ -10,6 +10,12 @@ date: '2026-04-13'
 publication: "*CHI EA '26*"
 publication_types:
   - paper-conference
+links:
+  - type: pdf
+    url: 'https://dl.acm.org/doi/pdf/10.1145/3772363.3798322'
+hugoblox:
+  ids:
+    doi: 10.1145/3772363.3798322
 ---
 
 I independently conducted the research and created the poster for this project.

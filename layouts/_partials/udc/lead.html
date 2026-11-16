@@ -1,6 +1,4 @@
-{{/* Lead story: kicker → research question (DRAFT until chosen) → byline → affiliation + intro. */}}
-{{- $d := site.Data.udc -}}
-{{- $draft := not $d.lead.headline -}}
-{{- $headline := $d.lead.headline | default (index $d.lead.headline_drafts 0) -}}
-<p class="udc-kicker">Current research</p>
-<p class="udc-lead-head udc-ink udc-w1 udc-tilt udc-t3">{{ $headline }}{{ if $draft }}<span class="udc-draft-mark" title="Headline draft 1 of 3, not yet chosen">Draft</span>{{ end }}</p>
+{{/* Headline (plan v2, 4.3): two lines, each sized on its own to span the story column; no full
+     stop, no kicker. On line 2 the capital starting each word (U, D, C) prints in orange. */}}
+{{- $h := hugo.Data.udc.lead.headline -}}
+<p class="udc-lead-head"><span class="udc-lead-l1">{{ index $h 0 }}</span> <span class="udc-lead-l2">{{ replaceRE `\b(\p{Lu})` `<b>$1</b>` (index $h 1 | htmlEscape) | safeHTML }}</span></p>

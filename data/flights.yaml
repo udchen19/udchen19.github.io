@@ -1,0 +1,124 @@
+# UD's flights, transcribed from his flight-log screenshots on 2026-11-16 (build thread).
+# Public repo: only the airports and the year are kept (no flight numbers, no exact dates).
+# The map marks places, not routes (UD, 2026-11-16): the places below print in orange, with their notes
+# in a key under the map; every flight prints faint. Notes written by the build thread from UD's
+# descriptions, at his request ("find the ones that work best"); his to change.
+# airports: every airport of the place gets an orange dot; the name sits by the first one.
+# label: where the name sits beside that dot: ne (default), nw, sw or se.
+places:
+  - {name: Taipei, airports: [TPE, TSA], label: se, note: "Where I’m from. Born here; home until 2006, and again from 2010 to 2026."}
+  - {name: London, airports: [LHR, LGW, LTN], note: "Home from 2006 to 2010, while my parents studied here and took me along. Not British in any way, but a good part of me started here."}
+  - {name: Japan, airports: [NRT, HND, KIX, ITM], label: nw, note: "Trips for baseball, shopping and culture, again and again."}
+  - {name: Chicago (Champaign), airports: [ORD], note: "From 2026. The first time properly away from home: out of my shell, starting things of my own."}
+legs:
+  # 2006
+  - [2006, TPE, HKG]
+  - [2006, HKG, LHR]
+  - [2006, LHR, FRA]
+  - [2006, FRA, TPE]
+  - [2006, TPE, FRA]
+  - [2006, FRA, LHR]
+  # 2007
+  - [2007, LHR, FCO]
+  - [2007, MXP, LHR]
+  - [2007, LHR, ZRH]
+  - [2007, ZRH, LHR]
+  - [2007, LHR, BKK]
+  - [2007, BKK, TPE]
+  - [2007, TPE, BKK]
+  - [2007, BKK, LHR]
+  # 2008
+  - [2008, LHR, BKK]
+  - [2008, BKK, TPE]
+  - [2008, TPE, BKK]
+  - [2008, BKK, LHR]
+  - [2008, LTN, ZRH]
+  - [2008, ZRH, LTN]
+  # 2009
+  - [2009, LGW, DBV]
+  - [2009, DBV, LGW]
+  # 2010
+  - [2010, LHR, BKK]
+  - [2010, BKK, TPE]
+  # 2011
+  - [2011, TPE, HKG]
+  - [2011, HKG, TPE]
+  - [2011, TPE, HKG]
+  - [2011, HKG, DOH]
+  - [2011, DOH, AUH]
+  - [2011, DXB, DOH]
+  - [2011, DOH, HKG]
+  - [2011, HKG, TPE]
+  # 2012
+  - [2012, TPE, KIX]
+  - [2012, KIX, TPE]
+  # 2013
+  - [2013, TPE, HKG]
+  - [2013, HKG, TPE]
+  - [2013, TPE, KIX]
+  - [2013, KIX, TPE]
+  # 2014
+  - [2014, TPE, FUK]
+  - [2014, FUK, TPE]
+  - [2014, TPE, NRT]
+  - [2014, NRT, TPE]
+  # 2015
+  - [2015, RMQ, HKG]
+  - [2015, HKG, TPE]
+  # 2016
+  - [2016, TSA, HND]
+  - [2016, HND, TSA]
+  # 2017
+  - [2017, TPE, NRT]
+  - [2017, NRT, TPE]
+  # 2018
+  - [2018, TPE, KIX]
+  - [2018, KIX, TPE]
+  # 2019
+  - [2019, TPE, HKG]
+  - [2019, HKG, LHR]
+  - [2019, LHR, HKG]
+  - [2019, HKG, TPE]
+  - [2019, TPE, NRT]
+  - [2019, NRT, TPE]
+  - [2019, TSA, HND]
+  - [2019, NRT, TPE]
+  # 2023
+  - [2023, TPE, HND]
+  - [2023, HND, TPE]
+  - [2023, TPE, LAX]
+  - [2023, LAX, CUN]
+  - [2023, CUN, LAX]
+  - [2023, LAX, TPE]
+  # 2024
+  - [2024, TPE, NRT]
+  - [2024, NRT, TPE]
+  - [2024, TPE, NRT]
+  - [2024, KIX, TPE]
+  # 2025
+  - [2025, TPE, NRT]
+  - [2025, NRT, TPE]
+  - [2025, TPE, DXB]
+  - [2025, DXB, CAI]
+  - [2025, CAI, SSH]
+  - [2025, SSH, CAI]
+  - [2025, CAI, LXR]
+  - [2025, LXR, CAI]
+  - [2025, CAI, DXB]
+  - [2025, DXB, TPE]
+  # 2026
+  - [2026, TPE, NRT]
+  - [2026, HND, TSA]
+  - [2026, TSA, HND]
+  - [2026, HND, TSA]
+  - [2026, TPE, PVG]
+  - [2026, PVG, MUC]
+  - [2026, MUC, BCN]
+  - [2026, BCN, ZRH]
+  - [2026, ZRH, FRA]
+  - [2026, FRA, TPE]
+  - [2026, TPE, KIX]
+  - [2026, ITM, HND]
+  - [2026, HND, ORD]
+  - [2026, ORD, LHR]
+  - [2026, LHR, ORD]

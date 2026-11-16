@@ -1,6 +1,0 @@
-{{/* Keyword field: hand-placed word-cloud feel; decorative, every term is in the text. */}}
-<div class="udc-keywords" aria-hidden="true">
-  {{- range site.Data.udc.keywords }}
-  <span class="udc-kw-{{ .rank }}{{ with .style }} udc-kw-{{ cond (eq . "vertical") "vert" . }}{{ end }}">{{ .text }}</span>
-  {{- end }}
-</div>

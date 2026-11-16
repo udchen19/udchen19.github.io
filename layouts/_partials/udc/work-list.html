@@ -1,15 +1,17 @@
-{{/* Three distinct projects, exactly as written in data/udc.yaml. */}}
+{{/* Research tier (plan v2, 4.5): three columns, one per work. Each: the research question as a
+     small Ultra head, the finding, then links and meta (work name · venue). Questions and findings
+     were approved by UD on 2026-11-16; each sentence keeps its source quote in data/udc.yaml. */}}
 <div class="udc-work-list">
-  {{- range site.Data.udc.work }}
+  {{- range hugo.Data.udc.work }}
   <article class="udc-work">
-    <p class="udc-work-meta">{{ .meta }}</p>
-    <h3 class="udc-work-title"><a href="{{ .page }}">{{ .title }}</a></h3>
-    <p class="udc-work-text">{{ .text }}</p>
+    <h3 class="udc-work-title"><a href="{{ .page }}">{{ .question.text }}</a></h3>
+    <p class="udc-work-text">{{ range $i, $s := .finding }}{{ if $i }} {{ end }}{{ $s.text | markdownify }}{{ end }}</p>
     <p class="udc-work-links">
       {{- range .links }}{{ $icon := "arrow-up-right" }}{{ if eq .label "Paper" }}{{ $icon = "document-text" }}{{ else if eq .label "Code" }}{{ $icon = "brands/github" }}{{ end }}
       <a href="{{ .url }}">{{ partial "functions/get_icon" (dict "name" $icon "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}{{ .label }}</a>
       {{- end }}
     </p>
+    <p class="udc-work-meta">{{ .title }} · {{ .meta }}</p>
   </article>
   {{- end }}
 </div>

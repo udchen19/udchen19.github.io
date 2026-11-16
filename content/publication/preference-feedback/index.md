@@ -11,6 +11,9 @@ publication: "*CHI '26*"
 publication_types:
   - paper-conference
 featured: true
+links:
+  - type: pdf
+    url: 'https://dl.acm.org/doi/pdf/10.1145/3772318.3790950'
 hugoblox:
   ids:
     doi: 10.1145/3772318.3790950

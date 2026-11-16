@@ -1,7 +1,14 @@
-"""Paper, press and halftone textures for the udchen.tw redesign.
+"""Paper textures for the udchen.tw redesign. All outputs go to <repo>/static/textures/.
+Deterministic (fixed seeds).
 
-python textures.py <repo> <Paper002_Color.jpg>
-All outputs go to <repo>/static/textures/. Deterministic (fixed seeds).
+python textures.py <repo> night
+    The night fibre layer: newsprint-fibres.webp with its brightest flecks capped, so soft-light on the
+    dark paper never lifts a pixel past the night ceiling (paper_contrast.py dark).
+python textures.py <repo> sheet <Paper005_2K-JPG_Displacement.jpg>
+    Creases (ambientCG Paper 005, CC0) and the worn sheet edges (plan v2, 3.4).
+python textures.py <repo> <Paper002_Color.jpg> [<reading font.ttf> <display font.ttf>]
+    Base layers: fibres, tone, show-through, press specks.
+The display wear masks this script used to make were replaced by the SVG ink filters (plan v2, 3.3).
 """
 import sys, pathlib
 import numpy as np
@@ -37,6 +44,111 @@ def save_alpha(alpha, name, levels=None):
 
 def wrap_blur(a, s):
     return ndi.gaussian_filter(a, s, mode="wrap")
+
+
+# ---------------------------------------------------------------- sheet -------
+def lum(rgb):
+    """Relative luminance (WCAG) of sRGB values 0..1."""
+    c = np.asarray(rgb, np.float64)
+    lin = np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+    return lin @ np.array([0.2126, 0.7152, 0.0722])
+
+PAPER = np.array([0xE2, 0xDD, 0xD1]) / 255.0
+FLOOR = 0.423            # plan 3.4: lowest paper luminance inside the content column
+
+def creases(disp_path):
+    g = np.asarray(Image.open(disp_path).convert("L"), np.float32) / 255.0     # 2048², seamless
+    neutral = float(np.median(g))                 # the flat sheet: no change there
+    # Shadow only (plan 3.4): darker than neutral darkens, lighter is no change. Strength as the
+    # approved mock (hard-light at contrast 1.7, opacity .7 => slope 3.4 below neutral, x .7).
+    dark = np.clip(3.4 * (neutral - g), 0, 1) * 0.7
+    m = 1 - dark                                   # multiply factor on the paper
+    # Floor: the lowest factor that keeps paper luminance >= FLOOR (+ headroom for the fibre and
+    # tone layers, which the full-page check measures).
+    lo, hi = 0.5, 1.0
+    for _ in range(40):
+        mid = (lo + hi) / 2
+        if lum(PAPER * mid) < FLOOR + HEADROOM: lo = mid
+        else: hi = mid
+    floor = hi
+    # Soft knee, not a clip: a hard clip flattens the deepest creases into flat grey patches.
+    # Darkness up to KNEE of the budget is kept as is; beyond it, compressed smoothly toward
+    # the floor, so every crease keeps its relief and none goes past the floor.
+    budget = 1 - floor; k = KNEE * budget
+    d = 1 - m
+    d = np.where(d <= k, d, k + (budget - k) * np.tanh((d - k) / (budget - k)))
+    edge = 1 - d
+    # Centre: only the deepest creases, faint.
+    deep = np.clip((1 - m) - CENTRE_T, 0, None) * CENTRE_K
+    centre = np.maximum(1 - deep, CENTRE_FLOOR)
+    print(f"neutral {neutral:.3f}  floor factor {floor:.3f} (paper L {lum(PAPER*floor):.3f})  "
+          f"compressed (beyond the knee) {np.mean((1 - m) > k)*100:.2f}%  centre active {np.mean(deep > 0)*100:.2f}%")
+    for a, name in [(edge, "crease-edge.webp"), (centre, "crease-centre.webp")]:
+        im = Image.fromarray(np.clip(a * 255, 0, 255).astype(np.uint8), "L").resize((1500, 1500), Image.LANCZOS)
+        im.save(out / name, quality=82, method=6)
+        print(f"{name:28} {(out / name).stat().st_size // 1024} KB")
+    # Over dark areas (footer images, the night edition) creases lighten instead (3.4): an alpha mask
+    # of crease depth (1 = deepest), painted in paper colour at low opacity by CSS.
+    # Only real creases (flat paper is 0, which also keeps the file small); half resolution, shown at
+    # the same tile size.
+    depth = np.clip(((1 - m) - 0.06) / 0.45, 0, 1)
+    a = np.asarray(Image.fromarray((depth * 255).astype(np.uint8), "L").resize((750, 750), Image.LANCZOS))
+    Image.merge("RGBA", (Image.new("L", (750, 750), 255),) * 3 + (Image.fromarray(a, "L"),)).save(out / "crease-light.webp", quality=70, method=6)
+    print(f"{'crease-light.webp':28} {(out / 'crease-light.webp').stat().st_size // 1024} KB")
+
+def walk(n, depth, seed, step):
+    """Worn edge: a random walk inside [0.12, 1] x depth, a few px of jitter, seamless."""
+    r = np.random.default_rng(seed); x = depth * .45; pts = []
+    for _ in range(n):
+        x += (r.random() - .5) * depth * .35
+        if r.random() < .06: x += (r.random() - .3) * depth * .9
+        x = max(depth * .12, min(depth, x)); pts.append(x)
+    pts[-1] = pts[0]
+    return pts
+
+def svg(w, h, body):
+    return f"<svg xmlns='http://www.w3.org/2000/svg' width='{w}' height='{h}' viewBox='0 0 {w} {h}'>{body}</svg>\n"
+
+def edges(tag, L, R, T):
+    """Masks (black = shown) for the sheet's left, right and top edges. CSS colours them."""
+    H = 918; ys = list(range(0, H + 1, 9))
+    xs = walk(len(ys), L, 5, 9)
+    poly = " ".join(f"{x:.1f},{y}" for x, y in zip(xs, ys))
+    (out / f"edge-left-{tag}.svg").write_text(svg(L, H, f"<polygon points='0,0 {poly} 0,{H}'/>"))
+    # Right: the top sheet's edge, two more page edges behind it (4.5 px apart), then the surround.
+    H = 1035; ys = list(range(0, H + 1, 9)); D = R - 10
+    xs = walk(len(ys), D, 7, 9)
+    edge = lambda i: [min(R, x + D * .1 + i * 4.5) for x in xs]
+    pts = lambda xx: " ".join(f"{R - x:.1f},{y}" for x, y in zip(xx, ys))   # mirrored: sheet on the left
+    outer = edge(2)
+    (out / f"edge-right-surround-{tag}.svg").write_text(svg(R, H, f"<polygon points='{R},0 {pts(outer)} {R},{H}'/>"))
+    (out / f"edge-right-pages-{tag}.svg").write_text(svg(R, H, f"<polygon points='{pts(edge(0))} " + " ".join(f"{R - x:.1f},{y}" for x, y in reversed(list(zip(outer, ys)))) + "'/>"))
+    lines = "".join(f"<polyline fill='none' stroke='black' stroke-width='.7' points='{pts(edge(i))}'/>" for i in (0, 1, 2))
+    (out / f"edge-right-lines-{tag}.svg").write_text(svg(R, H, lines))
+    # Top: same walk, horizontal.
+    W = 1000; xs2 = list(range(0, W + 1, 10)); ys2 = walk(len(xs2), T, 11, 10)
+    (out / f"edge-top-{tag}.svg").write_text(svg(W, T, f"<polygon points='0,0 " + " ".join(f"{x},{y:.1f}" for x, y in zip(xs2, ys2)) + f" {W},0'/>"))
+    print("edges", tag, L, R, T)
+
+HEADROOM, KNEE, CENTRE_T, CENTRE_K, CENTRE_FLOOR = 0.16, 0.5, 0.20, 0.5, 0.95
+if scan == "night":
+    # Soft-light over #111A2B with the tone (max 142) and show-through (max 130) layers: a fibre value of
+    # 152 gives relative luminance 0.0245, under the 0.028 at which night ink-2 drops below 4.5:1.
+    f = np.asarray(Image.open(out / "newsprint-fibres.webp").convert("L"), np.float32)
+    # Capped at 140 and saved lossy at q90: compression lifts some values again, and the saved file
+    # must stay at or under 152 (checked below).
+    capped = np.minimum(f, 140)
+    print(f"night fibres: {np.mean(f > 140) * 100:.2f}% of pixels capped")
+    Image.fromarray(capped.astype(np.uint8), "L").save(out / "newsprint-fibres-night.webp", quality=90)
+    back = np.asarray(Image.open(out / "newsprint-fibres-night.webp").convert("L"))
+    assert back.max() <= 152, back.max()
+    print("newsprint-fibres-night.webp", (out / "newsprint-fibres-night.webp").stat().st_size // 1024, "KB, max", back.max())
+    sys.exit(0)
+if scan == "sheet":
+    creases(sys.argv[3])
+    edges("wide", 22, 32, 12)      # >= 641 px
+    edges("narrow", 9, 19, 6)      # < 641 px
+    sys.exit(0)
 
 # ---------------------------------------------------------------- paper -------
 g = np.asarray(Image.open(scan).convert("L"), dtype=np.float32) / 255.0   # 2048 x 1588, seamless
@@ -108,37 +220,3 @@ def specks(count, rmax, seed):
     return m
 
 save_alpha(np.maximum(specks(1700, 1.6, 1), light * 0.55), "press-light.png", levels=4)
-save_alpha(np.maximum(specks(3200, 2.0, 2), light * 0.75), "press-medium.png", levels=4)
-
-# ---------------------------------------------------------------- wear --------
-# Display wear masks. Tile = 12em at 100 px/em; opaque keeps ink, transparent is a hole.
-# Largest hole 0.06em (narrower than a stroke at every display size).
-WT = 1200
-def wear(seed, pits, scratches, fibre_k):
-    r = np.random.default_rng(seed)
-    c = wrap_blur(r.standard_normal((WT, WT)).astype(np.float32), 90)
-    c = (c - c.min()) / (c.max() - c.min())
-    hole = Image.new("L", (WT, WT), 0); dd = ImageDraw.Draw(hole)
-    for _ in range(pits):
-        x, y = r.random(2) * WT
-        if r.random() > c[int(y), int(x)] ** 1.5: continue
-        rad = r.uniform(0.6, 3.0)
-        pts = [(x + rad * np.cos(t) * r.uniform(.6, 1.2), y + rad * np.sin(t) * r.uniform(.6, 1.2))
-               for t in np.linspace(0, 2 * np.pi, 7)[:-1]]
-        dd.polygon(pts, fill=255)
-    for _ in range(scratches):
-        x, y = r.random(2) * WT; a = r.uniform(-.5, .5) + (np.pi / 2 if r.random() < .3 else 0)
-        ln = r.uniform(8, 30)
-        dd.line((x, y, x + ln * np.cos(a), y + ln * np.sin(a)), fill=255, width=int(r.integers(1, 3)))
-    h = np.asarray(hole, np.float32) / 255.0
-    # fibre-shaped holes from the scan (rotated crop so the three masks differ)
-    o = (seed % 4) * 200; crop = np.rot90(hp[o:o + WT, :WT], seed)
-    crop = np.resize(crop, (WT, WT))
-    fh = np.clip((crop - 1.4 * sd) / (sd * 1.5), 0, 1) * fibre_k
-    h = np.maximum(h, fh)
-    h = ndi.gaussian_filter(h, 0.6)
-    return 1 - np.clip(h * 1.4, 0, 1)
-
-for i in (1, 2, 3):
-    save_alpha(wear(i, 2600, 120, 0.7), f"wear-{i}-light.png", levels=2)
-    save_alpha(wear(i + 10, 4800, 260, 1.0), f"wear-{i}-medium.png", levels=2)

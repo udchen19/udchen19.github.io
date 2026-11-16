@@ -1,11 +1,10 @@
-{{/* Front page (A, B): a made-up newspaper page. Composition: plan 1.3 / 3.1; budget: 1.8. */}}
-<div class="udc-home udc-front udc-wrap" data-udc-home>
+{{/* Front page (plan v2, 4.3–4.5): story column (headline, intro) | side column (columnist
+     block, News); research tier; UD's Log; the image footer follows in site_footer.html. */}}
+<div class="udc-home udc-front udc-wrap">
   <h1 class="udc-visually-hidden udc-h1-name">Uei-Dar Chen 陳威達</h1>
   <section class="udc-front-lead" aria-label="Introduction">
-    <p class="udc-nameplate udc-ink udc-w3 udc-tilt udc-t5" lang="zh-Hant" aria-hidden="true">陳威達</p>
     <div class="udc-front-story">
       {{ partial "udc/lead.html" . }}
-      <p class="udc-byline udc-front-byline">by <b>Uei-Dar Chen</b><span class="udc-byline-zh" lang="zh-Hant" aria-hidden="true"> · 陳威達</span></p>
       {{ partial "udc/intro.html" (dict "dropcap" true) }}
     </div>
     <aside class="udc-front-side" aria-label="Portrait, profiles and news">
@@ -16,14 +15,8 @@
   <hr class="udc-rule-heavy" aria-hidden="true">
   <section id="research" class="udc-tier udc-research" aria-labelledby="udc-research-title">
     <div class="udc-tier-head"><h2 id="udc-research-title" class="udc-label">Research</h2><a class="udc-more" href="/publication/">All publications</a></div>
-    <div class="udc-research-grid">
-      {{ partial "udc/work-list.html" . }}
-      {{ partial "udc/keywords.html" . }}
-    </div>
+    {{ partial "udc/work-list.html" . }}
   </section>
   <hr class="udc-rule-heavy" aria-hidden="true">
   {{ partial "udc/log-titles.html" . }}
-  <hr class="udc-rule-heavy" aria-hidden="true">
-  {{ partial "udc/plates.html" . }}
-  {{ partial "udc/entrance.html" . }}
 </div>

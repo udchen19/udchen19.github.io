@@ -18,6 +18,9 @@ publishDate: '2023-12-28T03:59:51.977405Z'
 publication_types:
 - paper-conference
 publication: "*CHI '23*"
+links:
+  - type: pdf
+    url: 'https://dl.acm.org/doi/pdf/10.1145/3544548.3580731'
 hugoblox:
   ids:
     doi: 10.1145/3544548.3580731

@@ -1,5 +1,6 @@
 // Full-page screenshots through headless Chrome's DevTools protocol (no packages).
-// node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, js}]
+// node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, js, eval, print}]
+// print: log the value the eval expression returns (a job with print and no out takes no picture).
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -34,7 +35,11 @@ for (const j of jobs) {
   await send('Page.navigate', { url: j.url });
   await sleep(j.wait || 1800);
   if (j.js !== false) await send('Runtime.evaluate', { expression: "document.querySelector('.udc-dev')?.remove(); document.head.insertAdjacentHTML('beforeend', '<style>.udc-home > * { content-visibility: visible !important; }</style>'); window.scrollTo(0, document.body.scrollHeight); new Promise(r => setTimeout(r, 400)).then(() => { window.scrollTo(0, 0); return document.fonts.ready; })", awaitPromise: true });
-  if (j.eval) await send('Runtime.evaluate', { expression: j.eval, awaitPromise: true });
+  if (j.eval) {
+    const r = await send('Runtime.evaluate', { expression: j.eval, awaitPromise: true, returnByValue: true });
+    if (j.print) console.log(JSON.stringify(r.result.result?.value ?? r.result.exceptionDetails?.text));
+  }
+  if (j.print && !j.out) continue;
   await sleep(300);
   const m = await send('Page.getLayoutMetrics');
   const ch = Math.ceil(m.result.cssContentSize.height);

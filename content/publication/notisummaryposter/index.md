@@ -11,6 +11,9 @@ publishDate: '2023-12-28T03:59:51.965217Z'
 publication: "*UbiComp/ISWC '23*"
 publication_types:
 - paper-conference
+links:
+  - type: pdf
+    url: 'https://dl.acm.org/doi/pdf/10.1145/3594739.3610702'
 hugoblox:
   ids:
     doi: 10.1145/3594739.3610702

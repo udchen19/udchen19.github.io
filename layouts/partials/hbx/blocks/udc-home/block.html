@@ -1,2 +1,1 @@
-{{/* Homepage dispatcher (plan 6.1): site.Params.udc.home = front | classic. */}}
-{{ partial (printf "udc/home-%s.html" (site.Params.udc.home | default "front")) . }}
+{{ partial "udc/home-front.html" . }}

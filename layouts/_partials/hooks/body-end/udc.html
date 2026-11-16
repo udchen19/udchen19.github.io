@@ -1,22 +1,28 @@
-{{/* Ink spread: rough edges at pixel scale. A displacement, then a steep alpha curve so
-     edges stay crisp (printed), never soft (blurred). */}}
+{{/* The sheet behind every page (plan v2, 3.4): creases at the edges, a few deep ones in the
+     centre, the worn left/right/top edges on the surround. Background only; never over content. */}}
+<div class="udc-sheet-layer" aria-hidden="true">
+  <i class="udc-crease udc-crease-edge"></i><i class="udc-crease udc-crease-centre"></i>
+  <i class="udc-edge udc-edge-l"></i><i class="udc-edge udc-edge-r-pages"></i><i class="udc-edge udc-edge-r-lines"></i><i class="udc-edge udc-edge-r"></i><i class="udc-edge udc-edge-t"></i>
+</div>
+{{/* One press, three strengths (plan v2, 3.3): a 1px edge displacement, then two hard-thresholded
+     noise masks: fine specks that cluster where a low-frequency noise is low, and sparser chips.
+     1-bit result: ink or paper, no blur. Reference: docs/design/v2/tools/mock-scripts/make-jobs9.mjs */}}
 <svg class="udc-filters" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
-  <filter id="udc-spread-1" x="-2%" y="-8%" width="104%" height="116%" color-interpolation-filters="sRGB">
-    <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="16" result="n"/>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.3" xChannelSelector="R" yChannelSelector="G" result="d"/>
-    <feComponentTransfer in="d"><feFuncA type="linear" slope="1.5" intercept="-.12"/></feComponentTransfer>
+  <defs>
+  {{- range slice (slice "d" "0.29" "0.25" "0.9") (slice "m" "0.26" "0.22" "0.7") (slice "b" "0.22" "0.17" "0.5") }}
+  {{- $fine := float (index . 1) }}{{ $big := float (index . 2) }}{{ $k := float (index . 3) }}
+  <filter id="udc-ink-{{ index . 0 }}" x="-1%" y="-1%" width="102%" height="102%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="1.15" numOctaves="3" seed="3"/><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1" result="fine"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.035" numOctaves="2" seed="8"/><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1" result="coarse"/>
+    <feComposite in="fine" in2="coarse" operator="arithmetic" k1="0" k2="1" k3="{{ $k }}" k4="{{ div $k -2 }}" result="mix"/>
+    <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  60 0 0 0 {{ mul $fine -60 }}" result="keep1"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.14" numOctaves="5" seed="21" result="mid"/>
+    <feColorMatrix in="mid" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  60 0 0 0 {{ mul $big -60 }}" result="keep2"/>
+    <feDisplacementMap in="SourceGraphic" in2="fine" scale="1" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+    <feComposite in="rough" in2="keep1" operator="in" result="r1"/><feComposite in="r1" in2="keep2" operator="in"/>
   </filter>
-  <filter id="udc-spread-2" x="-2%" y="-8%" width="104%" height="116%" color-interpolation-filters="sRGB">
-    <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="23" result="n"/>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G" result="d"/>
-    <feComponentTransfer in="d"><feFuncA type="linear" slope="1.8" intercept="-.2"/></feComponentTransfer>
-  </filter>
+  {{- end }}
+  </defs>
 </svg>
 {{ $ui := resources.Get "js/udc-ui.js" | minify | fingerprint }}
 <script src="{{ $ui.RelPermalink }}" integrity="{{ $ui.Data.Integrity }}" defer></script>
-{{- if .IsHome }}
-<button type="button" class="udc-phrase" data-udc-phrase aria-label="Bring the page back">I solemnly swear that I am up to no good.</button>
-{{ $js := resources.Get "js/udc-entrance.js" | minify | fingerprint }}
-<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
-{{- end }}
-{{ if hugo.IsServer }}{{ partial "udc/dev-switch.html" . }}{{ end }}

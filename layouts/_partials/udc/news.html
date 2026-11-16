@@ -1,8 +1,8 @@
-{{/* News: boxed item; all items visible, scrolling only past four (plan 3.1). */}}
-<section id="news" class="udc-box udc-news udc-tilt udc-t6{{ if gt (len site.Data.udc.news) 4 }} is-long{{ end }}" aria-labelledby="udc-news-title">
+{{/* News: a label on a rule, no box (plan v2, 3.7 row 2); all items visible, scrolling only past four. */}}
+<section id="news" class="udc-news{{ if gt (len hugo.Data.udc.news) 4 }} is-long{{ end }}" aria-labelledby="udc-news-title">
   <h2 id="udc-news-title" class="udc-label">News</h2>
   <ol class="udc-news-list">
-    {{- range site.Data.udc.news }}
+    {{- range hugo.Data.udc.news }}
     <li><time datetime="{{ .date }}">{{ .label }}</time><p>{{ .text | markdownify }}</p></li>
     {{- end }}
   </ol>

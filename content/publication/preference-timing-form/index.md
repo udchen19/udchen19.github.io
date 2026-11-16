@@ -11,6 +11,9 @@ date: '2025-10-12'
 publication: "*UbiComp/ISWC '25 Adjunct*"
 publication_types:
   - paper-conference
+hugoblox:
+  ids:
+    doi: 10.1145/3714394.3754397
 ---
 
 I participated in the interviews and later led the revise-and-resubmit process for the full-paper extension of this work.

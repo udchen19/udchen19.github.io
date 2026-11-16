@@ -18,6 +18,9 @@ date: '2026-04-13'
 publication: "*CHI '26*"
 publication_types:
   - paper-conference
+links:
+  - type: pdf
+    url: 'https://dl.acm.org/doi/pdf/10.1145/3772318.3790925'
 hugoblox:
   ids:
     doi: 10.1145/3772318.3790925

@@ -1,11 +1,22 @@
 bio:
   affiliation:
     text: I’m an M.S. student in Computer Science at the University of Illinois Urbana-Champaign, advised by [Prof. Yang Wang](https://yangwang.ischool.illinois.edu/).
+  # Intro, approved by UD on 2026-11-16 (round 3, with ChatGPT's two edits). Each paragraph keeps the
+  # source of every sentence; the template prints only text.
   paragraphs:
-    - text: My primary research interest is **personal AI agents**—how they can integrate, interpret, and safeguard information across devices and services while adapting to individual needs and preferences.
-    - text: I’m currently exploring **contextual privacy in human–agent and agent–agent interactions within multi-agent AI systems**.
-    - text: Previously, I worked with [Prof. Yung-Ju Chang](https://www.armuro.info/) at AIMEX Lab, National Yang Ming Chiao Tung University, on **intelligent smartphone notification systems**. My research explored how these systems could help people make sense of incoming information and support their everyday needs. This involved understanding what makes notification summaries useful and personally appropriate, and how agents can learn and adapt to individual preferences through feedback. I also studied how people envision future notification systems taking a more proactive, context-aware role beyond delivering messages.
-    - text: Across this work, I combined interviews and qualitative analysis with hands-on system building, developing Android prototypes to explore how these ideas could work in everyday use.
+    - text: "My research is on **personal AI agents**, the assistants that work with a person’s own information across their devices and services."
+      sources:
+        - "Live paragraph 1 (“integrate, interpret, and safeguard information across devices and services”), shortened."
+    - text: "As these agents start to act for us and deal with other agents, questions arise about what is appropriate to share, with whom, and when. My current work looks at this **contextual privacy** in human–agent and agent–agent interactions."
+      sources:
+        - "General motivation in the terms of contextual integrity; no claim from his own work."
+        - "Live paragraph 2."
+    - text: "Before UIUC, I spent five years with [Prof. Yung-Ju Chang](https://www.armuro.info/) at AIMEX Lab, National Yang Ming Chiao Tung University, on **intelligent notification systems**: what makes an LLM summary useful, when people are willing to give such a system feedback, what they expect from future systems, and whether an extracted task is enough to act on."
+      sources:
+        - "Five years: Research Assistant Jul 2021 – Aug 2026. One clause per study: NotiSummary (MobileHCI ’25), Tell Me Why You’re Asking (CHI ’26), I Want It to Do More Than Deliver (MobileHCI ’26), Clear Yet Insufficient / Noti (CHI EA ’26)."
+    - text: "My work combines qualitative research with system building, from interviews to Android apps used in daily life."
+      sources:
+        - "Interviews: UD led them for NotiSummary and took part in them for the feedback studies (role notes on the publication pages). Design workshops left out: UD reanalysed that data but did not run the workshops (project page). Apps used in daily life: NotiSummary (Google Play, three months in the wild) and Noti (three-day deployment on participants’ own phones)."
 
 news:
   - date: '2026-08-31'
@@ -22,14 +33,19 @@ work:
   - page: /project/notillm/
     title: Noti
     meta: 2024–2026
-    text: A smartphone notification agent that learns individual preferences for summarization, prioritization, and task extraction. I led the project and its development.
     links:
       - label: Project
         url: /project/notillm/
+    # Research question and finding, approved by UD 2026-11-16. Source: the full paper, CHI EA '26, doi 10.1145/3772363.3798322.
+    question:
+      text: Is extracting the task enough for people to act on it?
+      source: "We explore whether large language models (LLMs) can extract task-related information directly from notifications and how users evaluate the extracted items in everyday use."
+    finding:
+      - text: "In a preliminary three-day deployment of Noti, our LLM task inbox, people still went back to the source notification: the extracted action lacked the urgency, rationale and sense of whose task it was."
+        source: "Participants often returned to source notifications to recover context not captured in task items and to assess whether an extracted action was actually relevant to them. (§5) · They described returning to recover context that was not captured in the extracted task item, such as urgency and rationale (§4.2) · extracting an action without sufficient situational context can surface items they do not consider to be their tasks, especially in group conversations where responsibility is implied (§4.2)"
   - page: /project/notisummary/
     title: NotiSummary
     meta: MobileHCI 2025
-    text: An Android app and study of what people want from notification summaries. My work included app development, interviews, qualitative analysis, and paper writing.
     links:
       - label: Paper
         url: /publication/notisummarypaper/
@@ -37,40 +53,66 @@ work:
         url: https://github.com/noti-summary/NotiSummary
       - label: Project
         url: /project/notisummary/
+    # Research question and finding, approved by UD 2026-11-16. Source: the full paper, PACM HCI (MobileHCI '25), doi 10.1145/3743703.
+    question:
+      text: What do people want from LLM notification summaries?
+      source: "To further understand user expectations for LLM-generated summaries, we interviewed 20 participants following a week-long engagement with the app."
+    finding:
+      - text: A useful summary depends on its reader. How much it says follows what they can already anticipate and how critical a message is, and related notifications are merged. People wanted an assistant, not just shorter text.
+        source: "three key factors that shape effective notification summarization: (1) the desired level of information disclosure, which depends on users’ anticipation of notification content and perceived criticalness; (2) the methods for synthesizing notifications, informed by the interrelationships among notifications; and (3) users’ broader expectations for summaries to assist with task and information management (§7) · they envisioned it as functioning like a virtual assistant (§1, contributions)"
   - page: /project/intelligent-notification-systems/
     title: '“I Want It to Do More Than Deliver”: Users’ Desires for Intelligent Notification Systems'
     meta: MobileHCI 2026 · Equal contribution
-    text: A study of how people envision future notification systems. I led the reanalysis of interview and design-workshop data and the development of the paper.
     links:
       - label: Paper
         url: /publication/intelligent-notification-systems/
       - label: Project
         url: /project/intelligent-notification-systems/
-
-# Front-page lead (plan 3.1, 8). The headline is the user's to pick; until then the page shows
-# draft 1, visibly marked DRAFT.
+    # Research question and finding, approved by UD 2026-11-16. Source: the full PDF on Prof. Chang's page (PACM HCI, MobileHCI '26;
+    # DOI 10.1145/3821653 printed in the PDF, not yet registered on 2026-11-16).
+    question:
+      text: What do people want from future notification systems?
+      source: "Less is known about what features and capabilities users themselves desire from future intelligent notification systems (FINS)."
+    finding:
+      - text: Not passive alerts but proactive agents, which surface takeaways layer by layer, help with follow-up, infer personal context to anticipate needs, and spread awareness through nearby people and everyday objects.
+        source: "Our findings suggest a shift from notification systems as passive alert managers to proactive agents that support users’ attention, actions, and longer-term goals. Participants envisioned FINS as agents that surface actionable takeaways with progressive disclosure, assist follow-up actions … adaptive companions that infer personal context … wanted notification awareness distributed beyond devices via co-present contacts and objects embedded in routines (§7)"
+# Front-page headline (plan v2, 4.3): exactly two lines, each fitted to the story column.
+# The capital that starts each word of line 2 (U, D, C) prints in orange.
 lead:
-  headline: ''
-  headline_drafts:
-    - When agents talk to agents, what stays in context?
-    - How should a personal AI agent safeguard what it knows about you?
-    - What should personal agents share — with people, and with each other?
+  headline:
+    - Is Your Agent Safe?
+    - 'Umpire: Depends on Context'
 
-# Keyword field (plan 3.1). Draft list from the research text above; list and ranking are the
-# user's to edit. rank: primary | current | focus | past | method. Decorative (aria-hidden).
-keywords:
-  - {text: interviews, rank: method}
-  - {text: human–agent, rank: current}
-  - {text: notification summaries, rank: past}
-  - {text: personal AI agents, rank: primary}
-  - {text: agent–agent, rank: current, style: vertical}
-  - {text: qualitative analysis, rank: method}
-  - {text: contextual privacy, rank: focus}
-  - {text: feedback, rank: past, style: box}
-  - {text: 'integrate, interpret, safeguard, adapt', rank: primary-2}
-  - {text: individual preferences, rank: past}
-  - {text: multi-agent AI systems, rank: current, style: plate}
-  - {text: system building, rank: method}
-  - {text: 'proactive, context-aware', rank: past}
-  - {text: intelligent smartphone notification systems, rank: past}
-  - {text: Android prototypes, rank: method}
+# About, "Away from the desk" (plan v2, 4.8; reshaped by UD 2026-11-16): UD's life outside research.
+# A hidden lane in the About year strip; expanded, the entries sit in the timeline by date.
+# Written by UD (2026-11-16), lightly tightened by the build thread at his request.
+# Each entry: {date: 'YYYY-MM', end: 'YYYY-MM' (optional), lane: <key from life_lanes>, text: '...'}.
+# Lanes are filters on the About page: the work lanes start selected, these start off.
+life_lanes:
+  - {key: interests, name: Interests}
+  - {key: challenges, name: Challenges}
+  - {key: trips, name: Formative trips}
+life:
+  - {date: '2026-09', lane: trips, text: "Back in the UK after presenting at MobileHCI 2026, my second return. Ran and cycled the streets I once lived on; Legoland was as good as ever for this big kid."}
+  - {date: '2026-08', lane: interests, text: "Watched summer Koshien at Koshien for the first time."}
+  - {date: '2026-08', lane: challenges, text: "Moved to Urbana-Champaign for my M.S.: the first time I really left home, came out of my shell and started my own things."}
+  - {date: '2026-03', lane: interests, text: "Flew to Tokyo to cheer on Team Taiwan at the WBC."}
+  - {date: '2026-01', lane: challenges, text: "Full marathon PB: 5:15:00."}
+  - {date: '2026-01', lane: challenges, text: "Skiing, second time. Still scary."}
+  - {date: '2025-12', lane: challenges, text: "Half marathon PB: 2:27:23."}
+  - {date: '2024-12', lane: challenges, text: "Rode a YouBike home from NYCU in Hsinchu to Linkou: 62.51 km, 639 m of climbing."}
+  - {date: '2024-12', lane: challenges, text: "Olympic-distance triathlon PB: 3:35:29 (swim 46:11, bike 1:22:53, run 1:09:45)."}
+  - {date: '2024-01', lane: challenges, text: "First time skiing. Scary."}
+  - {date: '2023-12', lane: challenges, text: "Twelve days of military training. My friends and my boss say it doesn’t count. I agree."}
+  - {date: '2023-03', lane: interests, text: "Watched the World Baseball Classic in Taichung. Never felt so moved by a united crowd."}
+  - {date: '2021-02', lane: challenges, text: "Stayed up all night to finish the first draft of the book, just before my 20th birthday."}
+  - {date: '2019-11', lane: trips, text: "ICPC Yokohama, my last trip before COVID. Watched the Premier12 final on my phone with Tokyo Dome about 3 miles away."}
+  - {date: '2019-07', lane: challenges, text: "Climbed Mt. Fuji. Overcame my fear of heights (sort of)."}
+  - {date: '2019-06', lane: trips, text: "Back in the UK for the first time since I left."}
+  - {date: '2016-06', lane: interests, text: "Watched my first baseball hero, Daikan Yoh, in Sapporo: three hits and a home run. Cool guy."}
+  - {date: '2016-05', lane: challenges, text: "First big rejection: I missed my first-choice high school. Trying, failing and coming back stronger has been a pattern ever since."}
+  - {date: '2011-11', lane: trips, text: "World Robot Olympiad 2011 in Abu Dhabi. First time representing my country; the Burj Khalifa tested my fear of heights."}
+  - {date: '2009-02', lane: interests, text: "Got the Harry Potter box set for my 8th birthday, after looping through the novels at the library."}
+  - {date: '2006-09', lane: trips, text: "First time abroad, and it was London, my home for the next four years."}
+  - {date: '2001-02', lane: challenges, text: "First time screaming."}
+

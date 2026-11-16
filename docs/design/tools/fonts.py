@@ -1,119 +1,63 @@
-"""Glyph coverage check and subsetting for the udchen.tw redesign.
+"""WOFF2 subsets for the 2026-11 redesign (plan v2, 3.2).
 
-Run with the miniconda python (fontTools + brotli):
-  python fonts.py <repo> <download-dir>
-Writes subsets into <repo>/static/fonts and a coverage table into
-<repo>/data/specimen_glyphs.json.
+python fonts.py <repo> <dl>
+<dl> holds the downloaded sources (see static/fonts/README.txt):
+  mc/ManufacturingConsent-Regular.ttf  ultra/Ultra-Regular.ttf  franklin/LibreFranklin.ttf
+  baskerville/LibreBaskerville.ttf  baskerville/LibreBaskerville-Italic.ttf  fell/IMFePIit28P.ttf
+Needs fontTools + brotli.
 """
-import json, re, sys, pathlib
+import sys, pathlib
 from fontTools.ttLib import TTFont
 from fontTools import subset
 from fontTools.varLib import instancer
 
-repo = pathlib.Path(sys.argv[1]); dl = pathlib.Path(sys.argv[2])
+repo, dl = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
 out = repo / "static/fonts"
 
-# --- the exact fixed strings -------------------------------------------------
-FIXED = {
-    "Tagline": "Unapologetically Depends on Context",
-    "Headline draft 1": "When agents talk to agents, what stays in context?",
-    "DRAFT mark": "DRAFT",
-    "Byline": "by Uei-Dar Chen",
-    "Name (Latin)": "Uei-Dar Chen",
-    "Name (繁體中文)": "陳威達",
-    "Field: section names": "PUBLICATIONS UD’S LOG ABOUT PROJECT NOT FOUND",
-    "Labels": "RESEARCH NEWS SELECTED WORK ALL POSTS",
-    "Navigation": "Research Publications UD’s Log About CV",
-    "Paper title": "“I Want It to Do More Than Deliver”: Users’ Desires for Intelligent Notification Systems",
-    "Dates": "Aug–Sep 2026 · 2025.09.10 · MobileHCI 2026",
-    "Keywords": "personal AI agents · contextual privacy · human–agent · agent–agent · multi-agent AI systems · intelligent smartphone notification systems · notification summaries · individual preferences · feedback · proactive, context-aware · integrate, interpret, safeguard, adapt · interviews · qualitative analysis · system building · Android prototypes",
-}
+def rng(a, b): return list(range(a, b + 1))
+BASIC = rng(0x20, 0x7E)
+LATIN1_PUNCT = rng(0xA0, 0xBF) + [0xD7, 0xF7]
+# Typographic quotes, dashes, ellipsis and bullets: the titles and labels use them (“ ” ’ – — …).
+GEN_PUNCT = rng(0x2010, 0x2027) + [0x2032, 0x2033, 0x2039, 0x203A, 0x20AC, 0x2122]
+LABEL = BASIC + LATIN1_PUNCT + GEN_PUNCT
+# Reading text: the full Latin range Google Fonts serves as "latin".
+LATIN = rng(0x00, 0xFF) + [0x131, 0x152, 0x153, 0x2BB, 0x2BC, 0x2C6, 0x2DA, 0x2DC, 0x304, 0x308, 0x329] \
+    + rng(0x2000, 0x206F) + [0x20AC, 0x2122, 0x2191, 0x2193, 0x2212, 0x2215, 0xFEFF, 0xFFFD]
 
-def md_plain(s):
-    s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", s)
-    return s.replace("*", "").replace("&emsp;", "")
+MOTTO = "I solemnly swear that I am up to no good." + "Mischief managed." + "not"
+NAMEPLATE = "The Usually Daily Chronicle"
 
-yaml_text = md_plain((repo / "data/udc.yaml").read_text())
-post = (repo / "content/post/books-summer-2021/index.md").read_text().split("---", 2)[2]
-post_open = md_plain(post.split("<!--more-->")[0])
-latin_body = "".join(sorted(set(c for c in yaml_text if ord(c) < 0x3000)))
-cjk_post = "".join(sorted(set(post_open)))
+def rename(f, family):
+    """Libre Baskerville's licence reserves its name, so a modified (subset) copy gets a new one."""
+    style = f["name"].getDebugName(2) or "Regular"
+    for rec in list(f["name"].names):
+        if rec.nameID in (1, 16): rec.string = family
+        elif rec.nameID == 4: rec.string = f"{family} {style}"
+        elif rec.nameID == 6: rec.string = f"{family}-{style}".replace(" ", "")
+        elif rec.nameID == 3: rec.string = f"{family}-{style};subset"
 
-# Which strings each font must carry (role-based).
-DISPLAY_LATIN = [k for k in FIXED if k != "Name (繁體中文)"]
-fonts = {
-    "Metropolitan Line": (dl / "metro/MetropolitanLine-Regular.ttf", DISPLAY_LATIN),
-    "Hammersmith One": (dl / "hammersmith/HammersmithOne-Regular.ttf", ["Tagline", "Headline draft 1", "Paper title"]),
-    "Dela Gothic One": (dl / "dela/DelaGothicOne-Regular.ttf", ["Tagline", "Headline draft 1", "DRAFT mark", "Field: section names", "Labels", "Paper title", "Keywords"]),
-    "莫大毛筆 Bold": (dl / "bakudai/Bakudai-Bold.ttf", ["Name (繁體中文)"]),
-    "Mantou Sans (UDC Field TC subset)": (repo / "static/fonts/udc-field-tc.woff2", ["Name (繁體中文)"]),
-    "Newsreader": (dl / "newsreader/Newsreader.ttf", ["Paper title", "Dates", "Keywords", "Byline"]),
-    "Source Serif 4": (dl / "sourceserif/SourceSerif4.ttf", ["Paper title", "Dates", "Keywords"]),
-    "Noto Serif TC": (dl / "notoserif/NotoSerifTC.ttf", ["Name (繁體中文)"]),
-    "Iansui": (dl / "iansui/Iansui-Regular.ttf", ["Name (繁體中文)"]),
-}
-EXTRA = {"Newsreader": ("Research text (data/udc.yaml)", latin_body),
-         "Source Serif 4": ("Research text (data/udc.yaml)", latin_body),
-         "Noto Serif TC": ("Post opening (books-summer-2021)", cjk_post),
-         "Iansui": ("Post opening (books-summer-2021)", cjk_post)}
-
-table = []
-for name, (path, keys) in fonts.items():
-    cmap = TTFont(path, lazy=True).getBestCmap()
-    rows = [(k, FIXED[k]) for k in keys]
-    if name in EXTRA: rows.append(EXTRA[name])
-    for label, text in rows:
-        missing = sorted(set(c for c in text if not c.isspace() and ord(c) not in cmap and c not in " "))
-        table.append({"font": name, "string": label, "chars": len(set(text) - {" "}),
-                      "missing": "".join(missing)})
-        print(f"{name:36} {label:34} missing: {''.join(missing) or '—'}")
-(repo / "data").mkdir(exist_ok=True)
-(repo / "data/specimen_glyphs.json").write_text(json.dumps(table, ensure_ascii=False, indent=1))
-
-# --- subsets -----------------------------------------------------------------
-LATIN = ("U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,"
-         "U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD")
-
-def ranges(spec):
-    u = []
-    for part in spec.split(","):
-        a, _, b = part.replace("U+", "").partition("-")
-        u += list(range(int(a, 16), int(b or a, 16) + 1))
-    return u
-
-def rename(font, family):
-    for rec in font["name"].names:
-        if rec.nameID in (1, 4, 16, 18, 21):
-            rec.string = family
-        elif rec.nameID == 6:
-            rec.string = family.replace(" ", "")
-        elif rec.nameID == 3:
-            rec.string = family + " subset"
-
-def make(src, dst, unicodes=None, text=None, family=None, limits=None):
+def make(src, name, unicodes=None, text=None, wght=None, family=None):
     f = TTFont(src)
-    if limits:
-        f = instancer.instantiateVariableFont(f, limits)
-    opts = subset.Options(); opts.flavor = "woff2"; opts.layout_features = ["*"]
-    opts.name_IDs = ["*"]; opts.name_languages = ["*"]; opts.notdef_outline = True
-    s = subset.Subsetter(opts)
-    s.populate(unicodes=unicodes or [], text=text or "")
-    s.subset(f)
+    if wght is not None and "fvar" in f:
+        f = instancer.instantiateVariableFont(f, wght)
     if family: rename(f, family)
-    f.flavor = "woff2"; f.save(out / dst)
-    print(f"wrote {dst:34} {(out / dst).stat().st_size // 1024} KB")
+    o = subset.Options(); o.flavor = "woff2"; o.layout_features = ["kern", "liga", "clig", "calt", "ccmp", "locl", "mark", "mkmk"]
+    o.name_IDs = ["*"]; o.notdef_outline = True
+    s = subset.Subsetter(o)
+    if text: s.populate(text=text)
+    else: s.populate(unicodes=unicodes)
+    s.subset(f)
+    f.flavor = "woff2"; f.save(out / name)
+    cmap = f.getBestCmap()
+    want = set(map(ord, text)) if text else set(unicodes)
+    missing = "".join(chr(c) for c in sorted(want) if c not in cmap and chr(c).strip() and not (0x2000 <= c <= 0x206F and c not in GEN_PUNCT))
+    print(f"{name:34} {(out / name).stat().st_size / 1024:6.1f} KB  missing: {missing or 'none'}")
 
-latin = ranges(LATIN)
-make(dl / "metro/MetropolitanLine-Regular.ttf", "udc-metro.woff2", unicodes=latin)
-make(dl / "newsreader/Newsreader.ttf", "udc-newsreader.woff2", unicodes=latin,
-     limits={"wght": (300, 700), "opsz": (6, 72)})
-make(dl / "newsreader/Newsreader-Italic.ttf", "udc-newsreader-italic.woff2", unicodes=latin,
-     limits={"wght": (300, 700), "opsz": (6, 72)})
-make(dl / "dela/DelaGothicOne-Regular.ttf", "udc-dela-latin.woff2", unicodes=latin)
-make(dl / "bakudai/Bakudai-Bold.ttf", "udc-brush-tc.woff2", text="陳威達", family="UDC Brush TC")
-# Specimen-only comparison faces (removed with the specimen, plan 6.3 step 4/5).
-make(dl / "hammersmith/HammersmithOne-Regular.ttf", "spec-hammer.woff2", unicodes=latin, family="UDC Spec Hammer")
-make(dl / "sourceserif/SourceSerif4.ttf", "spec-sourceserif.woff2", unicodes=latin, family="UDC Spec Source Serif")
-make(dl / "notoserif/NotoSerifTC.ttf", "spec-notoserif-tc.woff2", text=cjk_post + "陳威達",
-     limits={"wght": (400, 700)}, family="UDC Spec Noto Serif TC")
-make(dl / "iansui/Iansui-Regular.ttf", "spec-iansui.woff2", text=cjk_post + "陳威達", family="UDC Spec Iansui")
+make(dl / "mc/ManufacturingConsent-Regular.ttf", "udc-nameplate.woff2", text=NAMEPLATE)
+make(dl / "ultra/Ultra-Regular.ttf", "udc-ultra.woff2", unicodes=LABEL)
+make(dl / "franklin/LibreFranklin.ttf", "udc-franklin-500.woff2", unicodes=LABEL, wght={"wght": 500})
+make(dl / "franklin/LibreFranklin.ttf", "udc-franklin-700.woff2", unicodes=LABEL, wght={"wght": 700})
+make(dl / "baskerville/LibreBaskerville.ttf", "udc-baskerville-400.woff2", unicodes=LATIN, wght={"wght": 400}, family="UDC Text")
+make(dl / "baskerville/LibreBaskerville.ttf", "udc-baskerville-700.woff2", unicodes=LATIN, wght={"wght": 700}, family="UDC Text")
+make(dl / "baskerville/LibreBaskerville-Italic.ttf", "udc-baskerville-italic.woff2", unicodes=LATIN, wght={"wght": 400}, family="UDC Text")
+make(dl / "fell/IMFePIit28P.ttf", "udc-motto.woff2", text=MOTTO)
