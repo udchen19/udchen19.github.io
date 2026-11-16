@@ -21,7 +21,7 @@ bio:
 news:
   # Plain, one event per line: what, which venue, which city (UD, 2026-11-16). Newest first.
   - date: '2026-08-31'
-    label: Aug–Sep 2026
+    label: Aug – Sep 2026
     text: 'Presented [“I Want It to Do More Than Deliver”](/publication/intelligent-notification-systems/) at MobileHCI 2026, Swansea.'
   - date: '2026-08-01'
     label: Aug 2026
@@ -42,8 +42,10 @@ news:
 work:
   - page: /project/notillm/
     title: Noti
-    meta: 2024–2026
+    meta: CHI EA 2026
     links:
+      - label: Paper
+        url: /publication/task-extraction/
       - label: Project
         url: /project/notillm/
     # Research question and finding, approved by UD 2026-11-16. Source: the full paper, CHI EA '26, doi 10.1145/3772363.3798322.
@@ -71,7 +73,7 @@ work:
       - text: A useful summary depends on its reader. How much it says follows what they can already anticipate and how critical a message is, and related notifications are merged. People wanted an assistant, not just shorter text.
         source: "three key factors that shape effective notification summarization: (1) the desired level of information disclosure, which depends on users’ anticipation of notification content and perceived criticalness; (2) the methods for synthesizing notifications, informed by the interrelationships among notifications; and (3) users’ broader expectations for summaries to assist with task and information management (§7) · they envisioned it as functioning like a virtual assistant (§1, contributions)"
   - page: /project/intelligent-notification-systems/
-    title: '“I Want It to Do More Than Deliver”: Users’ Desires for Intelligent Notification Systems'
+    title: '“I Want It to Do More Than Deliver”'
     meta: MobileHCI 2026 · Equal contribution
     links:
       - label: Paper

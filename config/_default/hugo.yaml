@@ -37,6 +37,7 @@ disableAliases: true
 outputs:
   home: [HTML, RSS, headers, redirects, backlinks]
   section: [HTML, RSS]
+  taxonomy: [HTML]   # the list of all tags or types has no feed of its own: it listed terms, not papers (Astra review, round 5)
 imaging:
   resampleFilter: lanczos
   anchor: smart

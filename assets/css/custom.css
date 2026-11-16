@@ -535,6 +535,8 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-pub-title { margin: 0 0 3px; font-family: var(--udc-text); font-weight: 600; font-size: 1.1rem; line-height: 1.35; }
 .udc-pub-title a, .udc-stream-title a { text-decoration-color: transparent; }
 .udc-pub-title a:hover, .udc-stream-title a:hover { text-decoration-color: var(--udc-orange); }
+.udc-author-mark { font-size: .7em; line-height: 0; margin-left: 1px; }
+.udc-author-key { display: block; font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; color: var(--udc-ink-2); margin-top: 2px; }
 .udc-pub-authors { margin: 0; color: var(--udc-ink-2); font-size: .9375rem; }
 .udc-pub-venue { margin: 0; font-size: .9375rem; }
 
@@ -604,7 +606,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-map-summary:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
 .udc-map-summary svg { width: 13px; height: 13px; rotate: -90deg; transition: rotate .15s; }
 .udc-map[open] .udc-map-summary svg { rotate: none; }   /* not 0deg: the minifier drops the unit and the rule becomes invalid */
-.udc-map-fig { margin: 6px 0 0; }
+.udc-map-fig { position: relative; margin: 6px 0 0; }
 .udc-map-plate { position: relative; width: 100%; overflow: hidden; }
 .udc-map-land { position: absolute; inset: 0; background: var(--udc-ink-2);
   -webkit-mask: url("/textures/map-land.png") 0 0 / 100% 100% no-repeat; mask: url("/textures/map-land.png") 0 0 / 100% 100% no-repeat; }
@@ -613,7 +615,11 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-map-place circle { fill: var(--udc-orange); stroke: var(--udc-paper); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .udc-map-place text { fill: var(--udc-ink); font-family: var(--udc-sign); font-weight: 700; font-size: 17px; letter-spacing: .06em; text-transform: uppercase;
   paint-order: stroke; stroke: var(--udc-paper); stroke-width: 5px; stroke-linejoin: round; }
-@media (max-width: 640px) { .udc-map-place text { display: none; } }   /* 6px here; the key below names the places */
+@media (max-width: 640px) { .udc-map-place text { display: none; } }
+.udc-map-tip { position: absolute; z-index: 2; margin: 0; translate: -50% calc(-100% - 10px); padding: 2px 7px; background: var(--udc-paper);
+  border: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; white-space: nowrap; pointer-events: none; }
+.udc-map-tip[hidden] { display: none; }
+.udc-map-port, .udc-map-place circle { cursor: pointer; }   /* 6px here; the key below names the places */
 .udc-map-port:hover, .udc-map-place:hover circle { stroke: var(--udc-orange); stroke-width: 2.5; }
 .udc-map-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 6px 20px; margin: 8px 0 6px; }
 .udc-map-key dt { font-weight: 700; color: var(--udc-ink); text-transform: uppercase; letter-spacing: .06em; }
@@ -754,6 +760,8 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
    rounds 3-4). The header is the container; its title column is 70% less the gap from 760px up. */
 .udc-single-head { container-type: inline-size; }
+.udc-abstract { margin: 0 0 18px; }
+.udc-abstract .udc-label { margin-bottom: 6px; }
 .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
 @media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
@@ -763,10 +771,10 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 /* One entry per line: date in bold, then the text. Scrolls inside itself past about five lines; the
    cut falls part-way through the next line so a long list visibly continues (Astra review, round 2). */
 .udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .9375rem; line-height: 1.65;
-  max-height: calc(5.6 * 1.65em); overflow-y: auto; }   /* whole lines, no gaps: the cut always falls inside a line */
+  max-height: calc(5.6 * 1.65em); max-height: round(down, 5.6 * 1.65em, 1px); overflow-y: auto; }   /* whole px: a fractional height stalled scrolling past the list (Astra review, round 5) */   /* whole lines, no gaps: the cut always falls inside a line */
 .udc-news-list li { padding: 0; }
 .udc-news-list time { font-weight: 700; margin-right: .5em; }
-@media (max-width: 640px) { .udc-news-list { max-height: calc(10.6 * 1.65em); } }   /* entries wrap on phones; three take 10 lines at 320px */
+@media (max-width: 640px) { .udc-news-list { max-height: calc(10.6 * 1.65em); max-height: round(down, 10.6 * 1.65em, 1px); } }   /* entries wrap on phones; three take 10 lines at 320px */
 
 
 

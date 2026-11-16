@@ -65,7 +65,7 @@
   {{- $m := . }}
   {{- $yrs := slice }}{{ range $m.routes }}{{ $yrs = $yrs | append .years }}{{ end }}{{ $yrs = sort (uniq $yrs) }}
   <details class="udc-map">
-    <summary class="udc-map-summary">Flights, {{ index $yrs 0 }}–{{ index $yrs (sub (len $yrs) 1) }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</summary>
+    <summary class="udc-map-summary">Flights, {{ index $yrs 0 }} – {{ index $yrs (sub (len $yrs) 1) }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</summary>
     <figure class="udc-map-fig">
       <div class="udc-map-plate" style="aspect-ratio: {{ $m.w }} / {{ $m.h }}">
       <span class="udc-map-land" aria-hidden="true"></span>
@@ -93,7 +93,7 @@
           <div><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
           {{- end }}
         </dl>
-        <p>Every flight since {{ index $yrs 0 }} in grey; hover a dot for the airport.</p>
+        <p>Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport.</p>
       </figcaption>
     </figure>
   </details>

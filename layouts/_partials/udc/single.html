@@ -44,6 +44,13 @@
   {{- if $hasPlate }}
   {{ partial "udc/plate.html" (dict "class" "udc-featured" "ink" (printf "/%s" $plate) "ink_night" (replace (printf "/%s" $plate) "-ink.png" "-ink-night.png") "alt" (.Params.image.alt_text | default (printf "%s, featured image" .Title))) }}
   {{- end }}
+  {{- /* A paper's published abstract (ACM or the author PDF, verbatim), on its own page only. */}}
+  {{- with .Params.abstract }}
+  <section class="udc-abstract" lang="en" aria-labelledby="udc-abstract-title">
+    <h2 id="udc-abstract-title" class="udc-label">Abstract</h2>
+    <div class="udc-prose"><p>{{ . }}</p></div>
+  </section>
+  {{- end }}
   {{- /* Language per block (Astra review): the article's lang comes from its overall Han share; a
          paragraph, list item or heading in the other language gets its own lang, so it is read aloud
          right and takes its own reading rules (繁體中文: 1.85 line height, 36-character measure).

@@ -2,7 +2,7 @@
 title: Noti
 reading_time: false
 show_date_updated: false
-summary: An LLM task inbox for smartphone notifications that learns each person’s preferences.
+summary: "A personal notification agent for Android: summaries for a quick read, priorities for what needs attention now, and extracted tasks to act on, learning each person’s needs through short questions."
 tags:
   - HCI
 date: '2026-08-01'
@@ -24,4 +24,4 @@ slides: ""
 
 Noti brings multiple strands of our notification research into one personal agent. It supports needs such as summarization, prioritization, and task extraction while asking lightweight questions to learn how those needs differ across people and contexts.
 
-**My role:** Project lead and principal developer from 2024–2026. I led the system's direction and implemented its core Android experience and agent workflow.
+**My role:** Project lead and principal developer from 2024 to 2026. I led the system's direction and implemented its core Android experience and agent workflow. Development continues at AIMEX Lab.

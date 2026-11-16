@@ -33,7 +33,7 @@ url_video: ''
 slides: ""
 ---
 
-NotiSummary is an open-source Android app that lets people summarize their own notifications with GPT. The prototype supported our study of what makes a notification summary useful: not only brevity, but also timing, scope, control, and fit with the user's situation.
+NotiSummary is an open-source Android app, built and deployed in 2023, that lets people summarize their own notifications with GPT. The prototype supported our study of what makes a notification summary useful: not only brevity, but also timing, scope, control, and fit with the user's situation.
 
 **My role:** Project lead. I contributed to app development, led the interviews, conducted the main qualitative analysis, and led the writing of the resulting paper.
 
