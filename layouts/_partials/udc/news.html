@@ -1,9 +1,13 @@
-{{/* News: a label on a rule, no box (plan v2, 3.7 row 2); all items visible, scrolling only past four. */}}
-<section id="news" class="udc-news{{ if gt (len hugo.Data.udc.news) 4 }} is-long{{ end }}" aria-labelledby="udc-news-title">
+{{/* News: a label on a rule, no box (plan v2, 3.7 row 2). One column under the intro and the
+     columnist block, one entry per line: the date in bold, then the text (UD, 2026-11-16, after the
+     academic-homepage convention). The list scrolls inside itself past about five lines, so more
+     news never lengthens the page; with more than three entries it takes keyboard focus to scroll. */}}
+{{- $news := hugo.Data.udc.news }}
+<section id="news" class="udc-news" aria-labelledby="udc-news-title">
   <h2 id="udc-news-title" class="udc-label">News</h2>
-  <ol class="udc-news-list">
-    {{- range hugo.Data.udc.news }}
-    <li><time datetime="{{ .date }}">{{ .label }}</time><p>{{ .text | markdownify }}</p></li>
+  <ol class="udc-news-list"{{ if gt (len $news) 3 }} tabindex="0" aria-labelledby="udc-news-title"{{ end }}>
+    {{- range $news }}
+    <li><time datetime="{{ .date }}">{{ .label }}</time> {{ .text | markdownify }}</li>
     {{- end }}
   </ol>
 </section>

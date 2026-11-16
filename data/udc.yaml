@@ -89,14 +89,13 @@ lead:
 # Each entry: {date: 'YYYY-MM', end: 'YYYY-MM' (optional), lane: <key from life_lanes>, text: '...'}.
 # Lanes are filters on the About page: the work lanes start selected, these start off.
 life_lanes:
-  - {key: interests, name: Interests}
   - {key: challenges, name: Challenges}
-  - {key: trips, name: Formative trips}
+  - {key: memories, name: Memories}
 life:
-  - {date: '2026-09', lane: trips, text: "Back in the UK after presenting at MobileHCI 2026, my second return. Ran and cycled the streets I once lived on; Legoland was as good as ever for this big kid."}
-  - {date: '2026-08', lane: interests, text: "Watched summer Koshien at Koshien for the first time."}
+  - {date: '2026-09', lane: memories, text: "Back in the UK after presenting at MobileHCI 2026, my second return. Ran and cycled the streets I once lived on; Legoland was as good as ever for this big kid."}
+  - {date: '2026-08', lane: memories, text: "Watched summer Koshien at Koshien for the first time."}
   - {date: '2026-08', lane: challenges, text: "Moved to Urbana-Champaign for my M.S.: the first time I really left home, came out of my shell and started my own things."}
-  - {date: '2026-03', lane: interests, text: "Flew to Tokyo to cheer on Team Taiwan at the WBC."}
+  - {date: '2026-03', lane: memories, text: "Flew to Tokyo to cheer on Team Taiwan at the WBC."}
   - {date: '2026-01', lane: challenges, text: "Full marathon PB: 5:15:00."}
   - {date: '2026-01', lane: challenges, text: "Skiing, second time. Still scary."}
   - {date: '2025-12', lane: challenges, text: "Half marathon PB: 2:27:23."}
@@ -104,15 +103,15 @@ life:
   - {date: '2024-12', lane: challenges, text: "Olympic-distance triathlon PB: 3:35:29 (swim 46:11, bike 1:22:53, run 1:09:45)."}
   - {date: '2024-01', lane: challenges, text: "First time skiing. Scary."}
   - {date: '2023-12', lane: challenges, text: "Twelve days of military training. My friends and my boss say it doesn’t count. I agree."}
-  - {date: '2023-03', lane: interests, text: "Watched the World Baseball Classic in Taichung. Never felt so moved by a united crowd."}
+  - {date: '2023-03', lane: memories, text: "Watched the World Baseball Classic in Taichung. Never felt so moved by a united crowd."}
   - {date: '2021-02', lane: challenges, text: "Stayed up all night to finish the first draft of the book, just before my 20th birthday."}
-  - {date: '2019-11', lane: trips, text: "ICPC Yokohama, my last trip before COVID. Watched the Premier12 final on my phone with Tokyo Dome about 3 miles away."}
+  - {date: '2019-11', lane: memories, text: "ICPC Yokohama, my last trip before COVID. Watched the Premier12 final on my phone with Tokyo Dome about 3 miles away."}
   - {date: '2019-07', lane: challenges, text: "Climbed Mt. Fuji. Overcame my fear of heights (sort of)."}
-  - {date: '2019-06', lane: trips, text: "Back in the UK for the first time since I left."}
-  - {date: '2016-06', lane: interests, text: "Watched my first baseball hero, Daikan Yoh, in Sapporo: three hits and a home run. Cool guy."}
+  - {date: '2019-06', lane: memories, text: "Back in the UK for the first time since I left."}
+  - {date: '2016-06', lane: memories, text: "Watched my first baseball hero, Daikan Yoh, in Sapporo: three hits and a home run. Cool guy."}
   - {date: '2016-05', lane: challenges, text: "First big rejection: I missed my first-choice high school. Trying, failing and coming back stronger has been a pattern ever since."}
-  - {date: '2011-11', lane: trips, text: "World Robot Olympiad 2011 in Abu Dhabi. First time representing my country; the Burj Khalifa tested my fear of heights."}
-  - {date: '2009-02', lane: interests, text: "Got the Harry Potter box set for my 8th birthday, after looping through the novels at the library."}
-  - {date: '2006-09', lane: trips, text: "First time abroad, and it was London, my home for the next four years."}
+  - {date: '2011-11', lane: memories, text: "World Robot Olympiad 2011 in Abu Dhabi. First time representing my country; the Burj Khalifa tested my fear of heights."}
+  - {date: '2009-02', lane: memories, text: "Got the Harry Potter box set for my 8th birthday, after looping through the novels at the library."}
+  - {date: '2006-09', lane: memories, text: "First time abroad, and it was London, my home for the next four years."}
   - {date: '2001-02', lane: challenges, text: "First time screaming."}
 

@@ -1,9 +1,10 @@
 {{/* About (plan v2, 4.8, reshaped by UD 2026-11-16). A year strip on top: one lane per kind, each
      entry a bar over its dates that jumps to its description; under it, one timeline, newest first.
      Every lane name is a filter. The work lanes (education, research, teaching, industry; experience
-     entries carry udc_lane in data/authors/admin.yaml) start on; the life lanes (data/udc.yaml life_lanes) start off.
-     Turning a lane on shows its bars and puts its entries in line with the others. Without the script
-     everything shows. CS 225 TA appears here and nowhere else on the site. */}}
+     entries carry udc_lane in data/authors/admin.yaml) start on. The life lanes (data/udc.yaml life_lanes)
+     stay out of sight until the "Away from the desk" line is pressed (UD, 2026-11-16); pressing it shows
+     them switched on, pressing again hides them. Turning a lane on shows its bars and puts its entries in
+     line with the others. Without the script everything shows. CS 225 TA appears here and nowhere else on the site. */}}
 {{- $author := partial "functions/get_author_profile" (dict "slug" "admin") -}}
 {{- $life := hugo.Data.udc.life | default slice -}}
 {{- $lifeLanes := cond (gt (len $life) 0) (hugo.Data.udc.life_lanes | default slice) slice -}}
@@ -23,7 +24,7 @@
 {{- $all := sort $rows "key" "desc" -}}
 {{- $names := dict "education" "Education" "research" "Research" "teaching" "Teaching" "industry" "Industry" -}}
 {{- range $lifeLanes }}{{ $names = merge $names (dict .key .name) }}{{ end -}}
-<div class="udc-list udc-wrap udc-about" lang="en">
+<main id="main" class="udc-list udc-wrap udc-about" lang="en">
   <h1 class="udc-page-title udc-ink-d">About</h1>
   {{- if hugo.IsServer }}
   <p class="udc-about-line"><span class="udc-ud-write">[UD to write]</span> one line; links to the <a href="/">front page</a> and the <a href="/uploads/uei-dar-chen-cv.pdf">CV (PDF)</a>.</p>
@@ -40,11 +41,12 @@
     {{- $groups := slice (dict "lanes" $work "on" true) }}
     {{- with $lifeLanes }}{{ $keys := slice }}{{ range . }}{{ $keys = $keys | append .key }}{{ end }}{{ $groups = $groups | append (dict "lanes" $keys "on" false "label" "Away from the desk") }}{{ end }}
     {{- range $groups }}
-    {{- $on := .on }}
-    {{- with .label }}<p class="udc-ys-group">{{ . }}</p>{{ end }}
+    {{- $on := .on }}{{ $g := . }}
+    {{- $life := not $on }}
+    {{- with .label }}<p class="udc-ys-group"><button type="button" class="udc-ys-reveal" aria-expanded="true" aria-controls="{{ range $i, $k := $g.lanes }}{{ if $i }} {{ end }}ys-{{ $k }}{{ end }}">{{ . }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</button></p>{{ end }}
     {{- range .lanes }}
     {{- $lane := . }}
-    <div class="udc-ys-lane" data-lane="{{ $lane }}">
+    <div class="udc-ys-lane{{ if $life }} udc-ys-life{{ end }}" data-lane="{{ $lane }}" id="ys-{{ $lane }}">
       <span class="udc-ys-name"><button type="button" class="udc-ys-filter" data-lane="{{ $lane }}" aria-pressed="{{ $on }}">{{ index $names $lane }}</button></span>
       <span class="udc-ys-track">
       {{- range $i, $r := $all }}{{ if eq $r.lane $lane }}
@@ -131,4 +133,4 @@
       <dl>{{ range $author.languages }}<dt>{{ .name }}</dt><dd>{{ .label }}</dd>{{ end }}</dl>
     </section>
   </div>
-</div>
+</main>

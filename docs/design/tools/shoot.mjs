@@ -1,5 +1,5 @@
 // Full-page screenshots through headless Chrome's DevTools protocol (no packages).
-// node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, js, eval, print}]
+// node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, media, js, eval, print}]
 // print: log the value the eval expression returns (a job with print and no out takes no picture).
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
@@ -28,7 +28,7 @@ for (const j of jobs) {
   const feats = [{ name: 'prefers-color-scheme', value: j.theme || 'light' },
     { name: 'prefers-reduced-motion', value: j.reducedMotion ? 'reduce' : 'no-preference' },
     { name: 'forced-colors', value: j.forcedColors ? 'active' : 'none' }];
-  await send('Emulation.setEmulatedMedia', { features: feats });
+  await send('Emulation.setEmulatedMedia', { media: j.media || '', features: feats });   // media: 'print' to check print styles
   await send('Emulation.setScriptExecutionDisabled', { value: j.js === false });
   if (j.js === false) { await send('Network.enable'); }
   await send('Network.clearBrowserCookies');

@@ -32,9 +32,10 @@
     label();
     // Motto (plan 4.2): hover and focus are CSS; on touch a tap toggles the state.
     motto?.addEventListener('pointerup', e => { if (e.pointerType === 'touch') motto.classList.toggle('is-managed'); });
-    // About (plan 4.8; UD 2026-11-16): every lane is a filter. Work lanes start on, life lanes off
-    // (aria-pressed in the HTML); entries and bars of lanes that are off are hidden. Without this
-    // script everything shows.
+    // About (plan 4.8; UD 2026-11-16): every lane is a filter. Work lanes start on; entries and bars
+    // of lanes that are off are hidden. The life lanes stay out of sight until "Away from the desk" is
+    // pressed, which shows them switched on; pressing it again hides them. Without this script
+    // everything shows.
     // The year strip opens at its newest end when it is wider than the page.
     const ys = document.querySelector('.udc-ys');
     if (ys) ys.scrollLeft = ys.scrollWidth;
@@ -49,12 +50,24 @@
       buttons.forEach(b => b.addEventListener('click', () => {
         b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); apply();
       }));
-      apply();
+      const reveal = tl.querySelector('.udc-ys-reveal');
+      const lifeLanes = [...tl.querySelectorAll('.udc-ys-life')];
+      const setLife = open => {
+        reveal?.setAttribute('aria-expanded', String(open));
+        lifeLanes.forEach(lane => {
+          lane.hidden = !open;
+          lane.querySelector('.udc-ys-filter')?.setAttribute('aria-pressed', String(open));
+        });
+        apply();
+      };
+      reveal?.addEventListener('click', () => setLife(reveal.getAttribute('aria-expanded') !== 'true'));
+      setLife(false);
       // A link to an entry of a lane that is off (from a year-strip bar or the map) turns that lane on.
       document.addEventListener('click', e => {
         const a = e.target.closest('a[href^="#tl-"]'); if (!a) return;
         const row = document.getElementById(a.getAttribute('href').slice(1));
         const btn = row && buttons.find(b => b.dataset.lane === row.dataset.lane);
+        if (btn && btn.closest('.udc-ys-life')?.hidden) setLife(true);
         if (btn && btn.getAttribute('aria-pressed') !== 'true') { btn.setAttribute('aria-pressed', 'true'); apply(); }
       });
     }

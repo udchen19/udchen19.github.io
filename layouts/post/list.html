@@ -3,7 +3,7 @@
      dated stream. Briefs (brief: true) print in full, like newspaper briefs. */}}
 {{- $columns := where site.RegularPages "Params.udc_column" true -}}
 {{- $posts := union (where site.RegularPages "Section" "post") (where site.RegularPages "Params.udc_log" true) -}}
-<div class="udc-list udc-wrap udc-log-index">
+<main id="main" class="udc-list udc-wrap udc-log-index">
   <h1 class="udc-page-title udc-ink">{{ .Title }}</h1>
   {{ with .Params.summary }}<p class="udc-list-dek">{{ . | markdownify }}</p>{{ end }}
   {{ with $columns }}
@@ -39,5 +39,5 @@
     {{ end }}
     {{ end }}
   </div>
-</div>
+</main>
 {{ end }}

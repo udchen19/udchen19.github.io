@@ -1,0 +1,18 @@
+{{/* Research Projects index. Same width, gutter, title and item markup as UD's Log
+     (layouts/post/list.html), without dates. Replaces Blox's collection block, which kept its own
+     centred title and gutter (Astra review, 2026-11-16). Title and text come from content/projects.md. */}}
+{{- $block := .wcBlock -}}
+{{- $projects := where site.RegularPages "Section" "project" -}}
+<main id="main" class="udc-list udc-wrap udc-projects-index">
+  <h1 class="udc-page-title udc-ink">{{ $block.content.title | default .wcPage.Title }}</h1>
+  {{ with $block.content.text }}<p class="udc-list-dek">{{ . | markdownify }}</p>{{ end }}
+  <div class="udc-stream">
+    {{- range $projects.ByDate.Reverse }}
+    {{- $zh := gt (len (findRE `\p{Han}` .Title)) 3 }}
+    <article class="udc-stream-item">
+      <h2 class="udc-stream-title"{{ if $zh }} lang="zh-Hant"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{- with .Params.summary }}<p class="udc-stream-sum"{{ if gt (len (findRE `\p{Han}` .)) 3 }} lang="zh-Hant"{{ end }}>{{ . }}</p>{{ end }}
+    </article>
+    {{- end }}
+  </div>
+</main>

@@ -17,7 +17,7 @@ categories: ["work"]
 
 <br>
 
-&emsp;&emsp;[開必拓數據](fastable.ai)，一間用電腦視覺提供智能品控方案的新創公司。當時跟專題隊友在就博會後整理了幾家公司的DM一起投履歷。會投這家絕對不是因為太晚開始寫CV一堆公司都收滿了有個原因是大多數的Intern都是分Frontend跟Backend招，但我比較喜歡碰Data或ML類型的。既然是這種類型的公司，Intern也沒明定收上述兩者，後來就決定投看看。
+&emsp;&emsp;[開必拓數據](https://www.fastable.ai/)，一間用電腦視覺提供智能品控方案的新創公司。當時跟專題隊友在就博會後整理了幾家公司的DM一起投履歷。會投這家絕對不是因為太晚開始寫CV一堆公司都收滿了有個原因是大多數的Intern都是分Frontend跟Backend招，但我比較喜歡碰Data或ML類型的。既然是這種類型的公司，Intern也沒明定收上述兩者，後來就決定投看看。
 
 &emsp;&emsp;如同我面試的另一家新創公司，面試的Lucas (技術長)跟Tina (營運長，我後來的mentor)都是公司的創辦人，但沒有我預期的緊張感，在個人Project的細節討論間穿插一些閒聊。我跟專題隊友的project重疊率太高還在兩分鐘內一起送履歷，所以被看出來應該互相認識，後兩個面試的超怕講錯話還互相複習之前的project怎麼分工的:sweat:。三個人面完都覺得有希望，但全部拿到offer絕對是意料之外。我面的另一家新創公司也有收到offer，但既然開必拓是抱團實習而且面試氛圍不錯，why not give it a go?
 
@@ -83,15 +83,15 @@ categories: ["work"]
 
 整個界面有幾張圖表，就順帶說明他們的作用。
 
-<img src="static/overall.jpg" title="" alt="" width="90%">
+<img src="static/overall.jpg" title="" alt="Kapito Daily Metrics 儀表板總覽：馬賽克圖以各鏡頭與瑕疵種類的占比呈現瑕疵數量。" width="90%">
 
 &emsp;&emsp;Marimekko Chart (第一張的馬賽克圖)用各個鏡頭和瑕疵在鏡頭內的占比當兩軸，圖塊面積直接對應瑕疵數量，可一覽整個產線眾數。
 
-<img src="static/line.jpg" title="" alt="" width="90%">
+<img src="static/line.jpg" title="" alt="儀表板的瑕疵數量頁：直方圖、標有歷史中位數的各類瑕疵長條圖，以及隨時間變化的折線圖。" width="90%">
 
 &emsp;&emsp;長條圖可觀察每種瑕疵的數量，圖上的歷史中位數折線也可作為參考。直方圖跟折線圖都是拿當下資料對應長期分佈，前者方便看出離群值偏離量，後者可以根據時間軸觀測趨勢。
 
-<img src="static/camera.jpg" title="" alt="" width="90%">
+<img src="static/camera.jpg" title="" alt="儀表板的熱區圖頁：依鏡頭實際位置排列的瑕疵熱區圖，旁邊是單一瑕疵種類的長條圖。" width="90%">
 
 &emsp;&emsp;熱區圖對應鏡頭的實際空間分布，可辨識瑕疵是否集中在同一位置。
 
@@ -140,7 +140,7 @@ categories: ["work"]
 3. Startup v.s. Big Companies
    我沒能到大公司實習很大的原因是太晚準備CV，所以我就說服自己去新創公司人少，自己發揮的空間相對多，而事實最後也如同我的想像。在merge PR時是真的不敢按下去的，因為你知道一旦merge就會部署並實際運作。當我把project code整理好最後push到雲端時，也在數字上看到成果：2000+行的Python(含註解)，還有200+行的Markdown (documentation)。雖然程式碼行數真的不代表什麼，但我很清楚這個暑假磨練了多少。雖然startup的實習寫在CV上可能是間名不見經傳的公司，但累積的經驗就我個人而言比履歷上那幾行字重要得多。
    
-   > I probably shouldn't be using `git` like this, bUt AnYwAy![](static/commit.jpg)
+   > I probably shouldn't be using `git` like this, bUt AnYwAy![Terminal output of the first commit: 12 files changed, 2133 insertions, creating a README, Python files and requirements.txt.](static/commit.jpg)
 
 4. 找到CS中有興趣然後可以發揮的領域
    雖然看到大多數Intern都招Frontend跟Backend，但還蠻慶幸那時候沒有強迫自己選一個，因為自己還是對觀察資料、想點數學，然後利用這些finding做些什麼比較感興趣；所以大方向上來說，還是ML跟Data Science。
@@ -187,7 +187,7 @@ categories: ["work"]
 
 * 我的位子
   
-  <img title="" src="static/table.jpg" alt="" width="450">
+  <img title="" src="static/table.jpg" alt="實習時的座位：外接螢幕開著程式碼，筆電顯示棒球場空拍圖，桌上有鍵盤、滑鼠和自行車安全帽。" width="450">
 
 * 零食區
   大概一週補一次，但有事做的時候自己就不會嘴饞。尤其是週末回家發現自己變胖，其他變因(e.g. 三餐、運動)改動不大的情況下，我背後的零食區絕對是罪魁禍首，自己有注意的情況下自然就不怎麼會拿。
@@ -243,7 +243,7 @@ categories: ["work"]
 * 自動化工業展
   因為公司有參展，實習結束前的星期五我們的mentor們讓我們去南港的自動化工業展參觀，也跟其他參展商聊到很多智慧製造的看法
   
-  <img src="static/outofcontext.jpg" title="" alt="" width="250">
+  <img src="static/outofcontext.jpg" title="" alt="自動化工業展攤位的螢幕：口罩偵測模型即時框出參觀者的臉，標上 with_mask 與信心分數。" width="250">
 
 * 辦公室的電子鼓
   最後一天才知道是Allen帶來的，表演有秀到🥁

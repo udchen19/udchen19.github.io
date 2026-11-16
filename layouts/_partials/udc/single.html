@@ -6,6 +6,7 @@
 {{- $titleZh := gt (len (findRE `\p{Han}` .Title)) 3 -}}
 {{- $plate := printf "textures/pages/%s-%s-ink.png" .Section .File.ContentBaseName -}}
 {{- $hasPlate := fileExists (printf "static/%s" $plate) -}}
+<main id="main">
 <article class="udc-single udc-wrap udc-single-{{ .Section }}"{{ if $zh }} lang="zh-Hant"{{ end }}>
   <header class="udc-single-head">
     <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}>{{ .Title }}</h1>
@@ -28,10 +29,26 @@
   {{- if $hasPlate }}
   {{ partial "udc/plate.html" (dict "class" "udc-featured" "ink" (printf "/%s" $plate) "ink_night" (replace (printf "/%s" $plate) "-ink.png" "-ink-night.png") "alt" (.Params.image.alt_text | default (printf "%s, featured image" .Title))) }}
   {{- end }}
+  {{- /* Language per block (Astra review): the article's lang comes from its overall Han share; a
+         paragraph, list item or heading in the other language gets its own lang, so it is read aloud
+         right and takes its own reading rules (繁體中文: 1.85 line height, 36-character measure).
+         Blocks with fewer than 20 letters keep the article's language. Text is not changed. */}}
+  {{- $content := string .Content }}
+  {{- range findRE `(?s)<(?:p|li)>.*?</(?:p|li)>|<h[2-4] [^>]*>.*?</h[2-4]>` $content }}
+  {{- $t := plainify . }}
+  {{- $bh := len (findRE `\p{Han}` $t) }}{{ $ba := len (findRE `[\p{Han}\p{L}]` $t) }}
+  {{- if gt $ba 19 }}
+  {{- $blockZh := gt (mul $bh 100) (mul $ba 30) }}
+  {{- if ne $blockZh $zh }}
+  {{- $tagged := replaceRE `^<(p|li|h[2-4])` (printf `<$1 lang="%s"` (cond $blockZh "zh-Hant" "en")) . 1 }}
+  {{- $content = replace $content . $tagged 1 }}
+  {{- end }}{{ end }}
+  {{- end }}
   <div class="udc-prose">
-    {{ .Content }}
+    {{ $content | safeHTML }}
   </div>
   {{- with .GetTerms "tags" }}
   <p class="udc-tags" lang="en">{{ range $i, $t := . }}{{ if $i }} · {{ end }}<a href="{{ $t.RelPermalink }}">{{ $t.LinkTitle }}</a>{{ end }}</p>
   {{- end }}
 </article>
+</main>

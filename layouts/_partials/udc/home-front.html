@@ -1,16 +1,17 @@
 {{/* Front page (plan v2, 4.3–4.5): story column (headline, intro) | side column (columnist
-     block, News); research tier; UD's Log; the image footer follows in site_footer.html. */}}
-<div class="udc-home udc-front udc-wrap">
+     block); News across both under them; research tier; UD's Log; the image footer follows in
+     site_footer.html. */}}
+<main id="main" class="udc-home udc-front udc-wrap">
   <h1 class="udc-visually-hidden udc-h1-name">Uei-Dar Chen 陳威達</h1>
   <section class="udc-front-lead" aria-label="Introduction">
     <div class="udc-front-story">
       {{ partial "udc/lead.html" . }}
       {{ partial "udc/intro.html" (dict "dropcap" true) }}
     </div>
-    <aside class="udc-front-side" aria-label="Portrait, profiles and news">
+    <aside class="udc-front-side" aria-label="Portrait and profiles">
       {{ partial "udc/identity.html" . }}
-      {{ partial "udc/news.html" . }}
     </aside>
+    {{ partial "udc/news.html" . }}
   </section>
   <hr class="udc-rule-heavy" aria-hidden="true">
   <section id="research" class="udc-tier udc-research" aria-labelledby="udc-research-title">
@@ -19,4 +20,4 @@
   </section>
   <hr class="udc-rule-heavy" aria-hidden="true">
   {{ partial "udc/log-titles.html" . }}
-</div>
+</main>

@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{/* Publications: year plates; title in the text face; his name in full ink; venue italic. */}}
-<div class="udc-list udc-wrap udc-publications">
+<main id="main" class="udc-list udc-wrap udc-publications">
   <h1 class="udc-page-title udc-ink">{{ .Title }}</h1>
   {{ with .Params.summary }}<p class="udc-list-dek">{{ . | markdownify }}</p>{{ end }}
   {{ range (.Pages.GroupByDate "2006") }}
@@ -18,5 +18,5 @@
     </ol>
   </section>
   {{ end }}
-</div>
+</main>
 {{ end }}

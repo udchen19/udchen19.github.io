@@ -1,0 +1,5 @@
+{{- /* Hugo's default heading, except that a level-1 heading inside page content renders as <h2>:
+       the page title is the page's only <h1> (Astra review, 2026-11-16; one post uses "# English Version"). */ -}}
+{{- $level := cond (eq .Level 1) 2 .Level -}}
+<h{{ $level }} id="{{ .Anchor }}"{{ range $k, $v := .Attributes }}{{ if ne $k "id" }} {{ $k }}="{{ $v }}"{{ end }}{{ end }}>{{ .Text }}</h{{ $level }}>
+{{- /**/ -}}
