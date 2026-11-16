@@ -32,12 +32,12 @@
   {{- /* Language per block (Astra review): the article's lang comes from its overall Han share; a
          paragraph, list item or heading in the other language gets its own lang, so it is read aloud
          right and takes its own reading rules (繁體中文: 1.85 line height, 36-character measure).
-         Blocks with fewer than 20 letters keep the article's language. Text is not changed. */}}
+         Any block with letters is judged, whatever its length (Astra review, round 2). Text is not changed. */}}
   {{- $content := string .Content }}
   {{- range findRE `(?s)<(?:p|li)>.*?</(?:p|li)>|<h[2-4] [^>]*>.*?</h[2-4]>` $content }}
   {{- $t := plainify . }}
   {{- $bh := len (findRE `\p{Han}` $t) }}{{ $ba := len (findRE `[\p{Han}\p{L}]` $t) }}
-  {{- if gt $ba 19 }}
+  {{- if gt $ba 0 }}
   {{- $blockZh := gt (mul $bh 100) (mul $ba 30) }}
   {{- if ne $blockZh $zh }}
   {{- $tagged := replaceRE `^<(p|li|h[2-4])` (printf `<$1 lang="%s"` (cond $blockZh "zh-Hant" "en")) . 1 }}

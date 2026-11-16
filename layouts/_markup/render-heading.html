@@ -1,5 +1,13 @@
-{{- /* Hugo's default heading, except that a level-1 heading inside page content renders as <h2>:
-       the page title is the page's only <h1> (Astra review, 2026-11-16; one post uses "# English Version"). */ -}}
-{{- $level := cond (eq .Level 1) 2 .Level -}}
+{{- /* Hugo's default heading, with one change for content that uses a level-1 heading ("# English
+       Version" in the Books post): the page title is the page's only <h1>, so that heading renders as
+       <h2> and every heading after it one level lower, keeping it as their parent; headings before it
+       keep their level (Astra review, rounds 1 and 2). Pages without a level-1 heading are unchanged. */ -}}
+{{- $level := .Level -}}
+{{- $raw := .Page.RawContent -}}
+{{- if findRE `(?m)^# ` $raw 1 -}}
+  {{- $before := index (split (printf "\n%s" $raw) "\n# ") 0 -}}
+  {{- $n := len (findRE `(?m)^#{1,6} ` $before) -}}
+  {{- if ge .Ordinal $n }}{{ $level = int (math.Min 6 (add .Level 1)) }}{{ end -}}
+{{- end -}}
 <h{{ $level }} id="{{ .Anchor }}"{{ range $k, $v := .Attributes }}{{ if ne $k "id" }} {{ $k }}="{{ $v }}"{{ end }}{{ end }}>{{ .Text }}</h{{ $level }}>
 {{- /**/ -}}

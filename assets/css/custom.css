@@ -311,7 +311,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
   .udc-header .udc-menu-toggle { margin-right: calc(-1 * var(--udc-gutter)); }
   .udc-header .udc-brand .udc-emblem { width: 36px; margin: 0; }
   .udc-header .udc-nav-controls { display: contents; }
-  .udc-header .udc-menu-toggle { grid-row: 1; grid-column: 2; }
+  .udc-header .udc-menu-toggle { grid-row: 1; grid-column: 2; position: relative; z-index: 2; }   /* above the closed menu, which shares its row */
   .udc-header .udc-nav { grid-row: 1; grid-column: 1 / -1; }
   .udc-header .udc-nav-controls > .udc-theme-row { display: none; }
   .udc-header .udc-nav-controls > .udc-motto { grid-row: 2; grid-column: 1 / -1; justify-self: center; justify-items: center; font-size: .88rem; padding: 2px 6px 0; }
@@ -502,6 +502,13 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-single[lang="zh-Hant"] .udc-prose :is(h2, h3) { font-family: var(--udc-text); font-weight: 700; }
 .udc-prose strong { font-weight: 650; }
 .udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-ink); color: var(--udc-ink); font-style: normal; }
+/* Blox's callout shortcode (one protected post): printed on the sheet like a quote, an ink rule and
+   ink text, instead of a rounded orange panel; its icon, "Warning" label and bold opening keep it
+   prominent (Astra review, round 2). */
+.udc-prose .callout { margin: 1em 0; padding: 2px 0 2px 16px; background: none; border: 0; border-left: 3px solid var(--udc-ink); border-radius: 0; color: var(--udc-ink); }
+.udc-prose .callout-icon { color: var(--udc-ink); }
+.udc-prose .callout-content { color: var(--udc-ink); }
+.udc-prose .callout-title { font-family: var(--udc-sign); font-weight: 700; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; }
 .udc-prose ul, .udc-prose ol { padding-left: 1.3em; }
 .udc-prose ul { list-style: disc; }
 .udc-prose ol { list-style: decimal; }
@@ -727,7 +734,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   body.page-wrapper::after, .udc-header::after { display: none !important; }
   .udc-sheet-layer { display: none !important; }
   *, *::before, *::after { filter: none !important; }
-  :is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags, .udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)), .udc-ys-track, .udc-ys-ticks, .udc-map-plate, .udc-tl-desk) { -webkit-mask: none !important; mask: none !important; }
+  :is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags, .udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)), .udc-ys-track, .udc-ys-ticks, .udc-map-plate, .udc-tl-desk, .udc-lead-l1, .udc-lead-l2) { -webkit-mask: none !important; mask: none !important; }
   .udc-tl-node::before, .udc-tl-node::after { -webkit-mask: none !important; mask: none !important; }
   .udc-portrait img, .udc-404-fig img { filter: none !important; }
 }
@@ -753,12 +760,13 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
 
 /* News items and briefs */
-/* One entry per line: date in bold, then the text. Scrolls inside itself past about five lines. */
-.udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .9375rem; line-height: 1.5;
-  max-height: calc(5 * 1.5em + 5 * 6px); overflow-y: auto; overscroll-behavior: contain; }
-.udc-news-list li { padding: 3px 0; }
+/* One entry per line: date in bold, then the text. Scrolls inside itself past about five lines; the
+   cut falls part-way through the next line so a long list visibly continues (Astra review, round 2). */
+.udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .9375rem; line-height: 1.65;
+  max-height: calc(5.6 * 1.65em); overflow-y: auto; overscroll-behavior: contain; }   /* whole lines, no gaps: the cut always falls inside a line */
+.udc-news-list li { padding: 0; }
 .udc-news-list time { font-weight: 700; margin-right: .5em; }
-@media (max-width: 640px) { .udc-news-list { max-height: calc(9 * 1.5em + 9 * 6px); } }   /* entries wrap on phones */
+@media (max-width: 640px) { .udc-news-list { max-height: calc(10.6 * 1.65em); } }   /* entries wrap on phones; three take 10 lines at 320px */
 
 
 

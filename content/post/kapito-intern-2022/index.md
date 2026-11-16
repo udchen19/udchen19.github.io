@@ -231,7 +231,7 @@ categories: ["work"]
 
 &emsp;&emsp;升大四暑假去實習的時候，幫公司寫分析用的**網頁，用tailwind css排版**；**code寫累了**會被找去拆零件跟**搬東西**，然後**拿黑色大塑膠袋**收公司的廢料。
 
-<img src="https://pbs.twimg.com/media/EzSBP_tUUAQbtOz.png" title="" alt="" width="400">
+<img src="https://pbs.twimg.com/media/EzSBP_tUUAQbtOz.png" title="" alt="The Office 的迷因：Pam 看著鏡頭，字幕是「They’re the same picture.」" width="400">
 
 結論：過去一年自己並沒有任何長進，棒。
 

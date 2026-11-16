@@ -22,6 +22,9 @@
       label();
     };
     menuButton?.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
+    // The head script hides the phone menu only while this handler exists (see hooks/head-end/udc.html).
+    window.udcMenuReady = true;
+    root.classList.add('udc-js');
     menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') { setMenu(false); menuButton.focus(); }

@@ -1,5 +1,7 @@
-{{- /* Marks that the site script can run: only then does the phone menu hide behind its button. */}}
-<script>document.documentElement.classList.add("udc-js")</script>
+{{- /* Marks that the site script can run: only then does the phone menu hide behind its button. If the
+       menu script has not attached itself within 4 s (blocked or failed), the mark comes off and the
+       links show as they do without JavaScript (Astra review, round 2). */}}
+<script>document.documentElement.classList.add("udc-js");setTimeout(function(){if(!window.udcMenuReady)document.documentElement.classList.remove("udc-js")},4000)</script>
 {{- if eq .Kind "404" }}<meta name="robots" content="noindex">{{ end }}
 {{ $theme := resources.Get "css/themes/udc.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $theme.RelPermalink }}" integrity="{{ $theme.Data.Integrity }}">
