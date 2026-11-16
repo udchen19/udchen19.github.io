@@ -2,7 +2,7 @@
 title: Noti
 reading_time: false
 show_date_updated: false
-summary: An intelligent smartphone notification agent that learns and adapts to individual preferences.
+summary: An LLM task inbox for smartphone notifications that learns each person’s preferences.
 tags:
   - HCI
 date: '2026-08-01'

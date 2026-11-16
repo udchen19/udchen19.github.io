@@ -2,7 +2,7 @@
 title: NotiSummary
 reading_time: false
 show_date_updated: false
-summary: An open-source Android app and study of what people expect from AI-generated notification summaries.
+summary: An open-source Android app and a study of what people want from LLM notification summaries.
 tags:
   - HCI
 date: '2025-09-10'

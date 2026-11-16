@@ -49,7 +49,7 @@ education:
     institution: University of Illinois Urbana-Champaign
     start: '2026-08-01'
     end: '2028-05-31'
-    summary: 'Expected May 2028. Advised by Prof. Yang Wang. Thesis direction: contextual privacy in human–agent and agent–agent interactions within multi-agent AI systems.'
+    summary: 'Expected May 2028. Advised by Prof. Yang Wang. Thesis on contextual privacy in human–agent and agent–agent interactions.'
   - degree: B.Sc. in Computer Science, Credit Program of Psychology
     institution: National Yang Ming Chiao Tung University
     start: '2019-09-01'
@@ -77,7 +77,7 @@ experience:
     start: '2026-08-01'
     end: '2026-12-31'
     summary: |
-      Lead weekly labs and office hours, helping students reason through data structures and debug C++ programs. Grade exams and provide feedback on algorithms and runtime analysis.
+      Lead weekly labs, host office hours on data structures and C++ debugging, and grade exams.
   - role: Research Assistant
     udc_lane: research
     org: AIMEX Lab, National Yang Ming Chiao Tung University
@@ -85,7 +85,7 @@ experience:
     start: '2021-07-01'
     end: '2026-08-01'
     summary: |
-      Led research and development of intelligent notification systems, combining user studies, qualitative analysis, and Android prototyping.
+      Intelligent notification systems with Prof. Yung-Ju Chang: interviews, qualitative analysis, and Android apps used in daily life.
   - role: Software Engineering Intern
     udc_lane: industry
     org: Kapito Inc.
@@ -93,7 +93,7 @@ experience:
     start: '2022-07-01'
     end: '2022-09-02'
     summary: |
-      Initiated and developed a data visualization platform for identifying potential failures in manufacturing visual-defect detection systems.
+      Proposed and built a dashboard of defect counts by camera and type, for spotting failures in visual-defect detection on production lines.
   - role: Teaching Assistant, Introduction to Algorithms
     udc_lane: teaching
     org: Department of Computer Science, NYCU
@@ -109,7 +109,7 @@ skills:
         description: Interviews, qualitative analysis, literature review, and study design.
         icon: hero/chat-bubble-left-right
       - label: Prototyping
-        description: Android, Kotlin, Python, TypeScript, and the glue required to make studies run.
+        description: Android (Kotlin), Python, TypeScript.
         icon: hero/code-bracket
 
 languages:

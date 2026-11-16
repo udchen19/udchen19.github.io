@@ -9,12 +9,14 @@
 <main id="main">
 <article class="udc-single udc-wrap udc-single-{{ .Section }}"{{ if $zh }} lang="zh-Hant"{{ end }}>
   <header class="udc-single-head">
-    <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}>{{ .Title }}</h1>
+    {{- /* Longest Latin word, for the phone size rule in custom.css (Astra review, round 3). */}}
+    {{- $word := 0 }}{{ range findRE `[\p{Latin}\p{N}’'.:\-]+` .Title }}{{ $word = math.Max $word (strings.RuneCount .) }}{{ end }}
+    <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}{{ if gt $word 0 }} style="--udc-word: {{ int $word }}"{{ end }}>{{ .Title }}</h1>
     <div class="udc-meta" lang="en">
       {{- if eq .Section "publication" }}
       <p class="udc-meta-authors">{{ partial "page_metadata_authors" . }}</p>
       {{- with .Params.publication }}<p class="udc-meta-venue">{{ . | markdownify }}</p>{{ end }}
-      <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time>{{ range first 1 (.GetTerms "publication_types") }} · {{ index (dict "article-journal" "Journal article" "paper-conference" "Conference paper" "book" "Book" "chapter" "Book chapter" "thesis" "Thesis" "report" "Report" "manuscript" "Preprint" "article" "Article" "speech" "Talk") (lower .Title) | default .LinkTitle }}{{ end }}</p>
+      <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time>{{ range first 1 (.GetTerms "publication_types") }} · {{ partial "udc/pubtype-name.html" .Title }}{{ end }}</p>
       {{- else if eq .Section "post" }}
       <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ if ne .Params.reading_time false }} · {{ .ReadingTime }} min read{{ end }}</p>
       {{- else }}

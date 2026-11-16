@@ -26,9 +26,6 @@
 {{- range $lifeLanes }}{{ $names = merge $names (dict .key .name) }}{{ end -}}
 <main id="main" class="udc-list udc-wrap udc-about" lang="en">
   <h1 class="udc-page-title udc-ink-d">About</h1>
-  {{- if hugo.IsServer }}
-  <p class="udc-about-line"><span class="udc-ud-write">[UD to write]</span> one line; links to the <a href="/">front page</a> and the <a href="/uploads/uei-dar-chen-cv.pdf">CV (PDF)</a>.</p>
-  {{- end }}
   <div class="udc-tl" data-udc-tl>
   <h2 class="udc-visually-hidden">Timeline</h2>
   {{- /* Year strip: positions in % of the span from the earliest start year to the latest end year. */}}

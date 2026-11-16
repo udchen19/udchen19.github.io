@@ -19,15 +19,25 @@ bio:
         - "Interviews: UD led them for NotiSummary and took part in them for the feedback studies (role notes on the publication pages). Design workshops left out: UD reanalysed that data but did not run the workshops (project page). Apps used in daily life: NotiSummary (Google Play, three months in the wild) and Noti (three-day deployment on participants’ own phones)."
 
 news:
+  # Plain, one event per line: what, which venue, which city (UD, 2026-11-16). Newest first.
   - date: '2026-08-31'
     label: Aug–Sep 2026
-    text: Presented *“I Want It to Do More Than Deliver”* at MobileHCI 2026 in Swansea.
+    text: 'Presented [“I Want It to Do More Than Deliver”](/publication/intelligent-notification-systems/) at MobileHCI 2026, Swansea.'
   - date: '2026-08-01'
     label: Aug 2026
     text: Started my M.S. in Computer Science at UIUC.
+  - date: '2026-04-13'
+    label: Apr 2026
+    text: 'Presented [“Tell Me Why You’re Asking”](/publication/preference-feedback/) and the [Noti poster](/publication/task-extraction/) at CHI 2026, Barcelona.'
   - date: '2025-09-10'
     label: Sep 2025
-    text: 'Our [NotiSummary paper](/publication/notisummarypaper/) on notification summarization was published in PACM MHCI for MobileHCI 2025.'
+    text: '[NotiSummary](/publication/notisummarypaper/) published in PACM MHCI (MobileHCI 2025).'
+  - date: '2025-04-26'
+    label: Apr 2025
+    text: Attended CHI 2025, Yokohama.
+  - date: '2023-10-08'
+    label: Oct 2023
+    text: 'Presented the [NotiSummary poster](/publication/notisummaryposter/) at UbiComp/ISWC 2023, Cancún.'
 
 work:
   - page: /project/notillm/

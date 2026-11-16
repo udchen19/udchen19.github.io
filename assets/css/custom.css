@@ -474,7 +474,6 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 
 /* ================================================================ inner pages */
 .page-body.my-10, .page-body { margin-block: 0 !important; }
-.udc-ud-write { display: inline-block; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .1em; color: var(--udc-orange-text); border: 1px dashed currentColor; padding: .1em .5em; }
 .udc-single, .udc-list { padding-top: 18px; padding-bottom: 8px; }
 .udc-single-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30%); gap: 0 26px; align-items: start; margin-bottom: 20px; }
 .udc-single-head .udc-page-title { max-width: 22em; }
@@ -509,6 +508,9 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-prose .callout-icon { color: var(--udc-ink); }
 .udc-prose .callout-content { color: var(--udc-ink); }
 .udc-prose .callout-title { font-family: var(--udc-sign); font-weight: 700; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; }
+/* Colour set inline in older posts (<font color>, style="color:…") prints in ink: orange is a listed
+   spot colour only, and pure red fell to 2.9:1 on the paper (Astra review, round 3). Bold stays. */
+.udc-prose font[color], .udc-prose [style*="color"] { color: inherit !important; }
 .udc-prose ul, .udc-prose ol { padding-left: 1.3em; }
 .udc-prose ul { list-style: disc; }
 .udc-prose ol { list-style: decimal; }
@@ -559,7 +561,6 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
    with a node per entry | entry). Life outside research is a hidden lane in the strip; expanded, its
    entries sit in line with the others. Printed, not drawn: bars and axis have hand-cut edges and go
    through the same press as the type (label strength). */
-.udc-about-line { margin: 8px 0 18px; max-width: 68ch; }
 /* When the years run long (life entries may go back to 2001), the strip scrolls sideways: every year
    keeps at least --yr of width, the lane names stay put, and it opens at the newest end (udc-ui.js). */
 .udc-ys { --name: 10.5rem; --yr: 56px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; margin: 4px 0 20px; font-family: var(--udc-sign); font-weight: 500; font-size: .7rem; letter-spacing: .04em; color: var(--udc-ink-2); }
@@ -660,7 +661,6 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-tl-row.is-life { padding: 6px 0 8px; }
 .udc-tl-row.is-life .udc-tl-node::before { top: -6px; bottom: -8px; }
 .udc-tl-row.is-life .udc-tl-node::after { top: 5px; }
-.udc-tl-row.is-life .udc-tl-desk .udc-ud-write { font-style: normal; }
 .udc-tl-desk { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
 .udc-about-rest { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 28px; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--udc-ink); }
 .udc-about-rest dl { margin: 8px 0 0; }
@@ -755,7 +755,12 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-lead-head { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }
 /* 繁體中文 titles: Noto Serif TC 900 for the whole title (plan 3.2). */
 .udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
-.udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance; }
+.udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance;
+  overflow-wrap: break-word; }   /* last resort: a word longer than the column breaks inside it */
+/* A title's longest word fits the column: on narrow screens the size comes down just enough
+   (Ultra runs about 0.8em per letter), as the headline fits by size (Astra review, round 3). */
+.udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem),
+  calc((100vw - var(--udc-edge-l) - var(--udc-edge-r) - 2 * var(--udc-gutter)) / (var(--udc-word, 1) * .8))); }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
 

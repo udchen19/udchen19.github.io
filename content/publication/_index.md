@@ -1,6 +1,5 @@
 ---
 title: Publications
-summary: Full papers, journal articles, posters, workshop papers, and a book—listed newest first.
 
 # Listing view
 view: citation
