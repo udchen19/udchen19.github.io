@@ -18,3 +18,5 @@ hugoblox:
   ids:
     doi: 10.1145/3594739.3610702
 ---
+
+I presented this poster at UbiComp/ISWC 2023 in Cancún.

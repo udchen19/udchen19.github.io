@@ -20,3 +20,5 @@ hugoblox:
   ids:
     doi: 10.1145/3743703
 ---
+
+I led the interviews, conducted the main qualitative analysis, contributed to the app's development and led the writing of the paper.
