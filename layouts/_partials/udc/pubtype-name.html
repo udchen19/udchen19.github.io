@@ -1,5 +1,0 @@
-{{- /* Reader-facing name of a publication type (the CSL slug Blox uses as the term), shared by the
-       paper pages and the publication-type archives (Astra review, round 3). Unknown types keep their title. */ -}}
-{{- $names := dict "article-journal" "Journal article" "paper-conference" "Conference paper" "book" "Book" "chapter" "Book chapter" "thesis" "Thesis" "report" "Report" "manuscript" "Preprint" "article" "Article" "speech" "Talk" -}}
-{{- $name := index $names (lower .) | default . -}}
-{{- return $name -}}

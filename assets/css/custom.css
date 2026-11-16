@@ -750,10 +750,12 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
 .udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance;
   overflow-wrap: break-word; }   /* last resort: a word longer than the column breaks inside it */
-/* A title's longest word fits the column: on narrow screens the size comes down just enough
-   (Ultra runs about 0.8em per letter), as the headline fits by size (Astra review, round 3). */
-.udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem),
-  calc((100vw - var(--udc-edge-l) - var(--udc-edge-r) - 2 * var(--udc-gutter)) / (var(--udc-word, 1) * .8))); }
+/* A title's longest unbreakable piece fits its column: the size comes down only when that piece, at its
+   real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
+   rounds 3-4). The header is the container; its title column is 70% less the gap from 760px up. */
+.udc-single-head { container-type: inline-size; }
+.udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
+@media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
 
@@ -761,7 +763,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 /* One entry per line: date in bold, then the text. Scrolls inside itself past about five lines; the
    cut falls part-way through the next line so a long list visibly continues (Astra review, round 2). */
 .udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .9375rem; line-height: 1.65;
-  max-height: calc(5.6 * 1.65em); overflow-y: auto; overscroll-behavior: contain; }   /* whole lines, no gaps: the cut always falls inside a line */
+  max-height: calc(5.6 * 1.65em); overflow-y: auto; }   /* whole lines, no gaps: the cut always falls inside a line */
 .udc-news-list li { padding: 0; }
 .udc-news-list time { font-weight: 700; margin-right: .5em; }
 @media (max-width: 640px) { .udc-news-list { max-height: calc(10.6 * 1.65em); } }   /* entries wrap on phones; three take 10 lines at 320px */

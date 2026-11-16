@@ -1,15 +1,12 @@
 {{/* Archive pages Blox would otherwise draw as gradient cards (Astra review, round 2): one tag or
      publication type, the list of all tags or types, and the /project/ section list. Same markup as
      UD's Log (layouts/post/list.html): Ultra title, then title and summary per item; dates except on
-     projects and on the list of terms. */}}
+     projects and on the list of terms. Publication-type names come from content/publication_types/,
+     so the heading, tab, feed and sharing titles agree (Astra review, round 4). */}}
 {{- $isTerms := eq .Kind "taxonomy" -}}
-{{- /* Taxonomy names and publication-type terms in readers' words ("Publication types", "Conference paper"). */}}
-{{- $isTypes := eq .Data.Plural "publication_types" -}}
-{{- $title := .Title }}{{ if $isTerms }}{{ $title = .Data.Plural | humanize }}{{ end -}}
-{{- if and $isTypes (eq .Kind "term") }}{{ $title = partial "udc/pubtype-name.html" .Title }}{{ end -}}
 <main id="main" class="udc-list udc-wrap udc-archive">
   {{- if eq .Kind "term" }}<p class="udc-label">{{ .Data.Singular | humanize }}</p>{{ end }}
-  <h1 class="udc-page-title udc-ink">{{ $title }}</h1>
+  <h1 class="udc-page-title udc-ink">{{ .Title }}</h1>
   <div class="udc-stream">
     {{- range (cond $isTerms .Pages.ByTitle .Pages.ByDate.Reverse) }}
     {{- $zh := gt (len (findRE `\p{Han}` .Title)) 3 }}
@@ -17,7 +14,7 @@
       {{- if not (or $isTerms (eq .Section "project")) }}
       <p class="udc-stream-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></p>
       {{- end }}
-      <h2 class="udc-stream-title"{{ if $zh }} lang="zh-Hant"{{ end }}><a href="{{ .RelPermalink }}">{{ if and $isTerms $isTypes }}{{ partial "udc/pubtype-name.html" .Title }}{{ else }}{{ .Title }}{{ end }}</a></h2>
+      <h2 class="udc-stream-title"{{ if $zh }} lang="zh-Hant"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       {{- with .Params.summary }}<p class="udc-stream-sum"{{ if gt (len (findRE `\p{Han}` .)) 3 }} lang="zh-Hant"{{ end }}>{{ . }}</p>{{ end }}
     </article>
     {{- end }}
