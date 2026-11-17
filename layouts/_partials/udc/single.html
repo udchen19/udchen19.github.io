@@ -9,22 +9,7 @@
 <main id="main">
 <article class="udc-single udc-wrap udc-single-{{ .Section }}"{{ if $zh }} lang="zh-Hant"{{ end }}>
   <header class="udc-single-head">
-    {{- /* Width, in em, of the title's longest unbreakable piece, from Ultra's real advances and kerning
-           (data/ultra_widths.json, docs/design/tools/ultra_widths.py). A piece runs between spaces and
-           ends after a hyphen or dash, where browsers may break; 繁體中文 breaks anywhere, so it is not
-           counted. Titles with 繁體中文 are set in Noto Serif TC, not Ultra, and are not measured.
-           custom.css shrinks the title only when that piece would not fit (Astra, rounds 3-4). */}}
-    {{- $uw := hugo.Data.ultra_widths }}{{ $em := 0.0 }}
-    {{- if not $titleZh }}{{ range findRE `[^\s\p{Han}]+` .Title }}{{ range findRE `[^-–—]+[-–—]?|[-–—]` . }}
-      {{- $w := 0.0 }}{{ $prev := "" }}
-      {{- range $c := split . "" }}
-        {{- $w = add $w (float (or (index $uw.adv $c) $uw.max)) }}
-        {{- if $prev }}{{ $w = add $w (float (or (index $uw.kern (print $prev $c)) 0)) }}{{ end }}
-        {{- $prev = $c }}
-      {{- end }}
-      {{- $em = math.Max $em $w }}
-    {{- end }}{{ end }}{{ end }}
-    <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}{{ if gt $em 0 }} style="--udc-word-em: {{ printf "%.3f" $em }}"{{ end }}>{{ .Title }}</h1>
+    <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}>{{ .Title }}</h1>
   </header>
   {{- /* The side column: meta, then (from 1024px, articles with three or more sections) the section list.
          From 1024px it runs down the right of the whole article; narrower, it follows the title. */}}
@@ -37,8 +22,6 @@
       <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time>{{ range first 1 (.GetTerms "publication_types") }} · {{ .Title }}{{ end }}</p>
       {{- else if eq .Section "post" }}
       <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ if ne .Params.reading_time false }} · {{ .ReadingTime }} min read{{ end }}</p>
-      {{- else }}
-      {{- with .Params.summary }}<p class="udc-meta-summary">{{ . | markdownify }}</p>{{ end }}
       {{- end }}
       {{- /* Blox has_attachments does not look at hugoblox.ids (DOI-only pages showed no link). */}}
       {{- if or (partial "functions/has_attachments" .) .Params.hugoblox.ids }}
@@ -78,6 +61,10 @@
   {{- $tagged := replaceRE `^<(p|li|h[2-4])` (printf `<$1 lang="%s"` (cond $blockZh "zh-Hant" "en")) . 1 }}
   {{- $content = replace $content . $tagged 1 }}
   {{- end }}{{ end }}
+  {{- end }}
+  {{- /* On a paper's page the text after the abstract is UD's role; labelled so it does not read as more abstract (UD). */}}
+  {{- if and (eq .Section "publication") (strings.TrimSpace $content) }}
+  <h2 class="udc-label udc-role-label" lang="en">My role</h2>
   {{- end }}
   <div class="udc-prose">
     {{ $content | safeHTML }}

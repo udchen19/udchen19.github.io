@@ -74,7 +74,7 @@ work:
         source: "three key factors that shape effective notification summarization: (1) the desired level of information disclosure, which depends on users’ anticipation of notification content and perceived criticalness; (2) the methods for synthesizing notifications, informed by the interrelationships among notifications; and (3) users’ broader expectations for summaries to assist with task and information management (§7) · they envisioned it as functioning like a virtual assistant (§1, contributions)"
   - page: /project/intelligent-notification-systems/
     title: '“I Want It to Do More Than Deliver”'
-    meta: MobileHCI 2026 · Equal contribution
+    meta: MobileHCI 2026
     links:
       - label: Paper
         url: /publication/intelligent-notification-systems/

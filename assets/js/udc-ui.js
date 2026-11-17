@@ -176,6 +176,16 @@
     for (let n = h?.nextElementSibling; n && !/^H[1-3]$/.test(n.tagName); n = n.nextElementSibling)
       if (n.tagName === 'DETAILS') { n.open = true; break; }
   });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  // News: while more entries wait below, the last visible line fades (UD).
+  const newsFade = () => document.querySelectorAll('.udc-news-list').forEach(l =>
+    l.classList.toggle('has-more', l.scrollTop + l.clientHeight < l.scrollHeight - 2));
+  document.addEventListener('scroll', e => { if (e.target.classList?.contains('udc-news-list')) newsFade(); }, true);
+  addEventListener('resize', newsFade);
+  // Folded sections open on arrival where the section list is shown beside them; on phones, which have no
+  // list, they stay folded (UD, 2026-11-16).
+  const unfold = () => { const toc = document.querySelector('.udc-toc');
+    if (toc && getComputedStyle(toc).display !== 'none') document.querySelectorAll('.udc-prose details').forEach(d => { d.open = true; }); };
+  const start = () => { init(); newsFade(); unfold(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
 })();

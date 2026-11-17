@@ -320,7 +320,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
   .udc-header .udc-nav { grid-row: 1; grid-column: 1 / -1; }
   .udc-header .udc-nav-controls > .udc-theme-row { display: none; }
   .udc-header .udc-nav-controls > .udc-date { grid-row: 2; grid-column: 1 / -1; justify-self: end; font-size: .82rem; padding: 2px 0 0; }   /* right-aligned under the nameplate (UD) */
-  .udc-header .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: center; justify-items: center; font-size: .88rem; padding: 2px 6px 0; }
+  .udc-header .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: end; justify-items: end; font-size: .88rem; padding: 2px 0 0; }   /* under the date, same edge */
   .udc-js .udc-menu-toggle { display: inline-flex !important; }
   .udc-js .udc-navigation { display: none; }
   /* Without the script there is no menu button: the links wrap in a row under the motto. */
@@ -340,6 +340,9 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
    last 8% grows in dots into a solid ink strip under it, which carries the icons and fine print in
    paper colour, on one line where the width allows. Phones see the middle of the same picture at 176vw. */
 .page-footer { position: relative; }
+/* On short pages the footer picture starts lower, so the page reads as text on paper with the picture below,
+   not a picture with a little text on top (UD, 2026-11-16). Long pages are unaffected. */
+.page-body { min-height: 52svh; }
 .udc-footer { position: relative; overflow: hidden; margin-top: 8px; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; color: var(--udc-paper); }
 .udc-footer-img { position: relative; z-index: 61; width: 100%; aspect-ratio: 2.5 / 1; }
 .udc-fi { position: absolute; inset: 0; -webkit-mask: var(--m) 0 0 / 100% 100% no-repeat; mask: var(--m) 0 0 / 100% 100% no-repeat; }
@@ -419,7 +422,13 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
    RESEARCH, so the column starts level with the headline. */
 .udc-columnist-role { margin: 0 0 10px; }
 .udc-columnist-role + .udc-portrait { margin-top: 0; }
-@media (max-width: 859px) { .udc-columnist-role { grid-column: 1 / -1; } }
+@media (max-width: 859px) {
+  /* Phones: a kicker above the name, beside the portrait, so it belongs to the person, not the page below. */
+  .udc-columnist-role { grid-column: 2; grid-row: 1; margin: 0 0 2px; }
+  .udc-columnist-role::after { content: none; }
+  .udc-columnist > .udc-portrait { grid-column: 1; grid-row: 1 / span 2; }
+  .udc-columnist > .udc-columnist-id { grid-column: 2; grid-row: 2; }
+}
 .udc-profile-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); text-decoration: none; }
 .udc-profile-links svg { width: 21px; height: 21px; }
 /* News: a label on a rule, like the other tiers; no box. */
@@ -533,6 +542,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-prose th, .udc-prose td { border-bottom: 1px solid var(--udc-rule); padding: 4px 10px 4px 0; text-align: left; }
 .udc-prose hr { border: 0; border-top: 3px double var(--udc-ink); margin: 1.6em 0; }
 .udc-prose a { overflow-wrap: anywhere; }
+.udc-single .udc-tags { display: none; }   /* single tags hung alone under the text (UD) */
 .udc-tags { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; margin-top: 20px; }
 
 /* Lists */
@@ -551,6 +561,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-pub-venue { margin: 0; font-size: .9375rem; }
 
 .udc-stream { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 28px; }
+.udc-projects-index .udc-stream { grid-template-columns: minmax(0, 1fr); }   /* three projects read as one list (UD) */
 .udc-stream-item { padding: 12px 0; border-top: 1px solid var(--udc-rule); }
 .udc-stream-date { margin: 0; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
 .udc-stream-title { margin: 2px 0 4px; font-family: var(--udc-text); font-weight: 600; font-size: 1.2rem; line-height: 1.3; }
@@ -797,7 +808,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 @media print { .page-header, .udc-footer-links, .udc-emblem { display: none !important; } body.page-wrapper { background: #fff !important; color: #000 !important; } }
 
 /* ================================================================== headlines */
-.udc-lead-head { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }
+.udc-lead-head { margin: 0 0 18px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }
 /* 繁體中文 titles: Noto Serif TC 900 for the whole title (plan 3.2). */
 .udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
 .udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance;
@@ -822,29 +833,30 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-toc [lang="zh-Hant"] { font-family: var(--udc-text); font-size: .9rem; }
 }
 @media (min-width: 900px) and (max-width: 1023px) { .udc-single { --udc-aside: 14rem; --udc-gap: 32px; } }
-/* A title's longest unbreakable piece fits its column: the size comes down only when that piece, at its
-   real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
-   rounds 3-4). The header holds only the title, so it is the container and the title's column. */
-.udc-single-head { container-type: inline-size; }
 /* Article titles are sentences, so they are set smaller than the one-word section titles (UD, 2026-11-16);
    the article's own headings sit a step below the title. */
 .udc-single { --udc-article-title: 1.62rem; }   /* reads a step above the article's own headings (UD) */
+/* Article titles are sentences: set in the text serif, bold, like the same titles on the lists, and inked
+   like body text; the display face stays for short page names and the home headline (UD, 2026-11-16). */
+.udc-single-head .udc-page-title { font-family: var(--udc-text); font-weight: 700; letter-spacing: 0; line-height: 1.2;
+  -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
+.udc-single-head .udc-page-title:lang(zh-Hant) { font-family: var(--udc-text); font-weight: 700; }
 .udc-abstract { margin: 0 0 18px; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
-.udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((100cqi - 1px) / var(--udc-word-em, .01))); }   /* the header is the text column */
+.udc-single-head .udc-page-title { font-size: var(--udc-article-title); }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
 
 /* News items and briefs */
 /* One entry per line: date in bold, then the text. Scrolls inside itself past about five lines; the
    cut falls part-way through the next line so a long list visibly continues (Astra review, round 2). */
-.udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .9375rem; line-height: 1.65;
-  max-height: calc(5.6 * 1.65em); max-height: round(down, 5.6 * 1.65em, 1px); overflow-y: auto; }   /* whole px: a fractional height stalled scrolling past the list (Astra review, round 5) */   /* whole lines, no gaps: the cut always falls inside a line */
+.udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .85rem; line-height: 1.65;   /* a little quieter than the intro */
+  max-height: calc(5 * 1.65em); max-height: round(down, 5 * 1.65em, 1px); overflow-y: auto; }   /* whole px: a fractional height stalled scrolling past the list (Astra review, round 5) */   /* whole lines, no gaps: the cut always falls inside a line */
 .udc-news-list li { padding: 0; }
 .udc-news-list time { font-weight: 700; margin-right: .5em; }
-/* Article titles on phones are small for the display ink: the finer body ink keeps every letter whole (Astra, round 8). */
-@media (max-width: 640px) { .udc-single-head .udc-page-title { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); } }
-@media (max-width: 640px) { .udc-news-list { max-height: calc(10.6 * 1.65em); max-height: round(down, 10.6 * 1.65em, 1px); } }   /* entries wrap on phones; three take 10 lines at 320px */
+@media (max-width: 640px) { .udc-news-list { max-height: calc(10 * 1.65em); max-height: round(down, 10 * 1.65em, 1px); } }
+/* Whole lines; while more news waits below, the last line fades out (UD: a half-cut line read as a glitch). */
+.udc-news-list.has-more { -webkit-mask: linear-gradient(to bottom, #000 calc(100% - 1.65em), transparent); mask: linear-gradient(to bottom, #000 calc(100% - 1.65em), transparent); }   /* entries wrap on phones; three take 10 lines at 320px */
 
 
 
