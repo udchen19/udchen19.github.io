@@ -19,4 +19,4 @@ hugoblox:
     doi: 10.1145/3772363.3798322
 ---
 
-I presented this poster at CHI 2026 in Barcelona.
+I led Noti and built its Android app, and presented this poster at CHI 2026 in Barcelona.
