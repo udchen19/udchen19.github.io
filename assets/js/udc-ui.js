@@ -236,7 +236,7 @@
       const playing = on => { details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on; };
       const skip = () => {
         cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false);
-        keys.forEach(k => { k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
+        keys.forEach(k => { k.done = true; k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
         if (when) { when.textContent = dates[dates.length - 1]?.[1] || ''; when.classList.add('is-done'); }
       };
       skipBtn?.addEventListener('click', e => { e.stopPropagation(); skip(); });
@@ -246,7 +246,7 @@
         cancelAnimationFrame(typing);
         details?.classList.remove('is-skipped');
         const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        keys.forEach(k => { k.div.toggleAttribute('data-wait', !still); k.chars.forEach(c => { c.style.visibility = still ? '' : 'hidden'; }); });
+        keys.forEach(k => { const hide = !still && !k.done; k.div.toggleAttribute('data-wait', hide); k.chars.forEach(c => { c.style.visibility = hide ? 'hidden' : ''; }); });
         if (when) { when.hidden = still; when.classList.remove('is-done'); when.textContent = dates[0]?.[1] || ''; }
         if (still) return;
         playing(true);
@@ -255,9 +255,10 @@
           let busy = false;
           keys.forEach(k => {
             const n = Math.floor(Math.max(0, (now - t0) / 1000 - k.t) / k.dur * k.chars.length);
+            if (k.done) return;
             if (n > 0) k.div.removeAttribute('data-wait');
             k.chars.forEach((c, i) => { if (i < n) c.style.visibility = ''; });
-            if (n < k.chars.length) busy = true;
+            if (n < k.chars.length) busy = true; else k.done = true;
           });
           const e = (now - t0) / 1000;
           if (when) {
@@ -269,7 +270,12 @@
         };
         typing = requestAnimationFrame(frame);
       };
-      details?.addEventListener('toggle', () => { if (details.open) typeKeys(); else { cancelAnimationFrame(typing); playing(false); } });
+      // The journey plays on the first opening after the page loads; later openings show the map finished (UD).
+      let played = false;
+      details?.addEventListener('toggle', () => {
+        if (!details.open) { cancelAnimationFrame(typing); playing(false); return; }
+        if (played) skip(); else { played = true; typeKeys(); }
+      });
       // When the map changes size (rotation, window), the open label and ring follow their dot (Astra, round 7).
       new ResizeObserver(() => {
         if (!shown) return;
