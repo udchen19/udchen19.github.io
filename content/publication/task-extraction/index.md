@@ -19,4 +19,4 @@ hugoblox:
     doi: 10.1145/3772363.3798322
 ---
 
-I independently conducted the research and created the poster for this project.
+I presented this poster at CHI 2026 in Barcelona.

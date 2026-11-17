@@ -23,4 +23,4 @@ hugoblox:
     doi: 10.1145/3821653
 ---
 
-Fang-Hsin Hsu and Uei-Dar Chen contributed equally. I led the reanalysis of an existing interview and design-workshop dataset and the development of the resulting paper.
+I led the reanalysis of an existing interview and design-workshop dataset and the development of the resulting paper.
