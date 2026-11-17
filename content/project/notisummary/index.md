@@ -17,7 +17,7 @@ image:
 
 links:
   - icon: academicons/acm
-    name: Paper (MobileHCI '25)
+    name: Paper (MobileHCI ’25)
     url: https://dl.acm.org/doi/10.1145/3743703/
   - type: code
     name: Code

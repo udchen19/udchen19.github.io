@@ -383,6 +383,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-tier { padding-block: 6px 10px; }
 .udc-tier-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
 .udc-tier-head .udc-label { flex: 1; }
+.udc-tier-head .udc-more + .udc-more::before { content: "·"; margin-right: 14px; color: var(--udc-ink-2); }
 .udc-more { flex: none; display: inline-flex; align-items: center; min-height: 24px; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; }
 
 /* Lead tier (plan v2, 4.3): story column | side column about 29%, separated by a column rule. */
@@ -442,6 +443,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-work:first-child { padding-left: 0; }
 .udc-work:last-child { padding-right: 0; }
 .udc-work + .udc-work { border-left: 1px solid var(--udc-ink); }
+.udc-work-title { -webkit-mask: var(--udc-holes-b) !important; mask: var(--udc-holes-b) !important; }   /* small display type: finer ink keeps letters whole (Astra, round 9) */
 .udc-work-title { margin: 0 0 6px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.02rem; line-height: 1.2; }
 .udc-work-title a { text-decoration-color: transparent; }
 .udc-work-title a:hover { text-decoration-color: var(--udc-orange); }
@@ -500,6 +502,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 /* Meta: no box (3.7); a column rule separates it from the title, as on the front page. */
 .udc-meta { font-size: .85rem; line-height: 1.5; padding: 4px 0 4px 18px; border-left: 1px solid var(--udc-ink); }
 .udc-meta p { margin: 0 0 6px; }
+.udc-meta:not(:has(*)) { display: none; }   /* nothing to show: no lone divider (Astra, round 9) */
 .udc-meta-authors { color: var(--udc-ink-2); }
 .udc-meta-authors .font-bold, .udc-pub-authors .font-bold { color: var(--udc-ink); font-weight: 600; }
 .udc-meta-venue em, .udc-pub-venue em { font-style: italic; }
@@ -818,19 +821,27 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    sections, the section list, which stays in view. Left: title, abstract and text fill the rest of the
    width. From 1024px the article text is set larger, so its long lines stay easy to follow. Below 900px:
    one column, no list. */
-.udc-toc { display: none; }
+/* Section list. Narrow screens: a folded "Sections" list under the date (opens on tap). From 900px: always
+   open in the side column, the summary acting only as its label. */
+.udc-toc { margin-top: 14px; }
+.udc-toc-fold > summary { cursor: pointer; list-style: none; }
+.udc-toc-fold > summary::-webkit-details-marker { display: none; }
+.udc-toc-fold > summary::before { content: "▸"; margin-right: 6px; font-size: .9em; }
+.udc-toc-fold[open] > summary::before { content: "▾"; }
+.udc-toc ol { list-style: none; margin: 6px 0 0; padding: 0 0 0 18px; border-left: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .8rem; line-height: 1.4; }
+.udc-toc li + li { margin-top: 8px; }
+.udc-toc a { color: var(--udc-ink); text-decoration: none; }
+.udc-toc a:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
+.udc-toc [lang="zh-Hant"] { font-family: var(--udc-text); font-size: .9rem; }
 @media (min-width: 1024px) { .udc-single .udc-prose { font-size: calc(.9rem * 1.15); } }
 @media (min-width: 900px) {
   .udc-single { --udc-aside: 16rem; --udc-gap: 44px; display: grid; grid-template-columns: minmax(0, 1fr) var(--udc-aside); column-gap: var(--udc-gap); align-content: start; }
   .udc-single > * { grid-column: 1; }
   /* The side column runs the article's full height, so the text starts right under the title. */
   .udc-single > .udc-side { grid-column: 2; grid-row: 1 / span 30; align-self: stretch; margin: 0; }
-  .udc-toc { display: block; position: sticky; top: 16px; margin-top: 26px; }
-  .udc-toc ol { list-style: none; margin: 6px 0 0; padding: 0 0 0 18px; border-left: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .8rem; line-height: 1.4; }
-  .udc-toc li + li { margin-top: 8px; }
-  .udc-toc a { color: var(--udc-ink); text-decoration: none; }
-  .udc-toc a:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
-  .udc-toc [lang="zh-Hant"] { font-family: var(--udc-text); font-size: .9rem; }
+  .udc-toc { position: sticky; top: 16px; margin-top: 26px; }
+  .udc-toc-fold > summary { cursor: default; pointer-events: none; }
+  .udc-toc-fold > summary::before, .udc-toc-fold[open] > summary::before { content: none; }
 }
 @media (min-width: 900px) and (max-width: 1023px) { .udc-single { --udc-aside: 14rem; --udc-gap: 32px; } }
 /* Article titles are sentences, so they are set smaller than the one-word section titles (UD, 2026-11-16);

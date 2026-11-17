@@ -5,6 +5,10 @@ show_date_updated: false
 summary: "A personal notification agent for Android: summaries for a quick read, priorities for what needs attention now, and extracted tasks to act on, learning each person’s needs through short questions."
 tags:
   - HCI
+links:
+  - icon: academicons/acm
+    name: Paper (CHI EA ’26)
+    url: https://doi.org/10.1145/3772363.3798322
 date: '2026-08-01'
 
 # Optional external URL for project (replaces project detail page).

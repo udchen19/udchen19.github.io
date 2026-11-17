@@ -10,7 +10,7 @@ tags:
 date: '2026-08-18'
 links:
   - icon: academicons/acm
-    name: Paper (MobileHCI '26)
+    name: Paper (MobileHCI ’26)
     url: https://doi.org/10.1145/3821653
   - type: pdf
     name: PDF

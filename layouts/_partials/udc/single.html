@@ -19,9 +19,12 @@
       {{- if eq .Section "publication" }}
       <p class="udc-meta-authors">{{ partial "page_metadata_authors" . }}</p>
       {{- with .Params.publication }}<p class="udc-meta-venue">{{ . | markdownify }}</p>{{ end }}
+      {{- with .Params.isbn }}<p class="udc-meta-line">ISBN {{ . }}</p>{{ end }}
       <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time>{{ range first 1 (.GetTerms "publication_types") }} · {{ .Title }}{{ end }}</p>
       {{- else if eq .Section "post" }}
       <p class="udc-meta-line"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ if ne .Params.reading_time false }} · {{ .ReadingTime }} min read{{ end }}</p>
+      {{- else if ne .Section "project" }}
+      {{- with .Params.summary }}<p class="udc-meta-summary">{{ . | markdownify }}</p>{{ end }}
       {{- end }}
       {{- /* Blox has_attachments does not look at hugoblox.ids (DOI-only pages showed no link). */}}
       {{- if or (partial "functions/has_attachments" .) .Params.hugoblox.ids }}
@@ -29,12 +32,14 @@
       {{- end }}
     </div>
   {{- /* Sections (UD, 2026-11-16): an article with three or more <h2> sections lists them in the right
-         column from 1024px, beside the text; built from the rendered headings, so it matches them. */}}
+         column from 900px, beside the text, and as a folded list under the date on narrower screens; built from the rendered headings, so it matches them. */}}
   {{- $secs := findRESubmatch `<h2[^>]* id="([^"]+)"[^>]*>(.*?)</h2>` $content }}
   {{- if ge (len $secs) 3 }}
   <nav class="udc-toc" lang="en" aria-labelledby="udc-toc-title">
-    <h2 id="udc-toc-title" class="udc-label">Sections</h2>
+    <details class="udc-toc-fold" open>
+    <summary class="udc-label" id="udc-toc-title">Sections</summary>
     <ol>{{ range $secs }}{{ $t := plainify (index . 2) | htmlUnescape }}<li><a href="#{{ index . 1 }}"{{ if gt (len (findRE `\p{Han}` $t)) 0 }} lang="zh-Hant"{{ end }}>{{ $t }}</a></li>{{ end }}</ol>
+    </details>
   </nav>
   {{- end }}
   </aside>

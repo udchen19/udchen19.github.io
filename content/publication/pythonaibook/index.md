@@ -7,4 +7,5 @@ date: '2024-03-11'
 publication_types:
 - book
 isbn: 9786263247376
+publication: GoTop
 ---

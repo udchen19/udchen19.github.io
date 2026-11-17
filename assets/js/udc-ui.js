@@ -181,10 +181,22 @@
     l.classList.toggle('has-more', l.scrollTop + l.clientHeight < l.scrollHeight - 2));
   document.addEventListener('scroll', e => { if (e.target.classList?.contains('udc-news-list')) newsFade(); }, true);
   addEventListener('resize', newsFade);
-  // Folded sections open on arrival where the section list is shown beside them; on phones, which have no
-  // list, they stay folded (UD, 2026-11-16).
-  const unfold = () => { const toc = document.querySelector('.udc-toc');
-    if (toc && getComputedStyle(toc).display !== 'none') document.querySelectorAll('.udc-prose details').forEach(d => { d.open = true; }); };
+  // Folds in posts (UD, 2026-11-16; Astra, round 9). From 900px, where the section list sits beside the text,
+  // the author's whole-section folds ("展開本節") open on arrival; folds the author labelled as detours (such as
+  // "7500+字 慎入") stay folded until chosen. A whole-section fold's label says what pressing it does.
+  const wide = matchMedia('(min-width: 900px)');
+  const sectionFold = d => /^(展開|收合)本節$/.test(d.querySelector(':scope > summary')?.textContent.trim() || '');
+  const label = d => { const s = d.querySelector(':scope > summary'); if (s && sectionFold(d)) s.textContent = d.open ? '收合本節' : '展開本節'; };
+  const unfold = () => {
+    document.querySelectorAll('.udc-prose details').forEach(d => {
+      if (wide.matches && sectionFold(d)) d.open = true;
+      label(d);
+      d.addEventListener('toggle', () => label(d));
+    });
+    // The section list: always open beside the text; folded under the date on narrower screens.
+    const toc = document.querySelector('.udc-toc-fold');
+    if (toc) { const set = () => { toc.open = wide.matches; }; set(); wide.addEventListener('change', set); }
+  };
   const start = () => { init(); newsFade(); unfold(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
