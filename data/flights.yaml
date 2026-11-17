@@ -7,10 +7,10 @@
 # airports: every airport of the place gets an orange dot; the name sits by the first one.
 # label: where the name sits beside that dot: ne (default), nw, sw or se.
 places:
-  - {name: Taipei, airports: [TPE, TSA], label: se, note: "Where I’m from. Born here; home until 2006, and again from 2010 to 2026."}
-  - {name: London, airports: [LHR, LGW, LTN], note: "Home from 2006 to 2010, while my parents studied here and took me along. Not British in any way, but a good part of me started here."}
-  - {name: Japan, airports: [NRT, HND, KIX, ITM], label: nw, note: "Trips for baseball, shopping and culture, again and again."}
-  - {name: Chicago (Champaign), airports: [ORD], label: nw, note: "Home from 2026. The first time I really left home, came out of my shell and started my own things."}
+  - {name: Taipei, airports: [TPE, TSA], label: se, note: "Where I’m from. Born here; home until 2006, and again from 2010 to 2026. Find me in the orange outfield stands."}
+  - {name: London, airports: [LHR, LGW, LTN], note: "Home from 2006 to 2010, while my parents studied here and took me along. Not British in any way, but my sarcasm was born here."}
+  - {name: Japan, airports: [NRT, HND, KIX, ITM], label: nw, note: "The place I visit time and time again, for its baseball, craftsmanship, culture, and the utmost respect people show."}
+  - {name: Chicago (Champaign), airports: [ORD], label: nw, note: "My first base after really leaving home in 2026. Out of my shell, and time to put on a show!"}
 legs:
   # 2006
   - [2006, TPE, HKG, 9]
