@@ -1,4 +1,5 @@
 {{/* Headline (plan v2, 4.3): two lines, each sized on its own to span the story column; written by UD as a
-     challenged call in baseball (2026-11-16). */}}
+     challenged call in baseball (2026-11-16). The accent words print in orange. */}}
 {{- $h := hugo.Data.udc.lead.headline -}}
-<p class="udc-lead-head"><span class="udc-lead-l1">{{ index $h 0 }}</span> <span class="udc-lead-l2">{{ index $h 1 }}</span></p>
+{{- $lines := slice }}{{ range $h }}{{ $l := . | htmlEscape }}{{ range hugo.Data.udc.lead.accent }}{{ $l = replaceRE (printf `\b(%s)\b` .) `<b>$1</b>` $l }}{{ end }}{{ $lines = $lines | append $l }}{{ end }}
+<p class="udc-lead-head"><span class="udc-lead-l1">{{ index $lines 0 | safeHTML }}</span> <span class="udc-lead-l2">{{ index $lines 1 | safeHTML }}</span></p>

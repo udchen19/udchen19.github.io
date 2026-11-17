@@ -94,6 +94,8 @@ lead:
   headline:
     - Your Agent Slides Home and Scores
     - We Challenge Whether It’s Safe
+  # Printed in orange: the agent doing its job and not leaking, the privacy-utility tradeoff (UD, 2026-11-16).
+  accent: [Scores, Safe]
 
 # About, "Away from the desk" (plan v2, 4.8; reshaped by UD 2026-11-16): UD's life outside research.
 # A hidden lane in the About year strip; expanded, the entries sit in the timeline by date.

@@ -401,6 +401,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-lead-head > span { display: block; white-space: nowrap; }
 .udc-lead-l1 { font-size: calc(100cqi / 21.976); line-height: 1.05; }
 .udc-lead-l2 { font-size: calc(100cqi / 19.482); line-height: 1.05; }
+.udc-lead-head b { font-weight: inherit; color: var(--udc-orange-text); }   /* Scores and Safe: utility and privacy */
 /* Phones: too long to fill one line at a readable size, so each line wraps, balanced, at a set size. */
 @media (max-width: 640px) { .udc-lead-head > span { white-space: normal; text-wrap: balance; font-size: 1.5rem; line-height: 1.05; } .udc-lead-l2 { margin-top: .15em; } }
 /* Reading text: left-aligned, not justified, no hyphenation (plan 3.2). */
