@@ -77,15 +77,13 @@ def ryan():
     save_mask(ink * alpha, "ryan-ink.png")
 
 def icon():
-    """Tab icon (UD, 2026-11-17: Ryan replaces 達): the printed Ryan of ryan-ink.png in the orange, on the
-    paper rounded square the 達 icon used, so it holds in light and dark tab bars. Blox reads
-    assets/media/icon.png and makes the favicon and the 180 px apple-touch icon from it. Run after ryan."""
-    N = 512; paper, orange = (0xE2, 0xDD, 0xD1, 255), (0xB5, 0x50, 0x1F, 255)
+    """Tab icon (UD, 2026-11-17: Ryan replaces 達): the printed Ryan of ryan-ink.png in the orange, on a clear
+    background (UD: no paper tile). Blox reads assets/media/icon.png and makes the favicon and the 180 px
+    apple-touch icon from it. Run after ryan."""
+    N = 512; orange = (0xB5, 0x50, 0x1F, 255)
     m = Image.open(out / "ryan-ink.png").convert("RGBA").getchannel("A")
-    k = N * 0.86 / max(m.size); m = m.resize((round(m.width * k), round(m.height * k)), Image.LANCZOS)
-    im = Image.new("RGBA", (N, N), paper); im.paste(Image.new("RGBA", m.size, orange), ((N - m.width) // 2, (N - m.height) // 2 + 8), m)
-    corner = Image.new("L", (N, N), 0); ImageDraw.Draw(corner).rounded_rectangle((0, 0, N - 1, N - 1), radius=N * 40 // 256, fill=255)
-    im.putalpha(corner)
+    k = N * 0.98 / max(m.size); m = m.resize((round(m.width * k), round(m.height * k)), Image.LANCZOS)
+    im = Image.new("RGBA", (N, N), (0, 0, 0, 0)); im.paste(Image.new("RGBA", m.size, orange), ((N - m.width) // 2, (N - m.height) // 2), m)
     dest = repo / "assets/media/icon.png"; im.save(dest, optimize=True)
     print(f"icon.png {im.size} {dest.stat().st_size / 1024:.1f} KB")
 
