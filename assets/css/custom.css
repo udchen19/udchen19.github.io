@@ -131,7 +131,7 @@ body.page-wrapper {
    and the paper's own light fibres showing through ink. Scrolls with the page (z-index 60).
    Images keep their own print and stay out of it: the portrait (its own colour halftone), the name
    image, Ryan and the footer images sit above it (61–62); the worn edges stay on top (63). */
-.udc-portrait img, .udc-name-zh, .udc-brand .udc-emblem { position: relative; z-index: 61; }
+.udc-portrait img, .udc-name-zh { position: relative; z-index: 61; }
 /* So do pictures and figures in posts and projects, the school marks and the flags: a speck inside a chart can
    read as data (Astra, round 14). */
 .udc-prose :is(img, video), .udc-tl-logo, .udc-map-flag { position: relative; z-index: 61; }
@@ -225,9 +225,6 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-plate.is-loaded, .udc-plate:has(.udc-plate-ink) { background: none; }
 
 /* ===================================================================== header */
-/* Ryan: single ink, depth by dots (halftone.py ryan); recoloured by its mask in both editions. */
-.udc-emblem { flex: none; display: block; width: 1.05em; aspect-ratio: 336 / 239; background: var(--udc-ink);
-  -webkit-mask: url("/textures/ryan-ink.png") center / contain no-repeat; mask: url("/textures/ryan-ink.png") center / contain no-repeat; }
 .udc-header { position: relative; padding-top: calc(var(--udc-edge-t) + 12px); }
 .udc-masthead { display: grid; align-items: center; }
 .udc-brand { display: flex; align-items: center; gap: .18em; color: var(--udc-ink); text-decoration: none; line-height: 1; }
@@ -282,14 +279,12 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-header-home .udc-date, .udc-header-inner .udc-date { grid-row: 2; grid-column: 4 / 6; justify-self: end; padding-right: 0; }
 /* Home: the nameplate row on top; the theme button closes the dated row. */
 .udc-header-home .udc-brand { grid-row: 1; grid-column: 1 / -1; justify-self: center; font-size: min(4.444rem, 6.25vw); padding-bottom: 12px; }
-.udc-header-home .udc-brand .udc-emblem { width: 1.05em; margin-right: .1em; }
 .udc-header-home .udc-nav { padding-block: 8px; }
 .udc-header-home .udc-date { grid-column: 4; }
 .udc-header-home .udc-theme-row { grid-row: 2; grid-column: 5; justify-self: end; }
 /* Inner pages: a compact folio. Row 1: Ryan + a smaller nameplate (about 40px at 1280) and the theme
    button; row 2: the dated row. */
 .udc-header-inner .udc-brand { grid-row: 1; grid-column: 1 / 5; justify-self: start; font-size: min(2.222rem, 3.1vw); padding-bottom: 8px; }
-.udc-header-inner .udc-brand .udc-emblem { width: 1.15em; margin-right: .1em; }
 .udc-header-inner .udc-theme-row { grid-row: 1; grid-column: 5; justify-self: end; align-self: center; margin-bottom: 8px; }
 .udc-header-inner .udc-nav { padding-block: 6px; }
 @media (min-width: 641px) and (max-width: 899px) { .udc-header-inner .udc-brand { font-size: min(40px, 4.4vw); } }
@@ -301,17 +296,16 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 }
 .udc-header .udc-rule-heavy { margin-top: 6px; }
 
-/* Phones: one row (Ryan · nameplate · menu button); the motto under it; theme inside the menu. */
+/* Phones: one row (nameplate · menu button); the motto under it; theme inside the menu. */
 @media (max-width: 640px) {
   .udc-header .udc-masthead { grid-template-columns: minmax(0, 1fr) auto; column-gap: 4px; }
   .udc-header .udc-masthead::before { content: none; }
-  /* Fills the row: (viewport − edges − gutters − emblem − gaps − menu button − the gap under "not",
+  /* Fills the row: (viewport − edges − gutters − gap − menu button − the gap under "not",
      which stays 21px because "not" never goes under 11px) over the rest of the nameplate's width,
      9.5em (measured with the fonts loaded). The menu button reaches into the right gutter. */
   .udc-header .udc-brand { grid-row: 1; grid-column: 1; justify-self: start; padding: 0; gap: 6px;
-    font-size: calc((100vw - var(--udc-edge-l) - var(--udc-edge-r) - var(--udc-gutter) - 36px - 6px - 4px - 34px - 21px) / 9.5); }
+    font-size: calc((100vw - var(--udc-edge-l) - var(--udc-edge-r) - var(--udc-gutter) - 4px - 34px - 21px) / 9.5); }
   .udc-header .udc-menu-toggle { margin-right: calc(-1 * var(--udc-gutter)); }
-  .udc-header .udc-brand .udc-emblem { width: 36px; margin: 0; }
   .udc-header .udc-nav-controls { display: contents; }
   .udc-header .udc-menu-toggle { grid-row: 1; grid-column: 2; position: relative; z-index: 2; }   /* above the closed menu, which shares its row */
   .udc-header .udc-nav { grid-row: 1; grid-column: 1 / -1; }
@@ -361,6 +355,8 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-footer-links svg { width: 20px; height: 20px; }
 .udc-footer-fineprint { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 2px 20px; }
 .udc-footer-fineprint p { margin: 0; }
+.udc-footer-ryan { display: inline-block; width: 2.3em; aspect-ratio: 336 / 239; margin-right: .45em; vertical-align: -.55em; background: currentColor;
+  -webkit-mask: url("/textures/ryan-line.png") center / contain no-repeat; mask: url("/textures/ryan-line.png") center / contain no-repeat; }
 .udc-footer a { color: var(--udc-paper); }
 /* The flag (home only): far outfield stand, right of the right floodlight; % of the image, so it
    holds its spot at every width. Rotated −14° about its lower-left corner; a thin pole into the crowd. */
@@ -901,14 +897,14 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    lettering, Ryan, the brush line and the halftone images in the system text colour or their own inks. */
 @media (forced-colors: active) {
   .udc-rule-heavy::before, .udc-rule-heavy::after, .udc-label::after { background: CanvasText; forced-color-adjust: none; }
-  .udc-emblem, .udc-name-zh::before, .udc-404-cs, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land { forced-color-adjust: none; background: CanvasText; }
+  .udc-name-zh::before, .udc-404-cs, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land { forced-color-adjust: none; background: CanvasText; }
   .udc-name-zh::after { forced-color-adjust: none; background: Highlight; }
   .udc-footer-img, .udc-flag, .udc-footer-band, .udc-map-svg { forced-color-adjust: none; }
   .udc-ys-filter::before { forced-color-adjust: none; box-shadow: none; border: 1.5px solid ButtonText; background: Canvas; }
   .udc-ys-filter[aria-pressed="true"]::before { background: ButtonText; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
-@media print { .page-header, .udc-footer-links, .udc-emblem { display: none !important; } body.page-wrapper { background: #fff !important; color: #000 !important; } }
+@media print { .page-header, .udc-footer-links { display: none !important; } body.page-wrapper { background: #fff !important; color: #000 !important; } }
 
 /* ================================================================== headlines */
 .udc-lead-head { margin: 0 0 18px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }
