@@ -11,7 +11,7 @@
 {{- $rows := slice -}}
 {{- range $author.education }}
 {{- $when := printf "%s – %s" ((time .start).Format "2006") ((time .end).Format "2006") }}
-{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "when" $when "head" .institution "sub" .degree "where" .location "url" "" "text" .summary) }}
+{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "when" $when "head" .institution "sub" .degree "where" .location "logo" .logo "logomask" .logo_mask "url" "" "text" .summary) }}
 {{- end }}
 {{- range $author.experience }}
 {{- $s := time .start }}{{ $e := time (.end | default (now.Format "2006-01-02")) }}
@@ -19,7 +19,7 @@
 {{- if not .end }}{{ $when = printf "%s – Present" ($s.Format "Jan 2006") }}
 {{- else if eq ($s.Format "2006-01") ($e.Format "2006-01") }}{{ $when = $s.Format "Jan 2006" }}
 {{- else if eq $s.Year $e.Year }}{{ $when = printf "%s – %s" ($s.Format "Jan") ($e.Format "Jan 2006") }}{{ end }}
-{{- $rows = $rows | append (dict "key" .start "kind" "work" "s" $s "e" $e "when" $when "lane" (.udc_lane | default "industry") "head" .role "sub" .org "url" .org_url "text" .summary) }}
+{{- $rows = $rows | append (dict "key" .start "kind" "work" "s" $s "e" $e "when" $when "lane" (.udc_lane | default "industry") "head" .role "sub" .org "logo" .logo "logomask" .logo_mask "url" .org_url "text" .summary) }}
 {{- end }}
 {{- range $life }}
 {{- $s := time (printf "%s-01" .date) }}{{ $e := time (printf "%s-01" (.end | default .date)) }}
@@ -125,7 +125,12 @@
     {{- range $i, $_ := $all }}
     <li class="udc-tl-row{{ if eq .kind "life" }} is-life{{ end }}" id="tl-{{ $i }}" data-lane="{{ .lane }}">
       <p class="udc-tl-date"><span class="udc-tl-lane">{{ index $names .lane }}</span>
-        {{- .when }}</p>
+        {{- .when }}
+        {{- /* School and company logos (UD, 2026-11-16; files from each one's own site, see Design credits):
+               under the date, beside the entry; toned like the flags; single-colour marks print in their colour per edition. */}}
+        {{- with .logo }}{{ $src := printf "textures/logos/%s" . | relURL }}
+        {{- if $_.logomask }}<span class="udc-tl-logo is-mask udc-tl-logo-{{ index (split . ".") 0 }}" style="--logo: url({{ $src }})" aria-hidden="true"></span>
+        {{- else }}<img class="udc-tl-logo" src="{{ $src }}" alt="" loading="lazy">{{ end }}{{ end }}</p>
       <span class="udc-tl-node" aria-hidden="true"></span>
       <div class="udc-tl-desk">
         {{- if eq .kind "life" }}

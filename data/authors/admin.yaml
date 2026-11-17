@@ -48,31 +48,39 @@ education:
   - degree: M.S. in Computer Science
     institution: University of Illinois Urbana-Champaign
     location: Urbana-Champaign, USA
+    logo: uiuc.svg
     start: '2026-08-01'
     end: '2028-05-31'
     summary: 'Expected May 2028. Advised by Prof. Yang Wang. Thesis on contextual privacy in human–agent and agent–agent interactions.'
   - degree: B.Sc. in Computer Science, Credit Program of Psychology
     institution: National Yang Ming Chiao Tung University
     location: Hsinchu, Taiwan
+    logo: nycu.svg
+    logo_mask: true
     start: '2019-09-01'
     end: '2023-06-30'
     summary: Dean's List twice; three Foundation Course Awards.
   - degree: Computer Science Class, the first cohort
     institution: The Affiliated High School of National Taiwan Normal University
     location: Taipei, Taiwan
+    logo: hsnu-mask.png
+    logo_mask: true
     start: '2016-08-01'
     end: '2019-06-30'
   - degree: Math & Science Gifted Class, the third cohort
     institution: Linkou Junior High School
     location: New Taipei, Taiwan
+    logo: linkou.png
     start: '2013-08-01'
     end: '2016-06-30'
   - institution: Chang Gung Primary School
     location: Taoyuan, Taiwan
+    logo: changgung.png
     start: '2010-08-01'
     end: '2013-06-30'
   - institution: Peter Hills Primary School
     location: London, UK
+    logo: peterhills.png
     start: '2006-09-01'
     end: '2010-06-30'
 
@@ -95,6 +103,8 @@ experience:
   - role: Software Engineering Intern
     udc_lane: industry
     org: Kapito Inc.
+    logo: kapito.png
+    logo_mask: true
     org_url: 'https://www.fastable.ai/'
     start: '2022-07-01'
     end: '2022-09-02'

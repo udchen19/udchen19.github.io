@@ -679,6 +679,18 @@ button.udc-map-pick { cursor: pointer; }
 .udc-tl-row.is-life .udc-tl-node::after { background: var(--udc-paper); box-shadow: inset 0 0 0 2px var(--udc-ink), 0 0 0 3px var(--udc-paper); }
 .udc-tl-row:target .udc-tl-desk > :first-child { text-decoration: underline 2px var(--udc-orange); text-underline-offset: .2em; }
 .udc-tl-desk h3 { margin: 0; line-height: 1.2; }
+/* School and company logos (UD, 2026-11-16): under the entry's date, beside the timeline, one box size for all so
+   they line up; all toned to 45% like the flags. Single-colour marks (NYCU's seal, 附中's emblem, Kapito's K) are
+   masks in their own colour, lighter at night. Phones: right of the date line. */
+.udc-tl-logo { display: block; width: 3.4rem; height: 2.6rem; margin: 8px 0 0 auto; object-fit: contain; object-position: right top; filter: saturate(.45); }
+.udc-tl-logo.is-mask { background: var(--udc-ink);
+  -webkit-mask: var(--logo) right top / contain no-repeat; mask: var(--logo) right top / contain no-repeat; }
+.udc-tl-logo-nycu { background: #0033a1; }               /* NYCU blue, from brand.nycu.edu.tw */
+.dark .udc-tl-logo-nycu { background: #7d99da; }
+.udc-tl-logo-hsnu-mask { background: #660000; }          /* the emblem's own maroon */
+.dark .udc-tl-logo-hsnu-mask { background: #c98a8a; }
+.udc-tl-logo-kapito { background: #a8844c; }             /* Kapito's gold, deepened to show on paper */
+.dark .udc-tl-logo-kapito { background: #e0c08f; }
 .udc-tl-edu { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.15rem; }
 .udc-tl-work { font-family: var(--udc-sign); font-weight: 700; font-size: .9rem; letter-spacing: .01em; }
 .udc-tl-sub { margin: 2px 0 0; font-style: italic; }
@@ -698,6 +710,8 @@ button.udc-map-pick { cursor: pointer; }
   .udc-tl-rows { --tl-cols: 14px minmax(0, 1fr); }
   .udc-tl-row { column-gap: 12px; }
   .udc-tl-date { grid-column: 2; grid-row: 1; text-align: left; }
+  .udc-tl-date { position: relative; }
+  .udc-tl-logo { position: absolute; right: 0; top: 0; width: 2.4rem; height: 1.75rem; margin: 0; }   /* beside the two date lines, taking no room */
   .udc-tl-node { grid-column: 1; grid-row: 1 / span 2; }
   .udc-tl-desk { grid-column: 2; }
   .udc-tl-node::after { top: 4px; }

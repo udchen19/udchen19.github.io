@@ -19,6 +19,8 @@ These belong to their rights holders and are not covered by this site’s CC BY-
 
 **Flight map:** land from [Natural Earth](https://www.naturalearthdata.com/) (public domain); airport positions from Natural Earth, and from [Wikidata](https://www.wikidata.org/) (CC0) for Dubrovnik and Taipei Songshan. Flags in the airport list from [flag-icons](https://github.com/lipis/flag-icons) by Panayiotis Lipiridis (MIT License).
 
+**School and company marks** on the About page, each from its own site and shown only to mark where I studied and worked; they remain the trademarks of their owners: [University of Illinois](https://brand.illinois.edu/), [National Yang Ming Chiao Tung University](https://brand.nycu.edu.tw/), [師大附中](https://www.hs.ntnu.edu.tw/), [林口國中](http://www.lkjh.ntpc.edu.tw/), [長庚國小](https://www.cgps.tyc.edu.tw/), [Peter Hills with St Mary’s & St Paul’s](https://www.peterhillsschool.co.uk/), [Kapito](https://www.kapito.ai/).
+
 **Paper:** ambientCG [Paper 002](https://ambientcg.com/view?id=Paper002) and [Paper 005](https://ambientcg.com/view?id=Paper005), CC0.
 
 **Type:** Manufacturing Consent, Libre Franklin, Libre Baskerville, IM Fell DW Pica, Noto Serif TC and 莫大毛筆 Bakudai (SIL Open Font License 1.1); Ultra (Apache License 2.0). 陳威達 and the 達 tab icon are lettering rendered from 玉ねぎ楷書「激」 by 玉点堂. Details in [/fonts/README.txt](/fonts/README.txt).
