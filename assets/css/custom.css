@@ -605,15 +605,15 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
    timeline, so the strip and the list read together. */
 [data-lane="education"] { --lane: var(--udc-ink); }
 [data-lane="research"] { --lane: #3A76B0; }
-[data-lane="teaching"] { --lane: #B8862B; }
-[data-lane="industry"] { --lane: #A8553B; }
-[data-lane="memories"] { --lane: #7C8290; }
-[data-lane="challenges"] { --lane: #4F7A52; }
+[data-lane="teaching"] { --lane: #4F7A52; }
+[data-lane="industry"] { --lane: #7C8290; }
+[data-lane="memories"] { --lane: #B8862B; }
+[data-lane="challenges"] { --lane: #A8553B; }
 .dark [data-lane="research"] { --lane: #78A6D6; }
-.dark [data-lane="teaching"] { --lane: #D6AE5C; }
-.dark [data-lane="industry"] { --lane: #D08468; }
-.dark [data-lane="memories"] { --lane: #A3A9B4; }
-.dark [data-lane="challenges"] { --lane: #8BB28B; }
+.dark [data-lane="teaching"] { --lane: #8BB28B; }
+.dark [data-lane="industry"] { --lane: #A3A9B4; }
+.dark [data-lane="memories"] { --lane: #D6AE5C; }
+.dark [data-lane="challenges"] { --lane: #D08468; }
 .udc-ys-bar::after { content: ""; position: absolute; top: 6px; left: 4px; right: 4px; height: 11px; background: var(--lane, var(--udc-ink));
   clip-path: polygon(1px 1px, 18% 0, 47% 2px, 76% 0, calc(100% - 1px) 1px, 100% 45%, calc(100% - 2px) 100%, 63% calc(100% - 1px), 31% 100%, 2px calc(100% - 1px), 0 52%); }
 .udc-ys-lane:nth-child(odd) .udc-ys-bar::after { clip-path: polygon(0 2px, 29% 0, 58% 1px, 100% 0, calc(100% - 2px) 38%, 100% 100%, 71% calc(100% - 2px), 40% 100%, 12% calc(100% - 1px), 1px 100%, 2px 60%); top: 7px; }
