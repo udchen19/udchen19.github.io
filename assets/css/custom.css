@@ -746,7 +746,15 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-when { position: absolute; z-index: 1; left: 57%; bottom: 9%; margin: 0; font-family: var(--udc-motto-face); font-style: italic;
   font-size: clamp(.95rem, .6rem + 1.2vw, 1.7rem); color: var(--udc-ink); transition: opacity .8s; pointer-events: none; }
 .udc-map-when.is-done { opacity: 0; }
-@media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; } }   /* a place's dot in the key waits for its text */
+@media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; } }
+/* Skip (UD): while the map plays, a click or tap on it, or the Skip button, shows it finished at once. */
+.udc-map-skip { position: absolute; z-index: 2; top: 6px; right: 8px; min-height: 28px; padding: 2px 10px; border: 0; cursor: pointer;
+  background: color-mix(in srgb, var(--udc-paper) 85%, transparent); font-family: var(--udc-sign); font-weight: 500; font-size: .64rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink-2); }
+.udc-map-skip:hover { color: var(--udc-ink); text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+.udc-map-skip[hidden] { display: none; }
+.udc-map.is-playing .udc-map-plate { cursor: pointer; }
+.udc-map.is-skipped * { animation: none !important; }   /* a place's dot in the key waits for its text */
 .udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-ink); }
 .udc-map-cap p { margin: 0; }
 .udc-map-port { fill: var(--udc-ink); stroke: var(--udc-paper); stroke-width: 1.2; vector-effect: non-scaling-stroke; }

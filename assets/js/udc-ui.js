@@ -231,13 +231,25 @@
       });
       const when = plate.querySelector('.udc-map-when');
       const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
+      const skipBtn = plate.querySelector('.udc-map-skip');
       let typing = 0;
+      const playing = on => { details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on; };
+      const skip = () => {
+        cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false);
+        keys.forEach(k => { k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
+        if (when) { when.textContent = dates[dates.length - 1]?.[1] || ''; when.classList.add('is-done'); }
+      };
+      skipBtn?.addEventListener('click', e => { e.stopPropagation(); skip(); });
+      // While it plays, a click on the map skips instead of naming an airport (capture: before the map's own handler).
+      plate.addEventListener('click', e => { if (details?.classList.contains('is-playing')) { e.stopPropagation(); skip(); } }, true);
       const typeKeys = () => {
         cancelAnimationFrame(typing);
+        details?.classList.remove('is-skipped');
         const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
         keys.forEach(k => { k.div.toggleAttribute('data-wait', !still); k.chars.forEach(c => { c.style.visibility = still ? '' : 'hidden'; }); });
         if (when) { when.hidden = still; when.classList.remove('is-done'); when.textContent = dates[0]?.[1] || ''; }
         if (still) return;
+        playing(true);
         const t0 = performance.now() + 500;
         const frame = now => {
           let busy = false;
@@ -253,11 +265,11 @@
             if (d && when.textContent !== d[1]) when.textContent = d[1];
             if (e > end + .6) when.classList.add('is-done'); else busy = true;
           }
-          if (busy) typing = requestAnimationFrame(frame);
+          if (busy) typing = requestAnimationFrame(frame); else playing(false);
         };
         typing = requestAnimationFrame(frame);
       };
-      details?.addEventListener('toggle', () => { if (details.open) typeKeys(); else cancelAnimationFrame(typing); });
+      details?.addEventListener('toggle', () => { if (details.open) typeKeys(); else { cancelAnimationFrame(typing); playing(false); } });
       // When the map changes size (rotation, window), the open label and ring follow their dot (Astra, round 7).
       new ResizeObserver(() => {
         if (!shown) return;
