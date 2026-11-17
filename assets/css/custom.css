@@ -185,7 +185,9 @@ body.page-wrapper, .dark body.page-wrapper {
   -webkit-font-smoothing: antialiased;
 }
 * { font-synthesis: none; }
-:lang(zh-Hant) { line-height: 1.85; }
+/* On the element marked Chinese, not on everything inside it: a title link in a Chinese entry took 1.85
+   over its title's own spacing, so mixed titles ran loose (deep pass, 2026-11-17). */
+[lang="zh-Hant"] { line-height: 1.85; }
 a { color: inherit; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
 a:hover { text-decoration-thickness: 2px; }
 :where(a, button, summary, [tabindex]):focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 3px; }
