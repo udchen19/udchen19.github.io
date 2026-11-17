@@ -2,7 +2,7 @@
 title: Understanding Users’ Visions for Future Notification Systems
 reading_time: false
 show_date_updated: false
-summary: A study of what people want from future notification systems.
+summary: A reanalysis of interviews and design workshops on what people want notifications to do beyond delivering alerts.
 tags:
   - HCI
   - Intelligent Agents
