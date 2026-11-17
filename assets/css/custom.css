@@ -615,12 +615,19 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-map-place circle { fill: var(--udc-orange); stroke: var(--udc-paper); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
 .udc-map-place text { fill: var(--udc-ink); font-family: var(--udc-sign); font-weight: 700; font-size: 17px; letter-spacing: .06em; text-transform: uppercase;
   paint-order: stroke; stroke: var(--udc-paper); stroke-width: 5px; stroke-linejoin: round; }
-@media (max-width: 640px) { .udc-map-place text { display: none; } }
+@media (max-width: 640px) { .udc-map-place text { display: none; } }   /* 6px here; the key names the places */
 .udc-map-tip { position: absolute; z-index: 2; margin: 0; translate: -50% calc(-100% - 10px); padding: 2px 7px; background: var(--udc-paper);
   border: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; white-space: pre; line-height: 1.5; pointer-events: none; }
 .udc-map-tip.is-below { translate: -50% 10px; }
 .udc-map-tip[hidden] { display: none; }
-.udc-map-port, .udc-map-place circle { cursor: pointer; }   /* 6px here; the key below names the places */
+.udc-map-port, .udc-map-place circle { cursor: pointer; }
+.udc-map-port.is-on { fill: var(--udc-orange); stroke: var(--udc-ink); stroke-width: 2; }
+.udc-map-ports { margin-top: 10px; }
+.udc-map-ports ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: 0 16px; }
+.udc-map-pick { display: block; width: 100%; min-height: 24px; padding: 2px 0; background: none; border: 0; text-align: left; cursor: pointer;
+  font-family: var(--udc-sign); font-size: .74rem; color: var(--udc-ink); }
+.udc-map-pick b { font-weight: 700; letter-spacing: .06em; margin-right: 4px; }
+.udc-map-pick:hover, .udc-map-pick[aria-pressed="true"] { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
 .udc-map-port:hover, .udc-map-place:hover circle { stroke: var(--udc-orange); stroke-width: 2.5; }
 .udc-map-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 6px 20px; margin: 8px 0 6px; }
 .udc-map-key dt { font-weight: 700; color: var(--udc-ink); text-transform: uppercase; letter-spacing: .06em; }

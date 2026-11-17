@@ -47,26 +47,32 @@ interests:
 education:
   - degree: M.S. in Computer Science
     institution: University of Illinois Urbana-Champaign
+    location: Urbana-Champaign, USA
     start: '2026-08-01'
     end: '2028-05-31'
     summary: 'Expected May 2028. Advised by Prof. Yang Wang. Thesis on contextual privacy in human–agent and agent–agent interactions.'
   - degree: B.Sc. in Computer Science, Credit Program of Psychology
     institution: National Yang Ming Chiao Tung University
+    location: Hsinchu, Taiwan
     start: '2019-09-01'
     end: '2023-06-30'
     summary: Dean's List twice; three Foundation Course Awards.
   - degree: Computer Science Class, the first cohort
     institution: The Affiliated High School of National Taiwan Normal University
+    location: Taipei, Taiwan
     start: '2016-08-01'
     end: '2019-06-30'
   - degree: Math & Science Gifted Class, the third cohort
     institution: Linkou Junior High School
+    location: New Taipei, Taiwan
     start: '2013-08-01'
     end: '2016-06-30'
   - institution: Chang Gung Primary School
+    location: Taoyuan, Taiwan
     start: '2010-08-01'
     end: '2013-06-30'
   - institution: Peter Hills Primary School
+    location: London, UK
     start: '2006-09-01'
     end: '2010-06-30'
 
@@ -101,6 +107,27 @@ experience:
     end: '2022-01-31'
     summary: |
       Designed programming problems, administered online exams, and hosted English-medium office hours.
+  - role: Competitive Programming Instructor
+    udc_lane: teaching
+    org: The Affiliated High School of National Taiwan Normal University
+    start: '2019-08-01'
+    end: '2019-08-31'
+    summary: |
+      Summer training in competitive programming for students preparing for next season's high school informatics competition.
+  - role: Competitive Programming Instructor
+    udc_lane: teaching
+    org: The Affiliated High School of National Taiwan Normal University
+    start: '2018-10-01'
+    end: '2018-10-31'
+    summary: |
+      Taught competitive programming to students preparing for the Taipei City round of the high school informatics competition.
+  - role: Academic Director, Computer Research Club
+    udc_lane: teaching
+    org: The Affiliated High School of National Taiwan Normal University
+    start: '2017-07-01'
+    end: '2018-06-30'
+    summary: |
+      Taught basic C++ and competitive programming.
 
 skills:
   - name: Research & Building

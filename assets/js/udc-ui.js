@@ -84,25 +84,45 @@
       const tip = document.createElement('p'); tip.className = 'udc-map-tip'; tip.hidden = true;
       tip.setAttribute('aria-live', 'polite'); fig.append(tip);   // outside the plate: it clips and carries the ink mask
       const ports = [...svg.querySelectorAll('.udc-map-port')];
+      const picks = [...fig.parentElement.querySelectorAll('.udc-map-pick')];
+      const clear = () => {
+        tip.hidden = true;
+        ports.forEach(p => p.classList.remove('is-on'));
+        picks.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      };
+      // Label for one or more airports, placed by the first: above its dot, or below when there is no room.
+      const show = list => {
+        const scale = plate.offsetWidth / vb.width;
+        tip.textContent = list.map(p => p.querySelector('title').textContent).join('\n');
+        tip.hidden = false;
+        const p0 = list[0], half = tip.offsetWidth / 2;
+        const x = plate.offsetLeft + (p0.cx.baseVal.value - vb.x) * scale;
+        const y = plate.offsetTop + (p0.cy.baseVal.value - vb.y) * scale;
+        tip.classList.toggle('is-below', y - tip.offsetHeight - 10 < 0);
+        tip.style.left = Math.min(Math.max(x, half), fig.clientWidth - half) + 'px';
+        tip.style.top = y + 'px';
+      };
       svg.addEventListener('click', e => {
+        clear();
         const scale = plate.offsetWidth / vb.width;                // CSS px per map unit
         const r = svg.getBoundingClientRect();
         const ux = vb.x + (e.clientX - r.left) / scale, uy = vb.y + (e.clientY - r.top) / scale;
         const reach = 6 / scale;                                   // 6 CSS px, or the dot's own radius
         const near = ports.map(p => ({ p, d: Math.hypot(p.cx.baseVal.value - ux, p.cy.baseVal.value - uy) }))
           .filter(o => o.d <= Math.max(reach, o.p.r.baseVal.value)).sort((a, b) => a.d - b.d).slice(0, 4);
-        if (!near.length) { tip.hidden = true; return; }
-        tip.textContent = near.map(o => o.p.querySelector('title').textContent).join('\n');
-        tip.hidden = false;
-        const p0 = near[0].p, half = tip.offsetWidth / 2;
-        const x = plate.offsetLeft + (p0.cx.baseVal.value - vb.x) * scale;
-        const y = plate.offsetTop + (p0.cy.baseVal.value - vb.y) * scale;
-        const below = y - tip.offsetHeight - 10 < 0;
-        tip.classList.toggle('is-below', below);
-        tip.style.left = Math.min(Math.max(x, half), fig.clientWidth - half) + 'px';
-        tip.style.top = y + 'px';
+        if (near.length) show(near.map(o => o.p));
       });
-      document.addEventListener('click', e => { if (!svg.contains(e.target)) tip.hidden = true; });
+      // The airport list: focus or press marks one airport's dot and shows its label (keyboard and
+      // screen readers; also picks one airport where dots overlap).
+      picks.forEach(b => {
+        const port = ports.find(p => p.dataset.code === b.dataset.code);
+        b.setAttribute('aria-pressed', 'false');
+        const pick = () => { clear(); port.classList.add('is-on'); b.setAttribute('aria-pressed', 'true'); show([port]); };
+        b.addEventListener('focus', pick);
+        b.addEventListener('click', pick);
+      });
+      document.addEventListener('click', e => { if (!svg.contains(e.target) && !e.target.closest('.udc-map-pick')) clear(); });
+      document.addEventListener('focusin', e => { if (!e.target.closest('.udc-map-pick') && !svg.contains(e.target)) clear(); });
     }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

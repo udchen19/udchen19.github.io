@@ -10,7 +10,7 @@
 {{- $lifeLanes := cond (gt (len $life) 0) (hugo.Data.udc.life_lanes | default slice) slice -}}
 {{- $rows := slice -}}
 {{- range $author.education }}
-{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "head" .institution "sub" .degree "url" "" "text" .summary) }}
+{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "head" .institution "sub" .degree "where" .location "url" "" "text" .summary) }}
 {{- end }}
 {{- range $author.experience }}
 {{- $rows = $rows | append (dict "key" .start "kind" "work" "s" (time .start) "e" (time (.end | default (now.Format "2006-01-02"))) "open" (not .end) "lane" (.udc_lane | default "industry") "head" .role "sub" .org "url" .org_url "text" .summary) }}
@@ -74,7 +74,7 @@
         <path class="udc-map-leg" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
         {{- end }}
         {{- range $m.airports }}
-        <circle class="udc-map-port" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
+        <circle class="udc-map-port" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
         {{- end }}
         {{- range $i, $p := $m.places }}
         <g class="udc-map-place"><title>{{ $p.name }}: {{ $p.note }}</title>
@@ -93,8 +93,19 @@
           <div><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
           {{- end }}
         </dl>
-        <p>Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport.</p>
+        <p>Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport, or pick one below.</p>
       </figcaption>
+      {{- /* Every airport, reachable by keyboard; picking one marks its dot and shows its label, which also
+             settles dots that overlap (UD, after Astra's review, round 6). Outside the caption, which names
+             the map for screen readers. Without the script the names still read as a list. */}}
+      <div class="udc-map-ports">
+        <p class="udc-label" id="udc-map-ports-title">Airports</p>
+        <ul aria-labelledby="udc-map-ports-title">
+          {{- range sort $m.airports "code" }}
+          <li><button type="button" class="udc-map-pick" data-code="{{ .code }}"><b>{{ .code }}</b> {{ .name }}</button></li>
+          {{- end }}
+        </ul>
+      </div>
     </figure>
   </details>
   {{- end }}
@@ -105,6 +116,7 @@
         {{- if eq .kind "life" }}{{ .years }}
         {{- else if eq .kind "edu" }}{{ .s.Format "2006" }} – {{ .e.Format "2006" }}
         {{- else if .open }}{{ .s.Format "Jan 2006" }} – Present
+        {{- else if eq (.s.Format "2006-01") (.e.Format "2006-01") }}{{ .s.Format "Jan 2006" }}
         {{- else if eq .s.Year .e.Year }}{{ .s.Format "Jan" }} – {{ .e.Format "Jan 2006" }}
         {{- else }}{{ .s.Format "Jan 2006" }} – {{ .e.Format "Jan 2006" }}{{ end }}</p>
       <span class="udc-tl-node" aria-hidden="true"></span>
@@ -114,7 +126,10 @@
         {{- else }}
         <h3 class="udc-tl-{{ .kind }}">{{ .head }}</h3>
         {{- $sub := .sub }}{{ $url := .url }}
-        {{- with $sub }}<p class="udc-tl-sub">{{ with $url }}<a href="{{ . }}">{{ $sub }}</a>{{ else }}{{ $sub }}{{ end }}</p>{{ end }}
+        {{- $where := .where }}
+        {{- if or $sub $where }}<p class="udc-tl-sub">
+          {{- with $sub }}{{ with $url }}<a href="{{ . }}">{{ $sub }}</a>{{ else }}{{ $sub }}{{ end }}{{ end }}
+          {{- if and $sub $where }}<br>{{ end }}{{ $where }}</p>{{ end }}
         {{- with .text }}<div class="udc-tl-text">{{ . | markdownify }}</div>{{ end }}
         {{- end }}
       </div>
