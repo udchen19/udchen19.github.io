@@ -173,11 +173,20 @@
         pick.replaceChildren(...hits.map(b => { const a = b.cloneNode(false); a.className = 'udc-ys-pickitem'; a.setAttribute('role', 'menuitem'); a.removeAttribute('style'); a.textContent = b.title; return a; }));
         const wr = pick.parentElement.getBoundingClientRect();
         pick.style.left = Math.min(e.clientX - wr.left, wr.width - 260) + 'px'; pick.style.top = (track.getBoundingClientRect().bottom - wr.top + 4) + 'px';
-        pick.hidden = false; pick.querySelector('a')?.focus({ preventScroll: true });
+        pick.origin = bar; pick.hidden = false; pick.querySelector('a')?.focus({ preventScroll: true });
       }));
+      // The chooser belongs to its mark: it closes when the strip or page scrolls, the arrow keys move through it,
+      // and Escape returns to the mark (Astra, round 13).
+      const closePick = back => { if (pick.hidden) return; pick.hidden = true; if (back) pick.origin?.focus({ preventScroll: true }); };
+      tl.querySelector('.udc-ys')?.addEventListener('scroll', () => closePick(false), { passive: true });
+      addEventListener('scroll', () => closePick(false), { passive: true });
+      pick.addEventListener('keydown', e => {
+        const items = [...pick.querySelectorAll('a')], i = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length]?.focus(); }
+        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closePick(true); }
+      });
       pick.addEventListener('click', e => { const a = e.target.closest('a'); if (a) { pick.hidden = true; showRow(a.getAttribute('href').slice(1)); } });
       document.addEventListener('click', e => { if (!pick.hidden && !pick.contains(e.target) && !e.target.closest('.udc-ys-bar')) pick.hidden = true; });
-      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pick.hidden) pick.hidden = true; });
     }
     // Flight map: a tap or click shows the airport under it (hover alone does not exist on phones).
     // Airports can sit a few px apart (London's three, Taipei's two), so the label lists the airports whose

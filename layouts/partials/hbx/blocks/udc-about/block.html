@@ -57,9 +57,10 @@
       {{- range $i, $r := $all }}{{ if eq $r.lane $lane }}
         {{- $a := add (float $r.s.Year) (div (float (sub $r.s.YearDay 1)) 365.0) }}
         {{- $b := add (float $r.e.Year) (div (float (sub $r.e.YearDay 1)) 365.0) }}
-        <a class="udc-ys-bar" href="#tl-{{ $i }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.head | default $r.text | plainify }}, {{ $r.when }}">
-          {{- /* Dates in the name too: two entries can share a title (Astra, round 7). */}}
-          <span class="udc-visually-hidden">{{ $r.head | default $r.text | plainify }}, {{ $r.when }}</span></a>
+        <a class="udc-ys-bar" href="#tl-{{ $i }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.when }}: {{ $r.head | default $r.text | plainify }}">
+          {{- /* Date first, then the entry: two entries can share a title (Astra, round 7), and an entry that ends
+                 with a full stop would otherwise read "scary., Jan 2026" (round 13). */}}
+          <span class="udc-visually-hidden">{{ $r.when }}: {{ $r.head | default $r.text | plainify }}</span></a>
       {{- end }}{{ end }}
       </span>
     </div>
