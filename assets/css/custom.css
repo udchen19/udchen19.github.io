@@ -916,6 +916,13 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-plate-ink, .udc-name-zh::before, .udc-name-zh::after, .udc-404-cs, .udc-tl-logo.is-mask, .udc-ys-bar,
   .udc-tl-node::before, .udc-tl-node::after, .udc-map-land, .udc-map-folded-land, .udc-rule-heavy::before,
   .udc-rule-heavy::after, .udc-label::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* The footer photograph is a background, which print leaves out by default; its empty space pushed the
+     credit line onto a sheet of its own. In print it is gone, and the line follows the content (UD,
+     Astra round 16). */
+  .udc-footer-img { display: none; }
+  /* A video cannot play on paper and printed as an empty frame (the Kapito post's ride to work, a page and a
+     half tall); it is left out. */
+  .udc-prose video { display: none; }
   /* Paper cannot scroll: News prints every entry, without the fade (Astra, round 16). */
   .udc-news-list { max-height: none !important; overflow: visible; -webkit-mask: none !important; mask: none !important; }
 }
