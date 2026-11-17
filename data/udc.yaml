@@ -114,7 +114,7 @@ life:
   - {date: '2024-12', lane: challenges, text: "Rode a YouBike home from NYCU in Hsinchu to Linkou: 62.51 km, 639 m of climbing."}
   - {date: '2024-12', lane: challenges, text: "Olympic-distance triathlon PB: 3:35:29 (swim 46:11, bike 1:22:53, run 1:09:45)."}
   - {date: '2024-01', lane: challenges, text: "First time skiing. Scary."}
-  - {date: '2023-12', lane: challenges, text: "Twelve days of military training. My friends and my boss say it doesn’t count. I agree."}
+  - {date: '2023-12', lane: memories, text: "Twelve days of military training. My friends and my boss say it doesn’t count. I agree."}
   - {date: '2023-03', lane: memories, text: "Watched the World Baseball Classic in Taichung. Never felt so moved by a united crowd."}
   - {date: '2021-02', lane: challenges, text: "Stayed up all night to finish the first draft of the book, just before my 20th birthday."}
   - {date: '2019-11', lane: memories, text: "ICPC Yokohama, my last trip before COVID. Watched the Premier12 final on my phone with Tokyo Dome about 3 miles away."}
