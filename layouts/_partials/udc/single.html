@@ -25,6 +25,11 @@
       {{- $em = math.Max $em $w }}
     {{- end }}{{ end }}{{ end }}
     <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}{{ if gt $em 0 }} style="--udc-word-em: {{ printf "%.3f" $em }}"{{ end }}>{{ .Title }}</h1>
+  </header>
+  {{- /* The side column: meta, then (from 1024px, articles with three or more sections) the section list.
+         From 1024px it runs down the right of the whole article; narrower, it follows the title. */}}
+  {{- $content := string .Content }}
+  <aside class="udc-side" aria-label="About this page">
     <div class="udc-meta" lang="en">
       {{- if eq .Section "publication" }}
       <p class="udc-meta-authors">{{ partial "page_metadata_authors" . }}</p>
@@ -40,7 +45,16 @@
       <div class="udc-meta-links">{{ partial "page_links" (dict "page" . "is_list" 0) }}</div>
       {{- end }}
     </div>
-  </header>
+  {{- /* Sections (UD, 2026-11-16): an article with three or more <h2> sections lists them in the right
+         column from 1024px, beside the text; built from the rendered headings, so it matches them. */}}
+  {{- $secs := findRESubmatch `<h2[^>]* id="([^"]+)"[^>]*>(.*?)</h2>` $content }}
+  {{- if ge (len $secs) 3 }}
+  <nav class="udc-toc" lang="en" aria-labelledby="udc-toc-title">
+    <h2 id="udc-toc-title" class="udc-label">Sections</h2>
+    <ol>{{ range $secs }}{{ $t := plainify (index . 2) | htmlUnescape }}<li><a href="#{{ index . 1 }}"{{ if gt (len (findRE `\p{Han}` $t)) 0 }} lang="zh-Hant"{{ end }}>{{ $t }}</a></li>{{ end }}</ol>
+  </nav>
+  {{- end }}
+  </aside>
   {{- if $hasPlate }}
   {{ partial "udc/plate.html" (dict "class" "udc-featured" "ink" (printf "/%s" $plate) "ink_night" (replace (printf "/%s" $plate) "-ink.png" "-ink-night.png") "alt" (.Params.image.alt_text | default (printf "%s, featured image" .Title))) }}
   {{- end }}
@@ -53,9 +67,8 @@
   {{- end }}
   {{- /* Language per block (Astra review): the article's lang comes from its overall Han share; a
          paragraph, list item or heading in the other language gets its own lang, so it is read aloud
-         right and takes its own reading rules (繁體中文: 1.85 line height, 36-character measure).
+         right and takes its own reading rules (繁體中文: 1.85 line height).
          Any block with letters is judged, whatever its length (Astra review, round 2). Text is not changed. */}}
-  {{- $content := string .Content }}
   {{- range findRE `(?s)<(?:p|li)>.*?</(?:p|li)>|<h[2-4] [^>]*>.*?</h[2-4]>` $content }}
   {{- $t := plainify . }}
   {{- $bh := len (findRE `\p{Han}` $t) }}{{ $ba := len (findRE `[\p{Han}\p{L}]` $t) }}
@@ -65,15 +78,6 @@
   {{- $tagged := replaceRE `^<(p|li|h[2-4])` (printf `<$1 lang="%s"` (cond $blockZh "zh-Hant" "en")) . 1 }}
   {{- $content = replace $content . $tagged 1 }}
   {{- end }}{{ end }}
-  {{- end }}
-  {{- /* Sections (UD, 2026-11-16): an article with three or more <h2> sections lists them in the right
-         column from 1024px, beside the text; built from the rendered headings, so it matches them. */}}
-  {{- $secs := findRESubmatch `<h2[^>]* id="([^"]+)"[^>]*>(.*?)</h2>` $content }}
-  {{- if ge (len $secs) 3 }}
-  <nav class="udc-toc" lang="en" aria-labelledby="udc-toc-title">
-    <h2 id="udc-toc-title" class="udc-label">Sections</h2>
-    <ol>{{ range $secs }}{{ $t := plainify (index . 2) | htmlUnescape }}<li><a href="#{{ index . 1 }}"{{ if gt (len (findRE `\p{Han}` $t)) 0 }} lang="zh-Hant"{{ end }}>{{ $t }}</a></li>{{ end }}</ol>
-  </nav>
   {{- end }}
   <div class="udc-prose">
     {{ $content | safeHTML }}

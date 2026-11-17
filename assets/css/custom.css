@@ -487,8 +487,8 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 /* ================================================================ inner pages */
 .page-body.my-10, .page-body { margin-block: 0 !important; }
 .udc-single, .udc-list { padding-top: 18px; padding-bottom: 8px; }
-.udc-single-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 30%); gap: 0 26px; align-items: start; margin-bottom: 20px; }
-.udc-single-head .udc-page-title { max-width: 22em; }
+.udc-single-head { margin-bottom: 14px; }
+.udc-side { margin: 0 0 22px; }   /* meta (and, from 1024px, the section list); narrower it follows the title */
 /* Meta: no box (3.7); a column rule separates it from the title, as on the front page. */
 .udc-meta { font-size: .85rem; line-height: 1.5; padding: 4px 0 4px 18px; border-left: 1px solid var(--udc-ink); }
 .udc-meta p { margin: 0 0 6px; }
@@ -741,8 +741,6 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 }
 
 @media (max-width: 759px) {
-  .udc-single-head { grid-template-columns: minmax(0, 1fr); }
-  .udc-single-head .udc-meta { margin-top: 14px; }
   .udc-year { grid-template-columns: minmax(0, 1fr); }
   .udc-year-plate { margin-bottom: 8px; }
   .udc-stream { grid-template-columns: minmax(0, 1fr); }
@@ -799,9 +797,9 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 @media (min-width: 1024px) {
   .udc-single { --udc-aside: 16rem; --udc-gap: 44px; display: grid; grid-template-columns: minmax(0, 1fr) var(--udc-aside); column-gap: var(--udc-gap); align-content: start; }
   .udc-single > * { grid-column: 1; }
-  /* The same two columns (not subgrid: the header is a size container, which a subgrid cannot be). */
-  .udc-single > .udc-single-head { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) var(--udc-aside); gap: 0 var(--udc-gap); }
-  .udc-single > .udc-toc { display: block; grid-column: 2; grid-row: 2 / span 20; align-self: start; position: sticky; top: 16px; }
+  /* The side column runs the article's full height, so the text starts right under the title. */
+  .udc-single > .udc-side { grid-column: 2; grid-row: 1 / span 30; align-self: stretch; margin: 0; }
+  .udc-toc { display: block; position: sticky; top: 16px; margin-top: 26px; }
   .udc-toc ol { list-style: none; margin: 6px 0 0; padding: 0 0 0 18px; border-left: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .8rem; line-height: 1.4; }
   .udc-toc li + li { margin-top: 8px; }
   .udc-toc a { color: var(--udc-ink); text-decoration: none; }
@@ -810,16 +808,14 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 }
 /* A title's longest unbreakable piece fits its column: the size comes down only when that piece, at its
    real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
-   rounds 3-4). The header is the container; its title column is 70% less the gap from 760px up. */
+   rounds 3-4). The header holds only the title, so it is the container and the title's column. */
 .udc-single-head { container-type: inline-size; }
 /* Article titles are sentences, so they are set smaller than the one-word section titles (UD, 2026-11-16);
    the article's own headings take their size from the title, so they always stay below it. */
-.udc-single { --udc-article-title: clamp(1.35rem, .9rem + 1.4vw, 2rem); }
+.udc-single { --udc-article-title: calc(1.5 * .9rem); }   /* 1.5x the body text (.9rem), UD */
 .udc-abstract { margin: 0 0 18px; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
-.udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
-@media (min-width: 1024px) { .udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((100cqi - var(--udc-aside) - var(--udc-gap) - 1px) / var(--udc-word-em, .01))); } }   /* the title column is the text column */
-@media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
+.udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((100cqi - 1px) / var(--udc-word-em, .01))); }   /* the header is the text column */
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
 
