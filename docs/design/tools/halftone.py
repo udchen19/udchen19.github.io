@@ -142,14 +142,44 @@ BOTTOM = 0.08
 # 1280 (6 px at 1920), was 5 px (2048x819).
 FW, FH, CELL = 2560, 1024, "h8x8"
 
-def top_fade(h, frac):
-    """0 at the top edge -> 1 at frac of the height: the footer fades up into the paper (4.6)."""
-    return np.clip(np.arange(h, dtype=np.float32) / (h * frac), 0, 1)[:, None]
+# The top fade (UD, 2026-11-17: it met the paper too abruptly). An ordered dither turns a smooth vertical
+# ramp into ruled lines: every cell switches on its first dot at the same row, so the picture began with
+# a hard line of tiny dots. The fade is therefore ragged: its position is pushed up and down per dot cell
+# (fine noise) and in a slow wave (coarse noise), so dots start at different heights, like ink thinning
+# out on rough paper; then eased (smoothstep) over a taller band. Fixed seed: same plate on every run.
+TOP, RAGGED = 0.3, 0.3
+
+def top_fade(h, frac=TOP, w=None):
+    """0 at the top edge -> 1 below frac of the height: the footer fades up into the paper (4.6).
+    (h, w) when w is given; the ragged part needs the width."""
+    y = np.arange(h, dtype=np.float32)[:, None] / (h * frac)
+    if w is None:
+        x = np.clip(y, 0, 1)
+    else:
+        rng = np.random.default_rng(7)
+        def noise(sigma):
+            n = ndi.gaussian_filter(rng.standard_normal((h, w)).astype(np.float32), sigma)
+            return n / (n.std() + 1e-6)
+        n = np.clip(0.7 * noise(4) + 0.3 * noise(90), -2, 2) / 2          # about -1..1
+        x = np.clip(y * (1 + RAGGED) - RAGGED + RAGGED * n, 0, 1)            # 0 along the whole top edge
+    return x * x * (3 - 2 * x)
+
+def sky_pad(src, pad, t):
+    """The source with `pad` px of its own sky added above, so a subject near the top edge sits below
+    the taller fade. Each column continues its top rows' colour, blurred sideways; the fade covers it."""
+    im = np.asarray(Image.open(src).convert("RGB"), np.float32)
+    top = ndi.gaussian_filter1d(im[:24].mean(0), 40, axis=0)
+    sky = np.repeat(top[None], pad, 0)
+    blend = np.linspace(0, 1, 24, dtype=np.float32)[:, None, None]
+    im[:24] = sky[-1] * (1 - blend) + im[:24] * blend           # no seam where the sky meets the photo
+    dest = pathlib.Path(t) / f"pad-{pathlib.Path(src).stem}.png"
+    Image.fromarray(np.vstack([sky, im]).clip(0, 255).astype(np.uint8)).save(dest)
+    return dest
 
 def stadium(cell=None, W=None, H=None):
     """Home footer (plan 3.5, Appendix B). Same master and cell as the section footers (FW, FH, CELL;
     Checkpoint B chose a shared cell; 4 px at 1280 since 2026-11-16).
-    Navy + orange; orange only on the stands, graded by shirt saturation. [P] The top 22% is a
+    Navy + orange; orange only on the stands, graded by shirt saturation. [P] The top (TOP) is a
     halftone fade (dots shrink to nothing), not an alpha fade."""
     cell, W, H = cell or CELL, W or FW, H or FH
     src = repo / "static/textures/stadium-g2-color.jpg"
@@ -164,7 +194,7 @@ def stadium(cell=None, W=None, H=None):
         magick(t / "val.png", "(", t / "or.png", "-evaluate", "Multiply", "0.8", ")", "-compose", "Screen", "-composite", t / "val2.png")
         magick(t / "val2.png", "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x2+1.3+0", "-level", "4%,82%", "-gamma", "1.25", t / "valp.png")
         magick(t / "or.png", "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x1.5+0.8+0", "-level", "4%,96%", t / "orp.png")
-        ramp = top_fade(H, 0.22)
+        ramp = top_fade(H, w=W)
         low = bottom_ramp(H, BOTTOM)
         save_gray((1 - (1 - load_gray(t / "valp.png")) * ramp) * (1 - low), t / "valf.png")   # paper at the top, ink at the bottom
         save_gray(load_gray(t / "orp.png") * ramp * (1 - low), t / "orf.png")
@@ -197,18 +227,19 @@ def flag():
     save_mask(crop(cloth & ink), "flag-ink.png")
     print("flag", (box[2] - box[0], box[3] - box[1]))
 
-def section(name, src, crop, width=None):
+def section(name, src, crop, width=None, pad=0):
     """Section footers (plan 3.5, Appendix B): FW x FH master, CELL grid -> 4 px at 1280. The
     second ink is a tint over the mid-tones of the whole image (sky included); navy only in the
-    shadows. Top 22% is a halftone fade into the paper, as on the home footer."""
+    shadows. The top is a halftone fade into the paper (TOP), as on the home footer."""
     with tempfile.TemporaryDirectory() as t:
         t = pathlib.Path(t)
         pre = ["-resize", f"{width}x"] if width else []
+        if pad: src = sky_pad(src, pad, t)
         magick(src, *pre, "-crop", crop, "+repage", t / "crop.png")
         magick(t / "crop.png", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", "-unsharp", "0x2+1.2+0", t / "L.png")
         magick(t / "L.png", "-negate", "-level", "8%,78%", "-negate", t / "c.png")
         magick(t / "L.png", "-level", "0%,52%", "-gamma", "0.85", t / "k.png")
-        ramp = top_fade(FH, 0.22)
+        ramp = top_fade(FH, w=FW)
         low = bottom_ramp(FH, BOTTOM)
         save_gray((1 - (1 - load_gray(t / "c.png")) * ramp) * (1 - low), t / "cf.png")
         save_gray((1 - (1 - load_gray(t / "k.png")) * ramp) * (1 - low), t / "kf.png")
@@ -252,16 +283,16 @@ def night():
         magick(src, "-crop", "800x320+0+125", "+repage", "-colorspace", "HSB", "-channel", "B", "-separate", "+channel",
                "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x2+1.3+0", "-level", "18%,96%", "-gamma", "0.9", t / "v.png")
         orange = load_gray(t / "v.png") * 0 + (np.asarray(Image.open(out / "stadium-orange.png").convert("RGBA"))[..., 3] > 0)
-        cover = load_gray(t / "v.png") * top_fade(H, 0.22) * (1 - bottom_ramp(H, BOTTOM)) * (1 - 0.85 * orange)
+        cover = load_gray(t / "v.png") * top_fade(H, w=W) * (1 - bottom_ramp(H, BOTTOM)) * (1 - 0.85 * orange)
         save_gray(1 - cover, t / "c.png")
         magick(t / "c.png", "-ordered-dither", CELL + "a", "-negate", t / "ink.png")
         save_mask((load_gray(t / "ink.png") > .5).astype(np.float32), "stadium-ink-night.png")
         # Section footers: highlights in light ink; the second ink on the mid-tones only.
-        for name, src, crop, pre in [("jingu", SRC / "jingu.webp", "2000x800+0+690", []),
-                                     ("hogwarts", SRC / "hogwarts.jpg", "2000x800+0+20", []),
-                                     ("thames", SRC / "london-night-frame02-1600.jpg", "1600x640+0+200", [])]:
+        for name, src, crop, pre in [("jingu", SRC / "jingu.webp", "2000x800+0+600", []),
+                                     ("hogwarts", sky_pad(SRC / "hogwarts.jpg", HOG_PAD, t), HOG_CROP, []),
+                                     ("thames", SRC / "london-night-frame02-1600.jpg", "1600x640+0+110", [])]:
             magick(src, *pre, "-crop", crop, "+repage", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", "-unsharp", "0x2+1.2+0", t / "L.png")
-            L = load_gray(t / "L.png"); fade = top_fade(FH, 0.22) * (1 - bottom_ramp(FH, BOTTOM))
+            L = load_gray(t / "L.png"); fade = top_fade(FH, w=FW) * (1 - bottom_ramp(FH, BOTTOM))
             if name == "thames":
                 # The city at night: sky and river carry little light; the lamps print in the night orange.
                 magick(src, *pre, "-crop", crop, "+repage", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", t / "rgb.png")
@@ -278,9 +309,14 @@ def night():
                 save_mask((load_gray(t / "m.png") > .5).astype(np.float32), f"footer-{name}-{nm}-night.png")
 
 SRC = repo / "docs/design/v2/sources"
-PLATES = {"jingu": lambda: section("jingu", SRC / "jingu.webp", "2000x800+0+690"),
-          "hogwarts": lambda: section("hogwarts", SRC / "hogwarts.jpg", "2000x800+0+20"),
-          "thames": lambda: section("thames", SRC / "london-day-frame14-1600.jpg", "1600x640+0+200"),
+# Jingu and Thames crops sit higher than before (2026-11-17) so the light towers and the skyline stay below
+# the fade. Hogwarts: the still has almost no sky above the spires, so its sky is extended upward (sky_pad) and
+# the crop starts at the top of that; the castle sits below the fade and the lake's foot is cropped.
+HOG_PAD = 150
+HOG_CROP = "2000x800+0+0"
+PLATES = {"jingu": lambda: section("jingu", SRC / "jingu.webp", "2000x800+0+600"),
+          "hogwarts": lambda: section("hogwarts", SRC / "hogwarts.jpg", HOG_CROP, pad=HOG_PAD),
+          "thames": lambda: section("thames", SRC / "london-day-frame14-1600.jpg", "1600x640+0+110"),
           "ryan": ryan, "icon": icon, "portrait": portrait, "pages": pages, "figure404": figure404, "night": night, "stadium": stadium, "flag": flag}
 for p in sys.argv[2:]:
     PLATES[p]()
