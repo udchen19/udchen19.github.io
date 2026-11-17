@@ -75,10 +75,20 @@ def cc_of(ic):
         if ic[:n] in ICAO_CC: return ICAO_CC[ic[:n]]
 
 # --------------------------------------------------------------- projection
-LON0, LON1, LAT0, LAT1 = -128.0, 152.0, -2.0, 64.0       # travelled area, with a margin
+# Centred on Taipei Taoyuan (UD, 2026-11-16): the map spans equal longitude either side of TPE, wide
+# enough for the farthest airport on either side plus MARGIN; the edge falls in the Atlantic.
+MARGIN, LAT0, LAT1 = 10.0, -2.0, 64.0                   # latitudes: travelled area, with a margin
+CENTRE = pos["TPE"][0]
+def rel(lon):                                            # longitude east of the centre, in -180..180
+    return (lon - CENTRE + 180) % 360 - 180
+HALF = math.ceil(max(abs(rel(pos[c][0])) for c in codes) + MARGIN)
+LON0, LON1 = CENTRE - HALF, CENTRE + HALF
 W = 1400; H = round(W * (LAT1 - LAT0) / (LON1 - LON0) / math.cos(math.radians(32)))   # equal-area-ish at mid latitude
 def proj(lon, lat):
     return ((lon - LON0) / (LON1 - LON0) * W, (LAT1 - lat) / (LAT1 - LAT0) * H)
+def proj_pt(lon, lat):                                   # a single point: its copy inside the span
+    return proj(CENTRE + rel(lon), lat)
+print(f"centre {CENTRE:.2f}, span {LON0:.1f} to {LON1:.1f} ({2 * HALF} deg), {W} x {H}")
 
 def great_circle(a, b, n=48):
     (lo1, la1), (lo2, la2) = [(math.radians(x), math.radians(y)) for x, y in (a, b)]
@@ -97,7 +107,9 @@ S = 2                                                    # mask at 2x
 img = Image.new("L", (W * S, H * S), 255); d = ImageDraw.Draw(img)
 for kind, rings in shp_records(land_shp):
     for ring in rings:
-        d.polygon([tuple(c * S for c in proj(lo, la)) for lo, la in ring], fill=0)
+        for shift in (-360, 0, 360):                     # the span runs past 180; draw each shifted copy
+            if max(lo for lo, _ in ring) + shift < LON0 or min(lo for lo, _ in ring) + shift > LON1: continue
+            d.polygon([tuple(c * S for c in proj(lo + shift, la)) for lo, la in ring], fill=0)
 with tempfile.TemporaryDirectory() as t:
     t = pathlib.Path(t)
     land = np.asarray(img) < 128
@@ -116,8 +128,8 @@ for leg in legs:
     key = tuple(sorted((a, b)))
     if key in seen:
         routes[seen[key]]["years"].add(year); continue
-    # Routes across the Pacific cross the date line: unwrap the longitudes so the curve is continuous,
-    # then draw it once per 360° shift that touches the map; the SVG clips what falls outside.
+    # Unwrap the longitudes so the curve is continuous, then draw it once per 360° shift that touches
+    # the map; the SVG clips what falls outside (London to Chicago leaves by both edges).
     gc = great_circle(pos[a], pos[b]); lons = [gc[0][0]]
     for lo, _ in gc[1:]:
         lo += 360 * round((lons[-1] - lo) / 360); lons.append(lo)
@@ -136,10 +148,10 @@ for leg in legs:
 no_cc = [c for c in codes if not cc_of(icao.get(c, ""))]
 if no_cc:
     sys.exit(f"stop: no country for {no_cc}; add its ICAO letters to ICAO_CC")
-airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "x": round(proj(*pos[c])[0], 1), "y": round(proj(*pos[c])[1], 1), "n": count[c]} for c in codes]
+airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c]} for c in codes]
 places = []
 for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places", []):
-    dots = [[round(v, 1) for v in proj(*pos[c])] for c in pl["airports"]]   # the name sits by the first
+    dots = [[round(v, 1) for v in proj_pt(*pos[c])] for c in pl["airports"]]   # the name sits by the first
     places.append({"name": pl["name"], "note": pl["note"], "airports": pl["airports"], "label": pl.get("label", "ne"),
                    "x": dots[0][0], "y": dots[0][1], "dots": dots})
 (repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "routes": routes, "airports": airports, "places": places}, ensure_ascii=False))
