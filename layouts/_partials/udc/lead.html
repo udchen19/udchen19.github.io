@@ -1,4 +1,4 @@
-{{/* Headline (plan v2, 4.3): two lines, each sized on its own to span the story column; no full
-     stop, no kicker. On line 2 the capital starting each word (U, D, C) prints in orange. */}}
+{{/* Headline (plan v2, 4.3): two lines, each sized on its own to span the story column; written by UD as a
+     challenged call in baseball (2026-11-16). */}}
 {{- $h := hugo.Data.udc.lead.headline -}}
-<p class="udc-lead-head"><span class="udc-lead-l1">{{ index $h 0 }}</span> <span class="udc-lead-l2">{{ replaceRE `\b(\p{Lu})` `<b>$1</b>` (index $h 1 | htmlEscape) | safeHTML }}</span></p>
+<p class="udc-lead-head"><span class="udc-lead-l1">{{ index $h 0 }}</span> <span class="udc-lead-l2">{{ index $h 1 }}</span></p>

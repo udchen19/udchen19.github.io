@@ -94,11 +94,11 @@ now:
   question: When personal agents are acting on our behalf, how can we make sure they appropriately “keep our secrets”?
 
 # Front-page headline (plan v2, 4.3): exactly two lines, each fitted to the story column.
-# The capital that starts each word of line 2 (U, D, C) prints in orange.
+# Written by UD as a challenged call in baseball (2026-11-16); the orange initials rule was dropped.
 lead:
   headline:
-    - Is Your Agent Safe?
-    - 'Umpire: Depends on Context'
+    - Your Agent Slides Home and Scores.
+    - We’re Challenging Whether It’s Safe.
 
 # About, "Away from the desk" (plan v2, 4.8; reshaped by UD 2026-11-16): UD's life outside research.
 # A hidden lane in the About year strip; expanded, the entries sit in the timeline by date.

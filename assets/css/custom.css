@@ -394,13 +394,14 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-front-lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 29%); align-items: start; container-type: inline-size; }
 .udc-front-story { padding: 0 22px 8px 0; min-height: 100%; container-type: inline-size; }
 .udc-front-side { padding-left: 18px; border-left: 1px solid var(--udc-ink); min-height: 100%; }
-/* Headline: each line sized on its own to span the story column (widths measured in Ultra:
-   line 1 = 11.975em, line 2 = 17.763em). CSS only, so the unscripted page is the same. */
+/* Headline: each line sized on its own to span the story column (widths measured in Ultra in the browser:
+   line 1 = 22.305em, line 2 = 22.844em; re-measure when the wording changes). CSS only. */
 .udc-lead-head { margin: 4px 0 12px; font-family: var(--udc-display); font-weight: 400; line-height: 1.02; color: var(--udc-ink); }
 .udc-lead-head > span { display: block; white-space: nowrap; }
-.udc-lead-l1 { font-size: calc(100cqi / 11.975); line-height: .95; }
-.udc-lead-l2 { font-size: calc(100cqi / 17.763); line-height: 1.05; }
-.udc-lead-l2 b { font-weight: inherit; color: var(--udc-orange-text); }
+.udc-lead-l1 { font-size: calc(100cqi / 22.305); line-height: 1.05; }
+.udc-lead-l2 { font-size: calc(100cqi / 22.844); line-height: 1.05; }
+/* Phones: too long to fill one line at a readable size, so each line wraps, balanced, at a set size. */
+@media (max-width: 640px) { .udc-lead-head > span { white-space: normal; text-wrap: balance; font-size: 1.5rem; line-height: 1.05; } .udc-lead-l2 { margin-top: .15em; } }
 /* Reading text: left-aligned, not justified, no hyphenation (plan 3.2). */
 .udc-intro { max-width: none; }
 .udc-intro p { margin: 0 0 .8em; text-align: left; hyphens: none; }
