@@ -144,34 +144,22 @@ FW, FH, CELL = 2560, 1024, "h8x8"
 
 # The top fade (UD, 2026-11-17: it met the paper too abruptly). An ordered dither turns a smooth vertical
 # ramp into ruled lines: every cell switches on each dot size at the same row, so the picture began with
-# a hard line of tiny dots. Day: the fade is ragged, its position pushed up and down per dot cell (fine
-# noise) and in a slow wave (coarse noise), so dots start at different heights like ink thinning out on
-# rough paper. Smooth instead (each dot cell only varies by a level or two, which breaks the ruled steps
-# without making neighbouring dots unlike) where raggedness turns muddy (UD): every night plate, where it
-# reads as dust (light specks on dark paper), and the home stadium by day, whose dark roofs at the top
-# corners broke into clumps. Both eased (smoothstep) over a taller band. Fixed seed: the
-# same plate on every run.
-TOP, RAGGED, STEP = 0.3, 0.3, 0.05
+# a hard line of tiny dots. The fade is eased (smoothstep) over a taller band, and each dot cell varies by
+# only a level or two, which breaks those steps without making neighbouring dots unlike. (A ragged fade,
+# pushed up and down per cell, was tried first: UD found it muddy, as dust at night and as blotches in the
+# stadium's roofs and the skies by day.) Fixed seed: the same plate on every run.
+TOP, STEP = 0.3, 0.05
 
-def top_fade(h, frac=TOP, w=None, smooth=False):
+def top_fade(h, frac=TOP, w=None):
     """0 at the top edge -> 1 below frac of the height: the footer fades up into the paper (4.6).
-    (h, w) when w is given; the ragged and stepped parts need the width."""
-    y = np.arange(h, dtype=np.float32)[:, None] / (h * frac)
+    (h, w) with the per-cell variation when w is given."""
+    x = np.clip(np.arange(h, dtype=np.float32)[:, None] / (h * frac), 0, 1)
+    f = x * x * (3 - 2 * x)
     if w is None:
-        x = np.clip(y, 0, 1)
-        return x * x * (3 - 2 * x)
-    rng = np.random.default_rng(7)
-    if smooth:
-        x = np.clip(y, 0, 1); f = x * x * (3 - 2 * x)
-        cell = rng.uniform(-1, 1, (h // 8 + 1, w // 8 + 1)).astype(np.float32)   # one value per 8 px dot cell
-        cell = np.kron(cell, np.ones((8, 8), np.float32))[:h, :w]
-        return np.clip(f + STEP * cell * (f > 0) * (f < 1), 0, 1)
-    def noise(sigma):
-        n = ndi.gaussian_filter(rng.standard_normal((h, w)).astype(np.float32), sigma)
-        return n / (n.std() + 1e-6)
-    n = np.clip(0.7 * noise(4) + 0.3 * noise(90), -2, 2) / 2          # about -1..1
-    x = np.clip(y * (1 + RAGGED) - RAGGED + RAGGED * n, 0, 1)            # 0 along the whole top edge
-    return x * x * (3 - 2 * x)
+        return f
+    cell = np.random.default_rng(7).uniform(-1, 1, (h // 8 + 1, w // 8 + 1)).astype(np.float32)   # one per 8 px dot cell
+    cell = np.kron(cell, np.ones((8, 8), np.float32))[:h, :w]
+    return np.clip(f + STEP * cell * (f > 0) * (f < 1), 0, 1)
 
 def sky_pad(src, pad, t):
     """The source with `pad` px of its own sky added above, so a subject near the top edge sits below
@@ -203,7 +191,7 @@ def stadium(cell=None, W=None, H=None):
         magick(t / "val.png", "(", t / "or.png", "-evaluate", "Multiply", "0.8", ")", "-compose", "Screen", "-composite", t / "val2.png")
         magick(t / "val2.png", "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x2+1.3+0", "-level", "4%,82%", "-gamma", "1.25", t / "valp.png")
         magick(t / "or.png", "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x1.5+0.8+0", "-level", "4%,96%", t / "orp.png")
-        ramp = top_fade(H, w=W, smooth=True)   # dark roofs at the top: ragged turned muddy (UD)
+        ramp = top_fade(H, w=W)
         low = bottom_ramp(H, BOTTOM)
         save_gray((1 - (1 - load_gray(t / "valp.png")) * ramp) * (1 - low), t / "valf.png")   # paper at the top, ink at the bottom
         save_gray(load_gray(t / "orp.png") * ramp * (1 - low), t / "orf.png")
@@ -292,7 +280,7 @@ def night():
         magick(src, "-crop", "800x320+0+125", "+repage", "-colorspace", "HSB", "-channel", "B", "-separate", "+channel",
                "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x2+1.3+0", "-level", "18%,96%", "-gamma", "0.9", t / "v.png")
         orange = load_gray(t / "v.png") * 0 + (np.asarray(Image.open(out / "stadium-orange.png").convert("RGBA"))[..., 3] > 0)
-        cover = load_gray(t / "v.png") * top_fade(H, w=W, smooth=True) * (1 - bottom_ramp(H, BOTTOM)) * (1 - 0.85 * orange)
+        cover = load_gray(t / "v.png") * top_fade(H, w=W) * (1 - bottom_ramp(H, BOTTOM)) * (1 - 0.85 * orange)
         save_gray(1 - cover, t / "c.png")
         magick(t / "c.png", "-ordered-dither", CELL + "a", "-negate", t / "ink.png")
         save_mask((load_gray(t / "ink.png") > .5).astype(np.float32), "stadium-ink-night.png")
@@ -301,7 +289,7 @@ def night():
                                      ("hogwarts", sky_pad(SRC / "hogwarts.jpg", HOG_PAD, t), HOG_CROP, []),
                                      ("thames", SRC / "london-night-frame02-1600.jpg", "1600x640+0+110", [])]:
             magick(src, *pre, "-crop", crop, "+repage", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", "-unsharp", "0x2+1.2+0", t / "L.png")
-            L = load_gray(t / "L.png"); fade = top_fade(FH, w=FW, smooth=True) * (1 - bottom_ramp(FH, BOTTOM))
+            L = load_gray(t / "L.png"); fade = top_fade(FH, w=FW) * (1 - bottom_ramp(FH, BOTTOM))
             if name == "thames":
                 # The city at night: sky and river carry little light; the lamps print in the night orange.
                 magick(src, *pre, "-crop", crop, "+repage", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", t / "rgb.png")
