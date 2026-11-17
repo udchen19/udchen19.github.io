@@ -495,7 +495,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .page-body.my-10, .page-body { margin-block: 0 !important; }
 .udc-single, .udc-list { padding-top: 18px; padding-bottom: 8px; }
 .udc-single-head { margin-bottom: 20px; }
-.udc-side { margin: 0 0 22px; }   /* meta (and, from 900px, the section list); narrower it follows the title */
+.udc-side { margin: 0 0 22px; }   /* meta and the section list: from 900px beside the text; narrower it follows the title, the list folded */
 /* Meta: no box (3.7); a column rule separates it from the title, as on the front page. */
 .udc-meta { font-size: .85rem; line-height: 1.5; padding: 4px 0 4px 18px; border-left: 1px solid var(--udc-ink); }
 .udc-meta p { margin: 0 0 6px; }
@@ -834,25 +834,25 @@ button.udc-map-pick { cursor: pointer; }
   .udc-ys-ticks > span:not(:empty)::before { content: "’"; }
 }
 
-/* 404 (plan v2, 4.9): one screen, no header or footer. Desktop: figure-with-衝啥 and text side by
-   side, centred as a group, 44px apart. Phone: stacked and centred. */
+/* 404 (plan v2, 4.9): one screen, no header or footer. Desktop: figure and text side by side, centred as
+   a group, 44px apart, 衝啥 heading the text. Phone: stacked and centred. */
 .udc-404 { --cs: .42; box-sizing: border-box; height: 100svh; padding: calc(var(--udc-edge-t) + 16px) 24px 16px;
   display: flex; align-items: center; justify-content: center; gap: 44px; }
 .udc-404-fig { margin: 0; display: flex; flex-direction: column; align-items: center; height: 80%; }   /* 80%: room above and below (UD, 2026-11-16) */
 .udc-404-fig img { display: block; flex: 1 1 auto; min-height: 0; width: auto; height: auto; max-height: 100%; aspect-ratio: 466 / 1400; }
-.udc-404-cs { display: block; flex: none; width: 10.4rem; aspect-ratio: 722 / 304; margin-top: 10px; background: var(--udc-ink);
+.udc-404-cs { display: block; flex: none; width: 10.4rem; aspect-ratio: 722 / 304; margin: 0 0 .4rem; background: var(--udc-ink);
   -webkit-mask: url("/textures/chongsha.png") center / contain no-repeat; mask: url("/textures/chongsha.png") center / contain no-repeat;
   position: relative; z-index: 61; }
 .udc-404-fig img { position: relative; z-index: 61; }
 .udc-404-h { margin: 0; font-family: var(--udc-display); font-weight: 400; color: var(--udc-ink); line-height: .9; }
 .udc-404-n { display: block; font-size: min(13rem, 26vh); }
-.udc-404-nf { display: block; font-size: min(3.4rem, 7vh); margin-top: .15em; }
+.udc-404-nf { display: block; font-size: min(3.4rem, 7vh); margin-top: .15em; padding-bottom: .3em; margin-bottom: -.3em; }   /* room for the ink under the line, or the y lost its tail (UD) */
 .udc-404-back { margin: 1.4rem 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
 body:has(.udc-404) .page-body { margin: 0 !important; }
 @media (max-width: 640px) {
   .udc-404 { flex-direction: column; justify-content: center; gap: 10px; padding: calc(var(--udc-edge-t) + 10px) 16px 12px; text-align: center; }
   .udc-404-fig { height: auto; flex: 1 1 auto; min-height: 0; }
-  .udc-404-cs { width: 8.5rem; margin-top: 6px; }
+  .udc-404-cs { width: 8.5rem; margin: 0 auto 4px; }
   .udc-404-n { font-size: min(5.2rem, 12vh); }
   .udc-404-nf { font-size: min(2rem, 5vh); }
   .udc-404-back { margin-top: .7rem; }
@@ -863,6 +863,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-404-fig { height: auto; flex: 1 1 auto; min-height: 0; }
   .udc-404-n { font-size: min(7rem, 14vh); }
   .udc-404-nf { font-size: min(2.4rem, 5vh); }
+  .udc-404-cs { margin: 0 auto 6px; }
 }
 
 @media (max-width: 759px) {
@@ -899,7 +900,8 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    lettering, Ryan, the brush line and the halftone images in the system text colour or their own inks. */
 @media (forced-colors: active) {
   .udc-rule-heavy::before, .udc-rule-heavy::after, .udc-label::after { background: CanvasText; forced-color-adjust: none; }
-  .udc-name-zh::before, .udc-404-cs, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land { forced-color-adjust: none; background: CanvasText; }
+  .udc-name-zh::before, .udc-404-cs, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land,
+  .udc-plate-ink, .udc-tl-logo.is-mask, .udc-map-folded-land { forced-color-adjust: none; background: CanvasText; }   /* the project picture and school marks too (Astra, round 16) */
   .udc-name-zh::after { forced-color-adjust: none; background: Highlight; }
   .udc-footer-img, .udc-flag, .udc-footer-band, .udc-map-svg { forced-color-adjust: none; }
   .udc-ys-filter::before { forced-color-adjust: none; box-shadow: none; border: 1.5px solid ButtonText; background: Canvas; }
@@ -907,6 +909,16 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 @media print { .page-header, .udc-footer-links { display: none !important; } body.page-wrapper { background: #fff !important; color: #000 !important; } }
+/* Print with background graphics off (the browser's default) drops anything coloured through a mask: the
+   project pictures, 陳威達, 衝啥, the school marks, the year strip, the timeline and the rules. These print
+   as drawn (Astra, round 16). */
+@media print {
+  .udc-plate-ink, .udc-name-zh::before, .udc-name-zh::after, .udc-404-cs, .udc-tl-logo.is-mask, .udc-ys-bar,
+  .udc-tl-node::before, .udc-tl-node::after, .udc-map-land, .udc-map-folded-land, .udc-rule-heavy::before,
+  .udc-rule-heavy::after, .udc-label::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* Paper cannot scroll: News prints every entry, without the fade (Astra, round 16). */
+  .udc-news-list { max-height: none !important; overflow: visible; -webkit-mask: none !important; mask: none !important; }
+}
 
 /* ================================================================== headlines */
 .udc-lead-head { margin: 0 0 18px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }

@@ -73,3 +73,4 @@ for w in (1280, 375):
         ys, xs = np.nonzero(bad)
         print(f"   first failing pixels (CSS px): {[(round(x / scale + x0), round(y / scale + top)) for y, x in list(zip(ys, xs))[:6]]}")
 print("PASS" if ok else "FAIL")
+sys.exit(0 if ok else 1)   # a failing check fails the run (Astra, round 16)

@@ -7,11 +7,11 @@
   <div class="udc-stream">
     {{ range $posts.ByDate.Reverse }}
     {{- $zh := gt (len (findRE `\p{Han}` .Title)) 3 -}}
-    {{ if .Params.brief }}
+    {{ if .Params.brief }}{{ $brief := . }}
     <article class="udc-brief">
       <p class="udc-stream-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time> · Brief</p>
       <h2 class="udc-brief-title"{{ if $zh }} lang="zh-Hant"{{ end }}>{{ .Title }}</h2>
-      {{ with .Resources.GetMatch "brief*" }}{{ $i := .Fill "480x320 webp q82" }}<figure class="udc-brief-photo"><img src="{{ $i.RelPermalink }}" width="240" height="160" alt="{{ $.Params.brief_alt }}"></figure>{{ end }}
+      {{ with .Resources.GetMatch "brief*" }}{{ $i := .Fill "480x320 webp q82" }}<figure class="udc-brief-photo"><img src="{{ $i.RelPermalink }}" width="240" height="160" alt="{{ $brief.Params.brief_alt }}"></figure>{{ end }}
       <div class="udc-brief-text">{{ .Content }}</div>
     </article>
     {{ else }}

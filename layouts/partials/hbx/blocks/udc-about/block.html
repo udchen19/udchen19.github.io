@@ -11,7 +11,7 @@
 {{- $rows := slice -}}
 {{- range $author.education }}
 {{- $when := printf "%s – %s" ((time .start).Format "2006") ((time .end).Format "2006") }}
-{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "when" $when "head" .institution "sub" .degree "where" .location "logo" .logo "logomask" .logo_mask "url" "" "text" .summary) }}
+{{- $rows = $rows | append (dict "key" .start "id" (printf "tl-education-%s" ((time .start).Format "2006-01")) "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "when" $when "head" .institution "sub" .degree "where" .location "logo" .logo "logomask" .logo_mask "url" "" "text" .summary) }}
 {{- end }}
 {{- range $author.experience }}
 {{- $s := time .start }}{{ $e := time (.end | default (now.Format "2006-01-02")) }}
@@ -19,15 +19,17 @@
 {{- if not .end }}{{ $when = printf "%s – Present" ($s.Format "Jan 2006") }}
 {{- else if eq ($s.Format "2006-01") ($e.Format "2006-01") }}{{ $when = $s.Format "Jan 2006" }}
 {{- else if eq $s.Year $e.Year }}{{ $when = printf "%s – %s" ($s.Format "Jan") ($e.Format "Jan 2006") }}{{ end }}
-{{- $rows = $rows | append (dict "key" .start "kind" "work" "s" $s "e" $e "when" $when "lane" (.udc_lane | default "industry") "head" .role "sub" .org "logo" .logo "logomask" .logo_mask "url" .org_url "text" .summary) }}
+{{- $rows = $rows | append (dict "key" .start "id" (printf "tl-%s-%s" (.udc_lane | default "industry") ($s.Format "2006-01")) "kind" "work" "s" $s "e" $e "when" $when "lane" (.udc_lane | default "industry") "head" .role "sub" .org "logo" .logo "logomask" .logo_mask "url" .org_url "text" .summary) }}
 {{- end }}
 {{- range $life }}
 {{- $s := time (printf "%s-01" .date) }}{{ $e := time (printf "%s-01" (.end | default .date)) }}
 {{- $e = $e.AddDate 0 1 -1 }}
 {{- $when := $s.Format "Jan 2006" }}{{ with .end }}{{ $when = printf "%s – %s" ($s.Format "Jan 2006") ((time (printf "%s-01" .)).Format "Jan 2006") }}{{ end }}
-{{- $rows = $rows | append (dict "key" (printf "%s-01" .date) "date" .date "kind" "life" "lane" .lane "s" $s "e" $e "when" $when "text" .text) }}
+{{- $rows = $rows | append (dict "key" (printf "%s-01" .date) "id" (printf "tl-%s-%s%s" .lane ($s.Format "2006-01") (cond (isset . "id") (printf "-%s" .id) "")) "date" .date "kind" "life" "lane" .lane "s" $s "e" $e "when" $when "text" .text) }}
 {{- end }}
 {{- $all := sort $rows "key" "desc" -}}
+{{- /* Each entry's link is permanent: lane and start month, never its position (Astra, round 16). */}}
+{{- $seen := dict }}{{ range $all }}{{ if isset $seen .id }}{{ errorf "About timeline: two entries share the link #%s; give each an id word in data/udc.yaml" .id }}{{ end }}{{ $seen = merge $seen (dict .id true) }}{{ end -}}
 {{- $names := dict "education" "Education" "research" "Research" "teaching" "Teaching" "industry" "Industry" -}}
 {{- range $lifeLanes }}{{ $names = merge $names (dict .key .name) }}{{ end -}}
 <main id="main" class="udc-list udc-wrap udc-about" lang="en">
@@ -57,7 +59,7 @@
       {{- range $i, $r := $all }}{{ if eq $r.lane $lane }}
         {{- $a := add (float $r.s.Year) (div (float (sub $r.s.YearDay 1)) 365.0) }}
         {{- $b := add (float $r.e.Year) (div (float (sub $r.e.YearDay 1)) 365.0) }}
-        <a class="udc-ys-bar" href="#tl-{{ $i }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.when }}: {{ $r.head | default $r.text | plainify }}">
+        <a class="udc-ys-bar" href="#{{ $r.id }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.when }}: {{ $r.head | default $r.text | plainify }}">
           {{- /* Date first, then the entry: two entries can share a title (Astra, round 7), and an entry that ends
                  with a full stop would otherwise read "scary., Jan 2026" (round 13). */}}
           <span class="udc-visually-hidden">{{ $r.when }}: {{ $r.head | default $r.text | plainify }}</span></a>
@@ -151,7 +153,7 @@
   {{- end }}
   <ol class="udc-tl-rows" id="udc-tl-rows" aria-live="polite">
     {{- range $i, $_ := $all }}
-    <li class="udc-tl-row{{ if eq .kind "life" }} is-life{{ end }}" id="tl-{{ $i }}" data-lane="{{ .lane }}">
+    <li class="udc-tl-row{{ if eq .kind "life" }} is-life{{ end }}" id="{{ .id }}" data-lane="{{ .lane }}">
       <p class="udc-tl-date"><span class="udc-tl-lane">{{ index $names .lane }}</span>
         {{- .when }}
         {{- /* School and company logos (UD, 2026-11-16; files from each one's own site, see Design credits):

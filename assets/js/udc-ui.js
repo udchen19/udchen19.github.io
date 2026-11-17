@@ -30,6 +30,10 @@
       if (e.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') { setMenu(false); menuButton.focus(); }
     });
     document.addEventListener('click', e => { if (!e.target.closest('.udc-masthead')) setMenu(false); });
+    // Keyboard focus that leaves the open menu closes it, so the menu never covers the control in use (Astra, round 16).
+    document.addEventListener('focusin', e => {
+      if (menuButton?.getAttribute('aria-expanded') === 'true' && !menu?.contains(e.target) && e.target !== menuButton) setMenu(false);
+    });
     matchMedia('(min-width: 641px)').addEventListener('change', () => setMenu(false));
     new MutationObserver(label).observe(root, { attributes: true, attributeFilter: ['class'] });
     label();
@@ -60,9 +64,11 @@
       };
       let showing = 0, raf = 0;
       ink(0, 0); ink(1, 1);
+      // The button is named by the line showing, so the reply is read too, not only seen (Astra, round 16).
+      const named = k => lines.forEach((el, i) => i === k ? el.removeAttribute('aria-hidden') : el.setAttribute('aria-hidden', 'true'));
       const show = k => {
         if (k === showing) return;
-        const from = showing; showing = k; cancelAnimationFrame(raf);
+        const from = showing; showing = k; cancelAnimationFrame(raf); named(k);
         if (still.matches) { ink(from, 1); ink(k, 0); return; }
         const t0 = performance.now(), out = 480, inn = 620, lag = 320;
         const step = now => {
@@ -158,7 +164,18 @@
         if (btn && btn.getAttribute('aria-pressed') !== 'true') { btn.setAttribute('aria-pressed', 'true'); apply(); }
         return row;
       };
-      document.addEventListener('click', e => { const a = e.target.closest('a[href^="#tl-"]'); if (a) showRow(a.getAttribute('href').slice(1)); });
+      // A click on a year-strip mark (or a chooser entry) scrolls down to its entry rather than jumping (UD,
+      // 2026-11-17); the address still changes, so the link can be shared and Back returns. Still a jump with
+      // reduced motion. Focus moves to the entry, as following the link would.
+      document.addEventListener('click', e => {
+        const a = e.target.closest('a[href^="#tl-"]');
+        if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        const id = a.getAttribute('href').slice(1), row = showRow(id); if (!row) return;
+        e.preventDefault();
+        if (location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+        row.setAttribute('tabindex', '-1'); row.focus({ preventScroll: true });
+        row.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      });
       const arrive = () => { const row = showRow(decodeURIComponent(location.hash.slice(1))); if (row) requestAnimationFrame(() => row.scrollIntoView()); };
       arrive(); addEventListener('hashchange', arrive);
       // Year-strip marks that sit on one another: a click where several meet offers each of them, the way the
@@ -427,6 +444,10 @@
     form.addEventListener('submit', e => e.preventDefault());
     form.hidden = false;
   };
+  // Paper cannot open a fold: printing opens every folded section in a post, and closes them again after.
+  let printed = [];
+  addEventListener('beforeprint', () => { printed = [...document.querySelectorAll('.udc-prose details:not([open])')]; printed.forEach(d => { d.open = true; }); });
+  addEventListener('afterprint', () => { printed.forEach(d => { d.open = false; }); printed = []; });
   const start = () => { init(); newsFade(); unfold(); pubFilter(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

@@ -11,8 +11,8 @@
   <header class="udc-single-head">
     <h1 class="udc-page-title udc-ink"{{ if and $titleZh (not $zh) }} lang="zh-Hant"{{ else if and $zh (not $titleZh) }} lang="en"{{ end }}>{{ .Title }}</h1>
   </header>
-  {{- /* The side column: meta, then (from 1024px, articles with three or more sections) the section list.
-         From 1024px it runs down the right of the whole article; narrower, it follows the title. */}}
+  {{- /* The side column: meta, then (articles with three or more sections) the section list. From 900px it
+         runs down the right of the whole article; narrower, it follows the title, the list folded. */}}
   {{- $content := string .Content }}
   <aside class="udc-side" aria-label="About this page">
     <div class="udc-meta" lang="en">

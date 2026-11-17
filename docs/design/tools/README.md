@@ -3,7 +3,7 @@
 Scripts that produce the fonts, textures, plates and captures, and that run the checks. Downloads and
 non-redistributable sources live outside the repo (`<dl>`, and `docs/design/v2/sources/`, which is never
 committed); only outputs land in `static/` and `data/`. Python: fontTools, brotli, numpy, scipy, PIL,
-pyyaml; ImageMagick 7 (`magick`) for ordered dithering. Hugo 0.165 (what CI pins).
+pyyaml; ImageMagick 7 (`magick`) for ordered dithering. Hugo 0.170.0 (what `.github/workflows/deploy.yml` pins).
 
 | Script | Makes or checks | Run |
 |---|---|---|
