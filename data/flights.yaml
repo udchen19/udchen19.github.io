@@ -14,13 +14,13 @@ places:
 # The international events that took UD there (UD, 2026-11-17), listed under the map as "What took me there".
 # Each belongs to the flight that arrived for it (year, month, airport); during the journey its line types out
 # when that flight lands, and the airport's dot and list entry flash. city: where the event was, if not in its
-# name. The map marks the airport. CHI 2025 (Yokohama, late April 2025) is not listed yet: the log has no
-# flight to Japan around then.
+# name. The map marks the airport.
 events:
   - {year: 2011, month: 11, airport: AUH, name: World Robot Olympiad, city: Abu Dhabi}
   - {year: 2015, month: 7, airport: HKG, name: Elite Maths Challenge Cup, city: Hong Kong}
   - {year: 2019, month: 11, airport: HND, name: ICPC Yokohama Regional}
   - {year: 2023, month: 10, airport: CUN, name: UbiComp, city: Cancún}
+  - {year: 2025, month: 4, airport: NRT, name: CHI, city: Yokohama}
   - {year: 2025, month: 9, airport: SSH, name: MobileHCI, city: Sharm el-Sheikh}
   - {year: 2026, month: 3, airport: HND, name: World Baseball Classic, city: "Tokyo, in the stands"}
   - {year: 2026, month: 4, airport: BCN, name: CHI, city: Barcelona}
@@ -119,6 +119,8 @@ legs:
   # 2025
   - [2025, TPE, NRT, 2]
   - [2025, NRT, TPE, 3]
+  - [2025, TPE, NRT, 4]   # CHI 2025; not in Flighty, from UD's Cathay Pacific e-ticket (2026-11-17)
+  - [2025, NRT, TPE, 5]
   - [2025, TPE, DXB, 9]
   - [2025, DXB, CAI, 9]
   - [2025, CAI, SSH, 9]
