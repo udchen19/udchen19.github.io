@@ -851,7 +851,10 @@ button.udc-map-pick { cursor: pointer; }
 .udc-404-fig img { position: relative; z-index: 61; }
 .udc-404-h { margin: 0; font-family: var(--udc-display); font-weight: 400; color: var(--udc-ink); line-height: .9; }
 .udc-404-n { display: block; font-size: min(13rem, 26vh); }
-.udc-404-nf { display: block; font-size: min(3.4rem, 7vh); margin-top: .15em; padding-bottom: .3em; margin-bottom: -.3em; }   /* room for the ink under the line, or the y lost its tail (UD) */
+.udc-404-nf { display: block; font-size: min(3.4rem, 7vh); line-height: 1.1; margin-top: .15em; padding-bottom: .3em; margin-bottom: -.3em; }   /* room for the ink under the line, or the y lost its tail (UD) */
+/* "Go home." and "make contact" are links (UD, 2026-11-17): a heavier orange underline, so they read as links in type this big. */
+.udc-404-nf a { text-decoration: underline 3px var(--udc-orange); text-underline-offset: .12em; }
+.udc-404-nf a:hover { text-decoration-thickness: 5px; }
 .udc-404-back { margin: 1.4rem 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
 body:has(.udc-404) .page-body { margin: 0 !important; }
 @media (max-width: 640px) {
