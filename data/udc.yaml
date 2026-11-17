@@ -73,7 +73,7 @@ work:
       - text: A useful summary depends on its reader. How much it says follows what they can already anticipate and how critical a message is, and related notifications are merged. People wanted an assistant, not just shorter text.
         source: "three key factors that shape effective notification summarization: (1) the desired level of information disclosure, which depends on users’ anticipation of notification content and perceived criticalness; (2) the methods for synthesizing notifications, informed by the interrelationships among notifications; and (3) users’ broader expectations for summaries to assist with task and information management (§7) · they envisioned it as functioning like a virtual assistant (§1, contributions)"
   - page: /project/intelligent-notification-systems/
-    title: '“I Want It to Do More Than Deliver”'
+    title: Visions for Future Notification Systems
     meta: MobileHCI 2026
     links:
       - label: Paper
