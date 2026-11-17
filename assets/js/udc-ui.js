@@ -149,14 +149,35 @@
       back?.querySelector('button')?.addEventListener('click', () => { setLife(false); veil?.focus({ preventScroll: true }); });
       addEventListener('resize', placeVeil);
       setLife(false);
-      // A link to an entry of a lane that is off (from a year-strip bar or the map) turns that lane on.
-      document.addEventListener('click', e => {
-        const a = e.target.closest('a[href^="#tl-"]'); if (!a) return;
-        const row = document.getElementById(a.getAttribute('href').slice(1));
-        const btn = row && buttons.find(b => b.dataset.lane === row.dataset.lane);
+      // A link to an entry of a lane that is off turns that lane on, and for a life entry lifts the flap: from a
+      // year-strip bar, and when the page is opened at that address (Astra, round 12).
+      const showRow = id => {
+        const row = id ? document.getElementById(id) : null; if (!row || !row.classList.contains('udc-tl-row')) return null;
+        const btn = buttons.find(b => b.dataset.lane === row.dataset.lane);
         if (btn && btn.closest('.udc-ys-life') && wrap?.classList.contains('is-veiled')) setLife(true);
         if (btn && btn.getAttribute('aria-pressed') !== 'true') { btn.setAttribute('aria-pressed', 'true'); apply(); }
-      });
+        return row;
+      };
+      document.addEventListener('click', e => { const a = e.target.closest('a[href^="#tl-"]'); if (a) showRow(a.getAttribute('href').slice(1)); });
+      const arrive = () => { const row = showRow(decodeURIComponent(location.hash.slice(1))); if (row) requestAnimationFrame(() => row.scrollIntoView()); };
+      arrive(); addEventListener('hashchange', arrive);
+      // Year-strip marks that sit on one another: a click where several meet offers each of them, the way the
+      // flight map lists airports whose dots meet (Astra, round 12).
+      const pick = document.createElement('div'); pick.className = 'udc-ys-pick'; pick.hidden = true; pick.setAttribute('role', 'menu');
+      tl.querySelector('.udc-ys-wrap')?.append(pick);
+      tl.querySelectorAll('.udc-ys-track').forEach(track => track.addEventListener('click', e => {
+        const bar = e.target.closest('.udc-ys-bar'); if (!bar || e.detail === 0) return;   // keyboard presses go straight through
+        const hits = [...track.querySelectorAll('.udc-ys-bar')].filter(b => { const r = b.getBoundingClientRect(); return e.clientX >= r.left && e.clientX <= r.right; });
+        if (hits.length < 2) return;
+        e.preventDefault();
+        pick.replaceChildren(...hits.map(b => { const a = b.cloneNode(false); a.className = 'udc-ys-pickitem'; a.setAttribute('role', 'menuitem'); a.removeAttribute('style'); a.textContent = b.title; return a; }));
+        const wr = pick.parentElement.getBoundingClientRect();
+        pick.style.left = Math.min(e.clientX - wr.left, wr.width - 260) + 'px'; pick.style.top = (track.getBoundingClientRect().bottom - wr.top + 4) + 'px';
+        pick.hidden = false; pick.querySelector('a')?.focus({ preventScroll: true });
+      }));
+      pick.addEventListener('click', e => { const a = e.target.closest('a'); if (a) { pick.hidden = true; showRow(a.getAttribute('href').slice(1)); } });
+      document.addEventListener('click', e => { if (!pick.hidden && !pick.contains(e.target) && !e.target.closest('.udc-ys-bar')) pick.hidden = true; });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pick.hidden) pick.hidden = true; });
     }
     // Flight map: a tap or click shows the airport under it (hover alone does not exist on phones).
     // Airports can sit a few px apart (London's three, Taipei's two), so the label lists the airports whose
@@ -239,6 +260,11 @@
       });
       const when = plate.querySelector('.udc-map-when');
       const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
+      // The date line also names an airport while it first arrives, during its pause (Astra, round 12).
+      const whenDate = document.createElement('span'), whenNew = document.createElement('span');
+      whenNew.className = 'udc-map-when-new'; when?.append(whenDate, whenNew);
+      const named = [...fig.querySelectorAll('.udc-map-ports li')].map(li => ({ t: parseFloat(li.style.getPropertyValue('--t')) || 0,
+        name: li.querySelector('b + span')?.firstChild?.textContent.trim() || '' })).filter(x => x.t > 0).sort((a, b) => a.t - b.t);
       const skipBtn = fig.querySelector('.udc-map-skip');
       let typing = 0;
       // While it plays: the caption says what a tap does now, and airports not yet reached in the list can't be
@@ -253,7 +279,7 @@
       const skip = () => {
         cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false);
         keys.forEach(k => { k.done = true; k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
-        if (when) { when.textContent = dates[dates.length - 1]?.[1] || ''; when.classList.add('is-done'); }
+        if (when) { whenDate.textContent = dates[dates.length - 1]?.[1] || ''; whenNew.textContent = ''; when.classList.add('is-done'); }
       };
       skipBtn?.addEventListener('click', e => { e.stopPropagation(); skip(); });
       // While it plays, a click on the map skips instead of naming an airport (capture: before the map's own handler).
@@ -263,7 +289,7 @@
         details?.classList.remove('is-skipped');
         const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
         keys.forEach(k => { const hide = !still && !k.done; k.div.toggleAttribute('data-wait', hide); k.chars.forEach(c => { c.style.visibility = hide ? 'hidden' : ''; }); });
-        if (when) { when.hidden = still; when.classList.remove('is-done'); when.textContent = dates[0]?.[1] || ''; }
+        if (when) { when.hidden = still; when.classList.remove('is-done'); whenDate.textContent = dates[0]?.[1] || ''; whenNew.textContent = ''; }
         if (still) return;
         playing(true);
         listItems.forEach(x => { x.li.inert = x.t > 0; });
@@ -281,7 +307,9 @@
           listItems.forEach(x => { if (x.li.inert && e >= x.t) x.li.inert = false; });
           if (when) {
             let d = dates[0]; for (const x of dates) if (x[0] <= e) d = x;
-            if (d && when.textContent !== d[1]) when.textContent = d[1];
+            if (d && whenDate.textContent !== d[1]) whenDate.textContent = d[1];
+            let nw = ''; for (const x of named) if (x.t <= e && e < x.t + 1.1) nw = x.name;
+            if (whenNew.textContent !== nw) whenNew.textContent = nw;
             if (e > end + .6) when.classList.add('is-done'); else busy = true;
           }
           if (busy) typing = requestAnimationFrame(frame); else playing(false);
@@ -367,11 +395,14 @@
     const venueWords = new Set([...venue.values()].flat().filter(w => !/^\d+$/.test(w)));
     let type = '';
     // A year with a venue name ("CHI 2025") searches venues: the venue must hold the names and the paper must be
-    // from that year, so a coauthor named Chi does not count. Anything else searches the whole entry.
+    // from that year, so a coauthor named Chi does not count; other words still narrow within that. Anything
+    // else searches the whole entry.
     const match = (p, qs) => {
       const years = qs.filter(w => /^\d{4}$/.test(w)), rest = qs.filter(w => !/^\d{4}$/.test(w));
-      if (years.length && rest.length && rest.every(w => venueWords.has(w)))
-        return years.every(y => p.dataset.year === y) && rest.every(w => venue.get(p).includes(w));
+      const vw = rest.filter(w => venueWords.has(w)), other = rest.filter(w => !venueWords.has(w));
+      // Once the query names a venue and a year, those hold as more words narrow it (Astra, round 12).
+      if (years.length && vw.length)
+        return years.every(y => p.dataset.year === y) && vw.every(w => venue.get(p).includes(w)) && other.every(w => text.get(p).includes(w));
       return qs.every(w => text.get(p).includes(w));
     };
     const run = () => {

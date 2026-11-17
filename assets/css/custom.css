@@ -646,7 +646,14 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-ys-veil::after { content: ""; position: absolute; inset: 0; pointer-events: none;   /* one crease across the middle */
   background: linear-gradient(180deg, transparent 48%, color-mix(in srgb, var(--udc-ink) 10%, transparent) 50%, transparent 52%); }
 .udc-ys-veil:hover { translate: 0 -2px; }
-.udc-ys-veil:hover > span { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+.udc-ys-veil:is(:hover, :focus-visible) > span { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+/* Controls cut to a rough edge would clip an outside focus ring: theirs sits inside (Astra, round 12). */
+.udc-ys-veil:focus-visible, .udc-map-skip:focus-visible { outline: 2px solid var(--udc-orange); outline-offset: -4px; }
+.udc-ys-pick { position: absolute; z-index: 5; display: grid; min-width: 14rem; max-width: 16rem; padding: 4px 0; background: var(--udc-paper);
+  border: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .74rem; }
+.udc-ys-pick[hidden] { display: none; }
+.udc-ys-pickitem { display: block; padding: 6px 12px; color: var(--udc-ink); text-decoration: none; }
+.udc-ys-pickitem:is(:hover, :focus-visible) { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; outline: none; }
 @keyframes udc-flap-lift { to { transform: perspective(600px) rotateX(80deg); opacity: 0; } }
 .udc-ys-veil.is-lifting { animation: udc-flap-lift .45s ease-in forwards; pointer-events: none; }
 .udc-ys-veil[hidden], .udc-ys-back[hidden] { display: none; }
@@ -752,6 +759,8 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-when { position: absolute; z-index: 1; left: 57%; bottom: 9%; margin: 0; font-family: var(--udc-motto-face); font-style: italic;
   font-size: clamp(.95rem, .6rem + 1.2vw, 1.7rem); color: var(--udc-ink); transition: opacity .8s; pointer-events: none; }
 .udc-map-when.is-done { opacity: 0; }
+.udc-map-when > span { display: block; }
+.udc-map-when-new { font-family: var(--udc-sign); font-style: normal; font-weight: 700; font-size: .5em; letter-spacing: .08em; text-transform: uppercase; color: var(--udc-ink-2); min-height: 1.3em; }
 @media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; } }
 /* Skip (UD): while the map plays, a click or tap on it, or the Skip button, shows it finished at once. */
 /* Noticeable but quiet (UD): full-ink letters with the orange underline used for links, on a light patch of paper so
