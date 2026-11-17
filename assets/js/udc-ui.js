@@ -290,39 +290,48 @@
       // keeping its space until then; the drawing waits for it (times from flightmap.py; UD, 2026-11-16).
       // Without the script, or with less motion asked for, the key is simply there.
       const details = plate.closest('details');
-      // Events type out the same way, and as each begins its airport's dot and list entry flash (UD, 2026-11-17).
-      const keys = [...fig.querySelectorAll('.udc-map-key > div[data-t], .udc-map-events li[data-t]')].map(div => {
+      const keys = [...fig.querySelectorAll('.udc-map-key > div[data-t]')].map(div => {
         const chars = [];
-        div.querySelectorAll('dt, dd, .udc-map-ev > b, .udc-map-ev-name, .udc-map-ev > i').forEach(el => {
+        div.querySelectorAll('dt, dd').forEach(el => {
           const text = el.textContent; el.textContent = '';
           for (const ch of text) { const sp = document.createElement('span'); sp.textContent = ch; el.append(sp); chars.push(sp); }
         });
-        return { div, t: +div.dataset.t, dur: +div.dataset.dur, chars, code: div.querySelector('.udc-map-ev')?.dataset.code };
+        return { div, t: +div.dataset.t, dur: +div.dataset.dur, chars };
       });
-      const flash = code => {
-        const els = [ports.find(p => p.dataset.code === code), picks.find(p => p.dataset.code === code)?.closest('li')].filter(Boolean);
-        els.forEach(el => el.classList.add('is-flash'));
-        setTimeout(() => els.forEach(el => el.classList.remove('is-flash')), 900);
-      };
       const when = plate.querySelector('.udc-map-when');
       const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
-      // The date line also names an airport while it first arrives, during its pause (Astra, round 12).
-      const whenDate = document.createElement('span'), whenNew = document.createElement('span');
-      whenNew.className = 'udc-map-when-new'; when?.append(whenDate, whenNew);
-      const named = [...fig.querySelectorAll('.udc-map-ports li')].map(li => ({ t: parseFloat(li.style.getPropertyValue('--t')) || 0,
-        name: li.querySelector('b + span')?.firstChild?.textContent.trim() || '' })).filter(x => x.t > 0).sort((a, b) => a.t - b.t);
+      // Under the date, the caption (UD, 2026-11-17): a new airport's flag, code and name type out, then the event
+      // its flight was for; as the event begins, the airport's dot flashes. Times and texts from flightmap.py.
+      const caps = when ? JSON.parse(when.dataset.caps || '[]') : [];
+      const whenDate = document.createElement('span'), whenAp = document.createElement('span'), whenEv = document.createElement('span');
+      whenAp.className = 'udc-map-when-ap'; whenEv.className = 'udc-map-when-ev'; when?.append(whenDate, whenAp, whenEv);
+      const typed = (el, text) => { el.replaceChildren(); return [...text].map(ch => { const s = document.createElement('span'); s.textContent = ch; s.style.visibility = 'hidden'; el.append(s); return s; }); };
+      let cap = null, c1 = [], c2 = [], flag = null;
+      const setCap = c => {
+        cap = c; whenAp.replaceChildren(); whenEv.replaceChildren(); c1 = []; c2 = []; flag = null;
+        if (!c) return;
+        const pick = picks.find(p => p.dataset.code === c.code);
+        flag = pick?.querySelector('.udc-map-flag')?.cloneNode(); if (flag) { flag.style.visibility = 'hidden'; whenAp.append(flag); }
+        const code = document.createElement('b'), name = document.createElement('span'); whenAp.append(code, ' ', name);
+        c1 = [...typed(code, c.code), ...typed(name, pick?.querySelector('b + span')?.firstChild?.textContent.trim() || '')];
+        if (c.ev) c2 = typed(whenEv, c.ev);
+      };
+      const flashDot = code => {
+        const p = ports.find(x => x.dataset.code === code); if (!p) return;
+        p.classList.add('is-flash'); setTimeout(() => p.classList.remove('is-flash'), 900);
+      };
       const skipBtn = fig.querySelector('.udc-map-skip');
       let typing = 0;
-      // While it plays, airports not yet reached in the list can't be focused or chosen (Astra, round 11).
-      const listItems = [...fig.querySelectorAll('.udc-map-ports li, .udc-map-events li')].map(li => ({ li, t: parseFloat(li.style.getPropertyValue('--t')) || 0 }));
+      // While it plays, the two lists under the map stay hidden and out of reach; they appear complete at the end.
+      const lists = [...fig.querySelectorAll('.udc-map-events, .udc-map-ports')];
       const playing = on => {
         details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on;
-        if (!on) listItems.forEach(x => { x.li.inert = false; });
+        lists.forEach(l => { l.inert = on; });
       };
       const skip = () => {
         cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false);
         keys.forEach(k => { k.done = true; k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
-        if (when) { whenDate.textContent = dates[dates.length - 1]?.[1] || ''; whenNew.textContent = ''; when.classList.add('is-done'); }
+        if (when) { whenDate.textContent = dates[dates.length - 1]?.[1] || ''; setCap(null); when.classList.add('is-done'); }
       };
       skipBtn?.addEventListener('click', e => { e.stopPropagation(); skip(); });
       // While it plays, a click on the map skips instead of naming an airport (capture: before the map's own handler).
@@ -332,27 +341,35 @@
         details?.classList.remove('is-skipped');
         const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
         keys.forEach(k => { const hide = !still && !k.done; k.div.toggleAttribute('data-wait', hide); k.chars.forEach(c => { c.style.visibility = hide ? 'hidden' : ''; }); });
-        if (when) { when.hidden = still; when.classList.remove('is-done'); whenDate.textContent = dates[0]?.[1] || ''; whenNew.textContent = ''; }
+        if (when) { when.hidden = still; when.classList.remove('is-done'); whenDate.textContent = dates[0]?.[1] || ''; setCap(null); }
         if (still) return;
         playing(true);
-        listItems.forEach(x => { x.li.inert = x.t > 0; });
         const t0 = performance.now() + 500;
         const frame = now => {
           let busy = false;
           keys.forEach(k => {
             const n = Math.floor(Math.max(0, (now - t0) / 1000 - k.t) / k.dur * k.chars.length);
             if (k.done) return;
-            if (n > 0 && k.div.hasAttribute('data-wait')) { k.div.removeAttribute('data-wait'); if (k.code) flash(k.code); }
+            if (n > 0) k.div.removeAttribute('data-wait');
             k.chars.forEach((c, i) => { if (i < n) c.style.visibility = ''; });
             if (n < k.chars.length) busy = true; else k.done = true;
           });
           const e = (now - t0) / 1000;
-          listItems.forEach(x => { if (x.li.inert && e >= x.t) x.li.inert = false; });
           if (when) {
             let d = dates[0]; for (const x of dates) if (x[0] <= e) d = x;
             if (d && whenDate.textContent !== d[1]) whenDate.textContent = d[1];
-            let nw = ''; for (const x of named) if (x.t <= e && e < x.t + 1.1) nw = x.name;
-            if (whenNew.textContent !== nw) whenNew.textContent = nw;
+            let c = null; for (const x of caps) if (x.t <= e && e < x.end) c = x;
+            if (c !== cap) setCap(c);
+            if (cap) {
+              const n1 = cap.d1 > 0 ? Math.floor((e - cap.t) / cap.d1 * c1.length) : c1.length;   // a connection: at once
+              if (flag && n1 > 0) flag.style.visibility = '';
+              c1.forEach((s, i) => { if (i < n1) s.style.visibility = ''; });
+              if (cap.ev) {
+                const n2 = Math.floor((e - cap.t2) / cap.d2 * c2.length);
+                if (n2 > 0 && !cap.flashed) { cap.flashed = true; flashDot(cap.code); }
+                c2.forEach((s, i) => { if (i < n2) s.style.visibility = ''; });
+              }
+            }
             if (e > end + .6) when.classList.add('is-done'); else busy = true;
           }
           if (busy) typing = requestAnimationFrame(frame); else playing(false);

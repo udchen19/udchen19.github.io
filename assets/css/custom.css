@@ -700,9 +700,11 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
   animation: udc-grow .3s ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 .udc-js .udc-map[open] .udc-map-name { -webkit-mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat; mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat;
   mask-type: alpha; animation: udc-write var(--label) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
-.udc-js .udc-map[open] :is(.udc-map-cap, .udc-map-ports, .udc-map-events) { animation: udc-fade-in .5s .5s both; }
+.udc-js .udc-map[open] .udc-map-cap { animation: udc-fade-in .5s .5s both; }
 /* The airport list fills in as the map reaches each airport; until then its place stays blank (UD). */
-.udc-js .udc-map[open] .udc-map-ports li { animation: udc-fade-in var(--list, .45s) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
+/* The two lists under the map wait out the journey and appear complete when it ends (UD, 2026-11-17). */
+.udc-map-events, .udc-map-ports { transition: opacity .6s ease-out; }
+.udc-map.is-playing :is(.udc-map-events, .udc-map-ports) { opacity: 0; }
 /* A flight on a route already drawn: the line is drawn again in the direction flown, darker, then fades back. */
 .udc-map-fly { fill: none; stroke: var(--udc-ink); stroke-width: 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0; pointer-events: none; }
 @keyframes udc-fly { 0% { stroke-dashoffset: 1; opacity: 1; } 65% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
@@ -750,11 +752,15 @@ button.udc-map-pick { cursor: pointer; }
   font-size: clamp(.95rem, .6rem + 1.2vw, 1.7rem); color: var(--udc-ink); transition: opacity .8s; pointer-events: none; }
 .udc-map-when.is-done { opacity: 0; }
 .udc-map-when > span { display: block; }
-.udc-map-when-new { font-family: var(--udc-sign); font-style: normal; font-weight: 700; font-size: .5em; letter-spacing: .08em; text-transform: uppercase; color: var(--udc-ink-2); min-height: 1.3em; }
+/* Under the date: a new airport (flag, code, name) and the event its flight was for (UD, 2026-11-17). */
+.udc-map-when-ap { font-family: var(--udc-sign); font-style: normal; font-size: .5em; color: var(--udc-ink); min-height: 1.4em; margin-top: 2px; }
+.udc-map-when-ap b { font-weight: 700; letter-spacing: .06em; }
+.udc-map-when-ap .udc-map-flag { display: inline-block; vertical-align: -1px; top: 0; margin-right: 5px; }
+.udc-map-when-ev { font-family: var(--udc-text); font-size: .55em; color: var(--udc-ink); min-height: 1.4em; }
 /* Routes run under the date: it sits on a patch of paper, like Skip, and the airport's name stays on one line. */
 .udc-map-when { padding: 2px 8px; background: color-mix(in srgb, var(--udc-paper) 82%, transparent); clip-path: var(--udc-cut-plate); }
-.udc-map-when-new { white-space: nowrap; }
-@media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; left: auto; right: 3%; text-align: right; } .udc-map-when-new { font-size: .66rem; } }   /* the airport's name as clear as Skip (Astra, round 13) */
+.udc-map-when-ap, .udc-map-when-ev { white-space: nowrap; }
+@media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; left: auto; right: 3%; text-align: right; } .udc-map-when-ap, .udc-map-when-ev { font-size: .66rem; } }   /* the airport's name as clear as Skip (Astra, round 13) */
 /* Skip (UD): while the map plays, a click or tap on it, or the Skip button, shows it finished at once. */
 /* Noticeable but quiet (UD): full-ink letters with the orange underline used for links, on a light patch of paper so
    the map's routes don't run through them. */
@@ -774,11 +780,9 @@ button.udc-map-pick { cursor: pointer; }
 /* Airports only passed through on the way elsewhere print a shade lighter, dot and list entry (UD, 2026-11-17). */
 .udc-map-port.is-via:not(.is-on) { fill: var(--udc-ink-2); }
 .udc-map-ports li.is-via .udc-map-pick { opacity: .62; }   /* on the entry, not the li: the li's fade-in holds its opacity */
-/* As an event types out, its airport's dot and list entry flash orange (UD, 2026-11-17). */
+/* As an event types out in the caption, its airport's dot flashes orange (UD, 2026-11-17). */
 .udc-map-port { transition: fill .5s ease-out; }
 .udc-map-port.is-flash, .udc-map-port.is-via.is-flash { fill: var(--udc-orange); }
-.udc-map-ports li .udc-map-pick { transition: color .5s ease-out, opacity .5s ease-out; }
-.udc-map-ports li.is-flash .udc-map-pick { opacity: 1; color: var(--udc-orange); }
 /* What took me there: one line per event, year first, by date; set like the airport list, the place in italics. */
 .udc-map-events { margin-top: 12px; }
 .udc-map-events ol { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0 16px; }

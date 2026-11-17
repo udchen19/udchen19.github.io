@@ -178,17 +178,17 @@ for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places",
     places.append({"name": pl["name"], "note": pl["note"], "airports": pl["airports"], "label": pl.get("label", "ne"),
                    "x": dots[0][0], "y": dots[0][1], "dots": dots, "o": min(first[c] for c in pl["airports"])[0], "arr": min(first[c] for c in pl["airports"])[1]})
 # Timing for the drawing (UD, 2026-11-16), in seconds from the start. Each flight, strictly in turn:
-#   1+2  at the departure, if new: its dot and its entry in the airport list; if it is one of the four places
-#        and not yet shown, its dot and name on the map, then its entry in the key types out;
+#   1+2  at the departure, if new: its dot, then its line in the map's caption; if it is one of the four places
+#        and not yet shown, its name on the map, then its entry in the key types out;
 #   3    the route draws (or, flown before, flashes);
 #   4+5  at the arrival, the same as 1+2.
 # Only 1 with 2, and 4 with 5, run together. Flights are drawn one after another,
 # each starting when the one before has landed, at one steady speed: a line's time follows its length on the
 # map (at least MIN), scaled so the whole run of flights takes RUN. When a flight first reaches one of the
 # places, its dot and name appear (LABEL) and its entry in the key below types out before the next line starts;
-# a flight reaching any new airport waits for that airport to appear in the list below (LIST). Written into the data so the page
+# a flight reaching any new airport waits for that airport's line in the caption. Written into the data so the page
 # needs no arithmetic of its own.
-RUN, MIN, BEAT, LABEL, CPS, LIST = 13.0, 0.12, 0.2, 0.7, 60.0, 0.45   # CPS: key typing speed; LIST: an airport appearing in the list;
+RUN, MIN, BEAT, LABEL, CPS = 13.0, 0.12, 0.2, 0.7, 60.0   # CPS: typing speed, key and caption;
 # BEAT: a pause after every step, so each comes to rest before the next (UD); NEW: the longer pause after a new
 # airport or place; BRISK, QUICK: a familiar flight's share of the time, and its pause (UD, after Astra round 11)
 NEW, BRISK, QUICK = 0.6, 0.4, 0.05
@@ -207,19 +207,38 @@ again = {f["i"] for f in flights}
 REPEAT = 0.6   # a flash over a route already drawn runs at this share of a first drawing's time (UD: repeats faster)
 slots = [round(d * REPEAT / FLASH, 3) if li in again else d for li, d in enumerate(durs)]
 place_of = {c: k for k, pl in enumerate(places) for c in pl["airports"]}
+# The caption on the map (UD, 2026-11-17): under the running date, a new airport's flag, code and name type out
+# (line 1), then the event the flight was for, if any (line 2); the lists under the map stay hidden until the end.
+# GROW: the dot appears first; a caption stays until the next flight after it has finished.
+GROW = 0.3
+name_of = {a["code"]: a["name"] for a in airports}
+caps = []
+HOLD = 0.6   # how long a connection's name, shown at once, stays before the flight goes on
+def caption(code, when, typed=True):
+    """Line 1 for `code` from `when` (after its dot): typed out, or shown at once; returns when it has finished."""
+    c = {"t": round(when + GROW, 3), "code": code, "d1": round(len(f"{code} {name_of[code]}") / CPS, 3) if typed else 0}
+    caps.append(c)
+    return c["t"] + (c["d1"] if typed else HOLD)
 shown, t, at, leg_t = set(), 0.0, {}, []
-def reach(code, when):
-    """An airport first touched at `when`; returns when the next line may start (after a place's name)."""
-    if code in at: return when
-    at[code] = when                            # a new airport: its entry in the list appears before the next flight
+capped, stayed = set(), set()   # airports named in the caption at all; named on a real stay (typed)
+def reach(code, when, via=False, depart=False):
+    """An airport touched at `when`; returns when the next line may start. A connection names a new airport at
+    once; the first real stay types its name out, even if it was named before (UD, 2026-11-17). Leaving an
+    airport names it only if it is new (the stay before was not flown in)."""
+    new = code not in at
+    if new: at[code] = when                     # a new airport: its dot first
+    if depart and not new: return when
+    if via and code not in capped: capped.add(code); when = caption(code, when, typed=False) + NEW
+    elif not via and code not in stayed: capped.add(code); stayed.add(code); when = caption(code, when) + NEW
+    if not new: return when
     k = place_of.get(code)
-    if k is None or k in shown: return when + LIST + NEW
+    if k is None or k in shown: return when
     shown.add(k); pl = places[k]
     # The dot and name on the map (LABEL), then the place's entry in the key types out, name and note,
     # before the next flight (UD, 2026-11-16).
-    pl["t"] = round(when, 3); pl["kt"] = round(when + LABEL, 3)
+    pl["t"] = round(when - NEW, 3); pl["kt"] = round(pl["t"] + LABEL, 3)
     pl["kd"] = round((len(pl["name"]) + len(pl["note"])) / CPS, 3)
-    return max(when + LIST, when + LABEL + pl["kd"]) + NEW
+    return pl["kt"] + pl["kd"] + NEW
 # Events (UD, 2026-11-17): each belongs to the flight that arrived for it. After that arrival (its airport and
 # place shown), its line in "What took me there" types out before the next flight starts.
 events = yaml.safe_load((repo / "data/flights.yaml").read_text()).get("events", [])
@@ -232,13 +251,18 @@ for li, leg in enumerate(legs):
     # Familiar: a route already drawn between two airports already shown. Nothing new appears, so it runs brisk;
     # anything new keeps its full time and is followed by a longer pause (UD, after Astra round 11).
     familiar = li in again and leg[1] in at and leg[2] in at
-    t = reach(leg[1], t)                        # a departure from a new place: its name first
+    t = reach(leg[1], t, depart=True)           # a departure from a new place: its name first
     leg_t.append(round(t, 3))
     if familiar: slots[li] = round(slots[li] * BRISK, 3)
-    t = reach(leg[2], t + slots[li] + (QUICK if familiar else BEAT))   # rest; then a new airport / place
+    t = reach(leg[2], t + slots[li] + (QUICK if familiar else BEAT), via=bool(leg[4:]))   # rest; then a new airport / place
     for e in ev_at.get(li, []):
-        e["t"] = round(t, 3); e["kd"] = round(len(f"{e['year']} {e['name']} {e.get('city', '')}") / CPS, 3)
-        t = e["t"] + e["kd"] + NEW
+        # The event's line 2, under its airport's line 1; an airport reached before gets line 1 again first.
+        c = caps[-1] if caps and caps[-1]["code"] == e["airport"] and caps[-1]["t"] >= leg_t[li] else None
+        if c is None:
+            t = caption(e["airport"], t - GROW + BEAT); c = caps[-1]
+        c["ev"] = f"{e['name']}, {e['city']}" if e.get("city") else e["name"]
+        c["t2"] = round(t + BEAT, 3); c["d2"] = round(len(c["ev"]) / CPS, 3)
+        t = c["t2"] + c["d2"] + NEW
 # The running date: the month and year of the flight being drawn, from its start (only when it changes).
 MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 dates = []
@@ -248,6 +272,10 @@ for li, leg in enumerate(legs):
 for r in routes: r["t"], r["dur"] = leg_t[r["o"]], durs[r["o"]]
 for f in flights: f["t"], f["dur"] = leg_t[f["i"]], slots[f["i"]]
 for ap in airports: ap["t"] = round(at[ap["code"]], 3)
+# Each caption stays until the next flight that starts after it has finished typing.
+for c in caps:
+    done = c.get("t2", c["t"]) + c.get("d2", c["d1"])
+    c["end"] = next((x for x in leg_t if x >= done), round(t, 3))
 print(f"drawing takes {t:.1f} s")
-(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "label": LABEL, "list": LIST, "dates": dates, "end": round(t, 3), "routes": routes, "flights": flights, "airports": airports, "places": places, "events": events}, ensure_ascii=False))
+(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "label": LABEL, "dates": dates, "end": round(t, 3), "routes": routes, "flights": flights, "airports": airports, "places": places, "events": events, "caps": caps}, ensure_ascii=False))
 print("routes", len(routes), "airports", len(airports), "places", len(places))

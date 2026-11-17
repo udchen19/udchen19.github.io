@@ -87,7 +87,7 @@
          routes ink themselves in, in the order the flights were taken; each airport and place appears with the
          first flight that reached it; a place's name finishes before the next line starts. Times come from
          flightmap.py (UD, 2026-11-16). */}}
-  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s); --label: %vs; --list: %vs" $land.RelPermalink $m.label $m.list | safeCSS }}">
+  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s); --label: %vs" $land.RelPermalink $m.label | safeCSS }}">
     <summary class="udc-map-summary">
       <span class="udc-map-folded" aria-hidden="true"><span class="udc-map-folded-land"></span></span>
       <span class="udc-map-title">Where I’ve wandered</span>
@@ -97,7 +97,7 @@
       <div class="udc-map-plate" style="aspect-ratio: {{ $m.w }} / {{ $m.h }}">
       <span class="udc-map-land" aria-hidden="true"></span>
       {{- /* The running date while the map draws: month and year of the flight being drawn (udc-ui.js). */}}
-      <p class="udc-map-when" aria-hidden="true" data-dates="{{ $m.dates | jsonify }}" data-end="{{ $m.end }}" hidden></p>
+      <p class="udc-map-when" aria-hidden="true" data-dates="{{ $m.dates | jsonify }}" data-caps="{{ $m.caps | jsonify }}" data-end="{{ $m.end }}" hidden></p>
       <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
         {{- range $m.routes }}
         <path class="udc-map-leg" pathLength="1" style="--t: {{ .t }}; --dur: {{ .dur }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
@@ -138,14 +138,15 @@
              settles dots that overlap (UD, after Astra's review, round 6). Outside the caption, which names
              the map for screen readers. Without the script the names read as a plain list; the script makes
              each one a button (Astra, round 7). The country is spoken once, for the flag. */}}
-      {{- /* What took me there (UD, 2026-11-17): the events behind some of the trips, by date. During the journey each
-             types out when its flight lands; pressing one marks its airport on the map, as the airport list does. */}}
+      {{- /* What took me there (UD, 2026-11-17): the events behind some of the trips, by date. During the journey it
+             stays hidden (each event types out in the map's caption instead); pressing one marks its airport on the
+             map, as the airport list does. */}}
       {{- with $m.events }}
       <div class="udc-map-events">
         <p class="udc-label" id="udc-map-events-title">What took me there</p>
         <ol aria-labelledby="udc-map-events-title">
           {{- range . }}
-          <li style="--t: {{ .t }}" data-t="{{ .t }}" data-dur="{{ .kd }}"><span class="udc-map-ev" data-code="{{ .airport }}"><b>{{ .year }}</b> <span class="udc-map-ev-name">{{ .name }}</span>{{ with .city }} <i>{{ . }}</i>{{ end }}</span></li>
+          <li><span class="udc-map-ev" data-code="{{ .airport }}"><b>{{ .year }}</b> <span class="udc-map-ev-name">{{ .name }}</span>{{ with .city }} <i>{{ . }}</i>{{ end }}</span></li>
           {{- end }}
         </ol>
       </div>
@@ -154,7 +155,7 @@
         <p class="udc-label" id="udc-map-ports-title">Airports</p>
         <ul aria-labelledby="udc-map-ports-title">
           {{- range sort $m.airports "code" }}
-          <li style="--t: {{ .t }}"{{ if .via }} class="is-via"{{ end }}><span class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}<span class="udc-visually-hidden">, {{ .country }}</span></span></span></li>
+          <li{{ if .via }} class="is-via"{{ end }}><span class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}<span class="udc-visually-hidden">, {{ .country }}</span></span></span></li>
           {{- end }}
         </ul>
       </div>
