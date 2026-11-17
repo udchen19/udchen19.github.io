@@ -170,7 +170,8 @@ for leg in legs:
 no_cc = [c for c in codes if not cc_of(icao.get(c, ""))]
 if no_cc:
     sys.exit(f"stop: no country for {no_cc}; add its ICAO letters to ICAO_CC")
-airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "country": COUNTRY[cc_of(icao[c])], "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c], "o": first[c][0], "arr": first[c][1]} for c in codes]
+transfer = set(yaml.safe_load((repo / "data/flights.yaml").read_text()).get("transfer", []))   # stops only passed through (UD)
+airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "country": COUNTRY[cc_of(icao[c])], "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c], "o": first[c][0], "arr": first[c][1], "via": int(c in transfer)} for c in codes]
 places = []
 for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places", []):
     dots = [[round(v, 1) for v in proj_pt(*pos[c])] for c in pl["airports"]]   # the name sits by the first

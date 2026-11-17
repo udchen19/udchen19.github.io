@@ -771,6 +771,9 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-ink); }
 .udc-map-cap p { margin: 0; }
 .udc-map-port { fill: var(--udc-ink); stroke: var(--udc-paper); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+/* Airports only passed through on the way elsewhere print a shade lighter, dot and list entry (UD, 2026-11-17). */
+.udc-map-port.is-via:not(.is-on) { fill: var(--udc-ink-2); }
+.udc-map-ports li.is-via { opacity: .62; }
 .udc-map-cap { margin-top: 6px; font-family: var(--udc-sign); font-size: .7rem; color: var(--udc-ink-2); }
 .udc-map-plate { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
 
