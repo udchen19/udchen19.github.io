@@ -106,7 +106,7 @@ life_lanes:
 life:
   - {date: '2026-09', lane: memories, text: "Back in the UK after presenting at MobileHCI 2026, my second return. Ran and cycled the streets I once lived on; Legoland was as good as ever for this big kid."}
   - {date: '2026-08', lane: memories, text: "Watched summer Koshien at Koshien for the first time."}
-  - {date: '2026-08', lane: challenges, text: "Moved to Urbana-Champaign for my M.S.: the first time I really left home, came out of my shell and started my own things."}
+  - {date: '2026-08', lane: challenges, text: "Moved to Champaign for my M.S.: the first time I really left home, came out of my shell and started my own things."}
   - {date: '2026-03', lane: memories, text: "Flew to Tokyo to cheer on Team Taiwan at the WBC."}
   - {date: '2026-01', lane: challenges, text: "Full marathon PB: 5:15:00."}
   - {date: '2026-01', lane: challenges, text: "Skiing, second time. Still scary."}
