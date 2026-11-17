@@ -617,7 +617,8 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
   paint-order: stroke; stroke: var(--udc-paper); stroke-width: 5px; stroke-linejoin: round; }
 @media (max-width: 640px) { .udc-map-place text { display: none; } }
 .udc-map-tip { position: absolute; z-index: 2; margin: 0; translate: -50% calc(-100% - 10px); padding: 2px 7px; background: var(--udc-paper);
-  border: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; white-space: nowrap; pointer-events: none; }
+  border: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; white-space: pre; line-height: 1.5; pointer-events: none; }
+.udc-map-tip.is-below { translate: -50% 10px; }
 .udc-map-tip[hidden] { display: none; }
 .udc-map-port, .udc-map-place circle { cursor: pointer; }   /* 6px here; the key below names the places */
 .udc-map-port:hover, .udc-map-place:hover circle { stroke: var(--udc-orange); stroke-width: 2.5; }
@@ -720,6 +721,12 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-brief { grid-template-columns: minmax(0, 1fr); }
   .udc-brief-photo { width: 100%; }
 }
+
+/* Blox's notices ("Copied", from Cite) set their colour inline; in the site's ink and paper instead of
+   green, which fell to 2.5:1 (Astra review, round 6). */
+#hb-notification-container .hb-notification { background: var(--udc-ink) !important; color: var(--udc-paper) !important;
+  border-radius: 0 !important; box-shadow: none !important; font-family: var(--udc-sign); font-size: .8125rem; }
+#hb-notification-container .hb-notification * { color: inherit !important; }
 
 /* ================================================== accessibility and print */
 /* Skip link: off-screen until it has keyboard focus, then a small ink label at the top left. */

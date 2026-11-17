@@ -74,26 +74,33 @@
         if (btn && btn.getAttribute('aria-pressed') !== 'true') { btn.setAttribute('aria-pressed', 'true'); apply(); }
       });
     }
-    // Flight map: a tap or click on a dot shows its airport (hover alone does not exist on phones).
-    // Place dots sit on airport dots; a tap there shows the airport under it.
+    // Flight map: a tap or click shows the airport under it (hover alone does not exist on phones).
+    // Airports can sit a few px apart (London's three, Taipei's two), so the label lists the airports whose
+    // dots meet the tap point (up to four, nearest first) instead of naming whichever dot is drawn on top.
+    // It sits above the dot, or below when there is no room above; it never leaves the figure.
     const plate = document.querySelector('.udc-map-plate');
     if (plate) {
-      const svg = plate.querySelector('svg'); const vb = svg.viewBox.baseVal;
+      const svg = plate.querySelector('svg'); const vb = svg.viewBox.baseVal; const fig = plate.parentElement;
       const tip = document.createElement('p'); tip.className = 'udc-map-tip'; tip.hidden = true;
-      tip.setAttribute('aria-live', 'polite'); plate.parentElement.append(tip);   // outside the plate: it clips and carries the ink mask
+      tip.setAttribute('aria-live', 'polite'); fig.append(tip);   // outside the plate: it clips and carries the ink mask
       const ports = [...svg.querySelectorAll('.udc-map-port')];
       svg.addEventListener('click', e => {
-        const c = e.target.closest('circle'); if (!c) { tip.hidden = true; return; }
-        const port = c.classList.contains('udc-map-port') ? c
-          : ports.find(p => p.getAttribute('cx') === c.getAttribute('cx') && p.getAttribute('cy') === c.getAttribute('cy'));
-        if (!port) return;
-        tip.textContent = port.querySelector('title').textContent;
+        const scale = plate.offsetWidth / vb.width;                // CSS px per map unit
+        const r = svg.getBoundingClientRect();
+        const ux = vb.x + (e.clientX - r.left) / scale, uy = vb.y + (e.clientY - r.top) / scale;
+        const reach = 6 / scale;                                   // 6 CSS px, or the dot's own radius
+        const near = ports.map(p => ({ p, d: Math.hypot(p.cx.baseVal.value - ux, p.cy.baseVal.value - uy) }))
+          .filter(o => o.d <= Math.max(reach, o.p.r.baseVal.value)).sort((a, b) => a.d - b.d).slice(0, 4);
+        if (!near.length) { tip.hidden = true; return; }
+        tip.textContent = near.map(o => o.p.querySelector('title').textContent).join('\n');
         tip.hidden = false;
-        // Centred over the dot, but kept inside the figure (dots near an edge would push it out).
-        const fig = plate.parentElement.clientWidth, half = tip.offsetWidth / 2;
-        const x = plate.offsetLeft + (port.cx.baseVal.value - vb.x) / vb.width * plate.offsetWidth;
-        tip.style.left = Math.min(Math.max(x, half), fig - half) + 'px';
-        tip.style.top = plate.offsetTop + (port.cy.baseVal.value - vb.y) / vb.height * plate.offsetHeight + 'px';
+        const p0 = near[0].p, half = tip.offsetWidth / 2;
+        const x = plate.offsetLeft + (p0.cx.baseVal.value - vb.x) * scale;
+        const y = plate.offsetTop + (p0.cy.baseVal.value - vb.y) * scale;
+        const below = y - tip.offsetHeight - 10 < 0;
+        tip.classList.toggle('is-below', below);
+        tip.style.left = Math.min(Math.max(x, half), fig.clientWidth - half) + 'px';
+        tip.style.top = y + 'px';
       });
       document.addEventListener('click', e => { if (!svg.contains(e.target)) tip.hidden = true; });
     }
