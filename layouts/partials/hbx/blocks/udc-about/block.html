@@ -29,7 +29,6 @@
 {{- end }}
 {{- $all := sort $rows "key" "desc" -}}
 {{- /* Each entry's link is permanent: lane and start month, never its position (Astra, round 16). */}}
-{{- $seen := dict }}{{ range $all }}{{ if isset $seen .id }}{{ errorf "About timeline: two entries share the link #%s; give each an id word in data/udc.yaml" .id }}{{ end }}{{ $seen = merge $seen (dict .id true) }}{{ end -}}
 {{- $names := dict "education" "Education" "research" "Research" "teaching" "Teaching" "industry" "Industry" -}}
 {{- range $lifeLanes }}{{ $names = merge $names (dict .key .name) }}{{ end -}}
 <main id="main" class="udc-list udc-wrap udc-about" lang="en">

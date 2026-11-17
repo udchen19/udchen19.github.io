@@ -1,13 +1,9 @@
-import { spawn } from 'node:child_process'; import { mkdtempSync, rmSync, existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path'; import { tmpdir } from 'node:os';
-// Its own temporary profile and a port Chrome picks, so two runs never meet (Astra, round 16).
-const [,, url, w] = process.argv; const profile = mkdtempSync(join(process.env.UDC_SCRATCH || tmpdir(), 'chrome-w-'));
-const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', ['--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' });
+import { spawn } from 'node:child_process'; import { rmSync } from 'node:fs';
+const [,, url, w] = process.argv; const profile = process.env.UDC_SCRATCH + '/chrome-w'; rmSync(profile, { recursive: true, force: true });
+const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', ['--headless=new', '--remote-debugging-port=9335', `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const portFile = join(profile, 'DevToolsActivePort');
-for (let i = 0; i < 100 && !existsSync(portFile); i++) await sleep(100);
-const port = readFileSync(portFile, 'utf8').split('\n')[0];
-const t = await (await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, { method: 'PUT' })).json();
+for (let i = 0; i < 50; i++) { try { await fetch('http://127.0.0.1:9335/json/version'); break; } catch { await sleep(200); } }
+const t = await (await fetch('http://127.0.0.1:9335/json/new?about:blank', { method: 'PUT' })).json();
 const ws = new WebSocket(t.webSocketDebuggerUrl); await new Promise(r => ws.addEventListener('open', r, { once: true }));
 let id = 0; const pend = new Map(); ws.addEventListener('message', e => { const m = JSON.parse(e.data); if (m.id) { pend.get(m.id)?.(m); pend.delete(m.id); } });
 const send = (method, params = {}) => new Promise(r => { const i = ++id; pend.set(i, r); ws.send(JSON.stringify({ id: i, method, params })); });
@@ -18,4 +14,4 @@ const list = JSON.parse(r.result.result.value);
 const fonts = list.filter(x => /woff2/.test(x[0])), tex = list.filter(x => /\.(png|webp|jpg)/.test(x[0]));
 console.log('fonts', fonts.reduce((a, x) => a + x[2], 0), 'KB:', fonts.map(x => x[0] + ' ' + x[2]).join(', '));
 console.log('images/textures', tex.reduce((a, x) => a + x[2], 0), 'KB');
-ws.close(); chrome.kill(); await sleep(300); rmSync(profile, { recursive: true, force: true });
+ws.close(); chrome.kill();

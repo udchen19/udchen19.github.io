@@ -102,7 +102,7 @@ lead:
 # Written by UD (2026-11-16), lightly tightened by the build thread at his request.
 # Each entry: {date: 'YYYY-MM', end: 'YYYY-MM' (optional), lane: <key from life_lanes>, text: '...'}.
 # An entry's link is #tl-<lane>-<YYYY-MM>; two entries in one lane and month each add a short id word
-# (id: marathon gives #tl-challenges-2026-01-marathon). The build stops if two links collide.
+# (id: marathon gives #tl-challenges-2026-01-marathon).
 # Lanes are filters on the About page: the work lanes start selected, these start off.
 life_lanes:
   - {key: challenges, name: Challenges}

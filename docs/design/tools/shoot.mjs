@@ -1,22 +1,21 @@
 // Full-page screenshots through headless Chrome's DevTools protocol (no packages).
 // node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, media, js, eval, print}]
 // print: log the value the eval expression returns (a job with print and no out takes no picture).
-// Each run starts its own Chrome with its own temporary profile and a port Chrome picks, so runs never meet.
 import { spawn } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 const jobs = JSON.parse(readFileSync(process.argv[2], 'utf8'));
-const profile = mkdtempSync(join(process.env.UDC_SCRATCH || tmpdir(), 'chrome-'));
+const profile = join(process.env.UDC_SCRATCH || tmpdir(), 'chrome-profile');
+rmSync(profile, { recursive: true, force: true });
 const chrome = spawn('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', [
-  '--headless=new', '--remote-debugging-port=0', `--user-data-dir=${profile}`,
+  '--headless=new', '--remote-debugging-port=9333', `--user-data-dir=${profile}`,
   '--no-first-run', '--hide-scrollbars', '--force-color-profile=srgb', 'about:blank'], { stdio: 'ignore' });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const portFile = join(profile, 'DevToolsActivePort');
-for (let i = 0; i < 100 && !existsSync(portFile); i++) await sleep(100);
-const port = readFileSync(portFile, 'utf8').split('\n')[0];
-const target = await (await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, { method: 'PUT' })).json();
+let ver;
+for (let i = 0; i < 50 && !ver; i++) { try { ver = await (await fetch('http://127.0.0.1:9333/json/version')).json(); } catch { await sleep(200); } }
+const target = await (await fetch('http://127.0.0.1:9333/json/new?about:blank', { method: 'PUT' })).json();
 const ws = new WebSocket(target.webSocketDebuggerUrl);
 await new Promise(r => ws.addEventListener('open', r, { once: true }));
 let id = 0; const pending = new Map(); const events = [];
@@ -29,7 +28,7 @@ for (const j of jobs) {
   const feats = [{ name: 'prefers-color-scheme', value: j.theme || 'light' },
     { name: 'prefers-reduced-motion', value: j.reducedMotion ? 'reduce' : 'no-preference' },
     { name: 'forced-colors', value: j.forcedColors ? 'active' : 'none' }];
-  await send('Emulation.setEmulatedMedia', { media: j.media || '', features: feats });
+  await send('Emulation.setEmulatedMedia', { media: j.media || '', features: feats });   // media: 'print' to check print styles
   await send('Emulation.setScriptExecutionDisabled', { value: j.js === false });
   if (j.js === false) { await send('Network.enable'); }
   await send('Network.clearBrowserCookies');
@@ -54,4 +53,4 @@ for (const j of jobs) {
   writeFileSync(j.out, Buffer.from(shot.result.data, 'base64'));
   console.log('shot', j.out, w + 'x' + ch);
 }
-ws.close(); chrome.kill(); await sleep(300); rmSync(profile, { recursive: true, force: true });
+ws.close(); chrome.kill();
