@@ -229,11 +229,14 @@
         });
         return { div, t: +div.dataset.t, dur: +div.dataset.dur, chars };
       });
+      const when = plate.querySelector('.udc-map-when');
+      const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
       let typing = 0;
       const typeKeys = () => {
         cancelAnimationFrame(typing);
         const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
         keys.forEach(k => { k.div.toggleAttribute('data-wait', !still); k.chars.forEach(c => { c.style.visibility = still ? '' : 'hidden'; }); });
+        if (when) { when.hidden = still; when.classList.remove('is-done'); when.textContent = dates[0]?.[1] || ''; }
         if (still) return;
         const t0 = performance.now() + 500;
         const frame = now => {
@@ -244,6 +247,12 @@
             k.chars.forEach((c, i) => { if (i < n) c.style.visibility = ''; });
             if (n < k.chars.length) busy = true;
           });
+          const e = (now - t0) / 1000;
+          if (when) {
+            let d = dates[0]; for (const x of dates) if (x[0] <= e) d = x;
+            if (d && when.textContent !== d[1]) when.textContent = d[1];
+            if (e > end + .6) when.classList.add('is-done'); else busy = true;
+          }
           if (busy) typing = requestAnimationFrame(frame);
         };
         typing = requestAnimationFrame(frame);

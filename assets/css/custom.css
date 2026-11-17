@@ -699,7 +699,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
   mask-type: alpha; animation: udc-write var(--label) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 .udc-map[open] :is(.udc-map-cap, .udc-map-ports) { animation: udc-fade-in .5s .5s both; }
 /* The airport list fills in as the map reaches each airport; until then its place stays blank (UD). */
-.udc-map[open] .udc-map-ports li { animation: udc-fade-in .3s both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
+.udc-map[open] .udc-map-ports li { animation: udc-fade-in var(--list, .45s) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 /* A flight on a route already drawn: the line is drawn again in the direction flown, darker, then fades back. */
 .udc-map-fly { fill: none; stroke: var(--udc-ink); stroke-width: 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0; pointer-events: none; }
 @keyframes udc-fly { 0% { stroke-dashoffset: 1; opacity: 1; } 65% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
@@ -741,7 +741,12 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 6px 20px; margin: 8px 0 6px; }
 .udc-map-key dt { font-weight: 700; color: var(--udc-ink); text-transform: uppercase; letter-spacing: .06em; }
 .udc-map-key dt::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--udc-orange); }
-.udc-map-key > div[data-wait] dt::before { visibility: hidden; }   /* a place's dot in the key waits for its text */
+.udc-map-key > div[data-wait] dt::before { visibility: hidden; }
+/* The running date, set in the open Pacific while the map draws, then fading away (UD, 2026-11-16). */
+.udc-map-when { position: absolute; z-index: 1; left: 57%; bottom: 9%; margin: 0; font-family: var(--udc-motto-face); font-style: italic;
+  font-size: clamp(.95rem, .6rem + 1.2vw, 1.7rem); color: var(--udc-ink); transition: opacity .8s; pointer-events: none; }
+.udc-map-when.is-done { opacity: 0; }
+@media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; } }   /* a place's dot in the key waits for its text */
 .udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-ink); }
 .udc-map-cap p { margin: 0; }
 .udc-map-port { fill: var(--udc-ink); stroke: var(--udc-paper); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
