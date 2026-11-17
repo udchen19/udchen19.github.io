@@ -220,6 +220,14 @@ def reach(code, when):
     pl["t"] = round(when, 3); pl["kt"] = round(when + LABEL, 3)
     pl["kd"] = round((len(pl["name"]) + len(pl["note"])) / CPS, 3)
     return max(when + LIST, when + LABEL + pl["kd"]) + NEW
+# Events (UD, 2026-11-17): each belongs to the flight that arrived for it. After that arrival (its airport and
+# place shown), its line in "What took me there" types out before the next flight starts.
+events = yaml.safe_load((repo / "data/flights.yaml").read_text()).get("events", [])
+ev_at = {}
+for e in events:
+    li = next((i for i, l in enumerate(legs) if l[0] == e["year"] and l[3] == e["month"] and l[2] == e["airport"]), None)
+    if li is None: sys.exit(f"stop: no flight to {e['airport']} in {e['month']}/{e['year']} for {e['name']}")
+    ev_at.setdefault(li, []).append(e)
 for li, leg in enumerate(legs):
     # Familiar: a route already drawn between two airports already shown. Nothing new appears, so it runs brisk;
     # anything new keeps its full time and is followed by a longer pause (UD, after Astra round 11).
@@ -228,6 +236,9 @@ for li, leg in enumerate(legs):
     leg_t.append(round(t, 3))
     if familiar: slots[li] = round(slots[li] * BRISK, 3)
     t = reach(leg[2], t + slots[li] + (QUICK if familiar else BEAT))   # rest; then a new airport / place
+    for e in ev_at.get(li, []):
+        e["t"] = round(t, 3); e["kd"] = round(len(f"{e['year']} {e['name']} {e.get('city', '')}") / CPS, 3)
+        t = e["t"] + e["kd"] + NEW
 # The running date: the month and year of the flight being drawn, from its start (only when it changes).
 MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 dates = []
@@ -238,5 +249,5 @@ for r in routes: r["t"], r["dur"] = leg_t[r["o"]], durs[r["o"]]
 for f in flights: f["t"], f["dur"] = leg_t[f["i"]], slots[f["i"]]
 for ap in airports: ap["t"] = round(at[ap["code"]], 3)
 print(f"drawing takes {t:.1f} s")
-(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "label": LABEL, "list": LIST, "dates": dates, "end": round(t, 3), "routes": routes, "flights": flights, "airports": airports, "places": places}, ensure_ascii=False))
+(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "label": LABEL, "list": LIST, "dates": dates, "end": round(t, 3), "routes": routes, "flights": flights, "airports": airports, "places": places, "events": events}, ensure_ascii=False))
 print("routes", len(routes), "airports", len(airports), "places", len(places))

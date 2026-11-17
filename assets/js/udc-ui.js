@@ -224,6 +224,11 @@
         const b = document.createElement('button'); b.type = 'button'; b.className = s.className;
         b.dataset.code = s.dataset.code; b.append(...s.childNodes); s.replaceWith(b); return b;
       });
+      // "What took me there": each event becomes a button that picks its airport, as the list above does (UD, 2026-11-17).
+      const evs = [...fig.querySelectorAll('.udc-map-ev')].map(s => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = s.className;
+        b.dataset.code = s.dataset.code; b.append(...s.childNodes); s.replaceWith(b); return b;
+      });
       let shown = null;                                            // the airports the open label names
       // The ring clears the orange place dots (r 8 in map units) by 4 CSS px, at any width.
       const ringR = () => 8 + 4 * vb.width / plate.offsetWidth;
@@ -232,6 +237,7 @@
         ring?.setAttribute('visibility', 'hidden');
         ports.forEach(p => p.classList.remove('is-on'));
         picks.forEach(b => b.setAttribute('aria-pressed', 'false'));
+        evs.forEach(b => b.setAttribute('aria-pressed', 'false'));
       };
       // Label for one or more airports, placed by the first: above its dot, or below when there is no room.
       const show = list => {
@@ -275,18 +281,29 @@
           if (top < 0 || bottom > innerHeight) scrollBy({ top: top - 16, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
         });
       });
+      evs.forEach(b => {
+        const pk = picks.find(p => p.dataset.code === b.dataset.code);
+        b.addEventListener('click', () => { pk?.click(); b.setAttribute('aria-pressed', 'true'); });
+        b.setAttribute('aria-pressed', 'false');
+      });
       // As the map unfolds, each place's entry in the key types itself out once the drawing reaches that place,
       // keeping its space until then; the drawing waits for it (times from flightmap.py; UD, 2026-11-16).
       // Without the script, or with less motion asked for, the key is simply there.
       const details = plate.closest('details');
-      const keys = [...fig.querySelectorAll('.udc-map-key > div[data-t]')].map(div => {
+      // Events type out the same way, and as each begins its airport's dot and list entry flash (UD, 2026-11-17).
+      const keys = [...fig.querySelectorAll('.udc-map-key > div[data-t], .udc-map-events li[data-t]')].map(div => {
         const chars = [];
-        div.querySelectorAll('dt, dd').forEach(el => {
+        div.querySelectorAll('dt, dd, .udc-map-ev > b, .udc-map-ev-name, .udc-map-ev > i').forEach(el => {
           const text = el.textContent; el.textContent = '';
           for (const ch of text) { const sp = document.createElement('span'); sp.textContent = ch; el.append(sp); chars.push(sp); }
         });
-        return { div, t: +div.dataset.t, dur: +div.dataset.dur, chars };
+        return { div, t: +div.dataset.t, dur: +div.dataset.dur, chars, code: div.querySelector('.udc-map-ev')?.dataset.code };
       });
+      const flash = code => {
+        const els = [ports.find(p => p.dataset.code === code), picks.find(p => p.dataset.code === code)?.closest('li')].filter(Boolean);
+        els.forEach(el => el.classList.add('is-flash'));
+        setTimeout(() => els.forEach(el => el.classList.remove('is-flash')), 900);
+      };
       const when = plate.querySelector('.udc-map-when');
       const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
       // The date line also names an airport while it first arrives, during its pause (Astra, round 12).
@@ -297,7 +314,7 @@
       const skipBtn = fig.querySelector('.udc-map-skip');
       let typing = 0;
       // While it plays, airports not yet reached in the list can't be focused or chosen (Astra, round 11).
-      const listItems = [...fig.querySelectorAll('.udc-map-ports li')].map(li => ({ li, t: parseFloat(li.style.getPropertyValue('--t')) || 0 }));
+      const listItems = [...fig.querySelectorAll('.udc-map-ports li, .udc-map-events li')].map(li => ({ li, t: parseFloat(li.style.getPropertyValue('--t')) || 0 }));
       const playing = on => {
         details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on;
         if (!on) listItems.forEach(x => { x.li.inert = false; });
@@ -325,7 +342,7 @@
           keys.forEach(k => {
             const n = Math.floor(Math.max(0, (now - t0) / 1000 - k.t) / k.dur * k.chars.length);
             if (k.done) return;
-            if (n > 0) k.div.removeAttribute('data-wait');
+            if (n > 0 && k.div.hasAttribute('data-wait')) { k.div.removeAttribute('data-wait'); if (k.code) flash(k.code); }
             k.chars.forEach((c, i) => { if (i < n) c.style.visibility = ''; });
             if (n < k.chars.length) busy = true; else k.done = true;
           });
@@ -354,8 +371,8 @@
         show(shown);
         if (ring?.getAttribute('visibility') === 'visible') ring.setAttribute('r', ringR());
       }).observe(plate);
-      document.addEventListener('click', e => { if (!svg.contains(e.target) && !e.target.closest('.udc-map-pick')) clear(); });
-      document.addEventListener('focusin', e => { if (!e.target.closest('.udc-map-pick') && !svg.contains(e.target)) clear(); });
+      document.addEventListener('click', e => { if (!svg.contains(e.target) && !e.target.closest('.udc-map-pick, .udc-map-ev')) clear(); });
+      document.addEventListener('focusin', e => { if (!e.target.closest('.udc-map-pick, .udc-map-ev') && !svg.contains(e.target)) clear(); });
     }
   };
   // Sections list (article pages): choosing a section also opens its folded part, if it has one; the page

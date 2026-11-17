@@ -11,6 +11,20 @@ places:
   - {name: London, airports: [LHR, LGW, LTN], note: "Home from 2006 to 2010, while my parents studied here and took me along. Not British in any way, but my sarcasm began here, probably."}
   - {name: Japan, airports: [NRT, HND, KIX, ITM], label: nw, note: "The place I visit time and time again, with utmost respect, for its baseball, craftsmanship, and culture."}
   - {name: Chicago (Champaign), airports: [ORD], label: nw, note: "The first place I settled after really leaving home in 2026. Out of my shell, and time to put on a show!"}
+# The international events that took UD there (UD, 2026-11-17), listed under the map as "What took me there".
+# Each belongs to the flight that arrived for it (year, month, airport); during the journey its line types out
+# when that flight lands, and the airport's dot and list entry flash. city: where the event was, if not in its
+# name. The map marks the airport. CHI 2025 (Yokohama, late April 2025) is not listed yet: the log has no
+# flight to Japan around then.
+events:
+  - {year: 2011, month: 11, airport: AUH, name: World Robot Olympiad, city: Abu Dhabi}
+  - {year: 2015, month: 7, airport: HKG, name: Elite Maths Challenge Cup, city: Hong Kong}
+  - {year: 2019, month: 11, airport: HND, name: ICPC Yokohama Regional}
+  - {year: 2023, month: 10, airport: CUN, name: UbiComp, city: Cancún}
+  - {year: 2025, month: 9, airport: SSH, name: MobileHCI, city: Sharm el-Sheikh}
+  - {year: 2026, month: 3, airport: HND, name: World Baseball Classic, city: "Tokyo, in the stands"}
+  - {year: 2026, month: 4, airport: BCN, name: CHI, city: Barcelona}
+  - {year: 2026, month: 8, airport: LHR, name: MobileHCI, city: Swansea}
 # Airports only passed through on the way somewhere else, printed lighter on the map and in the list (UD,
 # 2026-11-17: "obvious I'm mainly there just to transfer"). From the screenshots' dates (days are not kept
 # here): every arrival left within a day for a different airport. Not transfers: Los Angeles (a day of

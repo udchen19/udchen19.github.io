@@ -138,6 +138,18 @@
              settles dots that overlap (UD, after Astra's review, round 6). Outside the caption, which names
              the map for screen readers. Without the script the names read as a plain list; the script makes
              each one a button (Astra, round 7). The country is spoken once, for the flag. */}}
+      {{- /* What took me there (UD, 2026-11-17): the events behind some of the trips, by date. During the journey each
+             types out when its flight lands; pressing one marks its airport on the map, as the airport list does. */}}
+      {{- with $m.events }}
+      <div class="udc-map-events">
+        <p class="udc-label" id="udc-map-events-title">What took me there</p>
+        <ol aria-labelledby="udc-map-events-title">
+          {{- range . }}
+          <li style="--t: {{ .t }}" data-t="{{ .t }}" data-dur="{{ .kd }}"><span class="udc-map-ev" data-code="{{ .airport }}"><b>{{ .year }}</b> <span class="udc-map-ev-name">{{ .name }}</span>{{ with .city }} <i>{{ . }}</i>{{ end }}</span></li>
+          {{- end }}
+        </ol>
+      </div>
+      {{- end }}
       <div class="udc-map-ports">
         <p class="udc-label" id="udc-map-ports-title">Airports</p>
         <ul aria-labelledby="udc-map-ports-title">

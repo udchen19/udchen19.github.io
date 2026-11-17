@@ -700,7 +700,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
   animation: udc-grow .3s ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 .udc-js .udc-map[open] .udc-map-name { -webkit-mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat; mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat;
   mask-type: alpha; animation: udc-write var(--label) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
-.udc-js .udc-map[open] :is(.udc-map-cap, .udc-map-ports) { animation: udc-fade-in .5s .5s both; }
+.udc-js .udc-map[open] :is(.udc-map-cap, .udc-map-ports, .udc-map-events) { animation: udc-fade-in .5s .5s both; }
 /* The airport list fills in as the map reaches each airport; until then its place stays blank (UD). */
 .udc-js .udc-map[open] .udc-map-ports li { animation: udc-fade-in var(--list, .45s) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 /* A flight on a route already drawn: the line is drawn again in the direction flown, darker, then fades back. */
@@ -773,7 +773,21 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-port { fill: var(--udc-ink); stroke: var(--udc-paper); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 /* Airports only passed through on the way elsewhere print a shade lighter, dot and list entry (UD, 2026-11-17). */
 .udc-map-port.is-via:not(.is-on) { fill: var(--udc-ink-2); }
-.udc-map-ports li.is-via { opacity: .62; }
+.udc-map-ports li.is-via .udc-map-pick { opacity: .62; }   /* on the entry, not the li: the li's fade-in holds its opacity */
+/* As an event types out, its airport's dot and list entry flash orange (UD, 2026-11-17). */
+.udc-map-port { transition: fill .5s ease-out; }
+.udc-map-port.is-flash, .udc-map-port.is-via.is-flash { fill: var(--udc-orange); }
+.udc-map-ports li .udc-map-pick { transition: color .5s ease-out, opacity .5s ease-out; }
+.udc-map-ports li.is-flash .udc-map-pick { opacity: 1; color: var(--udc-orange); }
+/* What took me there: one line per event, year first, by date; set like the airport list, the place in italics. */
+.udc-map-events { margin-top: 12px; }
+.udc-map-events ol { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0 16px; }
+.udc-map-ev { display: block; width: 100%; min-height: 24px; padding: 2px 0; background: none; border: 0; text-align: left; color: var(--udc-ink);
+  font-family: var(--udc-text); font-size: .82rem; }
+.udc-map-ev > b { font-family: var(--udc-sign); font-weight: 700; letter-spacing: .06em; margin-right: 4px; }
+.udc-map-ev > i { color: var(--udc-ink-2); }
+button.udc-map-ev { cursor: pointer; }
+.udc-map-ev:hover, .udc-map-ev[aria-pressed="true"] { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
 .udc-map-cap { margin-top: 6px; font-family: var(--udc-sign); font-size: .7rem; color: var(--udc-ink-2); }
 .udc-map-plate { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
 
