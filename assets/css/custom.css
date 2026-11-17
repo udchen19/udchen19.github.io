@@ -600,7 +600,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 /* Bars: the link covers the whole lane height and a few px either side, so the hit area and the
    focus ring are larger than the ink (WCAG 2.5.8; the ragged clip used to cut both). The rough-cut
    slab of ink, each with its own ragged ends (px jitter, so it holds at every width), is drawn inside. */
-.udc-ys-bar { position: absolute; top: 0; height: 24px; min-width: 7px; margin-left: -4px; padding: 0 4px; box-sizing: content-box; text-decoration: none; }
+.udc-ys-bar { position: absolute; top: 0; height: 24px; min-width: 9px; margin-left: -4px; padding: 0 4px; box-sizing: content-box; text-decoration: none; }
 /* Each kind of entry has its own ink (UD, 2026-11-17), the same in its tick box, its bars and its dot on the
    timeline, so the strip and the list read together. */
 [data-lane="education"] { --lane: var(--udc-ink); }
@@ -614,9 +614,9 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .dark [data-lane="industry"] { --lane: #A3A9B4; }
 .dark [data-lane="memories"] { --lane: #D6AE5C; }
 .dark [data-lane="challenges"] { --lane: #D08468; }
-.udc-ys-bar::after { content: ""; position: absolute; top: 6px; left: 4px; right: 4px; height: 11px; background: var(--lane, var(--udc-ink));
+.udc-ys-bar::after { content: ""; position: absolute; top: 5px; left: 4px; right: 4px; height: 13px; background: var(--lane, var(--udc-ink));
   clip-path: polygon(1px 1px, 18% 0, 47% 2px, 76% 0, calc(100% - 1px) 1px, 100% 45%, calc(100% - 2px) 100%, 63% calc(100% - 1px), 31% 100%, 2px calc(100% - 1px), 0 52%); }
-.udc-ys-lane:nth-child(odd) .udc-ys-bar::after { clip-path: polygon(0 2px, 29% 0, 58% 1px, 100% 0, calc(100% - 2px) 38%, 100% 100%, 71% calc(100% - 2px), 40% 100%, 12% calc(100% - 1px), 1px 100%, 2px 60%); top: 7px; }
+.udc-ys-lane:nth-child(odd) .udc-ys-bar::after { clip-path: polygon(0 2px, 29% 0, 58% 1px, 100% 0, calc(100% - 2px) 38%, 100% 100%, 71% calc(100% - 2px), 40% 100%, 12% calc(100% - 1px), 1px 100%, 2px 60%); top: 6px; }
 .udc-ys-track, .udc-ys-ticks { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
 .udc-ys-bar:hover::after, .udc-ys-bar:focus-visible::after { background: var(--udc-orange); }
 .udc-ys-bar:focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 0; }
@@ -782,16 +782,17 @@ button.udc-map-pick { cursor: pointer; }
 .udc-tl-lane { display: block; text-transform: uppercase; letter-spacing: .08em; font-size: .66rem; }
 /* The axis: a rough-cut rule; the node a slightly irregular blot. Both printed. */
 .udc-tl-node { position: relative; }
-/* Masked on the axis and the dot themselves: a mask on the node would cut the axis at the node's box. */
-.udc-tl-node::before, .udc-tl-node::after { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
+/* The axis wears the ink (masked on the axis itself: a mask on the node would cut it at the node's box). The dot
+   stays solid and a little larger, so each kind's colour reads (UD, 2026-11-17). */
+.udc-tl-node::before { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
 .udc-tl-node::before { content: ""; position: absolute; left: 50%; top: -10px; bottom: -14px; width: 3px; translate: -50% 0; background: var(--udc-ink);
   clip-path: polygon(0 0, 100% 1%, 70% 22%, 100% 47%, 80% 71%, 100% 100%, 10% 100%, 30% 76%, 0 52%, 25% 24%); }
 .udc-tl-row:first-child .udc-tl-node::before { top: 12px; }
 .udc-tl-row:last-child .udc-tl-node::before { bottom: auto; height: 12px; }
-.udc-tl-node::after { content: ""; position: absolute; left: 50%; top: 6px; width: 12px; height: 11px; translate: -50% 0;
+.udc-tl-node::after { content: ""; position: absolute; left: 50%; top: 5px; width: 15px; height: 14px; translate: -50% 0;
   border-radius: 54% 46% 51% 49% / 47% 55% 45% 53%; rotate: 8deg; background: var(--lane, var(--udc-ink)); box-shadow: 0 0 0 3px var(--udc-paper); }
-.udc-tl-row:nth-child(even) .udc-tl-node::after { border-radius: 47% 53% 44% 56% / 55% 46% 54% 45%; rotate: -11deg; width: 11px; }
-.udc-tl-row.is-life .udc-tl-node::after { background: var(--udc-paper); box-shadow: inset 0 0 0 2px var(--lane, var(--udc-ink)), 0 0 0 3px var(--udc-paper); }
+.udc-tl-row:nth-child(even) .udc-tl-node::after { border-radius: 47% 53% 44% 56% / 55% 46% 54% 45%; rotate: -11deg; width: 14px; }
+.udc-tl-row.is-life .udc-tl-node::after { background: var(--udc-paper); box-shadow: inset 0 0 0 3px var(--lane, var(--udc-ink)), 0 0 0 3px var(--udc-paper); }
 .udc-tl-row:target .udc-tl-desk > :first-child { text-decoration: underline 2px var(--udc-orange); text-underline-offset: .2em; }
 .udc-tl-desk h3 { margin: 0; line-height: 1.2; }
 /* School and company logos (UD, 2026-11-16): under the entry's date, beside the timeline, one box size for all so
