@@ -1,6 +1,6 @@
 /* udchen.tw — one newspaper page, printed on grey-white newsprint.
    Order: tokens → type roles → sheet (paper, creases, edges) → ink → base → rules, plates →
-   header → footer → pages → accessibility/print.
+   header → footer → pages → accessibility.
    Plan: docs/design/2026-11-redesign-plan-v2.md */
 
 /* ===================================================================== tokens */
@@ -22,9 +22,7 @@
   --udc-plate-ink: var(--udc-ink);
   color-scheme: light;
 }
-/* Night edition (plan 5; tuned in Phase 7): Thames at dusk. Screen only: print always uses the
-   light tokens, so a page printed from the night edition is ink on paper. */
-@media not print {
+/* Night edition (plan 5; tuned in Phase 7): Thames at dusk. */
 .dark {
   --udc-paper: #111A2B;
   --udc-paper-2: #18233A;
@@ -37,7 +35,6 @@
   --udc-sheet-under: #18233A;
   --udc-sheet-line: #2A3550;
   color-scheme: dark;
-}
 }
 
 /* ================================================================= type roles */
@@ -223,7 +220,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-plate { position: relative; margin: 0; background: var(--udc-paper-2); }
 .udc-plate-ink { position: absolute; inset: 0; -webkit-mask: center / 100% 100% no-repeat; mask: center / 100% 100% no-repeat; }
 .udc-plate-ink { background: var(--udc-plate-ink); -webkit-mask-image: var(--ink); mask-image: var(--ink); }
-@media not print { .dark .udc-plate-ink { -webkit-mask-image: var(--ink-night, var(--ink)); mask-image: var(--ink-night, var(--ink)); } }
+.dark .udc-plate-ink { -webkit-mask-image: var(--ink-night, var(--ink)); mask-image: var(--ink-night, var(--ink)); }
 .udc-plate.is-loaded, .udc-plate:has(.udc-plate-ink) { background: none; }
 
 /* ===================================================================== header */
@@ -582,12 +579,6 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-stream-date { margin: 0; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
 .udc-stream-title { margin: 2px 0 4px; font-family: var(--udc-text); font-weight: 600; font-size: 1.2rem; line-height: 1.3; }
 .udc-stream-sum { margin: 0; font-size: .9375rem; color: var(--udc-ink-2); }
-.udc-brief { grid-column: 1 / -1; justify-self: start; margin: 14px 0 8px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; }
-.udc-brief > .udc-stream-date, .udc-brief-title { grid-column: 1 / -1; }
-.udc-brief-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.35rem; }
-.udc-brief-photo { margin: 0; width: 240px; aspect-ratio: 3 / 2; background: var(--udc-paper-2); border: 1px solid var(--udc-ink); }
-.udc-brief-text { font-size: .9375rem; }
-.udc-brief-text p { margin: 0 0 .6em; }
 
 /* About (plan v2, 4.8; reshaped by UD 2026-11-16): a year strip, then one timeline (dates | axis
    with a node per entry | entry). Life outside research is a hidden lane in the strip; expanded, its
@@ -870,8 +861,6 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-year { grid-template-columns: minmax(0, 1fr); }
   .udc-year-plate { margin-bottom: 8px; }
   .udc-stream { grid-template-columns: minmax(0, 1fr); }
-  .udc-brief { grid-template-columns: minmax(0, 1fr); }
-  .udc-brief-photo { width: 100%; }
 }
 
 /* Blox's notices ("Copied", from Cite) set their colour inline; in the site's ink and paper instead of
@@ -880,14 +869,14 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   border-radius: 0 !important; box-shadow: none !important; font-family: var(--udc-sign); font-size: .8125rem; }
 #hb-notification-container .hb-notification * { color: inherit !important; }
 
-/* ================================================== accessibility and print */
+/* ============================================================ accessibility */
 /* Skip link: off-screen until it has keyboard focus, then a small ink label at the top left. */
 .udc-skip { position: absolute; left: var(--udc-gutter); top: -40px; z-index: 80; padding: 6px 10px; background: var(--udc-ink); color: var(--udc-paper);
   font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; }
 .udc-skip:focus { top: 8px; }
-/* Higher contrast, forced colours and print: plain sheet, solid type (plan 3.4). No creases, edges,
-   press specks or ink treatment; images keep their own print. */
-@media (prefers-contrast: more), (forced-colors: active), print {
+/* Higher contrast and forced colours: plain sheet, solid type (plan 3.4). No creases, edges, press specks
+   or ink treatment; images keep their own print. */
+@media (prefers-contrast: more), (forced-colors: active) {
   body.page-wrapper, .udc-header { background-image: none !important; }
   body.page-wrapper::after, .udc-header::after { display: none !important; }
   .udc-sheet-layer { display: none !important; }
@@ -908,28 +897,6 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-ys-filter[aria-pressed="true"]::before { background: ButtonText; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
-@media print { .page-header, .udc-footer-links { display: none !important; } body.page-wrapper { background: #fff !important; color: #000 !important; } }
-/* Print with background graphics off (the browser's default) drops anything coloured through a mask: the
-   project pictures, 陳威達, 衝啥, the school marks, the year strip, the timeline and the rules. These print
-   as drawn (Astra, round 16). */
-@media print {
-  .udc-plate-ink, .udc-name-zh::before, .udc-name-zh::after, .udc-404-cs, .udc-tl-logo.is-mask, .udc-ys-bar,
-  .udc-tl-node::before, .udc-tl-node::after, .udc-map-land, .udc-map-folded-land, .udc-rule-heavy::before,
-  .udc-rule-heavy::after, .udc-label::after { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  /* The footer photograph is a background, which print leaves out by default; its empty space pushed the
-     credit line onto a sheet of its own. In print it is gone, and the line follows the content (UD,
-     Astra round 16). */
-  .udc-footer-img { display: none; }
-  /* A video cannot play on paper and printed as an empty frame (the Kapito post's ride to work, a page and a
-     half tall); it is left out. */
-  .udc-prose video { display: none; }
-  /* Paper cannot open a fold: every fold prints open, with or without scripts, and "展開本節", a command
-     paper cannot obey, is left out; descriptive labels such as "7500+字 慎入" stay (Astra, round 17). */
-  .udc-prose details::details-content { content-visibility: visible !important; display: block !important; }
-  .udc-prose summary.udc-fold-cmd { display: none; }
-  /* Paper cannot scroll: News prints every entry, without the fade (Astra, round 16). */
-  .udc-news-list { max-height: none !important; overflow: visible; -webkit-mask: none !important; mask: none !important; }
-}
 
 /* ================================================================== headlines */
 .udc-lead-head { margin: 0 0 18px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: var(--udc-lead-size); line-height: var(--udc-lead-lh); letter-spacing: var(--udc-display-track); text-wrap: balance; color: var(--udc-ink); }
@@ -977,7 +944,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
 .udc-single-head .udc-page-title { font-size: var(--udc-article-title); }
 
-/* News items and briefs */
+/* News items */
 /* One entry per line: date in bold, then the text. Scrolls inside itself past about five lines; the
    cut falls part-way through the next line so a long list visibly continues (Astra review, round 2). */
 .udc-news-list { list-style: none; margin: 0; padding: 0; font-size: .85rem; line-height: 1.65;   /* a little quieter than the intro */

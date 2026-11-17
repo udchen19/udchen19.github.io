@@ -1,7 +1,6 @@
 // Full-page screenshots through headless Chrome's DevTools protocol (no packages).
-// node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, media, js, eval, print, pdf}]
+// node shoot.mjs <jobs.json>   jobs: [{url, out, width, height, theme: light|dark, mobile, reducedMotion, forcedColors, media, js, eval, print}]
 // print: log the value the eval expression returns (a job with print and no out takes no picture).
-// pdf: write out as a US Letter PDF, background graphics off (the browser's default), instead of a picture.
 // Each run starts its own Chrome with its own temporary profile and a port Chrome picks, so runs never meet.
 import { spawn } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, existsSync } from 'node:fs';
@@ -30,7 +29,7 @@ for (const j of jobs) {
   const feats = [{ name: 'prefers-color-scheme', value: j.theme || 'light' },
     { name: 'prefers-reduced-motion', value: j.reducedMotion ? 'reduce' : 'no-preference' },
     { name: 'forced-colors', value: j.forcedColors ? 'active' : 'none' }];
-  await send('Emulation.setEmulatedMedia', { media: j.media || '', features: feats });   // media: 'print' to check print styles
+  await send('Emulation.setEmulatedMedia', { media: j.media || '', features: feats });
   await send('Emulation.setScriptExecutionDisabled', { value: j.js === false });
   if (j.js === false) { await send('Network.enable'); }
   await send('Network.clearBrowserCookies');
@@ -49,12 +48,6 @@ for (const j of jobs) {
   if (j.selector) {
     const r = await send('Runtime.evaluate', { expression: `(() => { const b = document.querySelectorAll(${JSON.stringify(j.selector)})[${j.index || 0}].getBoundingClientRect(); return JSON.stringify({x: b.x + scrollX, y: b.y + scrollY, width: b.width, height: b.height}); })()`, returnByValue: true });
     clip = { ...JSON.parse(r.result.result.value), scale: 1 };
-  }
-  if (j.pdf) {
-    const pdf = await send('Page.printToPDF', { printBackground: false, paperWidth: 8.5, paperHeight: 11 });
-    mkdirSync(dirname(j.out), { recursive: true });
-    writeFileSync(j.out, Buffer.from(pdf.result.data, 'base64'));
-    console.log('pdf', j.out); continue;
   }
   const shot = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: true, clip });
   mkdirSync(dirname(j.out), { recursive: true });

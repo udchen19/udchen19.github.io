@@ -444,10 +444,6 @@
     form.addEventListener('submit', e => e.preventDefault());
     form.hidden = false;
   };
-  // Paper cannot open a fold: printing opens every folded section in a post, and closes them again after.
-  let printed = [];
-  addEventListener('beforeprint', () => { printed = [...document.querySelectorAll('.udc-prose details:not([open])')]; printed.forEach(d => { d.open = true; }); });
-  addEventListener('afterprint', () => { printed.forEach(d => { d.open = false; }); printed = []; });
   const start = () => { init(); newsFade(); unfold(); pubFilter(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

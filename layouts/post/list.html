@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{/* UD's Log: the dated stream. Briefs (brief: true) print in full, like newspaper briefs. */}}
+{{/* UD's Log: the dated stream. */}}
 {{- $posts := union (where site.RegularPages "Section" "post") (where site.RegularPages "Params.udc_log" true) -}}
 <main id="main" class="udc-list udc-wrap udc-log-index">
   <h1 class="udc-page-title udc-ink">{{ .Title }}</h1>
@@ -7,20 +7,11 @@
   <div class="udc-stream">
     {{ range $posts.ByDate.Reverse }}
     {{- $zh := gt (len (findRE `\p{Han}` .Title)) 3 -}}
-    {{ if .Params.brief }}{{ $brief := . }}
-    <article class="udc-brief">
-      <p class="udc-stream-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time> · Brief</p>
-      <h2 class="udc-brief-title"{{ if $zh }} lang="zh-Hant"{{ end }}>{{ .Title }}</h2>
-      {{ with .Resources.GetMatch "brief*" }}{{ $i := .Fill "480x320 webp q82" }}<figure class="udc-brief-photo"><img src="{{ $i.RelPermalink }}" width="240" height="160" alt="{{ $brief.Params.brief_alt }}"></figure>{{ end }}
-      <div class="udc-brief-text">{{ .Content }}</div>
-    </article>
-    {{ else }}
     <article class="udc-stream-item">
       <p class="udc-stream-date"><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 Jan 2006" }}</time></p>
       <h2 class="udc-stream-title"{{ if $zh }} lang="zh-Hant"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
       {{ with .Params.summary }}<p class="udc-stream-sum"{{ if gt (len (findRE `\p{Han}` .)) 3 }} lang="zh-Hant"{{ end }}>{{ . }}</p>{{ end }}
     </article>
-    {{ end }}
     {{ end }}
   </div>
 </main>

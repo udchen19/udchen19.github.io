@@ -71,8 +71,6 @@
   {{- if and (eq .Section "publication") (strings.TrimSpace $content) }}
   <h2 class="udc-label udc-role-label" lang="en">My role</h2>
   {{- end }}
-  {{- /* A whole-section fold's "展開本節" is a command, not a title: marked so print can leave it out. */}}
-  {{- $content = replace $content "<summary>展開本節</summary>" `<summary class="udc-fold-cmd">展開本節</summary>` }}
   <div class="udc-prose">
     {{ $content | safeHTML }}
   </div>
