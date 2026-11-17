@@ -4,12 +4,12 @@ bio:
   # Intro, approved by UD on 2026-11-16 (round 3, with ChatGPT's two edits). Each paragraph keeps the
   # source of every sentence; the template prints only text.
   paragraphs:
-    - text: "My research is on **personal AI agents**, the assistants that work with a person’s own information across their devices and services."
+    - text: "My research is on **personal AI agents**, the assistants that act for a person using their own information across devices and services."
       sources:
-        - "Live paragraph 1 (“integrate, interpret, and safeguard information across devices and services”), shortened."
-    - text: "My current work asks: when personal agents are acting on our behalf, how can we make sure they appropriately “keep our secrets”? It looks at **contextual privacy** in human–agent and agent–agent interactions."
+        - "Live paragraph 1 (“integrate, interpret, and safeguard information across devices and services”), shortened; \"act for a person using their own information\" (build thread, 2026-11-17) sets up both halves of the question below."
+    - text: "My current work asks: when personal agents are acting on our behalf, how can we make sure they “get things done” while appropriately “keeping our secrets”? It looks at **contextual privacy** in human–agent and agent–agent interactions."
       sources:
-        - "The question is UD's own words (2026-11-16), moved here from the Research strip at his request."
+        - "The question is UD's own words (2026-11-16, \"get things done\" added 2026-11-17; \"keep\" made \"keeping\" after \"while\")."
         - "Live paragraph 2 (the field's term)."
     - text: "Before UIUC, I spent five years with [Prof. Yung-Ju Chang](https://www.armuro.info/) at AIMEX Lab, National Yang Ming Chiao Tung University, on **intelligent notification systems**: what makes an LLM summary useful, when people are willing to give such a system feedback, what they expect from future systems, and whether an extracted task is enough to act on."
       sources:
