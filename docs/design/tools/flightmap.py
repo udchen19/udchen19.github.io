@@ -260,7 +260,11 @@ for li, leg in enumerate(legs):
         c = caps[-1] if caps and caps[-1]["code"] == e["airport"] and caps[-1]["t"] >= leg_t[li] else None
         if c is None:
             t = caption(e["airport"], t - GROW + BEAT); c = caps[-1]
-        c["ev"] = f"{e['name']}, {e['city']}" if e.get("city") else e["name"]
+        # The event's city is left out where the airport's name already says it (UD, 2026-11-17): "Abu Dhabi
+        # Int'l" above "World Robot Olympiad"; any rest stays ("Tokyo, in the stands" gives "in the stands").
+        parts = [x.strip() for x in e.get("city", "").split(",") if x.strip()]
+        if parts and parts[0] in name_of[e["airport"]]: parts = parts[1:]
+        c["ev"] = ", ".join([e["name"]] + parts)
         c["t2"] = round(t + BEAT, 3); c["d2"] = round(len(c["ev"]) / CPS, 3)
         t = c["t2"] + c["d2"] + NEW
 # The running date: the month and year of the flight being drawn, from its start (only when it changes).
