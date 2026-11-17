@@ -180,6 +180,7 @@
       const closePick = back => { if (pick.hidden) return; pick.hidden = true; if (back) pick.origin?.focus({ preventScroll: true }); };
       tl.querySelector('.udc-ys')?.addEventListener('scroll', () => closePick(false), { passive: true });
       addEventListener('scroll', () => closePick(false), { passive: true });
+      pick.addEventListener('focusout', e => { if (!pick.contains(e.relatedTarget)) closePick(false); });   // Tab out of it: it closes, focus goes on (round 14)
       pick.addEventListener('keydown', e => {
         const items = [...pick.querySelectorAll('a')], i = items.indexOf(document.activeElement);
         if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length]?.focus(); }

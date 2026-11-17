@@ -132,6 +132,9 @@ body.page-wrapper {
    Images keep their own print and stay out of it: the portrait (its own colour halftone), the name
    image, Ryan and the footer images sit above it (61–62); the worn edges stay on top (63). */
 .udc-portrait img, .udc-name-zh, .udc-brand .udc-emblem { position: relative; z-index: 61; }
+/* So do pictures and figures in posts and projects, the school marks and the flags: a speck inside a chart can
+   read as data (Astra, round 14). */
+.udc-prose :is(img, video), .udc-tl-logo, .udc-map-flag { position: relative; z-index: 61; }
 .udc-sheet-layer > .udc-edge { z-index: 63; }
 /* Blox Kit isolates every section (its own stacking context), which would keep those z-indexes
    inside the section and under the press. The site uses no section-level overlays, so undo it. */
@@ -775,6 +778,8 @@ button.udc-map-pick { cursor: pointer; }
   letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink); text-decoration: underline 1.5px var(--udc-orange); text-underline-offset: .35em; }
 .udc-map-skip:hover { text-decoration-thickness: 2.5px; }
 @media (max-width: 640px) { .udc-map-skip { top: 4px; right: 4px; min-height: 26px; padding: 3px 8px; font-size: .62rem; } }
+/* The narrowest phones: the map is too short for Skip and the date to share the right side; Skip moves left. */
+@media (max-width: 400px) { .udc-map-skip { right: auto; left: 4px; } }
 .udc-map-skip[hidden] { display: none; }
 .udc-map.is-playing .udc-map-plate { cursor: pointer; }
 .udc-map.is-skipped * { animation: none !important; }   /* a place's dot in the key waits for its text */
