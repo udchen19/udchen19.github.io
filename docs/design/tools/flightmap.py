@@ -134,9 +134,14 @@ print("map-land.png", (W * S, H * S), land_png.stat().st_size // 1024, "KB")
 
 # --------------------------------------------------------------- routes and places
 # The map marks places, not routes: every route prints faint; the places in flights.yaml print strong.
+# Order for the map's drawing (UD, 2026-11-16): each route inks in at the flight that first took it, each
+# airport appears at the first flight that touched it (on arrival, "arr" 1, or departure), each place at
+# its first airport's turn. Legs are listed in the order flown.
+first = {}
 routes, seen = [], {}
-for leg in legs:
+for li, leg in enumerate(legs):
     year, a, b = leg[:3]
+    first.setdefault(a, (li, 0)); first.setdefault(b, (li, 1))
     key = tuple(sorted((a, b)))
     if key in seen:
         routes[seen[key]]["years"].add(year); continue
@@ -151,7 +156,7 @@ for leg in legs:
         if max(ls) < LON0 or min(ls) > LON1: continue
         pieces.append("M" + " L".join(f"{proj(lo, la)[0]:.1f},{proj(lo, la)[1]:.1f}" for lo, (_, la) in zip(ls, gc)))
     seen[key] = len(routes)
-    routes.append({"d": " ".join(pieces), "years": {year}, "a": a, "b": b})
+    routes.append({"d": " ".join(pieces), "years": {year}, "a": a, "b": b, "o": li})
 for r in routes:
     r["years"] = sorted(r["years"])
 count = {}
@@ -160,11 +165,11 @@ for leg in legs:
 no_cc = [c for c in codes if not cc_of(icao.get(c, ""))]
 if no_cc:
     sys.exit(f"stop: no country for {no_cc}; add its ICAO letters to ICAO_CC")
-airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "country": COUNTRY[cc_of(icao[c])], "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c]} for c in codes]
+airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "country": COUNTRY[cc_of(icao[c])], "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c], "o": first[c][0], "arr": first[c][1]} for c in codes]
 places = []
 for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places", []):
     dots = [[round(v, 1) for v in proj_pt(*pos[c])] for c in pl["airports"]]   # the name sits by the first
     places.append({"name": pl["name"], "note": pl["note"], "airports": pl["airports"], "label": pl.get("label", "ne"),
-                   "x": dots[0][0], "y": dots[0][1], "dots": dots})
-(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "routes": routes, "airports": airports, "places": places}, ensure_ascii=False))
+                   "x": dots[0][0], "y": dots[0][1], "dots": dots, "o": min(first[c] for c in pl["airports"])[0], "arr": min(first[c] for c in pl["airports"])[1]})
+(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "routes": routes, "airports": airports, "places": places}, ensure_ascii=False))
 print("routes", len(routes), "airports", len(airports), "places", len(places))

@@ -82,8 +82,9 @@
   {{- /* The land image is fingerprinted, so a redrawn map never shows last version's land from cache. */}}
   {{- $land := resources.Get "textures/map-land.png" | fingerprint }}
   {{- /* Closed, the map lies folded: a creased strip of it under its title. Opened, it unfolds and the
-         routes ink themselves in, the places last (UD, 2026-11-16). */}}
-  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s)" $land.RelPermalink | safeCSS }}">
+         routes ink themselves in, in the order the flights were taken; each airport and place appears with the
+         first flight that reached it (UD, 2026-11-16). */}}
+  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s); --n: %d" $land.RelPermalink (int $m.legs) | safeCSS }}">
     <summary class="udc-map-summary">
       <span class="udc-map-folded" aria-hidden="true"><span class="udc-map-folded-land"></span></span>
       <span class="udc-map-title">Where I’ve wandered</span>
@@ -93,14 +94,14 @@
       <div class="udc-map-plate" style="aspect-ratio: {{ $m.w }} / {{ $m.h }}">
       <span class="udc-map-land" aria-hidden="true"></span>
       <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
-        {{- range $li, $_ := $m.routes }}
-        <path class="udc-map-leg" pathLength="1" style="--i: {{ $li }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
+        {{- range $m.routes }}
+        <path class="udc-map-leg" pathLength="1" style="--i: {{ .o }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
         {{- end }}
         {{- range $m.airports }}
-        <circle class="udc-map-port" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
+        <circle class="udc-map-port" style="--i: {{ .o }}; --arr: {{ .arr }}" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
         {{- end }}
         {{- range $i, $p := $m.places }}
-        <g class="udc-map-place">
+        <g class="udc-map-place" style="--i: {{ $p.o }}; --arr: {{ $p.arr }}">
           {{- range $p.dots }}<circle cx="{{ index . 0 }}" cy="{{ index . 1 }}" r="8"/>{{ end }}
           {{- $w := in (slice "nw" "sw") $p.label }}{{ $south := in (slice "sw" "se") $p.label }}
           <text x="{{ cond $w (sub $p.x 13) (add $p.x 13) }}" y="{{ cond $south (add $p.y 30) (sub $p.y 8) }}"{{ if $w }} text-anchor="end"{{ end }}>{{ $p.name }}</text>
