@@ -487,7 +487,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .page-body.my-10, .page-body { margin-block: 0 !important; }
 .udc-single, .udc-list { padding-top: 18px; padding-bottom: 8px; }
 .udc-single-head { margin-bottom: 20px; }
-.udc-side { margin: 0 0 22px; }   /* meta (and, from 1024px, the section list); narrower it follows the title */
+.udc-side { margin: 0 0 22px; }   /* meta (and, from 900px, the section list); narrower it follows the title */
 /* Meta: no box (3.7); a column rule separates it from the title, as on the front page. */
 .udc-meta { font-size: .85rem; line-height: 1.5; padding: 4px 0 4px 18px; border-left: 1px solid var(--udc-ink); }
 .udc-meta p { margin: 0 0 6px; }
@@ -505,9 +505,9 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-prose p, .udc-prose li { text-align: left; hyphens: none; }
 .udc-single[lang="zh-Hant"] .udc-prose { line-height: 1.85; }
 .udc-prose > * { margin-block: 0 .9em; }
-.udc-prose h2 { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.11rem; line-height: 1.25; margin: 1.6em 0 .5em; padding-top: .4em; border-top: 1px solid var(--udc-ink); }
-.udc-prose h3 { font-family: var(--udc-text); font-weight: 650; font-size: .95rem; line-height: 1.25; margin: 1.3em 0 .4em; }
-.udc-prose h4 { font-weight: 650; font-size: .9rem; margin: 1.1em 0 .3em; }   /* a step below h3 (Astra, round 8) */
+.udc-prose h2 { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.233em; line-height: 1.25; margin: 1.6em 0 .5em; padding-top: .4em; border-top: 1px solid var(--udc-ink); }
+.udc-prose h3 { font-family: var(--udc-text); font-weight: 650; font-size: 1.056em; line-height: 1.25; margin: 1.3em 0 .4em; }
+.udc-prose h4 { font-weight: 650; font-size: 1em; margin: 1.1em 0 .3em; }   /* a step below h3 (Astra, round 8); headings follow the text's size */
 .udc-single[lang="zh-Hant"] .udc-prose :is(h2, h3) { font-family: var(--udc-text); font-weight: 700; }
 .udc-prose strong { font-weight: 650; }
 .udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-ink); color: var(--udc-ink); font-style: normal; }
@@ -802,12 +802,14 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
 .udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance;
   overflow-wrap: break-word; }   /* last resort: a word longer than the column breaks inside it */
-/* Article pages from 1024px (UD, 2026-11-16): two columns flush with the header at both edges. Right: a
-   compact column (16rem) with the meta block and, for articles with three or more sections, the section
-   list, which stays in view. Left: title, abstract and text fill the rest of the width. Below 1024px:
-   one column, no list. (Text fills its column everywhere; UD, 2026-11-16.) */
+/* Article pages from 900px (UD, 2026-11-16; from 1024 until Astra's round 8): two columns flush with the
+   header at both edges. Right: a compact column with the meta block and, for articles with three or more
+   sections, the section list, which stays in view. Left: title, abstract and text fill the rest of the
+   width. From 1024px the article text is set larger, so its long lines stay easy to follow. Below 900px:
+   one column, no list. */
 .udc-toc { display: none; }
-@media (min-width: 1024px) {
+@media (min-width: 1024px) { .udc-single .udc-prose { font-size: calc(.9rem * 1.15); } }
+@media (min-width: 900px) {
   .udc-single { --udc-aside: 16rem; --udc-gap: 44px; display: grid; grid-template-columns: minmax(0, 1fr) var(--udc-aside); column-gap: var(--udc-gap); align-content: start; }
   .udc-single > * { grid-column: 1; }
   /* The side column runs the article's full height, so the text starts right under the title. */
@@ -819,6 +821,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-toc a:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
   .udc-toc [lang="zh-Hant"] { font-family: var(--udc-text); font-size: .9rem; }
 }
+@media (min-width: 900px) and (max-width: 1023px) { .udc-single { --udc-aside: 14rem; --udc-gap: 32px; } }
 /* A title's longest unbreakable piece fits its column: the size comes down only when that piece, at its
    real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
    rounds 3-4). The header holds only the title, so it is the container and the title's column. */
