@@ -17,7 +17,7 @@ profile: false
 
 These belong to their rights holders and are not covered by this site’s CC BY-NC-ND license.
 
-**Flight map:** land from [Natural Earth](https://www.naturalearthdata.com/) (public domain); airport positions from Natural Earth, and from [Wikidata](https://www.wikidata.org/) (CC0) for Dubrovnik and Taipei Songshan.
+**Flight map:** land from [Natural Earth](https://www.naturalearthdata.com/) (public domain); airport positions from Natural Earth, and from [Wikidata](https://www.wikidata.org/) (CC0) for Dubrovnik and Taipei Songshan. Flags in the airport list from [flag-icons](https://github.com/lipis/flag-icons) by Panayiotis Lipiridis (MIT License).
 
 **Paper:** ambientCG [Paper 002](https://ambientcg.com/view?id=Paper002) and [Paper 005](https://ambientcg.com/view?id=Paper005), CC0.
 

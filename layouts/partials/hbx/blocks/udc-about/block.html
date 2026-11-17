@@ -102,7 +102,7 @@
         <p class="udc-label" id="udc-map-ports-title">Airports</p>
         <ul aria-labelledby="udc-map-ports-title">
           {{- range sort $m.airports "code" }}
-          <li><button type="button" class="udc-map-pick" data-code="{{ .code }}"><b>{{ .code }}</b> {{ .name }}</button></li>
+          <li><button type="button" class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}</span></button></li>
           {{- end }}
         </ul>
       </div>

@@ -47,21 +47,32 @@ def dbf_rows(path):
 # --------------------------------------------------------------- data
 legs = yaml.safe_load((repo / "data/flights.yaml").read_text())["legs"]
 codes = sorted({c for l in legs for c in l[1:3]})
-pos, names = {}, {}
+pos, names, icao = {}, {}, {}
 for (kind, xy), row in zip(shp_records(air_shp), dbf_rows(air_shp.with_suffix(".dbf"))):
     code = row.get("iata_code") or row.get("IATA_CODE")
     if code in codes and kind == "point":
         pos[code] = xy                                   # (lon, lat)
         names[code] = row.get("name", "")
+        icao[code] = row.get("gps_code", "")
 # Not in Natural Earth's airport file; coordinates from Wikidata (P625), looked up by IATA code on
-# 2026-11-16: Q1147000 Dubrovnik Ruđer Bošković Airport, Q702019 Taipei Songshan Airport.
-EXTRA = {"DBV": ((18.268333333, 42.561388888), "Dubrovnik Ruđer Bošković"), "TSA": ((121.551666666, 25.069444444), "Taipei Songshan")}
-for c, (xy, nm) in EXTRA.items():
-    if c not in pos: pos[c], names[c] = xy, nm
+# 2026-11-16: Q1147000 Dubrovnik Ruđer Bošković Airport, Q702019 Taipei Songshan Airport; ICAO codes
+# from the same items (P239).
+EXTRA = {"DBV": ((18.268333333, 42.561388888), "Dubrovnik Ruđer Bošković", "LDDU"),
+         "TSA": ((121.551666666, 25.069444444), "Taipei Songshan", "RCSS")}
+for c, (xy, nm, ic) in EXTRA.items():
+    if c not in pos: pos[c], names[c], icao[c] = xy, nm, ic
 missing = [c for c in codes if c not in pos]
 print("airports found", len(pos), "of", len(codes), "missing:", missing or "none")
 if missing:
     sys.exit("stop: airports missing from Natural Earth; ask UD before filling them in")
+
+# Country or region of each airport, for its flag in the airport list (static/flags, from flag-icons):
+# the first letters of the ICAO code name it (ICAO Doc 7910 nationality letters), only those needed here.
+ICAO_CC = {"RC": "tw", "RJ": "jp", "VH": "hk", "ZS": "cn", "VT": "th", "EG": "gb", "ED": "de", "LI": "it",
+           "LE": "es", "LS": "ch", "LD": "hr", "HE": "eg", "OM": "ae", "OT": "qa", "MM": "mx", "K": "us"}
+def cc_of(ic):
+    for n in (2, 1):
+        if ic[:n] in ICAO_CC: return ICAO_CC[ic[:n]]
 
 # --------------------------------------------------------------- projection
 LON0, LON1, LAT0, LAT1 = -128.0, 152.0, -2.0, 64.0       # travelled area, with a margin
@@ -122,7 +133,10 @@ for r in routes:
 count = {}
 for leg in legs:
     for c in leg[1:3]: count[c] = count.get(c, 0) + 1
-airports = [{"code": c, "name": names[c], "x": round(proj(*pos[c])[0], 1), "y": round(proj(*pos[c])[1], 1), "n": count[c]} for c in codes]
+no_cc = [c for c in codes if not cc_of(icao.get(c, ""))]
+if no_cc:
+    sys.exit(f"stop: no country for {no_cc}; add its ICAO letters to ICAO_CC")
+airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "x": round(proj(*pos[c])[0], 1), "y": round(proj(*pos[c])[1], 1), "n": count[c]} for c in codes]
 places = []
 for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places", []):
     dots = [[round(v, 1) for v in proj(*pos[c])] for c in pl["airports"]]   # the name sits by the first
