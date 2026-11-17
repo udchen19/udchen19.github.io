@@ -412,6 +412,12 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
   background: var(--udc-orange); mix-blend-mode: multiply; opacity: .93;
   -webkit-mask: url("/textures/brush-line-5b.svg") 0 0 / 100% 100% no-repeat; mask: url("/textures/brush-line-5b.svg") 0 0 / 100% 100% no-repeat; }
 .udc-profile-links { display: flex; flex-wrap: wrap; gap: 0 2px; margin: 4px 0 12px -10px; }
+/* The masthead joke (UD, 2026-11-16): one line, in the motto's italic, at the top left of the portrait:
+   from 860px over the empty paper beside the raised arm; narrower, on its own line above the photo. */
+.udc-columnist { position: relative; }
+.udc-columnist-role { margin: 0; white-space: nowrap; font-family: var(--udc-motto-face); font-style: italic; font-size: .95rem; line-height: 1.2; color: var(--udc-ink); }
+@media (min-width: 860px) { .udc-columnist-role { position: absolute; z-index: 61; top: 0; left: 0; } }
+@media (max-width: 859px) { .udc-columnist-role { grid-column: 1 / -1; margin-bottom: 4px; } }
 .udc-profile-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); text-decoration: none; }
 .udc-profile-links svg { width: 21px; height: 21px; }
 /* News: a label on a rule, like the other tiers; no box. */
@@ -783,6 +789,23 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
 .udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance;
   overflow-wrap: break-word; }   /* last resort: a word longer than the column breaks inside it */
+/* Article pages from 1024px (UD, 2026-11-16): two columns, centred together so both sides keep a margin.
+   Left: title, abstract and text at their usual measure; right: the meta block and, for articles with
+   three or more sections, the section list, which stays in view. Below 1024px: one column, no list. */
+.udc-toc { display: none; }
+@media (min-width: 1024px) {
+  .udc-single { --udc-aside: 16rem; --udc-gap: 44px; display: grid; grid-template-columns: minmax(0, auto) var(--udc-aside); column-gap: var(--udc-gap); justify-content: center; align-content: start; }
+  .udc-single > * { grid-column: 1; }
+  /* The same two columns (not subgrid: the header is a size container, which a subgrid cannot be). */
+  .udc-single > .udc-single-head { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) var(--udc-aside); gap: 0 var(--udc-gap); }
+  .udc-single-head .udc-page-title { contain: inline-size; }   /* the text sets the column width, not a long title */
+  .udc-single > .udc-toc { display: block; grid-column: 2; grid-row: 2 / span 20; align-self: start; position: sticky; top: 16px; }
+  .udc-toc ol { list-style: none; margin: 6px 0 0; padding: 0 0 0 18px; border-left: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .8rem; line-height: 1.4; }
+  .udc-toc li + li { margin-top: 8px; }
+  .udc-toc a { color: var(--udc-ink); text-decoration: none; }
+  .udc-toc a:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
+  .udc-toc [lang="zh-Hant"] { font-family: var(--udc-text); font-size: .9rem; }
+}
 /* A title's longest unbreakable piece fits its column: the size comes down only when that piece, at its
    real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
    rounds 3-4). The header is the container; its title column is 70% less the gap from 760px up. */
@@ -790,6 +813,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-abstract { margin: 0 0 18px; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
 .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
+@media (min-width: 1024px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - var(--udc-aside) - var(--udc-gap) - 1px) / var(--udc-word-em, .01))); } }   /* the title column is the text column */
 @media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
