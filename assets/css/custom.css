@@ -507,7 +507,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-prose > * { margin-block: 0 .9em; }
 .udc-prose h2 { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.11rem; line-height: 1.25; margin: 1.6em 0 .5em; padding-top: .4em; border-top: 1px solid var(--udc-ink); }
 .udc-prose h3 { font-family: var(--udc-text); font-weight: 650; font-size: .95rem; line-height: 1.25; margin: 1.3em 0 .4em; }
-.udc-prose h4 { font-weight: 650; font-size: 1rem; margin: 1.1em 0 .3em; }
+.udc-prose h4 { font-weight: 650; font-size: .9rem; margin: 1.1em 0 .3em; }   /* a step below h3 (Astra, round 8) */
 .udc-single[lang="zh-Hant"] .udc-prose :is(h2, h3) { font-family: var(--udc-text); font-weight: 700; }
 .udc-prose strong { font-weight: 650; }
 .udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-ink); color: var(--udc-ink); font-style: normal; }
@@ -682,14 +682,14 @@ button.udc-map-pick { cursor: pointer; }
    they line up; all toned to 45% like the flags. Single-colour marks (NYCU's seal, 附中's emblem, Kapito's K) are
    masks in their own colour, lighter at night. Phones: right of the date line. */
 .udc-tl-logo { display: block; width: 3.4rem; height: 2.6rem; margin: 8px 0 0 auto; object-fit: contain; object-position: right top; filter: saturate(.45); }
-.udc-tl-logo.is-mask { background: var(--udc-ink);
+.udc-tl-logo.is-mask { background: var(--logo-ink, var(--udc-ink));
   -webkit-mask: var(--logo) right top / contain no-repeat; mask: var(--logo) right top / contain no-repeat; }
-.udc-tl-logo-nycu { background: #0033a1; }               /* NYCU blue, from brand.nycu.edu.tw */
-.dark .udc-tl-logo-nycu { background: #7d99da; }
-.udc-tl-logo-hsnu-mask { background: #660000; }          /* the emblem's own maroon */
-.dark .udc-tl-logo-hsnu-mask { background: #c98a8a; }
-.udc-tl-logo-kapito { background: #a8844c; }             /* Kapito's gold, deepened to show on paper */
-.dark .udc-tl-logo-kapito { background: #e0c08f; }
+.udc-tl-logo-nycu { --logo-ink: #0033a1; }               /* NYCU blue, from brand.nycu.edu.tw */
+.dark .udc-tl-logo-nycu { --logo-ink: #7d99da; }
+.udc-tl-logo-hsnu-mask { --logo-ink: #660000; }          /* the emblem's own maroon */
+.dark .udc-tl-logo-hsnu-mask { --logo-ink: #c98a8a; }
+.udc-tl-logo-kapito { --logo-ink: #a8844c; }             /* Kapito's gold, deepened to show on paper */
+.dark .udc-tl-logo-kapito { --logo-ink: #e0c08f; }
 .udc-tl-edu { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.15rem; }
 .udc-tl-work { font-family: var(--udc-sign); font-weight: 700; font-size: .9rem; letter-spacing: .01em; }
 .udc-tl-sub { margin: 2px 0 0; font-style: italic; }
@@ -839,6 +839,8 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   max-height: calc(5.6 * 1.65em); max-height: round(down, 5.6 * 1.65em, 1px); overflow-y: auto; }   /* whole px: a fractional height stalled scrolling past the list (Astra review, round 5) */   /* whole lines, no gaps: the cut always falls inside a line */
 .udc-news-list li { padding: 0; }
 .udc-news-list time { font-weight: 700; margin-right: .5em; }
+/* Article titles on phones are small for the display ink: the finer body ink keeps every letter whole (Astra, round 8). */
+@media (max-width: 640px) { .udc-single-head .udc-page-title { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); } }
 @media (max-width: 640px) { .udc-news-list { max-height: calc(10.6 * 1.65em); max-height: round(down, 10.6 * 1.65em, 1px); } }   /* entries wrap on phones; three take 10 lines at 320px */
 
 

@@ -37,13 +37,20 @@
     motto?.addEventListener('pointerup', e => { if (e.pointerType === 'touch') motto.classList.toggle('is-managed'); });
     // Dateline (UD, 2026-11-16): the reader's own date, British style: "Monday, 16th November 2026".
     const date = document.querySelector('.udc-date');
-    if (date) {
+    const setDate = () => {
       const d = new Date(), n = d.getDate();
       const th = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
       const part = o => d.toLocaleDateString('en-GB', o);
       date.textContent = `${part({ weekday: 'long' })}, ${n}${th} ${part({ month: 'long' })} ${d.getFullYear()}`;
       date.dateTime = [d.getFullYear(), d.getMonth() + 1, n].map((v, i) => String(v).padStart(i ? 2 : 4, '0')).join('-');
       date.hidden = false;
+      // Turn over at the reader's midnight, and when a tab that slept past it is shown again (Astra, round 8).
+      clearTimeout(setDate.t);
+      setDate.t = setTimeout(setDate, new Date(d.getFullYear(), d.getMonth(), n + 1) - d + 1000);
+    };
+    if (date) {
+      setDate();
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) setDate(); });
     }
     // About (plan 4.8; UD 2026-11-16): every lane is a filter. Work lanes start on; entries and bars
     // of lanes that are off are hidden. The life lanes stay out of sight until "Away from the desk" is
@@ -144,7 +151,12 @@
           ring?.setAttribute('visibility', 'visible');
         };
         b.addEventListener('focus', pick);
-        b.addEventListener('click', pick);
+        // Pressing (Enter, Space or a click) also brings the map and its label into view; moving with Tab does not (Astra, round 8).
+        b.addEventListener('click', () => {
+          pick();
+          const top = plate.getBoundingClientRect().top, bottom = Math.max(plate.getBoundingClientRect().bottom, tip.getBoundingClientRect().bottom);
+          if (top < 0 || bottom > innerHeight) scrollBy({ top: top - 16, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        });
       });
       // When the map changes size (rotation, window), the open label and ring follow their dot (Astra, round 7).
       new ResizeObserver(() => {
@@ -156,6 +168,14 @@
       document.addEventListener('focusin', e => { if (!e.target.closest('.udc-map-pick') && !svg.contains(e.target)) clear(); });
     }
   };
+  // Sections list (article pages): choosing a section also opens its folded part, if it has one; the page
+  // still arrives folded (Astra, round 8).
+  document.addEventListener('click', e => {
+    const a = e.target.closest('.udc-toc a'); if (!a) return;
+    const h = document.getElementById(decodeURIComponent(a.hash.slice(1)));
+    for (let n = h?.nextElementSibling; n && !/^H[1-3]$/.test(n.tagName); n = n.nextElementSibling)
+      if (n.tagName === 'DETAILS') { n.open = true; break; }
+  });
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
