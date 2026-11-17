@@ -789,15 +789,17 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-page-title:lang(zh-Hant) { font-family: "Noto Serif TC", serif; letter-spacing: .02em; }
 .udc-page-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: clamp(1.9rem, 1.3rem + 2.4vw, 3rem); line-height: 1.08; letter-spacing: var(--udc-display-track); text-wrap: balance;
   overflow-wrap: break-word; }   /* last resort: a word longer than the column breaks inside it */
-/* Article pages from 1024px (UD, 2026-11-16): two columns, centred together so both sides keep a margin.
-   Left: title, abstract and text at their usual measure; right: the meta block and, for articles with
-   three or more sections, the section list, which stays in view. Below 1024px: one column, no list. */
+/* Article pages from 1024px (UD, 2026-11-16): two columns flush with the header at both edges. Left:
+   title, abstract and text at their usual measure; right: the rest of the width, with the meta block and,
+   for articles with three or more sections, the section list, which stays in view. Below 1024px: one
+   column, no list. The measure is the text's own (68ch, or 36em for 繁體中文; the article is set at the text's .9rem). */
 .udc-toc { display: none; }
 @media (min-width: 1024px) {
-  .udc-single { --udc-aside: 16rem; --udc-gap: 44px; display: grid; grid-template-columns: minmax(0, auto) var(--udc-aside); column-gap: var(--udc-gap); justify-content: center; align-content: start; }
+  .udc-single { --udc-aside: 16rem; --udc-gap: 44px; --udc-measure: 68ch; display: grid; grid-template-columns: minmax(0, var(--udc-measure)) minmax(var(--udc-aside), 1fr); column-gap: var(--udc-gap); align-content: start; }
+  .udc-single[lang="zh-Hant"] { --udc-measure: 36em; }
   .udc-single > * { grid-column: 1; }
   /* The same two columns (not subgrid: the header is a size container, which a subgrid cannot be). */
-  .udc-single > .udc-single-head { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) var(--udc-aside); gap: 0 var(--udc-gap); }
+  .udc-single > .udc-single-head { grid-column: 1 / -1; grid-template-columns: minmax(0, var(--udc-measure)) minmax(var(--udc-aside), 1fr); gap: 0 var(--udc-gap); }
   .udc-single-head .udc-page-title { contain: inline-size; }   /* the text sets the column width, not a long title */
   .udc-single > .udc-toc { display: block; grid-column: 2; grid-row: 2 / span 20; align-self: start; position: sticky; top: 16px; }
   .udc-toc ol { list-style: none; margin: 6px 0 0; padding: 0 0 0 18px; border-left: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .8rem; line-height: 1.4; }
@@ -813,7 +815,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-abstract { margin: 0 0 18px; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
 .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
-@media (min-width: 1024px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - var(--udc-aside) - var(--udc-gap) - 1px) / var(--udc-word-em, .01))); } }   /* the title column is the text column */
+@media (min-width: 1024px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((min(var(--udc-measure), 100cqi - var(--udc-aside) - var(--udc-gap)) - 1px) / var(--udc-word-em, .01))); } }   /* the title column is the text column */
 @media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
