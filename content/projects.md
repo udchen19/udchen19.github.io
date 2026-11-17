@@ -1,5 +1,5 @@
 ---
-title: 'Research Projects'
+title: 'Research'
 date: 2024-05-19
 type: landing
 
@@ -7,7 +7,7 @@ type: landing
 sections:
   - block: udc-projects
     content:
-      title: Research Projects
+      title: Research
     design:
       spacing:
         padding: ['0', '0', '0', '0']

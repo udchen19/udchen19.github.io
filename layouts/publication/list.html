@@ -3,12 +3,27 @@
 <main id="main" class="udc-list udc-wrap udc-publications">
   <h1 class="udc-page-title udc-ink">{{ .Title }}</h1>
   {{ with .Params.summary }}<p class="udc-list-dek">{{ . | markdownify }}</p>{{ end }}
+  {{- /* Filter (UD, 2026-11-16): search by title, authors or venue, and show one type. Built here, shown by
+         udc-ui.js; without the script the page is the plain list. */}}
+  {{- $types := slice }}{{ range .Pages }}{{ range first 1 (.GetTerms "publication_types") }}{{ $types = $types | append (dict "key" .Name "title" .Title) }}{{ end }}{{ end }}
+  {{- $order := slice "article-journal" "paper-conference" "poster" "book" }}
+  <form class="udc-pubfilter" role="search" aria-label="Filter publications" hidden>
+    <input class="udc-pubfilter-q" type="search" placeholder="Search titles, authors, venues" aria-label="Search publications" autocomplete="off">
+    <div class="udc-pubfilter-types" role="group" aria-label="Type">
+      <button type="button" class="udc-pubfilter-type" data-type="" aria-pressed="true">All</button>
+      {{- range $order }}{{ $k := . }}{{ with first 1 (where $types "key" $k) }}{{ range . }}
+      <button type="button" class="udc-pubfilter-type" data-type="{{ .key }}" aria-pressed="false">{{ .title }}</button>
+      {{- end }}{{ end }}{{ end }}
+    </div>
+    <p class="udc-pubfilter-status" aria-live="polite"></p>
+  </form>
   {{ range (.Pages.GroupByDate "2006") }}
   <section class="udc-year" aria-labelledby="y{{ .Key }}">
     <h2 id="y{{ .Key }}" class="udc-year-plate">{{ .Key }}</h2>
     <ol class="udc-pubs">
       {{ range .Pages }}
-      <li class="udc-pub"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
+      {{- $type := "" }}{{ range first 1 (.GetTerms "publication_types") }}{{ $type = .Name }}{{ end }}
+      <li class="udc-pub" data-type="{{ $type }}"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
         <h3 class="udc-pub-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
         <p class="udc-pub-authors" lang="en">{{ partial "page_metadata_authors" . }}</p>
         {{ with (.Params.publication_short | default .Params.publication) }}<p class="udc-pub-venue" lang="en">{{ . | markdownify }}</p>{{ end }}

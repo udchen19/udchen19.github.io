@@ -197,7 +197,28 @@
     const toc = document.querySelector('.udc-toc-fold');
     if (toc) { const set = () => { toc.open = wide.matches; }; set(); wide.addEventListener('change', set); }
   };
-  const start = () => { init(); newsFade(); unfold(); };
+  // Publications filter (UD, 2026-11-16): typing matches title, authors and venue; a type button shows one
+  // type; years with nothing left hide, and a line says what is shown.
+  const pubFilter = () => {
+    const form = document.querySelector('.udc-pubfilter'); if (!form) return;
+    const q = form.querySelector('.udc-pubfilter-q'), btns = [...form.querySelectorAll('.udc-pubfilter-type')];
+    const status = form.querySelector('.udc-pubfilter-status'), pubs = [...document.querySelectorAll('.udc-pub')];
+    const norm = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const text = new Map(pubs.map(p => [p, norm(p.textContent)]));
+    let type = '';
+    const run = () => {
+      const words = norm(q.value).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      pubs.forEach(p => { const ok = (!type || p.dataset.type === type) && words.every(w => text.get(p).includes(w)); p.hidden = !ok; if (ok) shown++; });
+      document.querySelectorAll('.udc-year').forEach(y => { y.hidden = !y.querySelector('.udc-pub:not([hidden])'); });
+      status.textContent = (q.value || type) ? (shown ? `${shown} of ${pubs.length} shown` : 'Nothing matches.') : '';
+    };
+    btns.forEach(b => b.addEventListener('click', () => { type = b.dataset.type; btns.forEach(x => x.setAttribute('aria-pressed', String(x === b))); run(); }));
+    q.addEventListener('input', run);
+    form.addEventListener('submit', e => e.preventDefault());
+    form.hidden = false;
+  };
+  const start = () => { init(); newsFade(); unfold(); pubFilter(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();

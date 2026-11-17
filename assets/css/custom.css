@@ -553,6 +553,22 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-year { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 0 20px; padding: 14px 0; border-top: 1px solid var(--udc-ink); }
 .udc-year-plate { align-self: start; margin: 4px 0 0; justify-self: start; background: var(--udc-ink); color: var(--udc-paper); font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.5rem; line-height: 1; padding: .25em .4em .2em; clip-path: var(--udc-cut-plate); }
 .udc-pubs { list-style: none; margin: 0; padding: 0; }
+/* Publications filter (UD, 2026-11-16): a search line and the type choices, in the label face, like the
+   About lane filters; the chosen type is ink with an orange underline, as in the menu. */
+.udc-pubfilter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; margin: 4px 0 18px; padding-bottom: 12px; border-bottom: 1px solid var(--udc-ink); }
+.udc-pubfilter[hidden] { display: none; }
+.udc-pubfilter-q { flex: 1 1 16rem; min-width: 0; min-height: 36px; padding: 4px 2px; background: transparent; border: 0; border-bottom: 1px solid var(--udc-ink-2); border-radius: 0;
+  font-family: var(--udc-text); font-size: .95rem; color: var(--udc-ink); }
+.udc-pubfilter-q::placeholder { color: var(--udc-ink-2); font-style: italic; }
+.udc-pubfilter-q:focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 2px; }
+.udc-pubfilter-types { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.udc-pubfilter-type { min-height: 32px; padding: 0; background: none; border: 0; cursor: pointer; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--udc-ink-2); }
+.udc-pubfilter-type[aria-pressed="true"] { color: var(--udc-ink); text-decoration: underline 2px var(--udc-orange); text-underline-offset: .35em; }
+.udc-pubfilter-type:hover { color: var(--udc-ink); }
+.udc-pubfilter-status { flex-basis: 100%; margin: 0; font-family: var(--udc-sign); font-size: .74rem; color: var(--udc-ink-2); }
+.udc-pubfilter-status:empty { display: none; }
+.udc-pub[hidden], .udc-year[hidden] { display: none; }
 .udc-pub { padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid var(--udc-rule); }
 .udc-pub:last-child { border-bottom: 0; margin-bottom: 0; }
 .udc-pub-title { margin: 0 0 3px; font-family: var(--udc-text); font-weight: 600; font-size: 1.1rem; line-height: 1.35; }

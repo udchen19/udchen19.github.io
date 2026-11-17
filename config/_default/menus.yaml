@@ -1,7 +1,7 @@
 main:
   - name: Research
     identifier: research
-    url: '/#research'
+    url: '/projects/'
     weight: 10
   - name: Publications
     identifier: publications
