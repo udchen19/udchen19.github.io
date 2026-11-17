@@ -30,7 +30,7 @@
       {{ range .Pages }}
       {{- $type := "" }}{{ range first 1 (.GetTerms "publication_types") }}{{ $type = .Name }}{{ end }}
       {{- $extra := slice (.Date.Format "2006") }}{{ range first 1 (.GetTerms "publication_types") }}{{ $extra = $extra | append .Title }}{{ end }}{{ with index $known .File.ContentBaseName }}{{ $extra = $extra | append . }}{{ end }}
-      <li class="udc-pub" data-type="{{ $type }}" data-search="{{ delimit $extra " " }}"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
+      <li class="udc-pub" data-type="{{ $type }}" data-search="{{ delimit $extra " " }}" data-venue="{{ (.Params.publication_short | default .Params.publication) | markdownify | plainify }}" data-year="{{ .Date.Format "2006" }}"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
         <h3 class="udc-pub-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
         <p class="udc-pub-authors" lang="en">{{ partial "page_metadata_authors" . }}</p>
         {{ with (.Params.publication_short | default .Params.publication) }}<p class="udc-pub-venue" lang="en">{{ . | markdownify }}</p>{{ end }}

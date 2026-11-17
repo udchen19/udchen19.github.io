@@ -692,18 +692,20 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 @keyframes udc-grow { from { scale: 0; } to { scale: 1; } }
 /* A name writes itself out: a mask slides off it, left to right (right to left for names set left of their dot). */
 @keyframes udc-write { from { -webkit-mask-position: 100% 0; mask-position: 100% 0; } to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
-.udc-map[open] .udc-map-leg { stroke-dasharray: 1; animation: udc-ink-in calc(var(--dur, .3) * 1s) linear both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
-.udc-map[open] :is(.udc-map-port, .udc-map-place circle) { transform-box: fill-box; transform-origin: center;
+/* The journey runs only with the script, which plays it once and offers Skip; without it the map opens finished
+   (Astra, round 11). The unfolding itself stays. */
+.udc-js .udc-map[open] .udc-map-leg { stroke-dasharray: 1; animation: udc-ink-in calc(var(--dur, .3) * 1s) linear both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
+.udc-js .udc-map[open] :is(.udc-map-port, .udc-map-place circle) { transform-box: fill-box; transform-origin: center;
   animation: udc-grow .3s ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
-.udc-map[open] .udc-map-name { -webkit-mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat; mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat;
+.udc-js .udc-map[open] .udc-map-name { -webkit-mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat; mask: linear-gradient(90deg, #000 45%, transparent 55%) 0 0 / 220% 100% no-repeat;
   mask-type: alpha; animation: udc-write var(--label) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
-.udc-map[open] :is(.udc-map-cap, .udc-map-ports) { animation: udc-fade-in .5s .5s both; }
+.udc-js .udc-map[open] :is(.udc-map-cap, .udc-map-ports) { animation: udc-fade-in .5s .5s both; }
 /* The airport list fills in as the map reaches each airport; until then its place stays blank (UD). */
-.udc-map[open] .udc-map-ports li { animation: udc-fade-in var(--list, .45s) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
+.udc-js .udc-map[open] .udc-map-ports li { animation: udc-fade-in var(--list, .45s) ease-out both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 /* A flight on a route already drawn: the line is drawn again in the direction flown, darker, then fades back. */
 .udc-map-fly { fill: none; stroke: var(--udc-ink); stroke-width: 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0; pointer-events: none; }
 @keyframes udc-fly { 0% { stroke-dashoffset: 1; opacity: 1; } 65% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-.udc-map[open] .udc-map-fly { stroke-dasharray: 1; animation: udc-fly calc(var(--dur, .4) * 1s) linear both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
+.udc-js .udc-map[open] .udc-map-fly { stroke-dasharray: 1; animation: udc-fly calc(var(--dur, .4) * 1s) linear both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 .udc-map-summary::-webkit-details-marker { display: none; }
 .udc-map-fig { position: relative; margin: 6px 0 0; }
 .udc-map-plate { position: relative; width: 100%; overflow: hidden; }

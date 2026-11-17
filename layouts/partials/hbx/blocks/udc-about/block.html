@@ -131,7 +131,7 @@
           <div data-t="{{ $first.kt }}" data-dur="{{ $first.kd }}"><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
           {{- end }}
         </dl>
-        <p>Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport, or pick one below.</p>
+        <p class="udc-map-hint" data-playing="Every flight since {{ index $yrs 0 }}, in the order flown; tap the map or Skip to see it finished.">Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport, or pick one below.</p>
       </figcaption>
       {{- /* Every airport, reachable by keyboard; picking one marks its dot and shows its label, which also
              settles dots that overlap (UD, after Astra's review, round 6). Outside the caption, which names

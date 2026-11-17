@@ -74,7 +74,10 @@
         raf = requestAnimationFrame(step);
       };
       let managed = false;
-      const want = () => show(managed || motto.matches(':hover') || motto.matches(':focus-visible') ? 1 : 0);
+      // On touch, the tap decides (a second tap brings the oath back); hover counts only for a mouse (Astra, round 11).
+      let lastTouch = false;
+      motto.addEventListener('pointerdown', e => { lastTouch = e.pointerType === 'touch'; });
+      const want = () => show(managed || (!lastTouch && (motto.matches(':hover') || motto.matches(':focus-visible'))) ? 1 : 0);
       motto.addEventListener('pointerenter', e => { if (e.pointerType !== 'touch') want(); });
       motto.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') want(); });
       motto.addEventListener('focus', () => setTimeout(want));
@@ -233,7 +236,15 @@
       const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
       const skipBtn = fig.querySelector('.udc-map-skip');
       let typing = 0;
-      const playing = on => { details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on; };
+      // While it plays: the caption says what a tap does now, and airports not yet reached in the list can't be
+      // focused or chosen (Astra, round 11).
+      const hint = fig.querySelector('.udc-map-hint'), hintIdle = hint?.textContent;
+      const listItems = [...fig.querySelectorAll('.udc-map-ports li')].map(li => ({ li, t: parseFloat(li.style.getPropertyValue('--t')) || 0 }));
+      const playing = on => {
+        details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on;
+        if (hint) hint.textContent = on ? hint.dataset.playing : hintIdle;
+        if (!on) listItems.forEach(x => { x.li.inert = false; });
+      };
       const skip = () => {
         cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false);
         keys.forEach(k => { k.done = true; k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
@@ -250,6 +261,7 @@
         if (when) { when.hidden = still; when.classList.remove('is-done'); when.textContent = dates[0]?.[1] || ''; }
         if (still) return;
         playing(true);
+        listItems.forEach(x => { x.li.inert = x.t > 0; });
         const t0 = performance.now() + 500;
         const frame = now => {
           let busy = false;
@@ -261,6 +273,7 @@
             if (n < k.chars.length) busy = true; else k.done = true;
           });
           const e = (now - t0) / 1000;
+          listItems.forEach(x => { if (x.li.inert && e >= x.t) x.li.inert = false; });
           if (when) {
             let d = dates[0]; for (const x of dates) if (x[0] <= e) d = x;
             if (d && when.textContent !== d[1]) when.textContent = d[1];
@@ -339,15 +352,27 @@
     const form = document.querySelector('.udc-pubfilter'); if (!form) return;
     const q = form.querySelector('.udc-pubfilter-q'), btns = [...form.querySelectorAll('.udc-pubfilter-type')];
     const status = form.querySelector('.udc-pubfilter-status'), pubs = [...document.querySelectorAll('.udc-pub')];
-    // Accents, curly quotes and dashes match their plain forms; a short year (’26) also matches 2026.
-    const norm = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[\u2018\u2019\u02bc]/g, "'")
-      .replace(/[\u201c\u201d]/g, '"').replace(/[\u2010-\u2015]/g, '-').toLowerCase();
-    const text = new Map(pubs.map(p => [p, norm(p.textContent + ' ' + (p.dataset.search || '')).replace(/'(\d\d)\b/g, " 20$1")]));
+    // Accents, curly quotes and dashes match their plain forms; a short year (’26 or '26) and the full year
+    // (2026) are the same, in the text and in what is typed (Astra, round 11).
+    const norm = t => t.normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[‘’ʼ]/g, "'")
+      .replace(/[“”]/g, '"').replace(/[‐-―]/g, '-').toLowerCase().replace(/(^|[^\w])'(\d\d)\b/g, '$1 20$2');
+    const words = t => t.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+    const text = new Map(pubs.map(p => [p, norm(p.textContent + ' ' + (p.dataset.search || ''))]));
+    const venue = new Map(pubs.map(p => [p, words(norm(p.dataset.venue || ''))]));
+    const venueWords = new Set([...venue.values()].flat().filter(w => !/^\d+$/.test(w)));
     let type = '';
+    // A year with a venue name ("CHI 2025") searches venues: the venue must hold the names and the paper must be
+    // from that year, so a coauthor named Chi does not count. Anything else searches the whole entry.
+    const match = (p, qs) => {
+      const years = qs.filter(w => /^\d{4}$/.test(w)), rest = qs.filter(w => !/^\d{4}$/.test(w));
+      if (years.length && rest.length && rest.every(w => venueWords.has(w)))
+        return years.every(y => p.dataset.year === y) && rest.every(w => venue.get(p).includes(w));
+      return qs.every(w => text.get(p).includes(w));
+    };
     const run = () => {
-      const words = norm(q.value).split(/\s+/).filter(Boolean);
+      const qs = norm(q.value).split(/\s+/).filter(Boolean).map(w => w.replace(/^["'(]+|["'),.]+$/g, '')).filter(Boolean);
       let shown = 0;
-      pubs.forEach(p => { const ok = (!type || p.dataset.type === type) && words.every(w => text.get(p).includes(w)); p.hidden = !ok; if (ok) shown++; });
+      pubs.forEach(p => { const ok = (!type || p.dataset.type === type) && match(p, qs); p.hidden = !ok; if (ok) shown++; });
       document.querySelectorAll('.udc-year').forEach(y => { y.hidden = !y.querySelector('.udc-pub:not([hidden])'); });
       status.textContent = (q.value || type) ? (shown ? `${shown} of ${pubs.length} shown` : 'Nothing matches.') : '';
     };
