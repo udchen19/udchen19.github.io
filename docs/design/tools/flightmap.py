@@ -188,7 +188,9 @@ for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places",
 # a flight reaching any new airport waits for that airport to appear in the list below (LIST). Written into the data so the page
 # needs no arithmetic of its own.
 RUN, MIN, BEAT, LABEL, CPS, LIST = 13.0, 0.12, 0.2, 0.7, 60.0, 0.45   # CPS: key typing speed; LIST: an airport appearing in the list;
-# BEAT: a pause after every step, so each comes to rest before the next (UD)
+# BEAT: a pause after every step, so each comes to rest before the next (UD); NEW: the longer pause after a new
+# airport or place; BRISK, QUICK: a familiar flight's share of the time, and its pause (UD, after Astra round 11)
+NEW, BRISK, QUICK = 0.6, 0.4, 0.05
 def plen(d):
     """Length, in map units, of a route's first drawn piece."""
     pts = [tuple(map(float, p.split(","))) for p in d.split("M")[1].strip().split(" L")]
@@ -210,17 +212,21 @@ def reach(code, when):
     if code in at: return when
     at[code] = when                            # a new airport: its entry in the list appears before the next flight
     k = place_of.get(code)
-    if k is None or k in shown: return when + LIST + BEAT
+    if k is None or k in shown: return when + LIST + NEW
     shown.add(k); pl = places[k]
     # The dot and name on the map (LABEL), then the place's entry in the key types out, name and note,
     # before the next flight (UD, 2026-11-16).
     pl["t"] = round(when, 3); pl["kt"] = round(when + LABEL, 3)
     pl["kd"] = round((len(pl["name"]) + len(pl["note"])) / CPS, 3)
-    return max(when + LIST, when + LABEL + pl["kd"]) + BEAT
+    return max(when + LIST, when + LABEL + pl["kd"]) + NEW
 for li, leg in enumerate(legs):
+    # Familiar: a route already drawn between two airports already shown. Nothing new appears, so it runs brisk;
+    # anything new keeps its full time and is followed by a longer pause (UD, after Astra round 11).
+    familiar = li in again and leg[1] in at and leg[2] in at
     t = reach(leg[1], t)                        # a departure from a new place: its name first
     leg_t.append(round(t, 3))
-    t = reach(leg[2], t + slots[li] + BEAT)     # the line comes to rest; then a new airport in the list / a new place
+    if familiar: slots[li] = round(slots[li] * BRISK, 3)
+    t = reach(leg[2], t + slots[li] + (QUICK if familiar else BEAT))   # rest; then a new airport / place
 # The running date: the month and year of the flight being drawn, from its start (only when it changes).
 MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 dates = []

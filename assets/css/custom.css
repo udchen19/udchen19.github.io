@@ -635,16 +635,20 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-ys-group { position: sticky; left: 0; width: max-content; margin: 8px 0 0; padding-left: 15px; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink-2); }
 .udc-ys-lane.is-off .udc-ys-track { visibility: hidden; }
 .udc-ys-lane[hidden] { display: none; }
-/* "Away from the desk?" (UD, 2026-11-16): while veiled, the life lanes show blurred under a paper wash with the
-   question on top; lifting it brings them, and their entries in the list, into view. */
-.udc-ys-life { transition: filter .45s, opacity .45s; }
-.udc-ys-wrap.is-veiled .udc-ys-life { filter: blur(3px); opacity: .55; }
-.udc-ys-wrap.is-veiled .udc-ys-life.is-off .udc-ys-track { visibility: visible; }   /* seen through the veil */
+/* "Away from the desk?" (UD, 2026-11-16; a paper flap after Astra round 11): the life lanes lie under a slip of
+   paper, rough-cut like the year plates and creased like the folded map, with the question printed on it.
+   Pressed, it folds up and away, and the lanes and their entries in the list appear. */
+.udc-ys-wrap.is-veiled .udc-ys-life.is-off .udc-ys-track { visibility: visible; }
 .udc-ys-veil { position: absolute; left: 0; right: 0; z-index: 2; display: flex; align-items: center; justify-content: center;
-  padding: 0; border: 0; cursor: pointer; background: color-mix(in srgb, var(--udc-paper) 35%, transparent);
-  font-family: var(--udc-motto-face); font-style: italic; font-size: 1.15rem; color: var(--udc-ink); transition: opacity .45s; }
-.udc-ys-veil > span { padding: 2px 12px; }
+  padding: 0; border: 0; cursor: pointer; background: var(--udc-paper-2); clip-path: var(--udc-cut-plate);
+  font-family: var(--udc-motto-face); font-style: italic; font-size: 1.15rem; color: var(--udc-ink);
+  transform-origin: 50% 0; transition: translate .2s; }
+.udc-ys-veil::after { content: ""; position: absolute; inset: 0; pointer-events: none;   /* one crease across the middle */
+  background: linear-gradient(180deg, transparent 48%, color-mix(in srgb, var(--udc-ink) 10%, transparent) 50%, transparent 52%); }
+.udc-ys-veil:hover { translate: 0 -2px; }
 .udc-ys-veil:hover > span { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+@keyframes udc-flap-lift { to { transform: perspective(600px) rotateX(80deg); opacity: 0; } }
+.udc-ys-veil.is-lifting { animation: udc-flap-lift .45s ease-in forwards; pointer-events: none; }
 .udc-ys-veil[hidden], .udc-ys-back[hidden] { display: none; }
 .udc-ys-back { margin: -14px 0 14px; text-align: right; }
 .udc-ys-backbtn { min-height: 24px; padding: 0; background: none; border: 0; cursor: pointer; font-family: var(--udc-sign); font-weight: 500; font-size: .64rem;

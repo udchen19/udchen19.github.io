@@ -140,7 +140,12 @@
         });
         apply(); placeVeil();
       };
-      veil?.addEventListener('click', () => { setLife(true); lifeLanes[0]?.querySelector('.udc-ys-filter')?.focus({ preventScroll: true }); });
+      // The flap folds away first (instantly with less motion asked for), then the lanes are switched on.
+      veil?.addEventListener('click', () => {
+        const done = () => { veil.classList.remove('is-lifting'); setLife(true); lifeLanes[0]?.querySelector('.udc-ys-filter')?.focus({ preventScroll: true }); };
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
+        veil.classList.add('is-lifting'); veil.addEventListener('animationend', done, { once: true });
+      });
       back?.querySelector('button')?.addEventListener('click', () => { setLife(false); veil?.focus({ preventScroll: true }); });
       addEventListener('resize', placeVeil);
       setLife(false);
