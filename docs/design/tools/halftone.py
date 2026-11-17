@@ -78,7 +78,8 @@ def ryan():
 
 def portrait():
     """Plan 3.5 and Appendix B: full colour, ordered-dither halftone, dot cell 1.5 CSS px at the
-    display size (282 px wide -> master 1128 px, cell 6 px), saturation 70% of the source, on a paper
+    display size (282 px wide -> master 1128 px, cell 6 px), saturation 45% of the source (UD, 2026-11-16;
+    70% read too colourful: each dot is a pure screen colour), on a paper
     tint; no frame. [P] The selfie's cut-off left and bottom edges dissolve into smaller dots over
     24 CSS px (96 px here) instead of ending in a straight line."""
     src = repo / "docs/design/v2/sources/portrait-raised-fist.png"
@@ -87,12 +88,12 @@ def portrait():
     im = im.resize((W, H), Image.LANCZOS)
     a = np.asarray(im, np.float32) / 255.0
     rgb, alpha = a[..., :3], a[..., 3:]
-    # Appendix B, as given: flatten on a paper tint, saturation 70%, unsharp, ordered dither per
+    # Appendix B: flatten on a paper tint, saturation 45%, unsharp, ordered dither per
     # channel at 2 levels (h6x6a), multiplied onto a lighter paper tint.
     with tempfile.TemporaryDirectory() as t:
         dst = pathlib.Path(t, "p.png")
         subprocess.run(["magick", str(src), "-resize", f"{W}x", "-background", "#E6E1D5", "-flatten", "-alpha", "off",
-                        "-modulate", "102,70,100", "-unsharp", "0x1.5+0.9+0", "-ordered-dither", "h6x6a,2",
+                        "-modulate", "102,45,100", "-unsharp", "0x1.5+0.9+0", "-ordered-dither", "h6x6a,2",
                         "(", "-size", f"{W}x{H}", "xc:#EBE6DA", ")", "-compose", "Multiply", "-composite", str(dst)], check=True)
         out_rgb = np.asarray(Image.open(dst).convert("RGB"), np.float32)[:H, :W] / 255
     # Edge dissolve where the photo itself is cut (alpha reaches the left and bottom borders).
