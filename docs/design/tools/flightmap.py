@@ -69,6 +69,10 @@ if missing:
 # the first letters of the ICAO code name it (ICAO Doc 7910 nationality letters), only those needed here.
 ICAO_CC = {"RC": "tw", "RJ": "jp", "VH": "hk", "ZS": "cn", "VT": "th", "EG": "gb", "ED": "de", "LI": "it",
            "LE": "es", "LS": "ch", "LD": "hr", "HE": "eg", "OM": "ae", "OT": "qa", "MM": "mx", "K": "us"}
+# English names, spoken once with each flag in the airport list (Astra, round 7).
+COUNTRY = {"tw": "Taiwan", "jp": "Japan", "hk": "Hong Kong", "cn": "China", "th": "Thailand", "gb": "United Kingdom",
+           "de": "Germany", "it": "Italy", "es": "Spain", "ch": "Switzerland", "hr": "Croatia", "eg": "Egypt",
+           "ae": "United Arab Emirates", "qa": "Qatar", "mx": "Mexico", "us": "United States"}
 def cc_of(ic):
     for n in (2, 1):
         if ic[:n] in ICAO_CC: return ICAO_CC[ic[:n]]
@@ -156,7 +160,7 @@ for leg in legs:
 no_cc = [c for c in codes if not cc_of(icao.get(c, ""))]
 if no_cc:
     sys.exit(f"stop: no country for {no_cc}; add its ICAO letters to ICAO_CC")
-airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c]} for c in codes]
+airports = [{"code": c, "name": names[c], "cc": cc_of(icao[c]), "country": COUNTRY[cc_of(icao[c])], "x": round(proj_pt(*pos[c])[0], 1), "y": round(proj_pt(*pos[c])[1], 1), "n": count[c]} for c in codes]
 places = []
 for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places", []):
     dots = [[round(v, 1) for v in proj_pt(*pos[c])] for c in pl["airports"]]   # the name sits by the first

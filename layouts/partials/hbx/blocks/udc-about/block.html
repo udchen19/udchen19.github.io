@@ -10,16 +10,22 @@
 {{- $lifeLanes := cond (gt (len $life) 0) (hugo.Data.udc.life_lanes | default slice) slice -}}
 {{- $rows := slice -}}
 {{- range $author.education }}
-{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "head" .institution "sub" .degree "where" .location "url" "" "text" .summary) }}
+{{- $when := printf "%s – %s" ((time .start).Format "2006") ((time .end).Format "2006") }}
+{{- $rows = $rows | append (dict "key" .start "kind" "edu" "lane" "education" "s" (time .start) "e" (time .end) "when" $when "head" .institution "sub" .degree "where" .location "url" "" "text" .summary) }}
 {{- end }}
 {{- range $author.experience }}
-{{- $rows = $rows | append (dict "key" .start "kind" "work" "s" (time .start) "e" (time (.end | default (now.Format "2006-01-02"))) "open" (not .end) "lane" (.udc_lane | default "industry") "head" .role "sub" .org "url" .org_url "text" .summary) }}
+{{- $s := time .start }}{{ $e := time (.end | default (now.Format "2006-01-02")) }}
+{{- $when := printf "%s – %s" ($s.Format "Jan 2006") ($e.Format "Jan 2006") }}
+{{- if not .end }}{{ $when = printf "%s – Present" ($s.Format "Jan 2006") }}
+{{- else if eq ($s.Format "2006-01") ($e.Format "2006-01") }}{{ $when = $s.Format "Jan 2006" }}
+{{- else if eq $s.Year $e.Year }}{{ $when = printf "%s – %s" ($s.Format "Jan") ($e.Format "Jan 2006") }}{{ end }}
+{{- $rows = $rows | append (dict "key" .start "kind" "work" "s" $s "e" $e "when" $when "lane" (.udc_lane | default "industry") "head" .role "sub" .org "url" .org_url "text" .summary) }}
 {{- end }}
 {{- range $life }}
 {{- $s := time (printf "%s-01" .date) }}{{ $e := time (printf "%s-01" (.end | default .date)) }}
 {{- $e = $e.AddDate 0 1 -1 }}
 {{- $when := $s.Format "Jan 2006" }}{{ with .end }}{{ $when = printf "%s – %s" ($s.Format "Jan 2006") ((time (printf "%s-01" .)).Format "Jan 2006") }}{{ end }}
-{{- $rows = $rows | append (dict "key" (printf "%s-01" .date) "date" .date "kind" "life" "lane" .lane "s" $s "e" $e "years" $when "text" .text) }}
+{{- $rows = $rows | append (dict "key" (printf "%s-01" .date) "date" .date "kind" "life" "lane" .lane "s" $s "e" $e "when" $when "text" .text) }}
 {{- end }}
 {{- $all := sort $rows "key" "desc" -}}
 {{- $names := dict "education" "Education" "research" "Research" "teaching" "Teaching" "industry" "Industry" -}}
@@ -49,8 +55,9 @@
       {{- range $i, $r := $all }}{{ if eq $r.lane $lane }}
         {{- $a := add (float $r.s.Year) (div (float (sub $r.s.YearDay 1)) 365.0) }}
         {{- $b := add (float $r.e.Year) (div (float (sub $r.e.YearDay 1)) 365.0) }}
-        <a class="udc-ys-bar" href="#tl-{{ $i }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.head | default $r.text | plainify }}">
-          <span class="udc-visually-hidden">{{ $r.head | default $r.text | plainify }}</span></a>
+        <a class="udc-ys-bar" href="#tl-{{ $i }}" style="left: {{ div (mul (sub $a $y0) 100.0) $span }}%; width: {{ div (mul (sub $b $a) 100.0) $span }}%" title="{{ $r.head | default $r.text | plainify }}, {{ $r.when }}">
+          {{- /* Dates in the name too: two entries can share a title (Astra, round 7). */}}
+          <span class="udc-visually-hidden">{{ $r.head | default $r.text | plainify }}, {{ $r.when }}</span></a>
       {{- end }}{{ end }}
       </span>
     </div>
@@ -79,12 +86,14 @@
         <circle class="udc-map-port" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
         {{- end }}
         {{- range $i, $p := $m.places }}
-        <g class="udc-map-place"><title>{{ $p.name }}: {{ $p.note }}</title>
+        <g class="udc-map-place">
           {{- range $p.dots }}<circle cx="{{ index . 0 }}" cy="{{ index . 1 }}" r="8"/>{{ end }}
           {{- $w := in (slice "nw" "sw") $p.label }}{{ $south := in (slice "sw" "se") $p.label }}
           <text x="{{ cond $w (sub $p.x 13) (add $p.x 13) }}" y="{{ cond $south (add $p.y 30) (sub $p.y 8) }}"{{ if $w }} text-anchor="end"{{ end }}>{{ $p.name }}</text>
         </g>
         {{- end }}
+        {{- /* Ring for the picked airport, above the place dots (Astra, round 7); placed by udc-ui.js. */}}
+        <circle class="udc-map-ring" r="0" visibility="hidden"/>
       </svg>
       </div>
       <figcaption id="udc-map-cap" class="udc-map-cap">
@@ -99,12 +108,13 @@
       </figcaption>
       {{- /* Every airport, reachable by keyboard; picking one marks its dot and shows its label, which also
              settles dots that overlap (UD, after Astra's review, round 6). Outside the caption, which names
-             the map for screen readers. Without the script the names still read as a list. */}}
+             the map for screen readers. Without the script the names read as a plain list; the script makes
+             each one a button (Astra, round 7). The country is spoken once, for the flag. */}}
       <div class="udc-map-ports">
         <p class="udc-label" id="udc-map-ports-title">Airports</p>
         <ul aria-labelledby="udc-map-ports-title">
           {{- range sort $m.airports "code" }}
-          <li><button type="button" class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}</span></button></li>
+          <li><span class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}<span class="udc-visually-hidden">, {{ .country }}</span></span></span></li>
           {{- end }}
         </ul>
       </div>
@@ -115,12 +125,7 @@
     {{- range $i, $_ := $all }}
     <li class="udc-tl-row{{ if eq .kind "life" }} is-life{{ end }}" id="tl-{{ $i }}" data-lane="{{ .lane }}">
       <p class="udc-tl-date"><span class="udc-tl-lane">{{ index $names .lane }}</span>
-        {{- if eq .kind "life" }}{{ .years }}
-        {{- else if eq .kind "edu" }}{{ .s.Format "2006" }} – {{ .e.Format "2006" }}
-        {{- else if .open }}{{ .s.Format "Jan 2006" }} – Present
-        {{- else if eq (.s.Format "2006-01") (.e.Format "2006-01") }}{{ .s.Format "Jan 2006" }}
-        {{- else if eq .s.Year .e.Year }}{{ .s.Format "Jan" }} – {{ .e.Format "Jan 2006" }}
-        {{- else }}{{ .s.Format "Jan 2006" }} – {{ .e.Format "Jan 2006" }}{{ end }}</p>
+        {{- .when }}</p>
       <span class="udc-tl-node" aria-hidden="true"></span>
       <div class="udc-tl-desk">
         {{- if eq .kind "life" }}

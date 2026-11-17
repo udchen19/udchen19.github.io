@@ -92,17 +92,27 @@
     if (plate) {
       const svg = plate.querySelector('svg'); const vb = svg.viewBox.baseVal; const fig = plate.parentElement;
       const tip = document.createElement('p'); tip.className = 'udc-map-tip'; tip.hidden = true;
-      tip.setAttribute('aria-live', 'polite'); fig.append(tip);   // outside the plate: it clips and carries the ink mask
+      tip.setAttribute('aria-live', 'polite'); plate.after(tip);   // outside the plate: it clips and carries the ink mask
       const ports = [...svg.querySelectorAll('.udc-map-port')];
-      const picks = [...fig.parentElement.querySelectorAll('.udc-map-pick')];
+      const ring = svg.querySelector('.udc-map-ring');
+      // The list is plain text without this script; here each entry becomes a button (Astra, round 7).
+      const picks = [...fig.querySelectorAll('.udc-map-pick')].map(s => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = s.className;
+        b.dataset.code = s.dataset.code; b.append(...s.childNodes); s.replaceWith(b); return b;
+      });
+      let shown = null;                                            // the airports the open label names
+      // The ring clears the orange place dots (r 8 in map units) by 4 CSS px, at any width.
+      const ringR = () => 8 + 4 * vb.width / plate.offsetWidth;
       const clear = () => {
-        tip.hidden = true;
+        tip.hidden = true; shown = null;
+        ring?.setAttribute('visibility', 'hidden');
         ports.forEach(p => p.classList.remove('is-on'));
         picks.forEach(b => b.setAttribute('aria-pressed', 'false'));
       };
       // Label for one or more airports, placed by the first: above its dot, or below when there is no room.
       const show = list => {
         const scale = plate.offsetWidth / vb.width;
+        shown = list;
         tip.textContent = list.map(p => p.querySelector('title').textContent).join('\n');
         tip.hidden = false;
         const p0 = list[0], half = tip.offsetWidth / 2;
@@ -127,10 +137,21 @@
       picks.forEach(b => {
         const port = ports.find(p => p.dataset.code === b.dataset.code);
         b.setAttribute('aria-pressed', 'false');
-        const pick = () => { clear(); port.classList.add('is-on'); b.setAttribute('aria-pressed', 'true'); show([port]); };
+        const pick = () => {
+          clear(); port.classList.add('is-on'); b.setAttribute('aria-pressed', 'true'); show([port]);
+          ring?.setAttribute('cx', port.cx.baseVal.value); ring?.setAttribute('cy', port.cy.baseVal.value);
+          ring?.setAttribute('r', ringR());
+          ring?.setAttribute('visibility', 'visible');
+        };
         b.addEventListener('focus', pick);
         b.addEventListener('click', pick);
       });
+      // When the map changes size (rotation, window), the open label and ring follow their dot (Astra, round 7).
+      new ResizeObserver(() => {
+        if (!shown) return;
+        show(shown);
+        if (ring?.getAttribute('visibility') === 'visible') ring.setAttribute('r', ringR());
+      }).observe(plate);
       document.addEventListener('click', e => { if (!svg.contains(e.target) && !e.target.closest('.udc-map-pick')) clear(); });
       document.addEventListener('focusin', e => { if (!e.target.closest('.udc-map-pick') && !svg.contains(e.target)) clear(); });
     }
