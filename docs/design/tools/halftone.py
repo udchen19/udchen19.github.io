@@ -1,7 +1,7 @@
 """Halftone plates for the udchen.tw redesign (plan v2, 3.5 and Appendix B).
 
 python halftone.py <repo> <plate> [<plate> ...]
-plates: ryan ryan_line icon portrait stadium flag jingu hogwarts thames pages figure404 night
+plates: ryan icon portrait stadium flag jingu hogwarts thames pages figure404 night
 
 Every output is a 1-bit mask (white + alpha, or opaque/transparent palette PNG) coloured by CSS
 mask-image, so the light and night editions share one file where possible. Inks come from tokens.
@@ -9,7 +9,7 @@ Deterministic.
 """
 import sys, pathlib, subprocess, tempfile
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
 from scipy import ndimage as ndi
 
 repo = pathlib.Path(sys.argv[1]); out = repo / "static/textures"
@@ -76,29 +76,18 @@ def ryan():
     alpha = a_small
     save_mask(ink * alpha, "ryan-ink.png")
 
-def ryan_line():
-    """Ryan small, beside the footer's copyright (UD, 2026-11-17): only his outline, features and cap, solid,
-    like the line icons in the same band; the dotted face of ryan-ink.png goes muddy at that size.
-    Mask at 4x a 30 CSS px mark."""
-    im = Image.open(repo / "assets/media/ryan-head.png").convert("RGBA")
-    im = im.crop(im.getbbox())
-    W = 336; H = round(im.height * W / im.width)
-    arr = np.asarray(im, np.float32) / 255.0
-    black = (arr[..., :3].max(-1) < 0.3) & (arr[..., 3] > 0.5)
-    small = np.asarray(Image.fromarray((black * 255).astype(np.uint8)).resize((W, H), Image.BOX), np.float32) / 255.0
-    save_mask((small > 0.43).astype(np.float32), "ryan-line.png")
-
 def icon():
-    """Tab icon (UD, 2026-11-17: Ryan replaces 達): Ryan in his own colours on a clear square. At tab size
-    the ink-on-paper versions shrink to a grey blob; the colours keep him recognisable. Blox reads
-    assets/media/icon.png and makes the favicon and the 180 px apple-touch icon from it."""
-    im = Image.open(repo / "assets/media/ryan-head.png").convert("RGBA")
-    im = im.crop(im.getbbox())
-    N = 512; k = N * 0.98 / max(im.size)
-    im = im.resize((round(im.width * k), round(im.height * k)), Image.LANCZOS)
-    sq = Image.new("RGBA", (N, N), (0, 0, 0, 0)); sq.paste(im, ((N - im.width) // 2, (N - im.height) // 2), im)
-    dest = repo / "assets/media/icon.png"; sq.save(dest, optimize=True)
-    print(f"icon.png {sq.size} {dest.stat().st_size / 1024:.1f} KB")
+    """Tab icon (UD, 2026-11-17: Ryan replaces 達): the printed Ryan of ryan-ink.png in the orange, on the
+    paper rounded square the 達 icon used, so it holds in light and dark tab bars. Blox reads
+    assets/media/icon.png and makes the favicon and the 180 px apple-touch icon from it. Run after ryan."""
+    N = 512; paper, orange = (0xE2, 0xDD, 0xD1, 255), (0xB5, 0x50, 0x1F, 255)
+    m = Image.open(out / "ryan-ink.png").convert("RGBA").getchannel("A")
+    k = N * 0.86 / max(m.size); m = m.resize((round(m.width * k), round(m.height * k)), Image.LANCZOS)
+    im = Image.new("RGBA", (N, N), paper); im.paste(Image.new("RGBA", m.size, orange), ((N - m.width) // 2, (N - m.height) // 2 + 8), m)
+    corner = Image.new("L", (N, N), 0); ImageDraw.Draw(corner).rounded_rectangle((0, 0, N - 1, N - 1), radius=N * 40 // 256, fill=255)
+    im.putalpha(corner)
+    dest = repo / "assets/media/icon.png"; im.save(dest, optimize=True)
+    print(f"icon.png {im.size} {dest.stat().st_size / 1024:.1f} KB")
 
 def portrait():
     """Plan 3.5 and Appendix B: full colour, ordered-dither halftone, dot cell 1.5 CSS px at the
@@ -292,6 +281,6 @@ SRC = repo / "docs/design/v2/sources"
 PLATES = {"jingu": lambda: section("jingu", SRC / "jingu.webp", "2000x800+0+690"),
           "hogwarts": lambda: section("hogwarts", SRC / "hogwarts.jpg", "2000x800+0+20"),
           "thames": lambda: section("thames", SRC / "london-day-frame14-1600.jpg", "1600x640+0+200"),
-          "ryan": ryan, "ryan_line": ryan_line, "icon": icon, "portrait": portrait, "pages": pages, "figure404": figure404, "night": night, "stadium": stadium, "flag": flag}
+          "ryan": ryan, "icon": icon, "portrait": portrait, "pages": pages, "figure404": figure404, "night": night, "stadium": stadium, "flag": flag}
 for p in sys.argv[2:]:
     PLATES[p]()

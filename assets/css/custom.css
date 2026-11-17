@@ -355,8 +355,8 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-footer-links svg { width: 20px; height: 20px; }
 .udc-footer-fineprint { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 2px 20px; }
 .udc-footer-fineprint p { margin: 0; }
-.udc-footer-ryan { display: inline-block; width: 2.3em; aspect-ratio: 336 / 239; margin-right: .45em; vertical-align: -.55em; background: currentColor;
-  -webkit-mask: url("/textures/ryan-line.png") center / contain no-repeat; mask: url("/textures/ryan-line.png") center / contain no-repeat; }
+.udc-footer-ryan { display: inline-block; width: 2.7em; aspect-ratio: 336 / 239; margin-right: .45em; vertical-align: -.7em; background: currentColor;
+  -webkit-mask: url("/textures/ryan-ink.png") center / contain no-repeat; mask: url("/textures/ryan-ink.png") center / contain no-repeat; }
 .udc-footer a { color: var(--udc-paper); }
 /* The flag (home only): far outfield stand, right of the right floodlight; % of the image, so it
    holds its spot at every width. Rotated −14° about its lower-left corner; a thin pole into the crowd. */
