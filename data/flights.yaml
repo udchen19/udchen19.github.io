@@ -10,7 +10,7 @@ places:
   - {name: Taipei, airports: [TPE, TSA], label: se, note: "Where I’m from. Born here; home until 2006, and again from 2010 to 2026."}
   - {name: London, airports: [LHR, LGW, LTN], note: "Home from 2006 to 2010, while my parents studied here and took me along. Not British in any way, but a good part of me started here."}
   - {name: Japan, airports: [NRT, HND, KIX, ITM], label: nw, note: "Trips for baseball, shopping and culture, again and again."}
-  - {name: Chicago (Champaign), airports: [ORD], label: nw, note: "Home from 2026, the first time I’ve lived away from home."}
+  - {name: Chicago (Champaign), airports: [ORD], label: nw, note: "Home from 2026. The first time I really left home, came out of my shell and started my own things."}
 legs:
   # 2006
   - [2006, TPE, HKG, 9]
