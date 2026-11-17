@@ -136,15 +136,18 @@ print("map-land.png", (W * S, H * S), land_png.stat().st_size // 1024, "KB")
 # The map marks places, not routes: every route prints faint; the places in flights.yaml print strong.
 # Order for the map's drawing (UD, 2026-11-16): each route inks in at the flight that first took it, each
 # airport appears at the first flight that touched it (on arrival, "arr" 1, or departure), each place at
-# its first airport's turn. Legs are listed in the order flown.
+# its first airport's turn; later flights on a route are kept, with their direction, to redraw it.
+# Legs are listed in the order flown.
 first = {}
+flights = []        # every flight after the first on its route: route, order, flown the other way
 routes, seen = [], {}
 for li, leg in enumerate(legs):
     year, a, b = leg[:3]
     first.setdefault(a, (li, 0)); first.setdefault(b, (li, 1))
     key = tuple(sorted((a, b)))
     if key in seen:
-        routes[seen[key]]["years"].add(year); continue
+        r = routes[seen[key]]; r["years"].add(year)
+        flights.append({"r": seen[key], "i": li, "rev": int((a, b) != (r["a"], r["b"]))}); continue
     # Unwrap the longitudes so the curve is continuous, then draw it once per 360° shift that touches
     # the map; the SVG clips what falls outside (London to Chicago leaves by both edges).
     gc = great_circle(pos[a], pos[b]); lons = [gc[0][0]]
@@ -159,6 +162,8 @@ for li, leg in enumerate(legs):
     routes.append({"d": " ".join(pieces), "years": {year}, "a": a, "b": b, "o": li})
 for r in routes:
     r["years"] = sorted(r["years"])
+    # The same route drawn the other way, for return flights: each piece's points in reverse.
+    r["dr"] = " ".join("M" + " L".join(reversed(p.strip().split(" L"))) for p in r["d"].split("M") if p.strip())
 count = {}
 for leg in legs:
     for c in leg[1:3]: count[c] = count.get(c, 0) + 1
@@ -171,5 +176,40 @@ for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places",
     dots = [[round(v, 1) for v in proj_pt(*pos[c])] for c in pl["airports"]]   # the name sits by the first
     places.append({"name": pl["name"], "note": pl["note"], "airports": pl["airports"], "label": pl.get("label", "ne"),
                    "x": dots[0][0], "y": dots[0][1], "dots": dots, "o": min(first[c] for c in pl["airports"])[0], "arr": min(first[c] for c in pl["airports"])[1]})
-(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "routes": routes, "airports": airports, "places": places}, ensure_ascii=False))
+# Timing for the drawing (UD, 2026-11-16), in seconds from the start. Flights are drawn one after another,
+# each starting when the one before has landed, at one steady speed: a line's time follows its length on the
+# map (at least MIN), scaled so the whole run of flights takes RUN. When a flight first reaches one of the
+# places, its dot and name appear (LABEL) and its entry in the key below types out before the next line starts. Written into the data so the page
+# needs no arithmetic of its own.
+RUN, MIN, GAP, LABEL, CPS = 13.0, 0.12, 0.04, 0.7, 60.0   # CPS: characters a second when the key types out
+def plen(d):
+    """Length, in map units, of a route's first drawn piece."""
+    pts = [tuple(map(float, p.split(","))) for p in d.split("M")[1].strip().split(" L")]
+    return sum(math.dist(a, b) for a, b in zip(pts, pts[1:]))
+route_of = {tuple(sorted((r["a"], r["b"]))): k for k, r in enumerate(routes)}
+lens = [plen(routes[route_of[tuple(sorted(leg[1:3]))]]["d"]) for leg in legs]
+speed = sum(lens) / (RUN - MIN * len(legs) * 0.5)          # map units per second
+durs = [round(max(MIN, L / speed), 3) for L in lens]
+place_of = {c: k for k, pl in enumerate(places) for c in pl["airports"]}
+shown, t, at, leg_t = set(), 0.0, {}, []
+def reach(code, when):
+    """An airport first touched at `when`; returns when the next line may start (after a place's name)."""
+    at.setdefault(code, when)
+    k = place_of.get(code)
+    if k is None or k in shown: return when
+    shown.add(k); pl = places[k]
+    # The dot and name on the map (LABEL), then the place's entry in the key types out, name and note,
+    # before the next flight (UD, 2026-11-16).
+    pl["t"] = round(when, 3); pl["kt"] = round(when + LABEL, 3)
+    pl["kd"] = round((len(pl["name"]) + len(pl["note"])) / CPS, 3)
+    return when + LABEL + pl["kd"] + 0.2
+for li, leg in enumerate(legs):
+    t = reach(leg[1], t)                        # a departure from a new place: its name first
+    leg_t.append(round(t, 3))
+    t = reach(leg[2], t + durs[li]) + GAP       # land, then (at a new place) its name, then the next flight
+for r in routes: r["t"], r["dur"] = leg_t[r["o"]], durs[r["o"]]
+for f in flights: f["t"], f["dur"] = leg_t[f["i"]], durs[f["i"]]
+for ap in airports: ap["t"] = round(at[ap["code"]], 3)
+print(f"drawing takes {t:.1f} s")
+(repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "label": LABEL, "routes": routes, "flights": flights, "airports": airports, "places": places}, ensure_ascii=False))
 print("routes", len(routes), "airports", len(airports), "places", len(places))

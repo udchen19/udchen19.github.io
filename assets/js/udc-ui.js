@@ -217,6 +217,38 @@
           if (top < 0 || bottom > innerHeight) scrollBy({ top: top - 16, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
         });
       });
+      // As the map unfolds, each place's entry in the key types itself out once the drawing reaches that place,
+      // keeping its space until then; the drawing waits for it (times from flightmap.py; UD, 2026-11-16).
+      // Without the script, or with less motion asked for, the key is simply there.
+      const details = plate.closest('details');
+      const keys = [...fig.querySelectorAll('.udc-map-key > div[data-t]')].map(div => {
+        const chars = [];
+        div.querySelectorAll('dt, dd').forEach(el => {
+          const text = el.textContent; el.textContent = '';
+          for (const ch of text) { const sp = document.createElement('span'); sp.textContent = ch; el.append(sp); chars.push(sp); }
+        });
+        return { div, t: +div.dataset.t, dur: +div.dataset.dur, chars };
+      });
+      let typing = 0;
+      const typeKeys = () => {
+        cancelAnimationFrame(typing);
+        const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        keys.forEach(k => { k.div.toggleAttribute('data-wait', !still); k.chars.forEach(c => { c.style.visibility = still ? '' : 'hidden'; }); });
+        if (still) return;
+        const t0 = performance.now() + 500;
+        const frame = now => {
+          let busy = false;
+          keys.forEach(k => {
+            const n = Math.floor(Math.max(0, (now - t0) / 1000 - k.t) / k.dur * k.chars.length);
+            if (n > 0) k.div.removeAttribute('data-wait');
+            k.chars.forEach((c, i) => { if (i < n) c.style.visibility = ''; });
+            if (n < k.chars.length) busy = true;
+          });
+          if (busy) typing = requestAnimationFrame(frame);
+        };
+        typing = requestAnimationFrame(frame);
+      };
+      details?.addEventListener('toggle', () => { if (details.open) typeKeys(); else cancelAnimationFrame(typing); });
       // When the map changes size (rotation, window), the open label and ring follow their dot (Astra, round 7).
       new ResizeObserver(() => {
         if (!shown) return;

@@ -83,8 +83,9 @@
   {{- $land := resources.Get "textures/map-land.png" | fingerprint }}
   {{- /* Closed, the map lies folded: a creased strip of it under its title. Opened, it unfolds and the
          routes ink themselves in, in the order the flights were taken; each airport and place appears with the
-         first flight that reached it (UD, 2026-11-16). */}}
-  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s); --n: %d" $land.RelPermalink (int $m.legs) | safeCSS }}">
+         first flight that reached it; a place's name finishes before the next line starts. Times come from
+         flightmap.py (UD, 2026-11-16). */}}
+  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s); --label: %vs" $land.RelPermalink $m.label | safeCSS }}">
     <summary class="udc-map-summary">
       <span class="udc-map-folded" aria-hidden="true"><span class="udc-map-folded-land"></span></span>
       <span class="udc-map-title">Where I’ve wandered</span>
@@ -95,16 +96,22 @@
       <span class="udc-map-land" aria-hidden="true"></span>
       <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
         {{- range $m.routes }}
-        <path class="udc-map-leg" pathLength="1" style="--i: {{ .o }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
+        <path class="udc-map-leg" pathLength="1" style="--t: {{ .t }}; --dur: {{ .dur }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
         {{- end }}
+        {{- /* Every later flight on a route redraws it in the direction flown, then fades back into it (UD). */}}
+        <g class="udc-map-flights" aria-hidden="true">
+        {{- range $m.flights }}{{ $r := index $m.routes (int .r) }}
+        <path class="udc-map-fly" pathLength="1" style="--t: {{ .t }}; --dur: {{ .dur }}" d="{{ cond (eq .rev 1) $r.dr $r.d }}"/>
+        {{- end }}
+        </g>
         {{- range $m.airports }}
-        <circle class="udc-map-port" style="--i: {{ .o }}; --arr: {{ .arr }}" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
+        <circle class="udc-map-port" style="--t: {{ .t }}" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>
         {{- end }}
         {{- range $i, $p := $m.places }}
-        <g class="udc-map-place" style="--i: {{ $p.o }}; --arr: {{ $p.arr }}">
+        <g class="udc-map-place" style="--t: {{ $p.t }}">
           {{- range $p.dots }}<circle cx="{{ index . 0 }}" cy="{{ index . 1 }}" r="8"/>{{ end }}
           {{- $w := in (slice "nw" "sw") $p.label }}{{ $south := in (slice "sw" "se") $p.label }}
-          <text x="{{ cond $w (sub $p.x 13) (add $p.x 13) }}" y="{{ cond $south (add $p.y 30) (sub $p.y 8) }}"{{ if $w }} text-anchor="end"{{ end }}>{{ $p.name }}</text>
+          <g class="udc-map-name"><text x="{{ cond $w (sub $p.x 13) (add $p.x 13) }}" y="{{ cond $south (add $p.y 30) (sub $p.y 8) }}"{{ if $w }} text-anchor="end"{{ end }}>{{ $p.name }}</text></g>
         </g>
         {{- end }}
         {{- /* Ring for the picked airport, above the place dots (Astra, round 7); placed by udc-ui.js. */}}
@@ -116,7 +123,8 @@
           {{- /* Places that share a note share one entry in the key. */}}
           {{- $notes := slice }}{{ range $m.places }}{{ $notes = $notes | append .note }}{{ end }}
           {{- range uniq $notes }}{{ $n := . }}{{ $names := slice }}{{ range where $m.places "note" $n }}{{ $names = $names | append .name }}{{ end }}
-          <div><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
+          {{- $first := index (where $m.places "note" $n) 0 }}
+          <div data-t="{{ $first.kt }}" data-dur="{{ $first.kd }}"><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
           {{- end }}
         </dl>
         <p>Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport, or pick one below.</p>
@@ -129,7 +137,7 @@
         <p class="udc-label" id="udc-map-ports-title">Airports</p>
         <ul aria-labelledby="udc-map-ports-title">
           {{- range sort $m.airports "code" }}
-          <li><span class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}<span class="udc-visually-hidden">, {{ .country }}</span></span></span></li>
+          <li style="--t: {{ .t }}"><span class="udc-map-pick" data-code="{{ .code }}"><img class="udc-map-flag" src="{{ printf "flags/%s.svg" .cc | relURL }}" alt="" width="16" height="12" loading="lazy"><b>{{ .code }}</b> <span>{{ .name }}<span class="udc-visually-hidden">, {{ .country }}</span></span></span></li>
           {{- end }}
         </ul>
       </div>
