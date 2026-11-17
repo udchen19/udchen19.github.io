@@ -662,21 +662,23 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 /* .udc-map > : outranks Blox's `.dark details>summary` colour. */
 /* Folded (UD, 2026-11-16): a creased strip of the map with its title; the open map unfolds, its routes ink in. */
 .udc-map > .udc-map-summary { position: relative; display: block; cursor: pointer; list-style: none; }
-.udc-map-folded { display: block; position: relative; height: 4.4rem; overflow: hidden; border: 1px solid var(--udc-ink);
-  background: var(--udc-paper); transition: translate .2s; }
+/* No frame: a piece of slightly darker paper with the same rough-cut edge as the year plates (UD: the outline
+   looked rigid). */
+.udc-map-folded { display: block; position: relative; height: 4.4rem; overflow: hidden; background: var(--udc-paper-2);
+  clip-path: var(--udc-cut-plate); transition: translate .2s; }
 .udc-map-folded-land { position: absolute; inset: 0; background: var(--udc-ink-2); opacity: .6;
   -webkit-mask: var(--udc-map-land) center 42% / 100% auto no-repeat; mask: var(--udc-map-land) center 42% / 100% auto no-repeat; }
 .udc-map-folded::after { content: ""; position: absolute; inset: 0; pointer-events: none;   /* the folds: panels lit and shaded in turn */
   background: linear-gradient(90deg, color-mix(in srgb, var(--udc-ink) 10%, transparent), transparent 25%, color-mix(in srgb, var(--udc-ink) 12%, transparent) 25%, transparent 50%,
     color-mix(in srgb, var(--udc-ink) 10%, transparent) 50%, transparent 75%, color-mix(in srgb, var(--udc-ink) 12%, transparent) 75%, transparent); }
 .udc-map-summary:hover .udc-map-folded { translate: 0 -2px; }
-.udc-map-title { position: absolute; left: 14px; bottom: 10px; padding: 2px 10px; background: var(--udc-paper);
+.udc-map-title { position: absolute; left: 14px; bottom: 10px; padding: 2px 10px; background: var(--udc-paper); clip-path: var(--udc-cut-plate);
   font-family: var(--udc-motto-face); font-style: italic; font-size: 1.2rem; line-height: 1.2; color: var(--udc-ink); }
 .udc-map-summary:hover .udc-map-title { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
 .udc-map-fold { display: none; }
 .udc-map[open] .udc-map-folded { display: none; }
 .udc-map[open] > .udc-map-summary { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.udc-map[open] .udc-map-title { position: static; padding: 0; background: none; }
+.udc-map[open] .udc-map-title { position: static; padding: 0; background: none; clip-path: none; }
 .udc-map[open] .udc-map-fold { display: inline; font-family: var(--udc-sign); font-weight: 500; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink-2); }
 .udc-map[open] .udc-map-summary:hover .udc-map-fold { color: var(--udc-ink); text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
 .udc-map[open] .udc-map-summary:hover .udc-map-title { text-decoration: none; }
