@@ -107,7 +107,7 @@
       setDate();
       document.addEventListener('visibilitychange', () => { if (!document.hidden) setDate(); });
     }
-    // About (plan 4.8; UD 2026-11-16): every lane is a filter. Work lanes start on; entries and bars
+    // About (plan 4.8; UD 2026-11-16): every lane is a filter. Education and Research start on (UD, 2026-11-17); entries and bars
     // of lanes that are off are hidden. The life lanes stay out of sight until "Away from the desk" is
     // pressed, which shows them switched on; pressing it again hides them. Without this script
     // everything shows.
@@ -130,6 +130,7 @@
       const wrap = tl.querySelector('.udc-ys-wrap');
       const veil = tl.querySelector('.udc-ys-veil'), back = tl.querySelector('.udc-ys-back');
       const lifeLanes = [...tl.querySelectorAll('.udc-ys-life')];
+      const map = tl.querySelector('.udc-map');
       const placeVeil = () => {
         if (!veil || !lifeLanes.length) return;
         const top = lifeLanes[0].offsetTop, last = lifeLanes[lifeLanes.length - 1];
@@ -140,6 +141,7 @@
         wrap?.classList.toggle('is-veiled', !open);
         if (veil) veil.hidden = open;
         if (back) back.hidden = !open;
+        if (map) map.hidden = !open;   // "Where I've wandered" belongs to life away from the desk (UD, 2026-11-17)
         lifeLanes.forEach(lane => {
           lane.inert = !open;
           lane.querySelector('.udc-ys-filter')?.setAttribute('aria-pressed', String(open));
@@ -294,13 +296,10 @@
         name: li.querySelector('b + span')?.firstChild?.textContent.trim() || '' })).filter(x => x.t > 0).sort((a, b) => a.t - b.t);
       const skipBtn = fig.querySelector('.udc-map-skip');
       let typing = 0;
-      // While it plays: the caption says what a tap does now, and airports not yet reached in the list can't be
-      // focused or chosen (Astra, round 11).
-      const hint = fig.querySelector('.udc-map-hint'), hintIdle = hint?.textContent;
+      // While it plays, airports not yet reached in the list can't be focused or chosen (Astra, round 11).
       const listItems = [...fig.querySelectorAll('.udc-map-ports li')].map(li => ({ li, t: parseFloat(li.style.getPropertyValue('--t')) || 0 }));
       const playing = on => {
         details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on;
-        if (hint) hint.textContent = on ? hint.dataset.playing : hintIdle;
         if (!on) listItems.forEach(x => { x.li.inert = false; });
       };
       const skip = () => {

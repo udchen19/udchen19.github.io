@@ -53,7 +53,7 @@
     {{- range .lanes }}
     {{- $lane := . }}
     <div class="udc-ys-lane{{ if $life }} udc-ys-life{{ end }}" data-lane="{{ $lane }}" id="ys-{{ $lane }}">
-      <span class="udc-ys-name"><button type="button" class="udc-ys-filter" data-lane="{{ $lane }}" aria-pressed="{{ $on }}">{{ index $names $lane }}</button></span>
+      <span class="udc-ys-name"><button type="button" class="udc-ys-filter" data-lane="{{ $lane }}" aria-pressed="{{ and $on (in (slice "education" "research") $lane) }}">{{ index $names $lane }}</button></span>
       <span class="udc-ys-track">
       {{- range $i, $r := $all }}{{ if eq $r.lane $lane }}
         {{- $a := add (float $r.s.Year) (div (float (sub $r.s.YearDay 1)) 365.0) }}
@@ -133,7 +133,6 @@
           <div data-t="{{ $first.kt }}" data-dur="{{ $first.kd }}"><dt>{{ delimit $names " · " }}</dt><dd>{{ $n }}</dd></div>
           {{- end }}
         </dl>
-        <p class="udc-map-hint" data-playing="Every flight since {{ index $yrs 0 }}, in the order flown; tap the map or Skip to see it finished.">Every flight since {{ index $yrs 0 }} in grey; hover or tap a dot for the airport, or pick one below.</p>
       </figcaption>
       {{- /* Every airport, reachable by keyboard; picking one marks its dot and shows its label, which also
              settles dots that overlap (UD, after Astra's review, round 6). Outside the caption, which names
