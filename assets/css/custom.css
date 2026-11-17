@@ -923,6 +923,10 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   /* A video cannot play on paper and printed as an empty frame (the Kapito post's ride to work, a page and a
      half tall); it is left out. */
   .udc-prose video { display: none; }
+  /* Paper cannot open a fold: every fold prints open, with or without scripts, and "展開本節", a command
+     paper cannot obey, is left out; descriptive labels such as "7500+字 慎入" stay (Astra, round 17). */
+  .udc-prose details::details-content { content-visibility: visible !important; display: block !important; }
+  .udc-prose summary.udc-fold-cmd { display: none; }
   /* Paper cannot scroll: News prints every entry, without the fade (Astra, round 16). */
   .udc-news-list { max-height: none !important; overflow: visible; -webkit-mask: none !important; mask: none !important; }
 }
@@ -937,7 +941,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    header at both edges. Right: a compact column with the meta block and, for articles with three or more
    sections, the section list, which stays in view. Left: title, abstract and text fill the rest of the
    width. From 1024px the article text is set larger, so its long lines stay easy to follow. Below 900px:
-   one column, no list. */
+   one column. */
 /* Section list. Narrow screens: a folded "Sections" list under the date (opens on tap). From 900px: always
    open in the side column, the summary acting only as its label. */
 .udc-toc { margin-top: 14px; }
