@@ -187,7 +187,8 @@ for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places",
 # places, its dot and name appear (LABEL) and its entry in the key below types out before the next line starts;
 # a flight reaching any new airport waits for that airport to appear in the list below (LIST). Written into the data so the page
 # needs no arithmetic of its own.
-RUN, MIN, GAP, LABEL, CPS, LIST = 13.0, 0.12, 0.04, 0.7, 60.0, 0.45   # CPS: key typing speed; LIST: an airport appearing in the list
+RUN, MIN, BEAT, LABEL, CPS, LIST = 10.5, 0.12, 0.2, 0.7, 60.0, 0.45   # CPS: key typing speed; LIST: an airport appearing in the list;
+# BEAT: a pause after every step, so each comes to rest before the next (UD)
 def plen(d):
     """Length, in map units, of a route's first drawn piece."""
     pts = [tuple(map(float, p.split(","))) for p in d.split("M")[1].strip().split(" L")]
@@ -200,7 +201,8 @@ durs = [round(max(MIN, L / speed), 3) for L in lens]
 # includes the fade (the draw is the first FLASH of it), so nothing starts until the flash is over.
 FLASH = 0.65
 again = {f["i"] for f in flights}
-slots = [round(d / FLASH, 3) if li in again else d for li, d in enumerate(durs)]
+REPEAT = 0.6   # a flash over a route already drawn runs at this share of a first drawing's time (UD: repeats faster)
+slots = [round(d * REPEAT / FLASH, 3) if li in again else d for li, d in enumerate(durs)]
 place_of = {c: k for k, pl in enumerate(places) for c in pl["airports"]}
 shown, t, at, leg_t = set(), 0.0, {}, []
 def reach(code, when):
@@ -208,17 +210,17 @@ def reach(code, when):
     if code in at: return when
     at[code] = when                            # a new airport: its entry in the list appears before the next flight
     k = place_of.get(code)
-    if k is None or k in shown: return when + LIST
+    if k is None or k in shown: return when + LIST + BEAT
     shown.add(k); pl = places[k]
     # The dot and name on the map (LABEL), then the place's entry in the key types out, name and note,
     # before the next flight (UD, 2026-11-16).
     pl["t"] = round(when, 3); pl["kt"] = round(when + LABEL, 3)
     pl["kd"] = round((len(pl["name"]) + len(pl["note"])) / CPS, 3)
-    return max(when + LIST, when + LABEL + pl["kd"] + 0.2)
+    return max(when + LIST, when + LABEL + pl["kd"]) + BEAT
 for li, leg in enumerate(legs):
     t = reach(leg[1], t)                        # a departure from a new place: its name first
     leg_t.append(round(t, 3))
-    t = reach(leg[2], t + slots[li]) + GAP      # land, then a new airport in the list / a new place, then the next flight
+    t = reach(leg[2], t + slots[li] + BEAT)     # the line comes to rest; then a new airport in the list / a new place
 # The running date: the month and year of the flight being drawn, from its start (only when it changes).
 MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 dates = []
