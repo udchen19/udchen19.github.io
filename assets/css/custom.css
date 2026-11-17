@@ -168,6 +168,9 @@ body.page-wrapper::after {
 /* Below-the-fold tiers are laid out (and their fonts fetched) only when they come near. */
 .udc-home > .udc-tier { content-visibility: auto; contain-intrinsic-size: auto 480px; }
 html { font-size: 18px; scrollbar-gutter: stable; }
+/* Above 1280px the whole page grows with the window (UD, 2026-11-16: the fixed 1200px page left a narrow strip
+   on big screens): the base size rises from 18px at 1280 to 24px at about 1700, and widths set in rem follow. */
+@media (min-width: 1281px) { html { font-size: min(1.40625vw, 24px); } }
 @media (max-width: 640px) { html { font-size: 17px; } }
 body.page-wrapper, .dark body.page-wrapper {
   color: var(--udc-ink);
@@ -185,7 +188,7 @@ a:hover { text-decoration-thickness: 2px; }
 ::selection { background: var(--udc-ink); color: var(--udc-paper); }
 /* Content sits inside the sheet: between the worn edges, plus a gutter. */
 .udc-wrap {
-  width: min(1200px, 100% - var(--udc-edge-l) - var(--udc-edge-r) - 2 * var(--udc-gutter));
+  width: min(66.667rem, 100% - var(--udc-edge-l) - var(--udc-edge-r) - 2 * var(--udc-gutter));   /* 1200px at 1280 */
   margin-inline: auto; position: relative; left: calc((var(--udc-edge-l) - var(--udc-edge-r)) / 2);
 }
 .udc-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -281,14 +284,14 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-header-home .udc-nav-controls > .udc-motto, .udc-header-inner .udc-nav-controls > .udc-motto { grid-row: 2; grid-column: 1 / 3; justify-self: start; justify-items: start; padding-left: 0; }
 .udc-header-home .udc-date, .udc-header-inner .udc-date { grid-row: 2; grid-column: 4 / 6; justify-self: end; padding-right: 0; }
 /* Home: the nameplate row on top; the theme button closes the dated row. */
-.udc-header-home .udc-brand { grid-row: 1; grid-column: 1 / -1; justify-self: center; font-size: min(80px, 6.25vw); padding-bottom: 12px; }
+.udc-header-home .udc-brand { grid-row: 1; grid-column: 1 / -1; justify-self: center; font-size: min(4.444rem, 6.25vw); padding-bottom: 12px; }
 .udc-header-home .udc-brand .udc-emblem { width: 1.05em; margin-right: .1em; }
 .udc-header-home .udc-nav { padding-block: 8px; }
 .udc-header-home .udc-date { grid-column: 4; }
 .udc-header-home .udc-theme-row { grid-row: 2; grid-column: 5; justify-self: end; }
 /* Inner pages: a compact folio. Row 1: Ryan + a smaller nameplate (about 40px at 1280) and the theme
    button; row 2: the dated row. */
-.udc-header-inner .udc-brand { grid-row: 1; grid-column: 1 / 5; justify-self: start; font-size: min(40px, 3.1vw); padding-bottom: 8px; }
+.udc-header-inner .udc-brand { grid-row: 1; grid-column: 1 / 5; justify-self: start; font-size: min(2.222rem, 3.1vw); padding-bottom: 8px; }
 .udc-header-inner .udc-brand .udc-emblem { width: 1.15em; margin-right: .1em; }
 .udc-header-inner .udc-theme-row { grid-row: 1; grid-column: 5; justify-self: end; align-self: center; margin-bottom: 8px; }
 .udc-header-inner .udc-nav { padding-block: 6px; }
@@ -391,17 +394,17 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-lead-l2 { font-size: calc(100cqi / 17.763); line-height: 1.05; }
 .udc-lead-l2 b { font-weight: inherit; color: var(--udc-orange-text); }
 /* Reading text: left-aligned, not justified, no hyphenation (plan 3.2). */
-.udc-intro { max-width: 68ch; }
+.udc-intro { max-width: none; }
 .udc-intro p { margin: 0 0 .8em; text-align: left; hyphens: none; }
 .udc-intro strong { font-weight: 700; }
 .udc-front .udc-intro { max-width: none; column-count: 2; column-gap: 26px; column-rule: 1px solid var(--udc-rule); }
 .udc-front .udc-intro p { break-inside: auto; orphans: 3; widows: 3; }
 .udc-dropcap { float: left; font-family: var(--udc-text); font-size: 3.3em; line-height: .8; margin: .07em .07em 0 0; color: var(--udc-ink); }
-@media (max-width: 1099px) { .udc-front .udc-intro { column-count: 1; max-width: 68ch; } }
+@media (max-width: 1099px) { .udc-front .udc-intro { column-count: 1; } }
 
 /* Columnist block (plan v2, 4.4): portrait (no frame), name on one line with 陳威達, icons. */
 .udc-portrait { margin: -14px 0 6px; }
-.udc-portrait img { display: block; width: min(282px, 100%); height: auto; }
+.udc-portrait img { display: block; width: min(15.667rem, 100%); height: auto; }
 .udc-byname { display: flex; align-items: center; flex-wrap: wrap; gap: 2px 12px; margin: 0; }
 .udc-name-en { font-family: var(--udc-text); font-weight: 700; font-size: 1.5rem; line-height: 1.15; white-space: nowrap; }
 .udc-name-zh { position: relative; display: inline-block; height: 1.45em; aspect-ratio: 489 / 177; font-size: 1.5rem; }
@@ -496,16 +499,15 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-meta-links, .udc-pub-links { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 4px; }
 .page-body .hb-attachment-link { text-transform: none; letter-spacing: 0; display: inline-flex; align-items: center; gap: 5px; min-height: 32px; margin: 0; padding: 0; font-family: var(--udc-sign); font-size: .875rem; font-weight: 400; color: var(--udc-ink); background: none; border: 0; border-radius: 0; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
 .page-body .hb-attachment-link svg { width: 16px !important; height: 16px !important; flex: none; }
-.udc-featured { aspect-ratio: 1440 / 703; max-width: 760px; margin: 0 0 22px; }
+.udc-featured { aspect-ratio: 1440 / 703; margin: 0 0 22px; }
 
 /* Reading text: one column, controlled measure; the press reaches it lightly (page layer). */
-.udc-prose { max-width: 68ch; font-size: .9rem; line-height: 1.58; }
+.udc-prose { font-size: .9rem; line-height: 1.58; }
 .udc-prose p, .udc-prose li { text-align: left; hyphens: none; }
-.udc-single[lang="zh-Hant"] .udc-prose { max-width: 36em; line-height: 1.85; }
-.udc-single:not([lang="zh-Hant"]) .udc-prose > [lang="zh-Hant"] { max-width: 36em; }   /* 繁體中文 blocks inside an English article */
+.udc-single[lang="zh-Hant"] .udc-prose { line-height: 1.85; }
 .udc-prose > * { margin-block: 0 .9em; }
-.udc-prose h2 { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.5rem; line-height: 1.25; margin: 1.6em 0 .5em; padding-top: .4em; border-top: 1px solid var(--udc-ink); }
-.udc-prose h3 { font-family: var(--udc-text); font-weight: 650; font-size: 1.2rem; line-height: 1.25; margin: 1.3em 0 .4em; }
+.udc-prose h2 { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: min(1.5rem, .82 * var(--udc-article-title, 2rem)); line-height: 1.25; margin: 1.6em 0 .5em; padding-top: .4em; border-top: 1px solid var(--udc-ink); }
+.udc-prose h3 { font-family: var(--udc-text); font-weight: 650; font-size: min(1.2rem, .7 * var(--udc-article-title, 2rem)); line-height: 1.25; margin: 1.3em 0 .4em; }
 .udc-prose h4 { font-weight: 650; font-size: 1rem; margin: 1.1em 0 .3em; }
 .udc-single[lang="zh-Hant"] .udc-prose :is(h2, h3) { font-family: var(--udc-text); font-weight: 700; }
 .udc-prose strong { font-weight: 650; }
@@ -535,11 +537,11 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-tags { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; margin-top: 20px; }
 
 /* Lists */
-.udc-list-dek { max-width: 60ch; color: var(--udc-ink-2); margin: 8px 0 16px; }
+.udc-list-dek { color: var(--udc-ink-2); margin: 8px 0 16px; }
 .udc-year { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 0 20px; padding: 14px 0; border-top: 1px solid var(--udc-ink); }
 .udc-year-plate { align-self: start; margin: 4px 0 0; justify-self: start; background: var(--udc-ink); color: var(--udc-paper); font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.5rem; line-height: 1; padding: .25em .4em .2em; clip-path: var(--udc-cut-plate); }
 .udc-pubs { list-style: none; margin: 0; padding: 0; }
-.udc-pub { padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid var(--udc-rule); max-width: 80ch; }
+.udc-pub { padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid var(--udc-rule); }
 .udc-pub:last-child { border-bottom: 0; margin-bottom: 0; }
 .udc-pub-title { margin: 0 0 3px; font-family: var(--udc-text); font-weight: 600; font-size: 1.1rem; line-height: 1.35; }
 .udc-pub-title a, .udc-stream-title a { text-decoration-color: transparent; }
@@ -554,11 +556,11 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-stream-date { margin: 0; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
 .udc-stream-title { margin: 2px 0 4px; font-family: var(--udc-text); font-weight: 600; font-size: 1.2rem; line-height: 1.3; }
 .udc-stream-sum { margin: 0; font-size: .9375rem; color: var(--udc-ink-2); }
-.udc-brief { grid-column: 1 / -1; justify-self: start; max-width: 720px; margin: 14px 0 8px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; }
+.udc-brief { grid-column: 1 / -1; justify-self: start; margin: 14px 0 8px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; }
 .udc-brief > .udc-stream-date, .udc-brief-title { grid-column: 1 / -1; }
 .udc-brief-title { margin: 0; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.35rem; }
 .udc-brief-photo { margin: 0; width: 240px; aspect-ratio: 3 / 2; background: var(--udc-paper-2); border: 1px solid var(--udc-ink); }
-.udc-brief-text { max-width: 60ch; font-size: .9375rem; }
+.udc-brief-text { font-size: .9375rem; }
 .udc-brief-text p { margin: 0 0 .6em; }
 
 /* About (plan v2, 4.8; reshaped by UD 2026-11-16): a year strip, then one timeline (dates | axis
@@ -680,7 +682,7 @@ button.udc-map-pick { cursor: pointer; }
 .udc-tl-edu { font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.15rem; }
 .udc-tl-work { font-family: var(--udc-sign); font-weight: 700; font-size: .9rem; letter-spacing: .01em; }
 .udc-tl-sub { margin: 2px 0 0; font-style: italic; }
-.udc-tl-text { margin-top: 4px; max-width: 62ch; }
+.udc-tl-text { margin-top: 4px; }
 .udc-tl-text p, .udc-tl-desk > p { margin: 0 0 .4em; }
 .udc-tl-row.is-life .udc-tl-desk { font-style: italic; }
 /* Life entries are mostly one line: a tighter row. */
@@ -791,12 +793,11 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   overflow-wrap: break-word; }   /* last resort: a word longer than the column breaks inside it */
 /* Article pages from 1024px (UD, 2026-11-16): two columns flush with the header at both edges. Right: a
    compact column (16rem) with the meta block and, for articles with three or more sections, the section
-   list, which stays in view. Left: title, abstract and text fill the rest of the width; UD set aside the
-   plan's 68ch / 36-character measure here. Below 1024px: one column at that measure, no list. */
+   list, which stays in view. Left: title, abstract and text fill the rest of the width. Below 1024px:
+   one column, no list. (Text fills its column everywhere; UD, 2026-11-16.) */
 .udc-toc { display: none; }
 @media (min-width: 1024px) {
   .udc-single { --udc-aside: 16rem; --udc-gap: 44px; display: grid; grid-template-columns: minmax(0, 1fr) var(--udc-aside); column-gap: var(--udc-gap); align-content: start; }
-  .udc-single .udc-prose, .udc-single[lang="zh-Hant"] .udc-prose, .udc-single:not([lang="zh-Hant"]) .udc-prose > [lang="zh-Hant"] { max-width: none; }
   .udc-single > * { grid-column: 1; }
   /* The same two columns (not subgrid: the header is a size container, which a subgrid cannot be). */
   .udc-single > .udc-single-head { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) var(--udc-aside); gap: 0 var(--udc-gap); }
@@ -811,11 +812,14 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    real width (--udc-word-em, from the template), would not fit; as the headline fits by size (Astra,
    rounds 3-4). The header is the container; its title column is 70% less the gap from 760px up. */
 .udc-single-head { container-type: inline-size; }
+/* Article titles are sentences, so they are set smaller than the one-word section titles (UD, 2026-11-16);
+   the article's own headings take their size from the title, so they always stay below it. */
+.udc-single { --udc-article-title: clamp(1.35rem, .9rem + 1.4vw, 2rem); }
 .udc-abstract { margin: 0 0 18px; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
-.udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
-@media (min-width: 1024px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - var(--udc-aside) - var(--udc-gap) - 1px) / var(--udc-word-em, .01))); } }   /* the title column is the text column */
-@media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(clamp(1.9rem, 1.3rem + 2.4vw, 3rem), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
+.udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((70cqi - 27px) / var(--udc-word-em, .01))); }
+@media (min-width: 1024px) { .udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((100cqi - var(--udc-aside) - var(--udc-gap) - 1px) / var(--udc-word-em, .01))); } }   /* the title column is the text column */
+@media (max-width: 759px) { .udc-single-head .udc-page-title { font-size: min(var(--udc-article-title), calc((100cqi - 1px) / var(--udc-word-em, .01))); } }
 .udc-byline { font-family: var(--udc-sign); font-size: .9rem; letter-spacing: .04em; margin: .6rem 0 0; }
 .udc-byline b { font-weight: 400; color: var(--udc-ink); }
 
