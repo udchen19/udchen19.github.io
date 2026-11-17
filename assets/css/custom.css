@@ -395,11 +395,11 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-front-story { padding: 0 22px 8px 0; min-height: 100%; container-type: inline-size; }
 .udc-front-side { padding-left: 18px; border-left: 1px solid var(--udc-ink); min-height: 100%; }
 /* Headline: each line sized on its own to span the story column (widths measured in Ultra in the browser:
-   line 1 = 22.305em, line 2 = 22.844em; re-measure when the wording changes). CSS only. */
+   line 1 = 21.976em, line 2 = 19.482em; re-measure when the wording changes). CSS only. */
 .udc-lead-head { margin: 4px 0 12px; font-family: var(--udc-display); font-weight: 400; line-height: 1.02; color: var(--udc-ink); }
 .udc-lead-head > span { display: block; white-space: nowrap; }
-.udc-lead-l1 { font-size: calc(100cqi / 22.305); line-height: 1.05; }
-.udc-lead-l2 { font-size: calc(100cqi / 22.844); line-height: 1.05; }
+.udc-lead-l1 { font-size: calc(100cqi / 21.976); line-height: 1.05; }
+.udc-lead-l2 { font-size: calc(100cqi / 19.482); line-height: 1.05; }
 /* Phones: too long to fill one line at a readable size, so each line wraps, balanced, at a set size. */
 @media (max-width: 640px) { .udc-lead-head > span { white-space: normal; text-wrap: balance; font-size: 1.5rem; line-height: 1.05; } .udc-lead-l2 { margin-top: .15em; } }
 /* Reading text: left-aligned, not justified, no hyphenation (plan 3.2). */
@@ -429,10 +429,9 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-columnist-role { margin: 0 0 10px; }
 .udc-columnist-role + .udc-portrait { margin-top: 0; }
 @media (max-width: 859px) {
-  /* Phones: a kicker above the name, beside the portrait, so it belongs to the person, not the page below. */
-  .udc-columnist-role { grid-column: 2; grid-row: 1; margin: 0 0 2px; }
-  .udc-columnist-role::after { content: none; }
-  .udc-columnist > .udc-portrait { grid-column: 1; grid-row: 1 / span 2; }
+  /* Phones: the role heads the portrait block, on one line. */
+  .udc-columnist-role { grid-column: 1 / -1; grid-row: 1; margin: 0 0 8px; white-space: nowrap; }   /* one line, over the portrait and name */
+  .udc-columnist > .udc-portrait { grid-column: 1; grid-row: 2; }
   .udc-columnist > .udc-columnist-id { grid-column: 2; grid-row: 2; }
 }
 .udc-profile-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); text-decoration: none; }
