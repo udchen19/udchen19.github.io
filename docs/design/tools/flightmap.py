@@ -187,7 +187,7 @@ for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places",
 # places, its dot and name appear (LABEL) and its entry in the key below types out before the next line starts;
 # a flight reaching any new airport waits for that airport to appear in the list below (LIST). Written into the data so the page
 # needs no arithmetic of its own.
-RUN, MIN, BEAT, LABEL, CPS, LIST = 10.5, 0.12, 0.2, 0.7, 60.0, 0.45   # CPS: key typing speed; LIST: an airport appearing in the list;
+RUN, MIN, BEAT, LABEL, CPS, LIST = 13.0, 0.12, 0.2, 0.7, 60.0, 0.45   # CPS: key typing speed; LIST: an airport appearing in the list;
 # BEAT: a pause after every step, so each comes to rest before the next (UD)
 def plen(d):
     """Length, in map units, of a route's first drawn piece."""

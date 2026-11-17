@@ -231,7 +231,7 @@
       });
       const when = plate.querySelector('.udc-map-when');
       const dates = when ? JSON.parse(when.dataset.dates) : [], end = when ? +when.dataset.end : 0;
-      const skipBtn = plate.querySelector('.udc-map-skip');
+      const skipBtn = fig.querySelector('.udc-map-skip');
       let typing = 0;
       const playing = on => { details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on; };
       const skip = () => {

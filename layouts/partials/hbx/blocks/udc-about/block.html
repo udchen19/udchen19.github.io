@@ -96,7 +96,6 @@
       <span class="udc-map-land" aria-hidden="true"></span>
       {{- /* The running date while the map draws: month and year of the flight being drawn (udc-ui.js). */}}
       <p class="udc-map-when" aria-hidden="true" data-dates="{{ $m.dates | jsonify }}" data-end="{{ $m.end }}" hidden></p>
-      <button type="button" class="udc-map-skip" hidden>Skip</button>
       <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
         {{- range $m.routes }}
         <path class="udc-map-leg" pathLength="1" style="--t: {{ .t }}; --dur: {{ .dur }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
@@ -121,6 +120,8 @@
         <circle class="udc-map-ring" r="0" visibility="hidden"/>
       </svg>
       </div>
+      {{- /* Outside the plate, so the plate's ink texture does not eat into it. */}}
+      <button type="button" class="udc-map-skip" hidden>Skip ›</button>
       <figcaption id="udc-map-cap" class="udc-map-cap">
         <dl class="udc-map-key">
           {{- /* Places that share a note share one entry in the key. */}}

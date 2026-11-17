@@ -748,10 +748,13 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-when.is-done { opacity: 0; }
 @media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; } }
 /* Skip (UD): while the map plays, a click or tap on it, or the Skip button, shows it finished at once. */
-.udc-map-skip { position: absolute; z-index: 2; top: 6px; right: 8px; min-height: 28px; padding: 2px 10px; border: 0; cursor: pointer;
-  background: color-mix(in srgb, var(--udc-paper) 85%, transparent); font-family: var(--udc-sign); font-weight: 500; font-size: .64rem;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink-2); }
-.udc-map-skip:hover { color: var(--udc-ink); text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
+/* Noticeable but quiet (UD): full-ink letters with the orange underline used for links, on a light patch of paper so
+   the map's routes don't run through them. */
+.udc-map-skip { position: absolute; z-index: 2; top: 8px; right: 10px; min-height: 30px; padding: 4px 10px; border: 0; cursor: pointer;
+  background: color-mix(in srgb, var(--udc-paper) 82%, transparent); clip-path: var(--udc-cut-plate); font-family: var(--udc-sign); font-weight: 700; font-size: .7rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink); text-decoration: underline 1.5px var(--udc-orange); text-underline-offset: .35em; }
+.udc-map-skip:hover { text-decoration-thickness: 2.5px; }
+@media (max-width: 640px) { .udc-map-skip { top: 4px; right: 4px; min-height: 26px; padding: 3px 8px; font-size: .62rem; } }
 .udc-map-skip[hidden] { display: none; }
 .udc-map.is-playing .udc-map-plate { cursor: pointer; }
 .udc-map.is-skipped * { animation: none !important; }   /* a place's dot in the key waits for its text */
