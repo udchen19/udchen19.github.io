@@ -8,5 +8,5 @@ sections:
     design:
       spacing:
         padding: ['0', '0', '0', '0']
-    id: top
+    id: front   # not "top": the page body already has id="top" (duplicate id)
 ---

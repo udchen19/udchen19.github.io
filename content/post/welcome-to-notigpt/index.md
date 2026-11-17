@@ -6,9 +6,8 @@ draft: false
 categories: ["research"]
 ---
 
-{{% callout warning %}}
-**這項招募已經結束。** 文章保留作為當時研究方向與團隊形成過程的紀錄；如果想聊現在的研究或合作，請改寄 [ueidarc2@illinois.edu](mailto:ueidarc2@illinois.edu)。
-{{% /callout %}}
+> [!WARNING]
+> **這項招募已經結束。** 文章保留作為當時研究方向與團隊形成過程的紀錄；如果想聊現在的研究或合作，請改寄 [ueidarc2@illinois.edu](mailto:ueidarc2@illinois.edu)。
 
 如題，我是來抓人入坑的。先上招募資訊，細節後面講。
 

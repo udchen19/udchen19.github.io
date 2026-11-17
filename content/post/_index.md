@@ -1,5 +1,5 @@
 ---
-title: UD's Log
+title: UD’s Log
 cms_exclude: true
 
 view: date-title-summary

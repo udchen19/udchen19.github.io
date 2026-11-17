@@ -51,7 +51,7 @@ for (kind, xy), row in zip(shp_records(air_shp), dbf_rows(air_shp.with_suffix(".
     code = row.get("iata_code") or row.get("IATA_CODE")
     if code in codes and kind == "point":
         pos[code] = xy                                   # (lon, lat)
-        names[code] = row.get("name", "")
+        names[code] = row.get("name", "").replace("'", "’")     # "Int’l", typeset like the rest of the site
         icao[code] = row.get("gps_code", "")
 # Not in Natural Earth's airport file; coordinates from Wikidata (P625), looked up by IATA code on
 # 2026-11-16: Q1147000 Dubrovnik Ruđer Bošković Airport, Q702019 Taipei Songshan Airport; ICAO codes
