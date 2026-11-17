@@ -1,6 +1,13 @@
 {{/* Research tier (plan v2, 4.5): three columns, one per work. Each: the research question as a
      small Ultra head, the finding, then links and meta (work name · venue). Questions and findings
      were approved by UD on 2026-11-16; each sentence keeps its source quote in data/udc.yaml. */}}
+{{- /* The current question leads, across the strip, before the work it grew out of (UD, 2026-11-16). */}}
+{{- with hugo.Data.udc.now }}
+<div class="udc-now">
+  <p class="udc-now-label">{{ .label }}</p>
+  <p class="udc-now-q">{{ .question }}</p>
+</div>
+{{- end }}
 <div class="udc-work-list">
   {{- range hugo.Data.udc.work }}
   <article class="udc-work">

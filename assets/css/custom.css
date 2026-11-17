@@ -442,6 +442,13 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-news .udc-label { margin-bottom: 4px; }
 
 /* Research tier (plan v2, 4.5): three columns separated by column rules; stacked below 761px. */
+/* The current question: one line across the strip, in the display face like the questions below it, a step
+   larger; its small label says where it is being asked (UD, 2026-11-16). */
+.udc-now { margin: 2px 0 14px; padding-bottom: 12px; border-bottom: 1px solid var(--udc-rule); }
+.udc-now-label { margin: 0 0 4px; font-family: var(--udc-sign); font-weight: 700; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--udc-orange-text); }
+.udc-now-q { margin: 0; max-width: 46em; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.3rem; line-height: 1.25; color: var(--udc-ink);
+  -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
+@media (max-width: 640px) { .udc-now-q { font-size: 1.12rem; } }
 .udc-work-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .udc-work { padding: 4px 18px 10px; }
 .udc-work:first-child { padding-left: 0; }

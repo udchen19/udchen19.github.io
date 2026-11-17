@@ -88,6 +88,11 @@ work:
     finding:
       - text: Not passive alerts but proactive agents, which surface takeaways layer by layer, help with follow-up, infer personal context to anticipate needs, and spread awareness through nearby people and everyday objects.
         source: "Our findings suggest a shift from notification systems as passive alert managers to proactive agents that support users’ attention, actions, and longer-term goals. Participants envisioned FINS as agents that surface actionable takeaways with progressive disclosure, assist follow-up actions … adaptive companions that infer personal context … wanted notification awareness distributed beyond devices via co-present contacts and objects embedded in routines (§7)"
+# The current question, leading the Research strip (UD's own words, 2026-11-16). No paper yet.
+now:
+  label: Now, at UIUC
+  question: When personal agents are acting on our behalf, how can we make sure they appropriately “keep our secrets”?
+
 # Front-page headline (plan v2, 4.3): exactly two lines, each fitted to the story column.
 # The capital that starts each word of line 2 (U, D, C) prints in orange.
 lead:
