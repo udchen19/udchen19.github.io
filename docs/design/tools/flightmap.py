@@ -176,7 +176,12 @@ for pl in yaml.safe_load((repo / "data/flights.yaml").read_text()).get("places",
     dots = [[round(v, 1) for v in proj_pt(*pos[c])] for c in pl["airports"]]   # the name sits by the first
     places.append({"name": pl["name"], "note": pl["note"], "airports": pl["airports"], "label": pl.get("label", "ne"),
                    "x": dots[0][0], "y": dots[0][1], "dots": dots, "o": min(first[c] for c in pl["airports"])[0], "arr": min(first[c] for c in pl["airports"])[1]})
-# Timing for the drawing (UD, 2026-11-16), in seconds from the start. Flights are drawn one after another,
+# Timing for the drawing (UD, 2026-11-16), in seconds from the start. Each flight, strictly in turn:
+#   1+2  at the departure, if new: its dot and its entry in the airport list; if it is one of the four places
+#        and not yet shown, its dot and name on the map, then its entry in the key types out;
+#   3    the route draws (or, flown before, flashes);
+#   4+5  at the arrival, the same as 1+2.
+# Only 1 with 2, and 4 with 5, run together. Flights are drawn one after another,
 # each starting when the one before has landed, at one steady speed: a line's time follows its length on the
 # map (at least MIN), scaled so the whole run of flights takes RUN. When a flight first reaches one of the
 # places, its dot and name appear (LABEL) and its entry in the key below types out before the next line starts;
@@ -191,6 +196,11 @@ route_of = {tuple(sorted((r["a"], r["b"]))): k for k, r in enumerate(routes)}
 lens = [plen(routes[route_of[tuple(sorted(leg[1:3]))]]["d"]) for leg in legs]
 speed = sum(lens) / (RUN - MIN * len(legs) * 0.5)          # map units per second
 durs = [round(max(MIN, L / speed), 3) for L in lens]
+# A flight on a route already drawn flashes it: drawn again at the same speed, then fading back. Its slot
+# includes the fade (the draw is the first FLASH of it), so nothing starts until the flash is over.
+FLASH = 0.65
+again = {f["i"] for f in flights}
+slots = [round(d / FLASH, 3) if li in again else d for li, d in enumerate(durs)]
 place_of = {c: k for k, pl in enumerate(places) for c in pl["airports"]}
 shown, t, at, leg_t = set(), 0.0, {}, []
 def reach(code, when):
@@ -208,7 +218,7 @@ def reach(code, when):
 for li, leg in enumerate(legs):
     t = reach(leg[1], t)                        # a departure from a new place: its name first
     leg_t.append(round(t, 3))
-    t = reach(leg[2], t + durs[li]) + GAP       # land, then (at a new place) its name, then the next flight
+    t = reach(leg[2], t + slots[li]) + GAP      # land, then a new airport in the list / a new place, then the next flight
 # The running date: the month and year of the flight being drawn, from its start (only when it changes).
 MON = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 dates = []
@@ -216,7 +226,7 @@ for li, leg in enumerate(legs):
     label = f"{MON[leg[3] - 1]} {leg[0]}"
     if not dates or dates[-1][1] != label: dates.append([leg_t[li], label])
 for r in routes: r["t"], r["dur"] = leg_t[r["o"]], durs[r["o"]]
-for f in flights: f["t"], f["dur"] = leg_t[f["i"]], durs[f["i"]]
+for f in flights: f["t"], f["dur"] = leg_t[f["i"]], slots[f["i"]]
 for ap in airports: ap["t"] = round(at[ap["code"]], 3)
 print(f"drawing takes {t:.1f} s")
 (repo / "data/flight_map.json").write_text(json.dumps({"w": W, "h": H, "legs": len(legs), "label": LABEL, "list": LIST, "dates": dates, "end": round(t, 3), "routes": routes, "flights": flights, "airports": airports, "places": places}, ensure_ascii=False))

@@ -703,7 +703,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 /* A flight on a route already drawn: the line is drawn again in the direction flown, darker, then fades back. */
 .udc-map-fly { fill: none; stroke: var(--udc-ink); stroke-width: 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0; pointer-events: none; }
 @keyframes udc-fly { 0% { stroke-dashoffset: 1; opacity: 1; } 65% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-.udc-map[open] .udc-map-fly { stroke-dasharray: 1; animation: udc-fly calc(var(--dur, .3) * 1.6s) linear both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
+.udc-map[open] .udc-map-fly { stroke-dasharray: 1; animation: udc-fly calc(var(--dur, .4) * 1s) linear both; animation-delay: calc(.5s + var(--t, 0) * 1s); }
 .udc-map-summary::-webkit-details-marker { display: none; }
 .udc-map-fig { position: relative; margin: 6px 0 0; }
 .udc-map-plate { position: relative; width: 100%; overflow: hidden; }
