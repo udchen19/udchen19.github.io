@@ -61,7 +61,7 @@ education:
     end: '2023-06-30'
     summary: Dean's List twice; three Foundation Course Awards.
   - degree: Computer Science Class, the first cohort
-    institution: The Affiliated High School of National Taiwan Normal University
+    institution: The Affiliated Senior High School of National Taiwan Normal University
     location: Taipei, Taiwan
     logo: hsnu-mask.png
     logo_mask: true
@@ -119,21 +119,21 @@ experience:
       Designed programming problems, administered online exams, and hosted English-medium office hours.
   - role: Competitive Programming Instructor
     udc_lane: teaching
-    org: The Affiliated High School of National Taiwan Normal University
+    org: The Affiliated Senior High School of National Taiwan Normal University
     start: '2019-08-01'
     end: '2019-08-31'
     summary: |
       Summer training in competitive programming for students preparing for next season's high school informatics competition.
   - role: Competitive Programming Instructor
     udc_lane: teaching
-    org: The Affiliated High School of National Taiwan Normal University
+    org: The Affiliated Senior High School of National Taiwan Normal University
     start: '2018-10-01'
     end: '2018-10-31'
     summary: |
       Taught competitive programming to students preparing for the Taipei City round of the high school informatics competition.
   - role: Academic Director, Computer Research Club
     udc_lane: teaching
-    org: The Affiliated High School of National Taiwan Normal University
+    org: The Affiliated Senior High School of National Taiwan Normal University
     start: '2017-07-01'
     end: '2018-06-30'
     summary: |
