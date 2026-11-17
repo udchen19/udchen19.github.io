@@ -778,8 +778,8 @@ button.udc-map-pick { cursor: pointer; }
   letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink); text-decoration: underline 1.5px var(--udc-orange); text-underline-offset: .35em; }
 .udc-map-skip:hover { text-decoration-thickness: 2.5px; }
 @media (max-width: 640px) { .udc-map-skip { top: 4px; right: 4px; min-height: 26px; padding: 3px 8px; font-size: .62rem; } }
-/* The narrowest phones: the map is too short for Skip and the date to share the right side; Skip moves left. */
-@media (max-width: 400px) { .udc-map-skip { right: auto; left: 4px; } }
+/* Phones: the map is too small to cover any of it, so Skip sits just below it, at the right (Astra, round 15). */
+@media (max-width: 640px) { .udc-map-skip { position: static; display: block; margin: 6px 0 0 auto; } }
 .udc-map-skip[hidden] { display: none; }
 .udc-map.is-playing .udc-map-plate { cursor: pointer; }
 .udc-map.is-skipped * { animation: none !important; }   /* a place's dot in the key waits for its text */
