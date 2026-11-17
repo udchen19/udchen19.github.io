@@ -77,13 +77,19 @@ def ryan():
     save_mask(ink * alpha, "ryan-ink.png")
 
 def icon():
-    """Tab icon (UD, 2026-11-17: Ryan replaces 達): the printed Ryan of ryan-ink.png in the orange, on a clear
-    background (UD: no paper tile). Blox reads assets/media/icon.png and makes the favicon and the 180 px
-    apple-touch icon from it. Run after ryan."""
-    N = 512; orange = (0xB5, 0x50, 0x1F, 255)
+    """Tab icon (UD, 2026-11-17: Ryan replaces 達): the printed Ryan of ryan-ink.png in the orange, on paper
+    inside his own outline and clear outside it (UD: no tile, but keep the paper in him). Blox reads
+    assets/media/icon.png and makes the favicon and the 180 px apple-touch icon from it. Run after ryan."""
+    N = 512; paper, orange = (0xE2, 0xDD, 0xD1, 255), (0xB5, 0x50, 0x1F, 255)
+    src = Image.open(repo / "assets/media/ryan-head.png").convert("RGBA"); src = src.crop(src.getbbox())
     m = Image.open(out / "ryan-ink.png").convert("RGBA").getchannel("A")
-    k = N * 0.98 / max(m.size); m = m.resize((round(m.width * k), round(m.height * k)), Image.LANCZOS)
-    im = Image.new("RGBA", (N, N), (0, 0, 0, 0)); im.paste(Image.new("RGBA", m.size, orange), ((N - m.width) // 2, (N - m.height) // 2), m)
+    k = N * 0.98 / max(m.size); size = (round(m.width * k), round(m.height * k))
+    m = m.resize(size, Image.LANCZOS)
+    shape = src.getchannel("A").point(lambda a: 255 if a > 127 else 0).resize(size, Image.LANCZOS)   # his outline
+    at = ((N - size[0]) // 2, (N - size[1]) // 2)
+    im = Image.new("RGBA", (N, N), (0, 0, 0, 0))
+    im.paste(Image.new("RGBA", size, paper), at, shape)
+    im.paste(Image.new("RGBA", size, orange), at, m)
     dest = repo / "assets/media/icon.png"; im.save(dest, optimize=True)
     print(f"icon.png {im.size} {dest.stat().st_size / 1024:.1f} KB")
 
