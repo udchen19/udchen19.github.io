@@ -609,7 +609,7 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-map-fig { position: relative; margin: 6px 0 0; }
 .udc-map-plate { position: relative; width: 100%; overflow: hidden; }
 .udc-map-land { position: absolute; inset: 0; background: var(--udc-ink-2);
-  -webkit-mask: url("/textures/map-land.png") 0 0 / 100% 100% no-repeat; mask: url("/textures/map-land.png") 0 0 / 100% 100% no-repeat; }
+  -webkit-mask: var(--udc-map-land) 0 0 / 100% 100% no-repeat; mask: var(--udc-map-land) 0 0 / 100% 100% no-repeat; }   /* url set by the template, fingerprinted */
 .udc-map-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
 .udc-map-leg { fill: none; stroke: var(--udc-ink-2); stroke-width: .7; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .udc-map-place circle { fill: var(--udc-orange); stroke: var(--udc-paper); stroke-width: 1.5; vector-effect: non-scaling-stroke; }

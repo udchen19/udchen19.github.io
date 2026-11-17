@@ -68,7 +68,9 @@
     <summary class="udc-map-summary">Flights, {{ index $yrs 0 }} – {{ index $yrs (sub (len $yrs) 1) }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</summary>
     <figure class="udc-map-fig">
       <div class="udc-map-plate" style="aspect-ratio: {{ $m.w }} / {{ $m.h }}">
-      <span class="udc-map-land" aria-hidden="true"></span>
+      {{- /* The land image is fingerprinted, so a redrawn map never shows last version's land from cache. */}}
+      {{- $land := resources.Get "textures/map-land.png" | fingerprint }}
+      <span class="udc-map-land" aria-hidden="true" style="{{ printf "--udc-map-land: url(%s)" $land.RelPermalink | safeCSS }}"></span>
       <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
         {{- range $m.routes }}
         <path class="udc-map-leg" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>

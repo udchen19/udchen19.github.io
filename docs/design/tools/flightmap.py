@@ -3,7 +3,7 @@
 python flightmap.py <repo> <ne_110m_land.shp> <ne_10m_airports.shp>
 
 Reads data/flights.yaml (airports and year only) and Natural Earth (public domain):
-  static/textures/map-land.png  land as a 1-bit dot screen, coloured by CSS mask
+  assets/textures/map-land.png  land as a 1-bit dot screen, coloured by CSS mask (served fingerprinted)
   data/flight_map.json          projected airports and great-circle routes, rendered as inline SVG
 Projection: equirectangular, cropped to the travelled area. No shapefile library is installed, so
 the .shp/.dbf readers below cover only what these two files use (polygons, points, text fields).
@@ -14,7 +14,6 @@ import yaml
 from PIL import Image, ImageDraw
 
 repo = pathlib.Path(sys.argv[1]); land_shp = pathlib.Path(sys.argv[2]); air_shp = pathlib.Path(sys.argv[3])
-out = repo / "static/textures"
 
 # --------------------------------------------------------------- shapefile readers
 def shp_records(path):
@@ -75,20 +74,28 @@ def cc_of(ic):
         if ic[:n] in ICAO_CC: return ICAO_CC[ic[:n]]
 
 # --------------------------------------------------------------- projection
-# Centred on Taipei Taoyuan (UD, 2026-11-16): the map spans equal longitude either side of TPE, wide
-# enough for the farthest airport on either side plus MARGIN; the edge falls in the Atlantic.
-MARGIN, LAT0, LAT1 = 10.0, -2.0, 64.0                   # latitudes: travelled area, with a margin
-CENTRE = pos["TPE"][0]
-def rel(lon):                                            # longitude east of the centre, in -180..180
-    return (lon - CENTRE + 180) % 360 - 180
-HALF = math.ceil(max(abs(rel(pos[c][0])) for c in codes) + MARGIN)
-LON0, LON1 = CENTRE - HALF, CENTRE + HALF
+# The whole world, cut in the open Atlantic so that no continent is split (UD, 2026-11-16). The edge is
+# the middle of the widest run of whole degrees of longitude, between 70°W and 10°W, with no land in the
+# map's latitudes (Natural Earth land, rasterised at one degree).
+LAT0, LAT1 = -2.0, 64.0                                  # travelled latitudes, with a margin
+grid = Image.new("L", (360, int(LAT1 - LAT0)), 0); g = ImageDraw.Draw(grid)
+for kind, rings in shp_records(land_shp):
+    for ring in rings:
+        g.polygon([(lo + 180, LAT1 - la) for lo, la in ring], fill=1, outline=1)
+wet = (np.asarray(grid) == 0).all(axis=0)                # columns with no land, index 0 = 180°W
+best, run = (0, 0), 0
+for lon in range(-70, -9):
+    run = run + 1 if wet[lon + 180] else 0
+    if run > best[0]: best = (run, lon)
+if best[0] < 3:
+    sys.exit("stop: no open ocean in the Atlantic band; ask UD where to cut the map")
+LON0 = best[1] - (best[0] - 1) / 2; LON1 = LON0 + 360
 W = 1400; H = round(W * (LAT1 - LAT0) / (LON1 - LON0) / math.cos(math.radians(32)))   # equal-area-ish at mid latitude
 def proj(lon, lat):
     return ((lon - LON0) / (LON1 - LON0) * W, (LAT1 - lat) / (LAT1 - LAT0) * H)
 def proj_pt(lon, lat):                                   # a single point: its copy inside the span
-    return proj(CENTRE + rel(lon), lat)
-print(f"centre {CENTRE:.2f}, span {LON0:.1f} to {LON1:.1f} ({2 * HALF} deg), {W} x {H}")
+    return proj(LON0 + (lon - LON0) % 360, lat)
+print(f"edge {LON0:.1f} (open ocean {best[0]} deg wide), {W} x {H}, Taipei at {proj_pt(*pos['TPE'])[0] / W:.1%}")
 
 def great_circle(a, b, n=48):
     (lo1, la1), (lo2, la2) = [(math.radians(x), math.radians(y)) for x, y in (a, b)]
@@ -117,8 +124,9 @@ with tempfile.TemporaryDirectory() as t:
     subprocess.run(["magick", str(t / "l.png"), "-ordered-dither", "h6x6a", str(t / "d.png")], check=True)
     dots = np.asarray(Image.open(t / "d.png").convert("L")) < 128
 pal = Image.fromarray(dots.astype(np.uint8), "P"); pal.putpalette([0, 0, 0, 255, 255, 255] + [0] * 762)
-pal.save(out / "map-land.png", optimize=True, transparency=0)
-print("map-land.png", (W * S, H * S), (out / "map-land.png").stat().st_size // 1024, "KB")
+land_png = repo / "assets/textures/map-land.png"
+pal.save(land_png, optimize=True, transparency=0)
+print("map-land.png", (W * S, H * S), land_png.stat().st_size // 1024, "KB")
 
 # --------------------------------------------------------------- routes and places
 # The map marks places, not routes: every route prints faint; the places in flights.yaml print strong.

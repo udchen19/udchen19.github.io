@@ -34,12 +34,12 @@ footer-{jingu,hogwarts,thames}-{ink,2}.png
                        ink as a tint over the mid-tones. Sources: see /design-credits/.
 ryan-ink.png           Ryan emblem from assets/media/ryan-head.png, single ink: outline solid, cap
                        densest, brim and mane medium, face lightest.
-portrait.webp          Colour ordered-dither halftone, 1.5 px cell at 282 px, saturation 70%, from
+portrait.webp          Colour ordered-dither halftone, 1.5 px cell at 282 px, saturation 45%, from
                        UD's own photograph; the cut edges dissolve into dots over 24 px.
 404-figure.webp        404 photograph of UD, natural colour, no halftone.
 *-night.png            Night plates (halftone.py night): light ink carries each image's highlights.
-map-land.png           About page flight map: Natural Earth 1:110m land (public domain) as a 1-bit dot
-                       screen (docs/design/tools/flightmap.py).
+map-land.png           Moved to assets/textures/ (served fingerprinted): About page flight map, Natural
+                       Earth 1:110m land (public domain) as a 1-bit dot screen (docs/design/tools/flightmap.py).
 pages/project-notisummary-ink(-night).png
                        The NotiSummary featured image, 5 px cell.
 
