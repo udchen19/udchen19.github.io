@@ -155,8 +155,9 @@ body.page-wrapper::after {
   --udc-holes-b: url("/textures/ink-holes-b.png") 0 0 / 512px 512px repeat;
 }
 .udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title { -webkit-mask: var(--udc-holes-d); mask: var(--udc-holes-d); }
-.udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-date, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
-.udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)) { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
+.udc-ink-m, .udc-navigation a, .udc-label, .udc-work-title, .udc-log-titles, .udc-motto > span, .udc-date, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
+/* Small sans links and lines take the body's finer ink: the coarser one ate letters ("Ccde", "Ali projects"). Still worn. */
+.udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-more, .udc-work-links, .udc-work-meta, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)) { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
 /* A mask cuts off whatever is drawn outside the element's box, focus rings included: while an inked
    element has keyboard focus, or holds the focused element, it prints solid. */
 :is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags, .udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)), .udc-ys-track, .udc-ys-ticks, .udc-map-plate, .udc-tl-desk):is(:focus-visible, :has(:focus-visible)) { -webkit-mask: none; mask: none; }
@@ -442,13 +443,6 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-news .udc-label { margin-bottom: 4px; }
 
 /* Research tier (plan v2, 4.5): three columns separated by column rules; stacked below 761px. */
-/* The current question: one line across the strip, in the display face like the questions below it, a step
-   larger; its small label says where it is being asked (UD, 2026-11-16). */
-.udc-now { margin: 2px 0 14px; padding-bottom: 12px; border-bottom: 1px solid var(--udc-rule); }
-.udc-now-label { margin: 0 0 4px; font-family: var(--udc-sign); font-weight: 700; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--udc-orange-text); }
-.udc-now-q { margin: 0; max-width: 46em; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.3rem; line-height: 1.25; color: var(--udc-ink);
-  -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
-@media (max-width: 640px) { .udc-now-q { font-size: 1.12rem; } }
 .udc-work-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .udc-work { padding: 4px 18px 10px; }
 .udc-work:first-child { padding-left: 0; }
