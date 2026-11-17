@@ -33,6 +33,8 @@
 }} 
 
 {{ range $built }}
+  {{- /* A DOI that doi.org does not resolve yet (doi_pending in front matter) gets no link (Astra, round 10). */}}
+  {{ if and (eq .type "doi") $page.Params.doi_pending }}{{ continue }}{{ end }}
   {{ if in .contexts $ctx }}
     {{ $url := .url | default "" }}
     {{ $scheme := (urls.Parse $url).Scheme }}

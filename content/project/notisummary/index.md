@@ -18,7 +18,7 @@ image:
 links:
   - icon: academicons/acm
     name: Paper (MobileHCI ’25)
-    url: https://dl.acm.org/doi/10.1145/3743703/
+    url: /publication/notisummarypaper/
   - type: code
     name: Code
     url: 'https://github.com/noti-summary/NotiSummary'

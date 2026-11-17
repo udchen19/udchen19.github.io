@@ -193,9 +193,27 @@
       label(d);
       d.addEventListener('toggle', () => label(d));
     });
+    // A link to a section or a passage opens the fold that holds it, whether it came from the list or
+    // from another reader (Astra, round 10); other folds stay as the author set them.
+    const reveal = () => {
+      const t = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (!t) return;
+      for (let d = t.closest('details'); d; d = d.parentElement.closest('details')) d.open = true;
+      if (/^H[2-4]$/.test(t.tagName)) for (let n = t.nextElementSibling; n && !/^H[1-3]$/.test(n.tagName); n = n.nextElementSibling)
+        if (n.tagName === 'DETAILS') { n.open = true; break; }
+      t.scrollIntoView();
+    };
+    reveal(); addEventListener('hashchange', reveal);
     // The section list: always open beside the text; folded under the date on narrower screens.
     const toc = document.querySelector('.udc-toc-fold');
-    if (toc) { const set = () => { toc.open = wide.matches; }; set(); wide.addEventListener('change', set); }
+    if (toc) {
+      // Beside the text it is a plain heading: always open, not focusable, not toggled by click or key (Astra, round 10).
+      const sum = toc.querySelector('summary');
+      const set = () => { toc.open = wide.matches; sum.tabIndex = wide.matches ? -1 : 0; };
+      sum.addEventListener('click', e => { if (wide.matches) e.preventDefault(); });
+      toc.addEventListener('toggle', () => { if (wide.matches && !toc.open) toc.open = true; });
+      set(); wide.addEventListener('change', set);
+    }
   };
   // Publications filter (UD, 2026-11-16): typing matches title, authors and venue; a type button shows one
   // type; years with nothing left hide, and a line says what is shown.
@@ -203,8 +221,10 @@
     const form = document.querySelector('.udc-pubfilter'); if (!form) return;
     const q = form.querySelector('.udc-pubfilter-q'), btns = [...form.querySelectorAll('.udc-pubfilter-type')];
     const status = form.querySelector('.udc-pubfilter-status'), pubs = [...document.querySelectorAll('.udc-pub')];
-    const norm = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    const text = new Map(pubs.map(p => [p, norm(p.textContent)]));
+    // Accents, curly quotes and dashes match their plain forms; a short year (’26) also matches 2026.
+    const norm = t => t.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[\u2018\u2019\u02bc]/g, "'")
+      .replace(/[\u201c\u201d]/g, '"').replace(/[\u2010-\u2015]/g, '-').toLowerCase();
+    const text = new Map(pubs.map(p => [p, norm(p.textContent + ' ' + (p.dataset.search || '')).replace(/'(\d\d)\b/g, " 20$1")]));
     let type = '';
     const run = () => {
       const words = norm(q.value).split(/\s+/).filter(Boolean);

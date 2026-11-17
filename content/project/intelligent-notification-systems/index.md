@@ -11,7 +11,7 @@ date: '2026-08-18'
 links:
   - icon: academicons/acm
     name: Paper (MobileHCI ’26)
-    url: https://doi.org/10.1145/3821653
+    url: /publication/intelligent-notification-systems/
   - type: pdf
     name: PDF
     url: 'https://people.cs.nycu.edu.tw/~armuro/pubs/chen-et-al-2026-mobilehci.pdf'

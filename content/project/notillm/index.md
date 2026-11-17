@@ -8,7 +8,7 @@ tags:
 links:
   - icon: academicons/acm
     name: Paper (CHI EA ’26)
-    url: https://doi.org/10.1145/3772363.3798322
+    url: /publication/task-extraction/
 date: '2026-08-01'
 
 # Optional external URL for project (replaces project detail page).

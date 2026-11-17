@@ -7,6 +7,12 @@
          udc-ui.js; without the script the page is the plain list. */}}
   {{- $types := slice }}{{ range .Pages }}{{ range first 1 (.GetTerms "publication_types") }}{{ $types = $types | append (dict "key" .Name "title" .Title) }}{{ end }}{{ end }}
   {{- $order := slice "article-journal" "paper-conference" "poster" "book" }}
+  {{- /* Project names a paper is known by (News and the home page use them): every project that links a
+         paper's page lends that paper its name for search (Astra, round 10). */}}
+  {{- $known := dict }}
+  {{- range where site.RegularPages "Section" "project" }}{{ $pt := .Title }}
+    {{- range .Params.links }}{{ with .url }}{{ if hasPrefix . "/publication/" }}{{ $known = merge $known (dict (strings.TrimSuffix "/" (strings.TrimPrefix "/publication/" .)) $pt) }}{{ end }}{{ end }}{{ end }}
+  {{- end }}
   <form class="udc-pubfilter" role="search" aria-label="Filter publications" hidden>
     <input class="udc-pubfilter-q" type="search" placeholder="Search titles, authors, venues" aria-label="Search publications" autocomplete="off">
     <div class="udc-pubfilter-types" role="group" aria-label="Type">
@@ -23,7 +29,8 @@
     <ol class="udc-pubs">
       {{ range .Pages }}
       {{- $type := "" }}{{ range first 1 (.GetTerms "publication_types") }}{{ $type = .Name }}{{ end }}
-      <li class="udc-pub" data-type="{{ $type }}"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
+      {{- $extra := slice (.Date.Format "2006") }}{{ range first 1 (.GetTerms "publication_types") }}{{ $extra = $extra | append .Title }}{{ end }}{{ with index $known .File.ContentBaseName }}{{ $extra = $extra | append . }}{{ end }}
+      <li class="udc-pub" data-type="{{ $type }}" data-search="{{ delimit $extra " " }}"{{ if gt (len (findRE `\p{Han}` .Title)) 3 }} lang="zh-Hant"{{ end }}>
         <h3 class="udc-pub-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
         <p class="udc-pub-authors" lang="en">{{ partial "page_metadata_authors" . }}</p>
         {{ with (.Params.publication_short | default .Params.publication) }}<p class="udc-pub-venue" lang="en">{{ . | markdownify }}</p>{{ end }}
