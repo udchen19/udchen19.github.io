@@ -23,14 +23,14 @@ edge-{left,right-*,top}-{wide,narrow}.svg
 
 Plates (halftone.py; ImageMagick ordered dither)
 stadium-ink.png, stadium-orange.png
-                       Front-page footer from stadium-g2-color.jpg (credit below), 2048x819, h8x8
-                       (5 px at 1280, the same cell as the section footers). Orange only on the stands,
+                       Front-page footer from stadium-g2-color.jpg (credit below), 2560x1024, h8x8
+                       (4 px at 1280, the same cell as the section footers). Orange only on the stands,
                        graded by shirt saturation; 8.79% of the image. Top 22% fades out in dots.
 flag-cloth.png, flag-outline.png, flag-ink.png
                        外野那群人 flag from flag-color.jpg, flat: lettering by the red channel, outline by
                        green and blue, cloth as a hand-set polygon.
 footer-{jingu,hogwarts,thames}-{ink,2}.png
-                       Section footers, 2048x819, h8x8 (5 px at 1280). Navy in the shadows, the second
+                       Section footers, 2560x1024, h8x8 (4 px at 1280). Navy in the shadows, the second
                        ink as a tint over the mid-tones. Sources: see /design-credits/.
 ryan-ink.png           Ryan emblem from assets/media/ryan-head.png, single ink: outline solid, cap
                        densest, brim and mane medium, face lightest.

@@ -1,7 +1,8 @@
 {{- if ne .Kind "404" }}
-{{/* Header (plan v2, 4.1–4.2). Home: nameplate row, then menu · motto · theme on one row.
-     Inner pages: one compact row. Phones: Ryan · nameplate · menu button, motto under it;
-     the theme toggle moves into the opened menu. */}}
+{{/* Header (plan v2, 4.1–4.2; dated row UD 2026-11-16). Desktop: the row between the rules is
+     motto · menu (centred) · date, on home under the nameplate, on inner pages under the compact
+     nameplate + theme row. Phones: Ryan · nameplate · menu button, the date right-aligned under it,
+     then the motto; the theme toggle moves into the opened menu. */}}
 {{- $current := . -}}
 <header id="site-header" class="udc-header {{ if .IsHome }}udc-header-home{{ else }}udc-header-inner{{ end }}">
   <a class="udc-skip" href="#main">Skip to content</a>
@@ -28,6 +29,9 @@
     </nav>
     <div class="udc-nav-controls">
       <button type="button" class="udc-motto" aria-label="Motto"><span class="udc-motto-a">I solemnly swear that I am up to no good.</span><span class="udc-motto-b" aria-hidden="true">Mischief managed.</span></button>
+      {{- /* Today's date, the reader's own, filled in by udc-ui.js (UD, 2026-11-16); hidden without it,
+             since a build date would be wrong by the next day. */}}
+      <time class="udc-date" hidden></time>
       <button type="button" class="theme-toggle udc-theme-toggle udc-theme-row" aria-label="Switch to dark mode" aria-pressed="false">
         {{ partial "functions/get_icon" (dict "name" "moon" "attributes" "class=\"udc-icon-moon\" aria-hidden=\"true\"") }}
         {{ partial "functions/get_icon" (dict "name" "sun" "attributes" "class=\"udc-icon-sun\" aria-hidden=\"true\"") }}

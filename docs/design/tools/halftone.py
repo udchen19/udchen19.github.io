@@ -124,15 +124,21 @@ def bottom_ramp(h, frac):
 
 BOTTOM = 0.08
 
+# Footer plates (home and section footers, day and night): master size and dot grid. The dot in CSS px
+# is CELL * (footer width) / FW; the footer spans the window. UD, 2026-11-16, after a big screen: 4 px at
+# 1280 (6 px at 1920), was 5 px (2048x819).
+FW, FH, CELL = 2560, 1024, "h8x8"
+
 def top_fade(h, frac):
     """0 at the top edge -> 1 at frac of the height: the footer fades up into the paper (4.6)."""
     return np.clip(np.arange(h, dtype=np.float32) / (h * frac), 0, 1)[:, None]
 
-def stadium(cell="h8x8", W=2048, H=819):
-    """Home footer (plan 3.5, Appendix B). UD chose the 5 px cell of the section footers (Checkpoint B,
-    2026-11-16): 2048x819 master, h8x8 -> 5 px at 1280. (The approved 3 px state was 2560x1024, h6x6.)
+def stadium(cell=None, W=None, H=None):
+    """Home footer (plan 3.5, Appendix B). Same master and cell as the section footers (FW, FH, CELL;
+    Checkpoint B chose a shared cell; 4 px at 1280 since 2026-11-16).
     Navy + orange; orange only on the stands, graded by shirt saturation. [P] The top 22% is a
     halftone fade (dots shrink to nothing), not an alpha fade."""
+    cell, W, H = cell or CELL, W or FW, H or FH
     src = repo / "static/textures/stadium-g2-color.jpg"
     tag = ""
     with tempfile.TemporaryDirectory() as t:
@@ -179,22 +185,22 @@ def flag():
     print("flag", (box[2] - box[0], box[3] - box[1]))
 
 def section(name, src, crop, width=None):
-    """Section footers (plan 3.5, Appendix B): 2048x819 master, h8x8 -> 5 px cell at 1280. The
+    """Section footers (plan 3.5, Appendix B): FW x FH master, CELL grid -> 4 px at 1280. The
     second ink is a tint over the mid-tones of the whole image (sky included); navy only in the
     shadows. Top 22% is a halftone fade into the paper, as on the home footer."""
     with tempfile.TemporaryDirectory() as t:
         t = pathlib.Path(t)
         pre = ["-resize", f"{width}x"] if width else []
         magick(src, *pre, "-crop", crop, "+repage", t / "crop.png")
-        magick(t / "crop.png", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", "2048x819!", "-unsharp", "0x2+1.2+0", t / "L.png")
+        magick(t / "crop.png", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", "-unsharp", "0x2+1.2+0", t / "L.png")
         magick(t / "L.png", "-negate", "-level", "8%,78%", "-negate", t / "c.png")
         magick(t / "L.png", "-level", "0%,52%", "-gamma", "0.85", t / "k.png")
-        ramp = top_fade(819, 0.22)
-        low = bottom_ramp(819, BOTTOM)
+        ramp = top_fade(FH, 0.22)
+        low = bottom_ramp(FH, BOTTOM)
         save_gray((1 - (1 - load_gray(t / "c.png")) * ramp) * (1 - low), t / "cf.png")
         save_gray((1 - (1 - load_gray(t / "k.png")) * ramp) * (1 - low), t / "kf.png")
-        magick(t / "cf.png", "-ordered-dither", "h8x8o", "-negate", t / "colour.png")   # white = second ink
-        magick(t / "kf.png", "-ordered-dither", "h8x8a", "-negate", t / "ink.png")      # white = navy
+        magick(t / "cf.png", "-ordered-dither", CELL + "o", "-negate", t / "colour.png")   # white = second ink
+        magick(t / "kf.png", "-ordered-dither", CELL + "a", "-negate", t / "ink.png")      # white = navy
         ink, col = load_gray(t / "ink.png") > .5, load_gray(t / "colour.png") > .5
     print(f"{name}: navy {ink.mean()*100:.1f}%, second ink showing {(col & ~ink).mean()*100:.1f}%")
     save_mask(ink.astype(np.float32), f"footer-{name}-ink.png")
@@ -229,23 +235,23 @@ def night():
     with tempfile.TemporaryDirectory() as t:
         t = pathlib.Path(t)
         # Home stadium: highlights in light ink; the day orange plate is reused (orange reads on navy).
-        src = repo / "static/textures/stadium-g2-color.jpg"; W, H = 2048, 819
+        src = repo / "static/textures/stadium-g2-color.jpg"; W, H = FW, FH
         magick(src, "-crop", "800x320+0+125", "+repage", "-colorspace", "HSB", "-channel", "B", "-separate", "+channel",
                "-filter", "Lanczos", "-resize", f"{W}x{H}!", "-unsharp", "0x2+1.3+0", "-level", "18%,96%", "-gamma", "0.9", t / "v.png")
         orange = load_gray(t / "v.png") * 0 + (np.asarray(Image.open(out / "stadium-orange.png").convert("RGBA"))[..., 3] > 0)
         cover = load_gray(t / "v.png") * top_fade(H, 0.22) * (1 - bottom_ramp(H, BOTTOM)) * (1 - 0.85 * orange)
         save_gray(1 - cover, t / "c.png")
-        magick(t / "c.png", "-ordered-dither", "h8x8a", "-negate", t / "ink.png")
+        magick(t / "c.png", "-ordered-dither", CELL + "a", "-negate", t / "ink.png")
         save_mask((load_gray(t / "ink.png") > .5).astype(np.float32), "stadium-ink-night.png")
         # Section footers: highlights in light ink; the second ink on the mid-tones only.
         for name, src, crop, pre in [("jingu", SRC / "jingu.webp", "2000x800+0+690", []),
                                      ("hogwarts", SRC / "hogwarts.jpg", "2000x800+0+20", []),
                                      ("thames", SRC / "london-night-frame02-1600.jpg", "1600x640+0+200", [])]:
-            magick(src, *pre, "-crop", crop, "+repage", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", "2048x819!", "-unsharp", "0x2+1.2+0", t / "L.png")
-            L = load_gray(t / "L.png"); fade = top_fade(819, 0.22) * (1 - bottom_ramp(819, BOTTOM))
+            magick(src, *pre, "-crop", crop, "+repage", "-colorspace", "Gray", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", "-unsharp", "0x2+1.2+0", t / "L.png")
+            L = load_gray(t / "L.png"); fade = top_fade(FH, 0.22) * (1 - bottom_ramp(FH, BOTTOM))
             if name == "thames":
                 # The city at night: sky and river carry little light; the lamps print in the night orange.
-                magick(src, *pre, "-crop", crop, "+repage", "-filter", "Lanczos", "-resize", "2048x819!", t / "rgb.png")
+                magick(src, *pre, "-crop", crop, "+repage", "-filter", "Lanczos", "-resize", f"{FW}x{FH}!", t / "rgb.png")
                 rgb = np.asarray(Image.open(t / "rgb.png").convert("RGB"), np.float32) / 255
                 warm = np.clip((rgb.max(-1) - 0.45) / 0.35, 0, 1) * np.clip((rgb[..., 0] - rgb[..., 2]) / 0.25, 0, 1)
                 light = np.clip((L - 0.10) / 0.75, 0, 1) ** 1.2 * (1 - warm)
@@ -253,7 +259,7 @@ def night():
             else:
                 light = np.clip((L - 0.35) / 0.6, 0, 1) ** 1.1
                 second = np.clip(1 - np.abs(L - 0.45) / 0.3, 0, 1) * 0.75
-            for arr, nm, tm in ((light, "ink", "h8x8a"), (second, "2", "h8x8o")):
+            for arr, nm, tm in ((light, "ink", CELL + "a"), (second, "2", CELL + "o")):
                 save_gray(1 - arr * fade, t / "c.png")
                 magick(t / "c.png", "-ordered-dither", tm, "-negate", t / "m.png")
                 save_mask((load_gray(t / "m.png") > .5).astype(np.float32), f"footer-{name}-{nm}-night.png")

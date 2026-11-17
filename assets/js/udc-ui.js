@@ -35,6 +35,16 @@
     label();
     // Motto (plan 4.2): hover and focus are CSS; on touch a tap toggles the state.
     motto?.addEventListener('pointerup', e => { if (e.pointerType === 'touch') motto.classList.toggle('is-managed'); });
+    // Dateline (UD, 2026-11-16): the reader's own date, British style: "Monday, 16th November 2026".
+    const date = document.querySelector('.udc-date');
+    if (date) {
+      const d = new Date(), n = d.getDate();
+      const th = n % 100 >= 11 && n % 100 <= 13 ? 'th' : ({ 1: 'st', 2: 'nd', 3: 'rd' }[n % 10] || 'th');
+      const part = o => d.toLocaleDateString('en-GB', o);
+      date.textContent = `${part({ weekday: 'long' })}, ${n}${th} ${part({ month: 'long' })} ${d.getFullYear()}`;
+      date.dateTime = [d.getFullYear(), d.getMonth() + 1, n].map((v, i) => String(v).padStart(i ? 2 : 4, '0')).join('-');
+      date.hidden = false;
+    }
     // About (plan 4.8; UD 2026-11-16): every lane is a filter. Work lanes start on; entries and bars
     // of lanes that are off are hidden. The life lanes stay out of sight until "Away from the desk" is
     // pressed, which shows them switched on; pressing it again hides them. Without this script

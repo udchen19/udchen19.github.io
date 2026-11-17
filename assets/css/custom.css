@@ -155,7 +155,7 @@ body.page-wrapper::after {
   --udc-holes-b: url("/textures/ink-holes-b.png") 0 0 / 512px 512px repeat;
 }
 .udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title { -webkit-mask: var(--udc-holes-d); mask: var(--udc-holes-d); }
-.udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
+.udc-ink-m, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-date, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
 .udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)) { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
 /* A mask cuts off whatever is drawn outside the element's box, focus rings included: while an inked
    element has keyboard focus, or holds the focused element, it prints solid. */
@@ -270,32 +270,34 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
 .udc-motto:is(:hover, :focus-visible, .is-managed) > .udc-motto-a { clip-path: inset(0 100% 0 0); transition-delay: 0s; }
 .udc-motto:is(:hover, :focus-visible, .is-managed) > .udc-motto-b { clip-path: inset(0 0 0 0); transition-delay: .2s; }
 
-/* Home, ≥641px: nameplate row, then menu (centred) · motto · theme on one row between two rules.
-   The row needs about 1240px; narrower, the motto takes its own centred line under the menu. */
-.udc-header-home .udc-masthead { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
-.udc-header-home .udc-masthead::before { content: ""; grid-row: 2; grid-column: 1 / -1; align-self: stretch; border-block: 1px solid var(--udc-ink); }
+/* The dateline (UD, 2026-11-16): today's date in the motto's italic, filled in by udc-ui.js. */
+.udc-nav-controls > .udc-date { white-space: nowrap; font-family: var(--udc-motto-face); font-style: italic; font-size: 1.08rem; line-height: 1.2; color: var(--udc-ink); padding: 4px 6px; }
+/* ≥641px, the row between the two rules is motto · menu · date (UD, 2026-11-16). Five columns: the
+   44px ones at both ends keep the menu centred on the page while the theme button sits in the last. */
+.udc-header-home .udc-masthead, .udc-header-inner .udc-masthead { grid-template-columns: 44px minmax(0, 1fr) auto minmax(0, 1fr) 44px; }
+.udc-header-home .udc-masthead::before, .udc-header-inner .udc-masthead::before { content: ""; grid-row: 2; grid-column: 1 / -1; align-self: stretch; border-block: 1px solid var(--udc-ink); }
+.udc-header-home .udc-nav-controls, .udc-header-inner .udc-nav-controls { display: contents; }
+.udc-header-home .udc-nav, .udc-header-inner .udc-nav { grid-row: 2; grid-column: 3; justify-self: center; }
+.udc-header-home .udc-nav-controls > .udc-motto, .udc-header-inner .udc-nav-controls > .udc-motto { grid-row: 2; grid-column: 1 / 3; justify-self: start; justify-items: start; padding-left: 0; }
+.udc-header-home .udc-date, .udc-header-inner .udc-date { grid-row: 2; grid-column: 4 / 6; justify-self: end; padding-right: 0; }
+/* Home: the nameplate row on top; the theme button closes the dated row. */
 .udc-header-home .udc-brand { grid-row: 1; grid-column: 1 / -1; justify-self: center; font-size: min(80px, 6.25vw); padding-bottom: 12px; }
 .udc-header-home .udc-brand .udc-emblem { width: 1.05em; margin-right: .1em; }
-.udc-header-home .udc-nav { grid-row: 2; grid-column: 2; padding-block: 8px; }
-.udc-header-home .udc-nav-controls { grid-row: 2; grid-column: 3; }
-@media (min-width: 641px) and (max-width: 1239px) {
-  .udc-header-home .udc-nav-controls { display: contents; }
-  .udc-header-home .udc-theme-row { grid-row: 2; grid-column: 3; justify-self: end; }
-  .udc-header-home .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: center; justify-items: center; padding-top: 6px; }
-}
-/* Inner pages, ≥641px: a compact folio. Row 1: Ryan + a smaller nameplate (about 40px at 1280) at
-   the left, motto and theme at the right. Row 2: the menu, centred between two rules. */
-.udc-header-inner .udc-masthead { grid-template-columns: minmax(0, 1fr) auto; column-gap: 18px; }
-.udc-header-inner .udc-masthead::before { content: ""; grid-row: 2; grid-column: 1 / -1; align-self: stretch; border-block: 1px solid var(--udc-ink); }
-.udc-header-inner .udc-brand { grid-row: 1; grid-column: 1; font-size: min(40px, 3.1vw); padding-bottom: 8px; }
+.udc-header-home .udc-nav { padding-block: 8px; }
+.udc-header-home .udc-date { grid-column: 4; }
+.udc-header-home .udc-theme-row { grid-row: 2; grid-column: 5; justify-self: end; }
+/* Inner pages: a compact folio. Row 1: Ryan + a smaller nameplate (about 40px at 1280) and the theme
+   button; row 2: the dated row. */
+.udc-header-inner .udc-brand { grid-row: 1; grid-column: 1 / 5; justify-self: start; font-size: min(40px, 3.1vw); padding-bottom: 8px; }
 .udc-header-inner .udc-brand .udc-emblem { width: 1.15em; margin-right: .1em; }
-.udc-header-inner .udc-nav-controls { grid-row: 1; grid-column: 2; padding-bottom: 8px; }
-.udc-header-inner .udc-nav { grid-row: 2; grid-column: 1 / -1; justify-self: center; padding-block: 6px; }
-@media (min-width: 641px) and (max-width: 899px) {
-  .udc-header-inner .udc-nav-controls { display: contents; }
-  .udc-header-inner .udc-theme-row { grid-row: 1; grid-column: 2; align-self: center; }
-  .udc-header-inner .udc-brand { font-size: min(40px, 4.4vw); }
-  .udc-header-inner .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: center; justify-items: center; padding-top: 6px; font-size: .95rem; }
+.udc-header-inner .udc-theme-row { grid-row: 1; grid-column: 5; justify-self: end; align-self: center; margin-bottom: 8px; }
+.udc-header-inner .udc-nav { padding-block: 6px; }
+@media (min-width: 641px) and (max-width: 899px) { .udc-header-inner .udc-brand { font-size: min(40px, 4.4vw); } }
+/* Too narrow for one row: the menu keeps the row between the rules; motto and date go on a line
+   under it, motto at the left, date at the right. */
+@media (min-width: 641px) and (max-width: 1199px) {   /* one row needs 1200px with the widest date, "Wednesday, 30th September" */
+  .udc-header-home .udc-nav-controls > .udc-motto, .udc-header-inner .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / 4; padding-top: 6px; font-size: .95rem; }
+  .udc-header-home .udc-date, .udc-header-inner .udc-date { grid-row: 3; grid-column: 4 / 6; padding-top: 6px; font-size: .95rem; }
 }
 .udc-header .udc-rule-heavy { margin-top: 6px; }
 
@@ -314,11 +316,12 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
   .udc-header .udc-menu-toggle { grid-row: 1; grid-column: 2; position: relative; z-index: 2; }   /* above the closed menu, which shares its row */
   .udc-header .udc-nav { grid-row: 1; grid-column: 1 / -1; }
   .udc-header .udc-nav-controls > .udc-theme-row { display: none; }
-  .udc-header .udc-nav-controls > .udc-motto { grid-row: 2; grid-column: 1 / -1; justify-self: center; justify-items: center; font-size: .88rem; padding: 2px 6px 0; }
+  .udc-header .udc-nav-controls > .udc-date { grid-row: 2; grid-column: 1 / -1; justify-self: end; font-size: .82rem; padding: 2px 0 0; }   /* right-aligned under the nameplate (UD) */
+  .udc-header .udc-nav-controls > .udc-motto { grid-row: 3; grid-column: 1 / -1; justify-self: center; justify-items: center; font-size: .88rem; padding: 2px 6px 0; }
   .udc-js .udc-menu-toggle { display: inline-flex !important; }
   .udc-js .udc-navigation { display: none; }
   /* Without the script there is no menu button: the links wrap in a row under the motto. */
-  html:not(.udc-js) .udc-header .udc-nav { grid-row: 3; justify-self: center; padding-top: 4px; }
+  html:not(.udc-js) .udc-header .udc-nav { grid-row: 4; justify-self: center; padding-top: 4px; }
   html:not(.udc-js) .udc-navigation { flex-wrap: wrap; justify-content: center; }
   html:not(.udc-js) .udc-menu-theme { display: none; }
   .udc-navigation.is-open { display: flex; flex-direction: column; align-items: flex-start; position: absolute; z-index: 70; left: 0; right: 0; top: 100%;
@@ -696,9 +699,9 @@ hr.udc-rule-heavy.udc-wrap { margin-inline: auto; }
    side, centred as a group, 44px apart. Phone: stacked and centred. */
 .udc-404 { --cs: .42; box-sizing: border-box; height: 100svh; padding: calc(var(--udc-edge-t) + 16px) 24px 16px;
   display: flex; align-items: center; justify-content: center; gap: 44px; }
-.udc-404-fig { margin: 0; display: flex; flex-direction: column; align-items: center; height: 100%; }
+.udc-404-fig { margin: 0; display: flex; flex-direction: column; align-items: center; height: 80%; }   /* 80%: room above and below (UD, 2026-11-16) */
 .udc-404-fig img { display: block; flex: 1 1 auto; min-height: 0; width: auto; height: auto; max-height: 100%; aspect-ratio: 466 / 1400; }
-.udc-404-cs { display: block; flex: none; width: 13rem; aspect-ratio: 722 / 304; margin-top: 10px; background: var(--udc-ink);
+.udc-404-cs { display: block; flex: none; width: 10.4rem; aspect-ratio: 722 / 304; margin-top: 10px; background: var(--udc-ink);
   -webkit-mask: url("/textures/chongsha.png") center / contain no-repeat; mask: url("/textures/chongsha.png") center / contain no-repeat;
   position: relative; z-index: 61; }
 .udc-404-fig img { position: relative; z-index: 61; }
