@@ -1,5 +1,5 @@
 ---
-title: "From Overwhelmed to Overview: Understanding Smartphone Users' Preferences and Expectations in Relieving Notification Overload via Text Summarization"
+title: "From Overwhelmed to Overview: Understanding Smartphone Users’ Preferences and Expectations in Relieving Notification Overload via Text Summarization"
 authors:
 - admin
 - Peng-Jui Wang

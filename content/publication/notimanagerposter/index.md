@@ -1,5 +1,5 @@
 ---
-title: Automatic, Manual, or Hybrid? A Preliminary Investigation of Users' Perception
+title: Automatic, Manual, or Hybrid? A Preliminary Investigation of Users’ Perception
   of Features for Supporting Notification Management
 authors:
 - Yong-Han Lin
