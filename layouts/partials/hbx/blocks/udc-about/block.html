@@ -39,6 +39,9 @@
   {{- range $all }}{{ $y0 = math.Min $y0 .s.Year }}{{ $y1 = math.Max $y1 (add .e.Year 1) }}{{ end }}
   {{- $y0 = int $y0 }}{{ $y1 = int $y1 }}{{ $span := float (sub $y1 $y0) }}
   {{- $work := slice "education" "research" "teaching" "industry" }}
+  {{- /* The strip sits in a wrapper so the "Away from the desk?" veil can lie over the life lanes at the
+         visible width while the strip scrolls sideways under it (UD, 2026-11-16). */}}
+  <div class="udc-ys-wrap">
   <nav class="udc-ys" aria-label="Years at a glance, and which kinds of entry to show" style="--years: {{ sub $y1 $y0 }}">
     <div class="udc-ys-lane udc-ys-head" aria-hidden="true"><span class="udc-ys-name"></span><span class="udc-ys-ticks">{{ range seq $y0 (sub $y1 1) }}<span>{{ if eq (mod . 2) 0 }}<i>{{ div . 100 }}</i>{{ printf "%02d" (mod . 100) }}{{ end }}</span>{{ end }}</span></div>
     {{- $groups := slice (dict "lanes" $work "on" true) }}
@@ -46,7 +49,6 @@
     {{- range $groups }}
     {{- $on := .on }}{{ $g := . }}
     {{- $life := not $on }}
-    {{- with .label }}<p class="udc-ys-group"><button type="button" class="udc-ys-reveal" aria-expanded="true" aria-controls="{{ range $i, $k := $g.lanes }}{{ if $i }} {{ end }}ys-{{ $k }}{{ end }}">{{ . }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</button></p>{{ end }}
     {{- range .lanes }}
     {{- $lane := . }}
     <div class="udc-ys-lane{{ if $life }} udc-ys-life{{ end }}" data-lane="{{ $lane }}" id="ys-{{ $lane }}">
@@ -64,6 +66,12 @@
     {{- end }}
     {{- end }}
   </nav>
+  {{- with $lifeLanes }}
+  {{- /* Shown by udc-ui.js; without it the life lanes are simply visible. */}}
+  <button type="button" class="udc-ys-veil" aria-expanded="false" aria-controls="{{ range $i, $l := . }}{{ if $i }} {{ end }}ys-{{ $l.key }}{{ end }}" hidden><span>Away from the desk?</span></button>
+  <p class="udc-ys-back" hidden><button type="button" class="udc-ys-backbtn">Back to the desk</button></p>
+  {{- end }}
+  </div>
   {{- /* Flight map (UD, 2026-11-16): collapsed by default. It marks places, not routes: the places
          in data/flights.yaml print in orange with their notes in a key below; every flight prints faint.
          Hovering any airport shows its code and name. Data: data/flight_map.json
@@ -71,16 +79,22 @@
   {{- with hugo.Data.flight_map }}
   {{- $m := . }}
   {{- $yrs := slice }}{{ range $m.routes }}{{ $yrs = $yrs | append .years }}{{ end }}{{ $yrs = sort (uniq $yrs) }}
-  <details class="udc-map">
-    <summary class="udc-map-summary">Flights, {{ index $yrs 0 }} – {{ index $yrs (sub (len $yrs) 1) }}{{ partial "functions/get_icon" (dict "name" "chevron-down" "attributes" "aria-hidden=\"true\" focusable=\"false\"") }}</summary>
+  {{- /* The land image is fingerprinted, so a redrawn map never shows last version's land from cache. */}}
+  {{- $land := resources.Get "textures/map-land.png" | fingerprint }}
+  {{- /* Closed, the map lies folded: a creased strip of it under its title. Opened, it unfolds and the
+         routes ink themselves in, the places last (UD, 2026-11-16). */}}
+  <details class="udc-map" style="{{ printf "--udc-map-land: url(%s)" $land.RelPermalink | safeCSS }}">
+    <summary class="udc-map-summary">
+      <span class="udc-map-folded" aria-hidden="true"><span class="udc-map-folded-land"></span></span>
+      <span class="udc-map-title">Where I’ve wandered</span>
+      <span class="udc-map-fold">Fold the map</span>
+    </summary>
     <figure class="udc-map-fig">
       <div class="udc-map-plate" style="aspect-ratio: {{ $m.w }} / {{ $m.h }}">
-      {{- /* The land image is fingerprinted, so a redrawn map never shows last version's land from cache. */}}
-      {{- $land := resources.Get "textures/map-land.png" | fingerprint }}
-      <span class="udc-map-land" aria-hidden="true" style="{{ printf "--udc-map-land: url(%s)" $land.RelPermalink | safeCSS }}"></span>
+      <span class="udc-map-land" aria-hidden="true"></span>
       <svg class="udc-map-svg" viewBox="0 0 {{ $m.w }} {{ $m.h }}" role="img" aria-labelledby="udc-map-cap">
-        {{- range $m.routes }}
-        <path class="udc-map-leg" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
+        {{- range $li, $_ := $m.routes }}
+        <path class="udc-map-leg" pathLength="1" style="--i: {{ $li }}" d="{{ .d }}"><title>{{ .a }}–{{ .b }} ({{ delimit .years ", " }})</title></path>
         {{- end }}
         {{- range $m.airports }}
         <circle class="udc-map-port" data-code="{{ .code }}" cx="{{ .x }}" cy="{{ .y }}" r="{{ add 2.4 (math.Sqrt .n) }}"><title>{{ .code }} · {{ .name }}</title></circle>

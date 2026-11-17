@@ -1,4 +1,4 @@
-// Menu toggle, theme-button labels and the motto's tap state. Without this script the motto still
+// Menu toggle, theme-button labels and the motto's ink dissolve. Without this script the motto still
 // answers hover and keyboard focus.
 (() => {
   const root = document.documentElement;
@@ -34,7 +34,53 @@
     new MutationObserver(label).observe(root, { attributes: true, attributeFilter: ['class'] });
     label();
     // Motto (plan 4.2): hover and focus are CSS; on touch a tap toggles the state.
-    motto?.addEventListener('pointerup', e => { if (e.pointerType === 'touch') motto.classList.toggle('is-managed'); });
+    // Motto (UD, 2026-11-16): the line dissolves into ink specks where it stands and the other soaks back in.
+    // Each line runs through an SVG noise filter whose threshold is moved frame by frame; at rest no filter.
+    if (motto) {
+      const lines = [...motto.querySelectorAll(':scope > span')];
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('aria-hidden', 'true'); svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden';
+      svg.innerHTML = lines.map((_, i) => `<filter id="udc-ink-${i}" x="0" y="-25%" width="100%" height="150%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.32" numOctaves="2" seed="${7 + i}" result="n"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0" result="a"/>
+        <feComponentTransfer in="a" result="m"><feFuncA type="linear" slope="9" intercept="0"/></feComponentTransfer>
+        <feComposite in="SourceGraphic" in2="m" operator="in"/></filter>`).join('');
+      document.body.append(svg);
+      const funcs = [...svg.querySelectorAll('feFuncA')];
+      const still = matchMedia('(prefers-reduced-motion: reduce)');
+      // ink(i, t): t = 0 fully printed, 1 gone. The noise sits roughly between .2 and .8.
+      const ink = (i, t) => {
+        const el = lines[i];
+        if (t <= 0) { el.style.filter = ''; el.style.opacity = 1; return; }
+        if (t >= 1) { el.style.filter = ''; el.style.opacity = 0; return; }
+        const th = .15 + t * .7;
+        funcs[i].setAttribute('intercept', String(-9 * th));
+        el.style.filter = `url(#udc-ink-${i})`; el.style.opacity = 1;
+      };
+      let showing = 0, raf = 0;
+      ink(0, 0); ink(1, 1);
+      const show = k => {
+        if (k === showing) return;
+        const from = showing; showing = k; cancelAnimationFrame(raf);
+        if (still.matches) { ink(from, 1); ink(k, 0); return; }
+        const t0 = performance.now(), out = 480, inn = 620, lag = 320;
+        const step = now => {
+          const e = now - t0;
+          ink(from, Math.min(1, e / out));
+          ink(k, 1 - Math.min(1, Math.max(0, (e - lag) / inn)));
+          if (e < lag + inn) raf = requestAnimationFrame(step);
+        };
+        raf = requestAnimationFrame(step);
+      };
+      let managed = false;
+      const want = () => show(managed || motto.matches(':hover') || motto.matches(':focus-visible') ? 1 : 0);
+      motto.addEventListener('pointerenter', e => { if (e.pointerType !== 'touch') want(); });
+      motto.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') want(); });
+      motto.addEventListener('focus', () => setTimeout(want));
+      motto.addEventListener('blur', () => setTimeout(want));
+      motto.addEventListener('pointerup', e => { if (e.pointerType === 'touch') { managed = !managed; want(); } });
+    }
     // Dateline (UD, 2026-11-16): the reader's own date, British style: "Monday, 16th November 2026".
     const date = document.querySelector('.udc-date');
     const setDate = () => {
@@ -70,24 +116,37 @@
       buttons.forEach(b => b.addEventListener('click', () => {
         b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); apply();
       }));
-      const reveal = tl.querySelector('.udc-ys-reveal');
+      // "Away from the desk?" (UD, 2026-11-16): the life lanes lie blurred under a veil; lifting it shows them and
+      // their entries in the list; "Back to the desk" puts the veil back and takes the entries out again.
+      const wrap = tl.querySelector('.udc-ys-wrap');
+      const veil = tl.querySelector('.udc-ys-veil'), back = tl.querySelector('.udc-ys-back');
       const lifeLanes = [...tl.querySelectorAll('.udc-ys-life')];
+      const placeVeil = () => {
+        if (!veil || !lifeLanes.length) return;
+        const top = lifeLanes[0].offsetTop, last = lifeLanes[lifeLanes.length - 1];
+        veil.style.top = top + 'px'; veil.style.height = (last.offsetTop + last.offsetHeight - top) + 'px';
+      };
       const setLife = open => {
-        reveal?.setAttribute('aria-expanded', String(open));
+        veil?.setAttribute('aria-expanded', String(open));
+        wrap?.classList.toggle('is-veiled', !open);
+        if (veil) veil.hidden = open;
+        if (back) back.hidden = !open;
         lifeLanes.forEach(lane => {
-          lane.hidden = !open;
+          lane.inert = !open;
           lane.querySelector('.udc-ys-filter')?.setAttribute('aria-pressed', String(open));
         });
-        apply();
+        apply(); placeVeil();
       };
-      reveal?.addEventListener('click', () => setLife(reveal.getAttribute('aria-expanded') !== 'true'));
+      veil?.addEventListener('click', () => { setLife(true); lifeLanes[0]?.querySelector('.udc-ys-filter')?.focus({ preventScroll: true }); });
+      back?.querySelector('button')?.addEventListener('click', () => { setLife(false); veil?.focus({ preventScroll: true }); });
+      addEventListener('resize', placeVeil);
       setLife(false);
       // A link to an entry of a lane that is off (from a year-strip bar or the map) turns that lane on.
       document.addEventListener('click', e => {
         const a = e.target.closest('a[href^="#tl-"]'); if (!a) return;
         const row = document.getElementById(a.getAttribute('href').slice(1));
         const btn = row && buttons.find(b => b.dataset.lane === row.dataset.lane);
-        if (btn && btn.closest('.udc-ys-life')?.hidden) setLife(true);
+        if (btn && btn.closest('.udc-ys-life') && wrap?.classList.contains('is-veiled')) setLife(true);
         if (btn && btn.getAttribute('aria-pressed') !== 'true') { btn.setAttribute('aria-pressed', 'true'); apply(); }
       });
     }
