@@ -571,7 +571,8 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 
 /* Lists */
 .udc-list-dek { color: var(--udc-text-ink-2); margin: 8px 0 16px; }
-.udc-year { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 0 20px; padding: 14px 0; border-top: 1px solid var(--udc-ink); }
+/* The year column holds its plate at every page size: in rem, so it grows with the page above 1280px (UD, 2026-11-18). */
+.udc-year { display: grid; grid-template-columns: minmax(5.7rem, max-content) minmax(0, 1fr); gap: 0 20px; padding: 14px 0; border-top: 1px solid var(--udc-ink); }
 .udc-year-plate { align-self: start; margin: 4px 0 0; justify-self: start; background: var(--udc-ink); color: var(--udc-paper); font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.5rem; line-height: 1; padding: .25em .4em .2em; clip-path: var(--udc-cut-plate); }
 .udc-pubs { list-style: none; margin: 0; padding: 0; }
 /* Publications filter (UD, 2026-11-16): a search line and the type choices, in the label face, like the
