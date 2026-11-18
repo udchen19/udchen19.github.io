@@ -9,9 +9,6 @@ palette PNG; colour comes from the edition's tokens through CSS mask-image.
 Paper (textures.py)
 newsprint-fibres.webp, newsprint-tone.png, newsprint-show.webp, press-light.png
                        Base layers from ambientCG Paper 002 (CC0), unchanged from 2026-11-11.
-newsprint-fibres-night.webp
-                       The fibre layer for the night edition, brightest flecks capped at 140 (saved
-                       file at most 152), so soft-light on the dark paper stays under the night ceiling.
 crease-edge.webp, crease-centre.webp
                        ambientCG Paper 005 (CC0), the 2K displacement map. Shadow only: darker than
                        the flat sheet darkens, lighter is no change; a soft knee keeps every pixel of

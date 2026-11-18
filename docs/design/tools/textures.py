@@ -1,9 +1,6 @@
 """Paper textures for the udchen.tw redesign. All outputs go to <repo>/static/textures/.
 Deterministic (fixed seeds).
 
-python textures.py <repo> night
-    The night fibre layer: newsprint-fibres.webp with its brightest flecks capped, so soft-light on the
-    dark paper never lifts a pixel past the night ceiling (paper_contrast.py dark).
 python textures.py <repo> sheet <Paper005_2K-JPG_Displacement.jpg>
     Creases (ambientCG Paper 005, CC0) and the worn sheet edges (plan v2, 3.4).
 python textures.py <repo> <Paper002_Color.jpg> [<reading font.ttf> <display font.ttf>]
@@ -131,19 +128,6 @@ def edges(tag, L, R, T):
     print("edges", tag, L, R, T)
 
 HEADROOM, KNEE, CENTRE_T, CENTRE_K, CENTRE_FLOOR = 0.16, 0.5, 0.20, 0.5, 0.95
-if scan == "night":
-    # Soft-light over #111A2B with the tone (max 142) and show-through (max 130) layers: a fibre value of
-    # 152 gives relative luminance 0.0245, under the 0.028 at which night ink-2 drops below 4.5:1.
-    f = np.asarray(Image.open(out / "newsprint-fibres.webp").convert("L"), np.float32)
-    # Capped at 140 and saved lossy at q90: compression lifts some values again, and the saved file
-    # must stay at or under 152 (checked below).
-    capped = np.minimum(f, 140)
-    print(f"night fibres: {np.mean(f > 140) * 100:.2f}% of pixels capped")
-    Image.fromarray(capped.astype(np.uint8), "L").save(out / "newsprint-fibres-night.webp", quality=90)
-    back = np.asarray(Image.open(out / "newsprint-fibres-night.webp").convert("L"))
-    assert back.max() <= 152, back.max()
-    print("newsprint-fibres-night.webp", (out / "newsprint-fibres-night.webp").stat().st_size // 1024, "KB, max", back.max())
-    sys.exit(0)
 if scan == "sheet":
     creases(sys.argv[3])
     edges("wide", 22, 32, 12)      # >= 641 px

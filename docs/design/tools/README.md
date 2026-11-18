@@ -9,7 +9,7 @@ pyyaml; ImageMagick 7 (`magick`) for ordered dithering. Hugo 0.170.0 (what `.git
 |---|---|---|
 | `fonts.py` | WOFF2 subsets of the six faces (static/fonts/) | `python fonts.py <repo> <dl>` |
 | `noto_slices.py` | Noto Serif TC unicode-range slices for any weight | `python noto_slices.py <repo> <NotoSerifTC-VF.ttf> 900` |
-| `textures.py` | Paper base layers; `sheet`: creases and worn edges; `night`: night fibre layer | `python textures.py <repo> sheet <Paper005 displacement.jpg>` |
+| `textures.py` | Paper base layers; `sheet`: creases and worn edges | `python textures.py <repo> sheet <Paper005 displacement.jpg>` |
 | `halftone.py` | Plates: ryan, portrait, stadium, flag, jingu, hogwarts, thames, pages, figure404, night | `python halftone.py <repo> <plate> …` |
 | `lettering.py` | 陳威達 rendered as an image (the font never ships) | `python lettering.py <repo> name <font.ttf>` |
 | `flightmap.py` | About flight map: land dots + data/flight_map.json | `python flightmap.py <repo> <ne_110m_land.shp> <ne_10m_airports.shp>` |

@@ -29,17 +29,19 @@
 }
 /* Night edition (plan 5; tuned in Phase 7): Thames at dusk. */
 .dark {
-  --udc-paper: #111A2B;
-  --udc-paper-2: #18233A;
+  /* Half the blue of the first navy and a little darker; content in a grey that carries a trace of the
+     paper's own hue, at the old lightness; secondary text at 7:1 (UD, 2026-11-18, night trial). */
+  --udc-paper: #12151E;
+  --udc-paper-2: #1A1E2C;
   --udc-ink: #C9C6BA;
   --udc-ink-2: #8F96A3;
-  --udc-text-ink: var(--udc-ink);   /* night: content keeps the night ink */
-  --udc-text-ink-2: var(--udc-ink-2);
-  --udc-rule: #2A3550;
+  --udc-text-ink: #C5C6C9;
+  --udc-text-ink-2: #9FA1A5;
+  --udc-rule: #2B3041;
   --udc-orange: #DB8448;
   --udc-orange-text: #DB8448;
   --udc-surround: #04060A;
-  --udc-sheet-under: #18233A;
+  --udc-sheet-under: #1A1E2C;
   --udc-sheet-line: #2A3550;
   color-scheme: dark;
 }
@@ -1035,7 +1037,8 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   mask-image: url("/textures/crease-light.webp"), var(--udc-crease-top), var(--udc-crease-to-r), var(--udc-crease-to-l);
   mask-size: var(--udc-crease-tile) var(--udc-crease-tile), 100% 100%; mask-position: 0 0; mask-repeat: repeat, no-repeat;
   mask-composite: intersect, subtract, add; }
-.dark { --udc-sheet: url("/textures/newsprint-show.webp"), url("/textures/newsprint-fibres-night.webp"), url("/textures/newsprint-tone.png"); }
+/* No fibre layer at night: on the dark paper its specks read as mottling under the text (UD, 2026-11-18). */
+.dark { --udc-sheet: url("/textures/newsprint-show.webp"), url("/textures/newsprint-tone.png"); --udc-sheet-size: 1400px 1900px, 1600px 1600px; }
 .dark { --udc-crease-hi: #C9C6BA; --udc-crease-hi-edge: .06; --udc-crease-hi-centre: .02; }
 /* Footer plates: the night masks carry the image's light (positive), not its darkness. */
 .dark .udc-fi-ink { -webkit-mask-image: var(--mn); mask-image: var(--mn); }
