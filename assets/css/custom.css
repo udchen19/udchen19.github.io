@@ -5,11 +5,16 @@
 
 /* ===================================================================== tokens */
 :root {
-  --udc-paper: #E2DDD1;
-  --udc-paper-2: #D3CDBF;
+  /* Paper at newspaper lightness with a little newsprint warmth; paper-2, rule and sheet-under keep their
+     offsets from it, so the darker pieces still read darker (UD, 2026-11-18, colour trial). */
+  --udc-paper: #F6F3EC;
+  --udc-paper-2: #E7E3DA;
+  /* Navy prints the worn type, rules and images. Content prints in a warm near-black (UD, 2026-11-18). */
   --udc-ink: #1B2436;
   --udc-ink-2: #3A4252;
-  --udc-rule: #B9B5A7;
+  --udc-text-ink: #24211D;
+  --udc-text-ink-2: #413E3A;
+  --udc-rule: #CCCAC1;
   --udc-orange: #B5501F;
   --udc-orange-text: #9A3E15;
   --udc-surround: #131A28;
@@ -17,7 +22,7 @@
   --udc-ink-hogwarts: #B8862B;
   --udc-ink-thames: #A8553B;
   /* the pages showing behind the sheet's right edge (values from the approved mock, mk/make-jobs12) */
-  --udc-sheet-under: #D9D3C6;
+  --udc-sheet-under: #EDE9E1;
   --udc-sheet-line: #6F6A5C;
   --udc-plate-ink: var(--udc-ink);
   color-scheme: light;
@@ -28,6 +33,8 @@
   --udc-paper-2: #18233A;
   --udc-ink: #C9C6BA;
   --udc-ink-2: #8F96A3;
+  --udc-text-ink: var(--udc-ink);   /* night: content keeps the night ink */
+  --udc-text-ink-2: var(--udc-ink-2);
   --udc-rule: #2A3550;
   --udc-orange: #DB8448;
   --udc-orange-text: #DB8448;
@@ -53,7 +60,10 @@
 /* The visitor sees a physical sheet with worn edges, lying on a dark surface (plan 3.4). */
 :root {
   --udc-edge-l: 22px; --udc-edge-r: 32px; --udc-edge-t: 12px; --udc-gutter: 18px;
-  --udc-crease-tile: 1500px; --udc-crease-side: 12%; --udc-crease-side-end: 28%;
+  --udc-crease-tile: 1500px; --udc-crease-l: 12%; --udc-crease-l-end: 28%; --udc-crease-r: 12%; --udc-crease-r-end: 28%;
+  --udc-crease-to-r: linear-gradient(to right, #000 0, rgb(0 0 0 / .55) var(--udc-crease-l), transparent var(--udc-crease-l-end));
+  --udc-crease-to-l: linear-gradient(to left, #000 0, rgb(0 0 0 / .55) var(--udc-crease-r), transparent var(--udc-crease-r-end));
+  --udc-crease-top: linear-gradient(to bottom, #000 0, rgb(0 0 0 / .55) 45%, transparent);   /* inside the header box */
   --udc-press: url("/textures/press-light.png");
   /* Base layers: fibres from a real paper scan, faint show-through of the reverse page,
      slightly uneven tone. soft-light keeps 50% grey neutral. No fold line (plan 2, row 16). */
@@ -62,7 +72,10 @@
 }
 @media (max-width: 640px) {
   :root { --udc-edge-l: 9px; --udc-edge-r: 19px; --udc-edge-t: 6px; --udc-gutter: 12px;
-    --udc-crease-tile: 900px; --udc-crease-side: 10%; --udc-crease-side-end: 24%; }
+    --udc-crease-tile: 900px;
+    /* Phones: the side bands stop at the edge of the text column (UD, 2026-11-17). */
+    --udc-crease-l: var(--udc-edge-l); --udc-crease-l-end: calc(var(--udc-edge-l) + var(--udc-gutter));
+    --udc-crease-r: var(--udc-edge-r); --udc-crease-r-end: calc(var(--udc-edge-r) + var(--udc-gutter)); }
 }
 html { background: var(--udc-surround); }
 body.page-wrapper {
@@ -84,28 +97,36 @@ body.page-wrapper {
 .udc-crease { inset: 0; background-size: var(--udc-crease-tile) var(--udc-crease-tile); mix-blend-mode: multiply; }
 .udc-crease-edge {
   background-image: url("/textures/crease-edge.webp");
-  -webkit-mask-image:
-    linear-gradient(to right, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
-    linear-gradient(to left, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
+  -webkit-mask-image: var(--udc-crease-to-r), var(--udc-crease-to-l),
     linear-gradient(to bottom, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px),
     linear-gradient(to top, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px);
-  mask-image:
-    linear-gradient(to right, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
-    linear-gradient(to left, #000 0, rgb(0 0 0 / .55) var(--udc-crease-side), transparent var(--udc-crease-side-end)),
+  mask-image: var(--udc-crease-to-r), var(--udc-crease-to-l),
     linear-gradient(to bottom, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px),
     linear-gradient(to top, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px);
 }
+/* No creases under content (UD, 2026-11-17): where there is a header, the top band is drawn inside the header box
+   (.udc-header::before), so it ends at the heavy rule on every page and width. The 404 has no header and keeps it. */
+body:has(.udc-header) .udc-crease-edge {
+  -webkit-mask-image: var(--udc-crease-to-r), var(--udc-crease-to-l), linear-gradient(to top, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px);
+  mask-image: var(--udc-crease-to-r), var(--udc-crease-to-l), linear-gradient(to top, #000 0, rgb(0 0 0 / .55) 170px, transparent 380px);
+}
+/* The header's band leaves out what the side bands already cover, so the corners are not creased twice. */
+.udc-header::before { content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background: url("/textures/crease-edge.webp") 0 0 / var(--udc-crease-tile) var(--udc-crease-tile); mix-blend-mode: multiply;
+  -webkit-mask-image: var(--udc-crease-top), var(--udc-crease-to-r), var(--udc-crease-to-l); -webkit-mask-composite: source-out, source-over;
+  mask-image: var(--udc-crease-top), var(--udc-crease-to-r), var(--udc-crease-to-l); mask-composite: subtract, add; }
 .udc-crease-centre {
   background-image: url("/textures/crease-centre.webp");
   -webkit-mask-image:
-    linear-gradient(to right, transparent var(--udc-crease-side), #000 var(--udc-crease-side-end), #000 calc(100% - var(--udc-crease-side-end)), transparent calc(100% - var(--udc-crease-side))),
+    linear-gradient(to right, transparent var(--udc-crease-l), #000 var(--udc-crease-l-end), #000 calc(100% - var(--udc-crease-r-end)), transparent calc(100% - var(--udc-crease-r))),
     linear-gradient(to bottom, transparent 170px, #000 380px, #000 calc(100% - 380px), transparent calc(100% - 170px));
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent var(--udc-crease-side), #000 var(--udc-crease-side-end), #000 calc(100% - var(--udc-crease-side-end)), transparent calc(100% - var(--udc-crease-side))),
+    linear-gradient(to right, transparent var(--udc-crease-l), #000 var(--udc-crease-l-end), #000 calc(100% - var(--udc-crease-r-end)), transparent calc(100% - var(--udc-crease-r))),
     linear-gradient(to bottom, transparent 170px, #000 380px, #000 calc(100% - 380px), transparent calc(100% - 170px));
   mask-composite: intersect;
 }
+@media (max-width: 640px) { .udc-crease-centre { display: none; } }   /* phones: no creases under the column (UD, 2026-11-17) */
 /* Worn edges: masks coloured by tokens, so the night edition recolours them. */
 .udc-edge { -webkit-mask-repeat: repeat-y; mask-repeat: repeat-y; }
 .udc-edge-l { left: 0; top: 0; bottom: 0; width: var(--udc-edge-l); background: var(--udc-surround);
@@ -144,23 +165,25 @@ body.page-wrapper::after {
 }
 
 /* ======================================================================= ink */
-/* One press prints all type, lighter as type gets smaller (plan 3.3): display, label, body.
-   Solid ink with small hard-edged holes. The holes are 1-bit textures masked onto the type
+/* Worn type marks the paper, never what a reader reads to learn something: nameplate, front-page headline,
+   one-word page names, section labels, menu, motto, dateline, year plates, the 404 text and the About graphics.
+   Content (intro, news, papers, posts, lists, links, meta, tags, timeline) prints solid (UD, 2026-11-17).
+   Solid ink with small hard-edged holes, lighter as type gets smaller (plan 3.3). The holes are 1-bit textures masked onto the type
    (static/textures/ink-holes-*.png, made from the original SVG filters by docs/design/tools/ink_holes.py);
    live SVG filters stalled scrolling in WebKit for up to 1.5 s (Astra review, UD chose this on 2026-11-16).
-   Never on the name image, 衝啥, the portrait or any halftone plate. */
+   Never on the name image, the portrait or any halftone plate. */
 :root {
   --udc-holes-d: url("/textures/ink-holes-d.png") 0 0 / 512px 512px repeat;
   --udc-holes-m: url("/textures/ink-holes-m.png") 0 0 / 512px 512px repeat;
   --udc-holes-b: url("/textures/ink-holes-b.png") 0 0 / 512px 512px repeat;
 }
 .udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title { -webkit-mask: var(--udc-holes-d); mask: var(--udc-holes-d); }
-.udc-navigation a, .udc-label, .udc-work-title, .udc-log-titles, .udc-motto > span, .udc-date, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
-/* Small sans links and lines take the body's finer ink: the coarser one ate letters ("Ccde", "Ali projects"). Still worn. */
-.udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-more, .udc-work-links, .udc-work-meta, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)) { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
+.udc-navigation a, .udc-label, .udc-motto > span, .udc-date, .udc-year-plate { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
+/* "not" and its caret in the nameplate: the finer ink. */
+.udc-ink-b { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
 /* A mask cuts off whatever is drawn outside the element's box, focus rings included: while an inked
    element has keyboard focus, or holds the focused element, it prints solid. */
-:is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-date, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags, .udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)), .udc-ys-track, .udc-ys-ticks, .udc-map-plate, .udc-tl-desk):is(:focus-visible, :has(:focus-visible)) { -webkit-mask: none; mask: none; }
+:is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-navigation a, .udc-label, .udc-motto > span, .udc-date, .udc-year-plate, .udc-ink-b, .udc-ys-track, .udc-ys-ticks, .udc-map-plate):is(:focus-visible, :has(:focus-visible)) { -webkit-mask: none; mask: none; }
 
 /* ======================================================================= base */
 /* Tailwind/Blox default families point at the site's text face: no Inter download.
@@ -174,13 +197,16 @@ html { font-size: 18px; scrollbar-gutter: stable; }
 @media (min-width: 1281px) { html { font-size: min(1.40625vw, 24px); } }
 @media (max-width: 640px) { html { font-size: 17px; } }
 body.page-wrapper, .dark body.page-wrapper {
-  color: var(--udc-ink);
+  color: var(--udc-text-ink);
   font-family: var(--udc-text);
   font-size: .9rem;
   line-height: 1.58;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
 }
+/* Worn type and the About graphics keep the navy ink; everything else reads in --udc-text-ink (UD, 2026-11-18). */
+:is(.udc-header, .udc-label, .udc-page-title, .udc-ink, .udc-ink-d, .udc-ink-b, .udc-ys, .udc-map-plate, .udc-map-summary, .udc-404) { color: var(--udc-ink); }
+.udc-single-head .udc-page-title { color: var(--udc-text-ink); }   /* article titles are content */
 * { font-synthesis: none; }
 /* On the element marked Chinese, not on everything inside it: a title link in a Chinese entry took 1.85
    over its title's own spacing, so mixed titles ran loose (deep pass, 2026-11-17). */
@@ -376,7 +402,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-tier-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; margin-bottom: 10px; }   /* links drop to their own line when they do not fit (Astra, round 10) */
 .udc-tier-head .udc-label { flex: 1 1 9rem; }
 .udc-more-group { display: inline-flex; flex-wrap: nowrap; gap: 14px; margin-left: auto; }   /* the two links move together */
-.udc-more-sep { align-self: center; color: var(--udc-ink-2); }
+.udc-more-sep { align-self: center; color: var(--udc-text-ink-2); }
 .udc-more { flex: none; display: inline-flex; align-items: center; min-height: 24px; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; }
 
 /* Lead tier (plan v2, 4.3): story column | side column about 29%, separated by a column rule. */
@@ -398,7 +424,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-intro strong { font-weight: 700; }
 .udc-front .udc-intro { max-width: none; column-count: 2; column-gap: 26px; column-rule: 1px solid var(--udc-rule); }
 .udc-front .udc-intro p { break-inside: auto; orphans: 3; widows: 3; }
-.udc-dropcap { float: left; font-family: var(--udc-text); font-size: 3.3em; line-height: .8; margin: .07em .07em 0 0; color: var(--udc-ink); }
+.udc-dropcap { float: left; font-family: var(--udc-text); font-size: 3.3em; line-height: .8; margin: .07em .07em 0 0; color: var(--udc-text-ink); }
 @media (max-width: 1099px) { .udc-front .udc-intro { column-count: 1; } }
 
 /* Columnist block (plan v2, 4.4): portrait (no frame), name on one line with 陳威達, icons. */
@@ -424,7 +450,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
   .udc-columnist > .udc-portrait { grid-column: 1; grid-row: 2; }
   .udc-columnist > .udc-columnist-id { grid-column: 2; grid-row: 2; }
 }
-.udc-profile-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-ink); text-decoration: none; }
+.udc-profile-links a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: var(--udc-text-ink); text-decoration: none; }
 .udc-profile-links svg { width: 21px; height: 21px; }
 /* News: a label on a rule, like the other tiers; no box. */
 /* News spans both columns under the intro and the columnist block (UD, 2026-11-16). */
@@ -437,7 +463,6 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-work:first-child { padding-left: 0; }
 .udc-work:last-child { padding-right: 0; }
 .udc-work + .udc-work { border-left: 1px solid var(--udc-ink); }
-.udc-work-title { -webkit-mask: var(--udc-holes-b) !important; mask: var(--udc-holes-b) !important; }   /* small display type: finer ink keeps letters whole (Astra, round 9) */
 .udc-work-title { margin: 0 0 6px; font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.02rem; line-height: 1.2; }
 .udc-work-title a { text-decoration-color: transparent; }
 .udc-work-title a:hover { text-decoration-color: var(--udc-orange); }
@@ -445,7 +470,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-work-links { display: flex; flex-wrap: wrap; gap: 0 14px; margin: 0; font-family: var(--udc-sign); font-weight: 500; font-size: .78rem; }
 .udc-work-links a { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; }
 .udc-work-links svg { width: 15px; height: 15px; flex: none; }
-.udc-work-meta { margin: 2px 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; letter-spacing: .04em; color: var(--udc-ink-2); }
+.udc-work-meta { margin: 2px 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem; letter-spacing: .04em; color: var(--udc-text-ink-2); }
 
 /* UD's Log: one row of up to three titles, no dates; directly above the footer image. */
 .udc-log { padding-bottom: 28px; }
@@ -497,12 +522,12 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-meta { font-size: .85rem; line-height: 1.5; padding: 4px 0 4px 18px; border-left: 1px solid var(--udc-ink); }
 .udc-meta p { margin: 0 0 6px; }
 .udc-meta:not(:has(*)) { display: none; }   /* nothing to show: no lone divider (Astra, round 9) */
-.udc-meta-authors { color: var(--udc-ink-2); }
-.udc-meta-authors .font-bold, .udc-pub-authors .font-bold { color: var(--udc-ink); font-weight: 600; }
+.udc-meta-authors { color: var(--udc-text-ink-2); }
+.udc-meta-authors .font-bold, .udc-pub-authors .font-bold { color: var(--udc-text-ink); font-weight: 600; }
 .udc-meta-venue em, .udc-pub-venue em { font-style: italic; }
-.udc-meta-line { font-family: var(--udc-sign); font-weight: 500; font-size: .76rem; letter-spacing: .05em; color: var(--udc-ink-2); }
+.udc-meta-line { font-family: var(--udc-sign); font-weight: 500; font-size: .76rem; letter-spacing: .05em; color: var(--udc-text-ink-2); }
 .udc-meta-links, .udc-pub-links { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 4px; }
-.page-body .hb-attachment-link { text-transform: none; letter-spacing: 0; display: inline-flex; align-items: center; gap: 5px; min-height: 32px; margin: 0; padding: 0; font-family: var(--udc-sign); font-size: .875rem; font-weight: 400; color: var(--udc-ink); background: none; border: 0; border-radius: 0; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
+.page-body .hb-attachment-link { text-transform: none; letter-spacing: 0; display: inline-flex; align-items: center; gap: 5px; min-height: 32px; margin: 0; padding: 0; font-family: var(--udc-sign); font-size: .875rem; font-weight: 400; color: var(--udc-text-ink); background: none; border: 0; border-radius: 0; text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
 .page-body .hb-attachment-link svg { width: 16px !important; height: 16px !important; flex: none; }
 .udc-featured { aspect-ratio: 1440 / 703; margin: 0 0 22px; }
 
@@ -516,13 +541,13 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-prose h4 { font-weight: 650; font-size: 1em; margin: 1.1em 0 .3em; }   /* a step below h3 (Astra, round 8); headings follow the text's size */
 .udc-single[lang="zh-Hant"] .udc-prose :is(h2, h3) { font-family: var(--udc-text); font-weight: 700; }
 .udc-prose strong { font-weight: 650; }
-.udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-ink); color: var(--udc-ink); font-style: normal; }
+.udc-prose blockquote { margin: 1em 0; padding: 2px 0 2px 16px; border-left: 3px solid var(--udc-ink); color: var(--udc-text-ink); font-style: normal; }
 /* Blox's callout shortcode (one protected post): printed on the sheet like a quote, an ink rule and
    ink text, instead of a rounded orange panel; its icon, "Warning" label and bold opening keep it
    prominent (Astra review, round 2). */
-.udc-prose .callout { margin: 1em 0; padding: 2px 0 2px 16px; background: none; border: 0; border-left: 3px solid var(--udc-ink); border-radius: 0; color: var(--udc-ink); }
-.udc-prose .callout-icon { color: var(--udc-ink); }
-.udc-prose .callout-content { color: var(--udc-ink); }
+.udc-prose .callout { margin: 1em 0; padding: 2px 0 2px 16px; background: none; border: 0; border-left: 3px solid var(--udc-ink); border-radius: 0; color: var(--udc-text-ink); }
+.udc-prose .callout-icon { color: var(--udc-text-ink); }
+.udc-prose .callout-content { color: var(--udc-text-ink); }
 .udc-prose .callout-title { font-family: var(--udc-sign); font-weight: 700; font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; }
 /* Colour set inline in older posts (<font color>, style="color:…") prints in ink: orange is a listed
    spot colour only, and pure red fell to 2.9:1 on the paper (Astra review, round 3). Bold stays. */
@@ -543,7 +568,7 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-tags { font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; margin-top: 20px; }
 
 /* Lists */
-.udc-list-dek { color: var(--udc-ink-2); margin: 8px 0 16px; }
+.udc-list-dek { color: var(--udc-text-ink-2); margin: 8px 0 16px; }
 .udc-year { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 0 20px; padding: 14px 0; border-top: 1px solid var(--udc-ink); }
 .udc-year-plate { align-self: start; margin: 4px 0 0; justify-self: start; background: var(--udc-ink); color: var(--udc-paper); font-family: var(--udc-display); font-weight: var(--udc-display-weight); font-size: 1.5rem; line-height: 1; padding: .25em .4em .2em; clip-path: var(--udc-cut-plate); }
 .udc-pubs { list-style: none; margin: 0; padding: 0; }
@@ -552,15 +577,15 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-pubfilter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; margin: 4px 0 18px; padding-bottom: 12px; border-bottom: 1px solid var(--udc-ink); }
 .udc-pubfilter[hidden] { display: none; }
 .udc-pubfilter-q { flex: 1 1 16rem; min-width: 0; min-height: 36px; padding: 4px 2px; background: transparent; border: 0; border-bottom: 1px solid var(--udc-ink-2); border-radius: 0;
-  font-family: var(--udc-text); font-size: .95rem; color: var(--udc-ink); }
-.udc-pubfilter-q::placeholder { color: var(--udc-ink-2); font-style: italic; }
+  font-family: var(--udc-text); font-size: .95rem; color: var(--udc-text-ink); }
+.udc-pubfilter-q::placeholder { color: var(--udc-text-ink-2); font-style: italic; }
 .udc-pubfilter-q:focus-visible { outline: 2px solid var(--udc-orange); outline-offset: 2px; }
 .udc-pubfilter-types { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 .udc-pubfilter-type { min-height: 32px; padding: 0; background: none; border: 0; cursor: pointer; font-family: var(--udc-sign); font-weight: 500; font-size: .74rem;
-  letter-spacing: .08em; text-transform: uppercase; color: var(--udc-ink-2); }
-.udc-pubfilter-type[aria-pressed="true"] { color: var(--udc-ink); text-decoration: underline 2px var(--udc-orange); text-underline-offset: .35em; }
-.udc-pubfilter-type:hover { color: var(--udc-ink); }
-.udc-pubfilter-status { flex-basis: 100%; margin: 0; font-family: var(--udc-sign); font-size: .74rem; color: var(--udc-ink-2); }
+  letter-spacing: .08em; text-transform: uppercase; color: var(--udc-text-ink-2); }
+.udc-pubfilter-type[aria-pressed="true"] { color: var(--udc-text-ink); text-decoration: underline 2px var(--udc-orange); text-underline-offset: .35em; }
+.udc-pubfilter-type:hover { color: var(--udc-text-ink); }
+.udc-pubfilter-status { flex-basis: 100%; margin: 0; font-family: var(--udc-sign); font-size: .74rem; color: var(--udc-text-ink-2); }
 .udc-pubfilter-status:empty { display: none; }
 .udc-pub[hidden], .udc-year[hidden] { display: none; }
 .udc-pub { padding: 0 0 12px; margin-bottom: 12px; border-bottom: 1px solid var(--udc-rule); }
@@ -569,16 +594,16 @@ html:not(.udc-js) .udc-motto:is(:hover, :focus-visible) > .udc-motto-b { opacity
 .udc-pub-title a, .udc-stream-title a { text-decoration-color: transparent; }
 .udc-pub-title a:hover, .udc-stream-title a:hover { text-decoration-color: var(--udc-orange); }
 .udc-author-mark { font-size: .7em; line-height: 0; margin-left: 1px; }
-.udc-author-key { display: block; font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; color: var(--udc-ink-2); margin-top: 2px; }
-.udc-pub-authors { margin: 0; color: var(--udc-ink-2); font-size: .9375rem; }
+.udc-author-key { display: block; font-family: var(--udc-sign); font-size: .74rem; letter-spacing: .04em; color: var(--udc-text-ink-2); margin-top: 2px; }
+.udc-pub-authors { margin: 0; color: var(--udc-text-ink-2); font-size: .9375rem; }
 .udc-pub-venue { margin: 0; font-size: .9375rem; }
 
 .udc-stream { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 28px; }
 .udc-projects-index .udc-stream { grid-template-columns: minmax(0, 1fr); }   /* three projects read as one list (UD) */
 .udc-stream-item { padding: 12px 0; border-top: 1px solid var(--udc-rule); }
-.udc-stream-date { margin: 0; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-ink-2); }
+.udc-stream-date { margin: 0; font-family: var(--udc-sign); font-size: .8125rem; letter-spacing: .06em; color: var(--udc-text-ink-2); }
 .udc-stream-title { margin: 2px 0 4px; font-family: var(--udc-text); font-weight: 600; font-size: 1.2rem; line-height: 1.3; }
-.udc-stream-sum { margin: 0; font-size: .9375rem; color: var(--udc-ink-2); }
+.udc-stream-sum { margin: 0; font-size: .9375rem; color: var(--udc-text-ink-2); }
 
 /* About (plan v2, 4.8; reshaped by UD 2026-11-16): a year strip, then one timeline (dates | axis
    with a node per entry | entry). Life outside research is a hidden lane in the strip; expanded, its
@@ -744,7 +769,7 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-pick:hover, .udc-map-pick[aria-pressed="true"] { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
 .udc-map-port:hover { stroke: var(--udc-orange); stroke-width: 2.5; }
 .udc-map-key { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 6px 20px; margin: 8px 0 6px; }
-.udc-map-key dt { font-weight: 700; color: var(--udc-ink); text-transform: uppercase; letter-spacing: .06em; }
+.udc-map-key dt { font-weight: 700; color: var(--udc-text-ink); text-transform: uppercase; letter-spacing: .06em; }
 .udc-map-key dt::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--udc-orange); }
 .udc-map-key > div[data-wait] dt::before { visibility: hidden; }
 /* The running date, set in the open Pacific while the map draws, then fading away (UD, 2026-11-16). */
@@ -774,7 +799,7 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-skip[hidden] { display: none; }
 .udc-map.is-playing .udc-map-plate { cursor: pointer; }
 .udc-map.is-skipped * { animation: none !important; }   /* a place's dot in the key waits for its text */
-.udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-ink); }
+.udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-text-ink); }
 .udc-map-cap p { margin: 0; }
 .udc-map-port { fill: var(--udc-ink); stroke: var(--udc-paper); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 /* Airports only passed through on the way elsewhere print a shade lighter, dot and list entry (UD, 2026-11-17). */
@@ -786,20 +811,20 @@ button.udc-map-pick { cursor: pointer; }
 /* What took me there: one line per event, year first, by date; set like the airport list, the place in italics. */
 .udc-map-events { margin-top: 12px; }
 .udc-map-events ol { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0 16px; }
-.udc-map-ev { display: block; width: 100%; min-height: 24px; padding: 2px 0; background: none; border: 0; text-align: left; color: var(--udc-ink);
+.udc-map-ev { display: block; width: 100%; min-height: 24px; padding: 2px 0; background: none; border: 0; text-align: left; color: var(--udc-text-ink);
   font-family: var(--udc-text); font-size: .82rem; }
 .udc-map-ev > b { font-family: var(--udc-sign); font-weight: 700; letter-spacing: .06em; margin-right: 4px; }
-.udc-map-ev > i { color: var(--udc-ink-2); }
+.udc-map-ev > i { color: var(--udc-text-ink-2); }
 button.udc-map-ev { cursor: pointer; }
 .udc-map-ev:hover, .udc-map-ev[aria-pressed="true"] { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .25em; }
-.udc-map-cap { margin-top: 6px; font-family: var(--udc-sign); font-size: .7rem; color: var(--udc-ink-2); }
+.udc-map-cap { margin-top: 6px; font-family: var(--udc-sign); font-size: .7rem; color: var(--udc-text-ink-2); }
 .udc-map-plate { -webkit-mask: var(--udc-holes-m); mask: var(--udc-holes-m); }
 
 /* The list */
 .udc-tl-rows { --tl-cols: 9.5rem 22px minmax(0, 1fr); list-style: none; margin: 0; padding: 0; }
 .udc-tl-row { position: relative; display: grid; grid-template-columns: var(--tl-cols); column-gap: 18px; padding: 10px 0 14px; scroll-margin-top: 16px; }
 .udc-tl-row + .udc-tl-row { border-top: 1px solid var(--udc-rule); }
-.udc-tl-date { margin: 2px 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .76rem; letter-spacing: .04em; color: var(--udc-ink-2); text-align: right; }
+.udc-tl-date { margin: 2px 0 0; font-family: var(--udc-sign); font-weight: 500; font-size: .76rem; letter-spacing: .04em; color: var(--udc-text-ink-2); text-align: right; }
 .udc-tl-lane { display: block; text-transform: uppercase; letter-spacing: .08em; font-size: .66rem; }
 /* The axis: a rough-cut rule; the node a slightly irregular blot. Both printed. */
 .udc-tl-node { position: relative; }
@@ -838,11 +863,10 @@ button.udc-map-ev { cursor: pointer; }
 .udc-tl-row.is-life { padding: 6px 0 8px; }
 .udc-tl-row.is-life .udc-tl-node::before { top: -6px; bottom: -8px; }
 .udc-tl-row.is-life .udc-tl-node::after { top: 5px; }
-.udc-tl-desk { -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
 .udc-about-rest { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 28px; margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--udc-ink); }
 .udc-about-rest dl { margin: 8px 0 0; }
 .udc-about-rest dt { font-weight: 700; margin-top: 6px; }
-.udc-about-rest dd { margin: 0; color: var(--udc-ink-2); }
+.udc-about-rest dd { margin: 0; color: var(--udc-text-ink-2); }
 @media (max-width: 760px) {
   .udc-tl-rows { --tl-cols: 14px minmax(0, 1fr); }
   .udc-tl-row { column-gap: 12px; }
@@ -866,9 +890,9 @@ button.udc-map-ev { cursor: pointer; }
   display: flex; align-items: center; justify-content: center; gap: 44px; }
 .udc-404-fig { margin: 0; display: flex; flex-direction: column; align-items: center; height: 80%; }   /* 80%: room above and below (UD, 2026-11-16) */
 .udc-404-fig img { display: block; flex: 1 1 auto; min-height: 0; width: auto; height: auto; max-height: 100%; aspect-ratio: 466 / 1400; }
-.udc-404-cs { display: block; flex: none; width: calc(min(13rem, 26vh) * 2.29); aspect-ratio: 722 / 304;   /* as wide as "404", so the two read as one block (UD, 2026-11-17) */ margin: 0 0 .4rem; background: var(--udc-ink);
-  -webkit-mask: url("/textures/chongsha.png") center / contain no-repeat; mask: url("/textures/chongsha.png") center / contain no-repeat;
-  position: relative; z-index: 61; }
+/* 衝啥？ in Noto Serif TC 900, the site's face for 繁體中文 titles; 衝啥 as wide as "404" (2.29 em of Ultra), so the two read as one block (UD, 2026-11-17). */
+.udc-404-cs { display: block; margin: 0 0 .2em; font-family: "Noto Serif TC", serif; font-weight: 900; line-height: 1.1; color: var(--udc-ink);
+  font-size: min(calc(min(13rem, 26vh) * 1.145), 18vw); }
 .udc-404-fig img { position: relative; z-index: 61; }
 .udc-404-h { margin: 0; font-family: var(--udc-display); font-weight: 400; color: var(--udc-ink); line-height: .9; }
 .udc-404-n { display: block; font-size: min(13rem, 26vh); }
@@ -881,7 +905,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 @media (max-width: 640px) {
   .udc-404 { flex-direction: column; justify-content: center; gap: 10px; padding: calc(var(--udc-edge-t) + 10px) 16px 12px; text-align: center; }
   .udc-404-fig { height: auto; flex: 1 1 auto; min-height: 0; }
-  .udc-404-cs { width: 8.5rem; margin: 0 auto 4px; }
+  .udc-404-cs { font-size: min(4.2rem, 8.5vh); margin: 0 auto; }
   .udc-404-n { font-size: min(5.2rem, 12vh); }
   .udc-404-nf { font-size: min(2rem, 5vh); }
   .udc-404-back { margin-top: .7rem; }
@@ -892,7 +916,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   .udc-404-fig { height: auto; flex: 1 1 auto; min-height: 0; }
   .udc-404-n { font-size: min(7rem, 14vh); }
   .udc-404-nf { font-size: min(2.4rem, 5vh); }
-  .udc-404-cs { width: 8.5rem; margin: 0 auto 6px; }
+  .udc-404-cs { font-size: min(5rem, 9vh); margin: 0 auto; }
 }
 
 @media (max-width: 759px) {
@@ -917,9 +941,9 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 @media (prefers-contrast: more), (forced-colors: active) {
   body.page-wrapper, .udc-header { background-image: none !important; }
   body.page-wrapper::after, .udc-header::after { display: none !important; }
-  .udc-sheet-layer { display: none !important; }
+  .udc-sheet-layer, .udc-header::before { display: none !important; }
   *, *::before, *::after { filter: none !important; }
-  :is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-navigation a, .udc-label, .udc-more, .udc-work-title, .udc-work-links, .udc-work-meta, .udc-log-titles, .udc-motto > span, .udc-date, .udc-meta, .udc-year-plate, .udc-pub, .udc-stream-item, .udc-tags, .udc-ink-b, .udc-intro, .udc-news-list li, .udc-work-text, .udc-prose > :is(p, ul, ol, blockquote, h2, h3, h4, table):not(:has(img, video, iframe, svg)), .udc-ys-track, .udc-ys-ticks, .udc-map-plate, .udc-tl-desk, .udc-lead-l1, .udc-lead-l2) { -webkit-mask: none !important; mask: none !important; }
+  :is(.udc-ink, .udc-ink-d, .udc-lead-head, .udc-page-title, .udc-navigation a, .udc-label, .udc-motto > span, .udc-date, .udc-year-plate, .udc-ink-b, .udc-ys-track, .udc-ys-ticks, .udc-map-plate, .udc-lead-l1, .udc-lead-l2) { -webkit-mask: none !important; mask: none !important; }
   .udc-tl-node::before, .udc-tl-node::after { -webkit-mask: none !important; mask: none !important; }
   .udc-portrait img, .udc-404-fig img { filter: none !important; }
 }
@@ -927,7 +951,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
    lettering, Ryan, the brush line and the halftone images in the system text colour or their own inks. */
 @media (forced-colors: active) {
   .udc-rule-heavy::before, .udc-rule-heavy::after, .udc-label::after { background: CanvasText; forced-color-adjust: none; }
-  .udc-name-zh::before, .udc-404-cs, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land,
+  .udc-name-zh::before, .udc-ys-bar, .udc-tl-node::before, .udc-tl-node::after, .udc-map-land,
   .udc-plate-ink, .udc-tl-logo.is-mask, .udc-map-folded-land { forced-color-adjust: none; background: CanvasText; }   /* the project picture and school marks too (Astra, round 16) */
   .udc-name-zh::after { forced-color-adjust: none; background: Highlight; }
   .udc-footer-img, .udc-flag, .udc-footer-band, .udc-map-svg { forced-color-adjust: none; }
@@ -956,7 +980,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 .udc-toc-fold[open] > summary::before { content: "▾"; }
 .udc-toc ol { list-style: none; margin: 6px 0 0; padding: 0 0 0 18px; border-left: 1px solid var(--udc-ink); font-family: var(--udc-sign); font-size: .8rem; line-height: 1.4; }
 .udc-toc li + li { margin-top: 8px; }
-.udc-toc a { color: var(--udc-ink); text-decoration: none; }
+.udc-toc a { color: var(--udc-text-ink); text-decoration: none; }
 .udc-toc a:hover { text-decoration: underline 1px var(--udc-orange); text-underline-offset: .2em; }
 .udc-toc [lang="zh-Hant"] { font-family: var(--udc-text); font-size: .9rem; }
 @media (min-width: 1024px) { .udc-single .udc-prose { font-size: calc(.9rem * 1.15); } }
@@ -976,7 +1000,7 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
 /* Article titles are sentences: set in the text serif, bold, like the same titles on the lists, and inked
    like body text; the display face stays for short page names and the home headline (UD, 2026-11-16). */
 .udc-single-head .udc-page-title { font-family: var(--udc-text); font-weight: 700; letter-spacing: 0; line-height: 1.2;
-  -webkit-mask: var(--udc-holes-b); mask: var(--udc-holes-b); }
+  -webkit-mask: none; mask: none; }
 .udc-single-head .udc-page-title:lang(zh-Hant) { font-family: var(--udc-text); font-weight: 700; }
 .udc-abstract { margin: 0 0 18px; }
 .udc-abstract .udc-label { margin-bottom: 6px; }
@@ -1004,6 +1028,13 @@ body:has(.udc-404) .page-body { margin: 0 !important; }
   mask: url("/textures/crease-light.webp") 0 0 / var(--udc-crease-tile) var(--udc-crease-tile) repeat; }
 .dark .udc-crease-edge::before { opacity: var(--udc-crease-hi-edge); }
 .dark .udc-crease-centre::before { opacity: var(--udc-crease-hi-centre); }
+.dark .udc-header::before { background: var(--udc-crease-hi); mix-blend-mode: normal; opacity: var(--udc-crease-hi-edge);
+  -webkit-mask-image: url("/textures/crease-light.webp"), var(--udc-crease-top), var(--udc-crease-to-r), var(--udc-crease-to-l);
+  -webkit-mask-size: var(--udc-crease-tile) var(--udc-crease-tile), 100% 100%; -webkit-mask-position: 0 0; -webkit-mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in, source-out, source-over;
+  mask-image: url("/textures/crease-light.webp"), var(--udc-crease-top), var(--udc-crease-to-r), var(--udc-crease-to-l);
+  mask-size: var(--udc-crease-tile) var(--udc-crease-tile), 100% 100%; mask-position: 0 0; mask-repeat: repeat, no-repeat;
+  mask-composite: intersect, subtract, add; }
 .dark { --udc-sheet: url("/textures/newsprint-show.webp"), url("/textures/newsprint-fibres-night.webp"), url("/textures/newsprint-tone.png"); }
 .dark { --udc-crease-hi: #C9C6BA; --udc-crease-hi-edge: .06; --udc-crease-hi-centre: .02; }
 /* Footer plates: the night masks carry the image's light (positive), not its darkness. */

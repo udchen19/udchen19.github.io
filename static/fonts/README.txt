@@ -26,8 +26,6 @@ Noto Serif TC 900 (Google) — 繁體中文 titles
   into the same 111 unicode-range slices as 400/700 (docs/design/tools/noto_slices.py):
   noto-serif-tc-900-N.woff2. SIL OFL 1.1: notoseriftc-OFL.txt.
 Noto Serif TC 400/700 — 繁體中文 reading text (2026-11-11; unchanged): noto-serif-tc-{400,700}-N.woff2.
-莫大毛筆 Bakudai Bold (max32002) — used only to render 衝啥 as an image (static/textures/chongsha.png);
-  no font file ships. Licence: Bakudai-OFL.txt. (The earlier "UDC Brush TC" subset was removed 2026-11-16.)
 Not shipped: 玉ねぎ楷書「激」 (玉点堂). Its licence allows use as an image but forbids redistributing the
   font file, so only the rendered lettering is in static/textures/.
 

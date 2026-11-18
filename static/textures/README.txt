@@ -46,7 +46,6 @@ pages/project-notisummary-ink(-night).png
 Lettering (lettering.py)
 name-chen-weida.png    陳威達 rendered from 玉ねぎ楷書「激」 by 玉点堂 (use as an image allowed; the font
                        file is not redistributed).
-chongsha.png           衝啥 rendered from 莫大毛筆 Bakudai Bold (SIL OFL 1.1).
 brush-line-5b.svg      The orange brush line under 陳威達.
 
 Earlier entries

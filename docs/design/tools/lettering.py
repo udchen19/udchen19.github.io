@@ -1,7 +1,6 @@
 """Lettering that ships as an image (plan v2, 3.6). The fonts never enter static/ or a commit.
 
 python lettering.py <repo> name <tamanegi-kaisho-geki-free-v7.ttf>
-python lettering.py <repo> chongsha <Bakudai-Bold.ttf>
 
 Each output is white + alpha, coloured by CSS mask so the night edition recolours it.
 """
@@ -29,5 +28,3 @@ def render(text, size, track, name):
 
 if what == "name":
     render("陳威達", 160, 0.0, "name-chen-weida.png")     # shown about 40 CSS px tall: 4x
-elif what == "chongsha":
-    render("衝啥", 360, 0.04, "chongsha.png")

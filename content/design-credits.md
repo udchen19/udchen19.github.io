@@ -23,4 +23,4 @@ These belong to their rights holders and are not covered by this site’s CC BY-
 
 **Paper:** ambientCG [Paper 002](https://ambientcg.com/view?id=Paper002) and [Paper 005](https://ambientcg.com/view?id=Paper005), CC0.
 
-**Type:** Manufacturing Consent, Libre Franklin, Libre Baskerville, IM Fell DW Pica, Noto Serif TC and 莫大毛筆 Bakudai (SIL Open Font License 1.1); Ultra (Apache License 2.0). 陳威達 is lettering rendered from 玉ねぎ楷書「激」 by 玉点堂. Details in [/fonts/README.txt](/fonts/README.txt).
+**Type:** Manufacturing Consent, Libre Franklin, Libre Baskerville, IM Fell DW Pica and Noto Serif TC (SIL Open Font License 1.1); Ultra (Apache License 2.0). 陳威達 is lettering rendered from 玉ねぎ楷書「激」 by 玉点堂. Details in [/fonts/README.txt](/fonts/README.txt).
