@@ -321,11 +321,17 @@
         p.classList.add('is-flash'); setTimeout(() => p.classList.remove('is-flash'), 900);
       };
       const skipBtn = fig.querySelector('.udc-map-skip'), muteBtn = fig.querySelector('.udc-map-mute');
-      // Music under the journey (UD, 2026-11-20): it fades in over the first second and fades out over one second
-      // when the journey ends, is skipped or folded. Loaded only on first play. The fades go through Web Audio,
+      // Music under the journey (UD, 2026-11-20): it fades in over the first second. When the journey ends, the
+      // music plays on to its end, fading out over its last second; Skip or folding the map fades it out over one
+      // second at once. Mute shows while it plays. Loaded only on first play. The fades go through Web Audio,
       // since iPhones ignore an audio element's volume.
       const musicSrc = fig.querySelector('.udc-map-ctl')?.dataset.music;
-      let music = null, ac = null, gain = null, stopAt = 0, muted = false;
+      let music = null, ac = null, gain = null, stopAt = 0, muted = false, ending = false;
+      const fadeOut = secs => {
+        if (!ac) return;
+        const t = ac.currentTime;
+        gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + secs);
+      };
       const FADE = 1;
       const musicStart = () => {
         if (!musicSrc) return;
@@ -333,8 +339,15 @@
           music = new Audio(musicSrc); music.preload = 'auto';
           const AC = window.AudioContext || window.webkitAudioContext;
           if (AC) { ac = new AC(); gain = ac.createGain(); ac.createMediaElementSource(music).connect(gain).connect(ac.destination); }
+          music.addEventListener('timeupdate', () => {
+            const left = music.duration - music.currentTime;
+            if (!ending && left <= FADE) { ending = true; fadeOut(left); }
+          });
+          music.addEventListener('play', () => { if (muteBtn) muteBtn.hidden = false; });
+          music.addEventListener('pause', () => { if (muteBtn) muteBtn.hidden = true; });
+          music.addEventListener('ended', () => { if (muteBtn) muteBtn.hidden = true; });
         }
-        clearTimeout(stopAt); music.muted = muted;
+        clearTimeout(stopAt); music.muted = muted; ending = false;
         music.currentTime = 0;
         if (ac) {
           ac.resume?.(); const t = ac.currentTime;
@@ -344,10 +357,7 @@
       };
       const musicStop = () => {
         if (!music || music.paused) return;
-        if (ac) {
-          const t = ac.currentTime;
-          gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + FADE);
-        }
+        ending = true; fadeOut(FADE); if (muteBtn) muteBtn.hidden = true;
         clearTimeout(stopAt); stopAt = setTimeout(() => music.pause(), FADE * 1000);
       };
       muteBtn?.addEventListener('click', e => {
@@ -363,12 +373,11 @@
         isPlaying = on;
         details?.classList.toggle('is-playing', on);
         if (skipBtn) { skipBtn.textContent = on ? 'Skip ›' : 'Replay'; skipBtn.hidden = matchMedia('(prefers-reduced-motion: reduce)').matches; }
-        if (muteBtn) muteBtn.hidden = !on;
-        if (on) musicStart(); else musicStop();
+        if (on) musicStart();
         lists.forEach(l => { l.inert = on; });
       };
       const skip = () => {
-        cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false);
+        cancelAnimationFrame(typing); details?.classList.add('is-skipped'); playing(false); musicStop();
         keys.forEach(k => { k.done = true; k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
         if (when) { whenDate.textContent = dates[dates.length - 1]?.[1] || ''; setCap(null); when.classList.add('is-done'); }
       };
@@ -424,7 +433,7 @@
       // The journey plays on the first opening after the page loads; later openings show the map finished (UD).
       let played = false;
       details?.addEventListener('toggle', () => {
-        if (!details.open) { cancelAnimationFrame(typing); playing(false); return; }
+        if (!details.open) { cancelAnimationFrame(typing); playing(false); musicStop(); return; }
         if (played) skip(); else { played = true; typeKeys(); }
       });
       // When the map changes size (rotation, window), the open label and ring follow their dot (Astra, round 7).
