@@ -789,17 +789,20 @@ button.udc-map-pick { cursor: pointer; }
 .udc-map-when { padding: 2px 8px; background: color-mix(in srgb, var(--udc-paper) 82%, transparent); clip-path: var(--udc-cut-plate); }
 .udc-map-when-ap, .udc-map-when-ev { white-space: nowrap; }
 @media (max-width: 640px) { .udc-map-when { font-size: .8rem; bottom: 6%; left: auto; right: 3%; text-align: right; } .udc-map-when-ap, .udc-map-when-ev { font-size: .66rem; } }   /* the airport's name as clear as Skip (Astra, round 13) */
-/* Skip (UD): while the map plays, a click or tap on it, or the Skip button, shows it finished at once. */
+/* Skip (UD): while the map plays, a click or tap on it, or the Skip button, shows it finished at once. Once it is
+   finished, the same button reads Replay; Mute sits beside it while the music plays (UD, 2026-11-20). */
 /* Noticeable but quiet (UD): full-ink letters with the orange underline used for links, on a light patch of paper so
    the map's routes don't run through them. */
-.udc-map-skip { position: absolute; z-index: 2; top: 8px; right: 10px; min-height: 30px; padding: 4px 10px; border: 0; cursor: pointer;
+.udc-map-ctl { position: absolute; z-index: 2; top: 8px; right: 10px; display: flex; gap: 6px; }
+.udc-map-ctl :is(.udc-map-skip, .udc-map-mute) { min-height: 30px; padding: 4px 10px; border: 0; cursor: pointer;
   background: color-mix(in srgb, var(--udc-paper) 82%, transparent); clip-path: var(--udc-cut-plate); font-family: var(--udc-sign); font-weight: 700; font-size: .7rem;
   letter-spacing: .1em; text-transform: uppercase; color: var(--udc-ink); text-decoration: underline 1.5px var(--udc-orange); text-underline-offset: .35em; }
-.udc-map-skip:hover { text-decoration-thickness: 2.5px; }
-@media (max-width: 640px) { .udc-map-skip { top: 4px; right: 4px; min-height: 26px; padding: 3px 8px; font-size: .62rem; } }
-/* Phones: the map is too small to cover any of it, so Skip sits just below it, at the right (Astra, round 15). */
-@media (max-width: 640px) { .udc-map-skip { position: static; display: block; margin: 6px 0 0 auto; } }
-.udc-map-skip[hidden] { display: none; }
+.udc-map-ctl :is(.udc-map-skip, .udc-map-mute):hover { text-decoration-thickness: 2.5px; }
+.udc-map-mute:focus-visible { outline: 2px solid var(--udc-orange); outline-offset: -4px; }
+@media (max-width: 640px) { .udc-map-ctl { top: 4px; right: 4px; } .udc-map-ctl :is(.udc-map-skip, .udc-map-mute) { min-height: 26px; padding: 3px 8px; font-size: .62rem; } }
+/* Phones: the map is too small to cover any of it, so the buttons sit just below it, at the right (Astra, round 15). */
+@media (max-width: 640px) { .udc-map-ctl { position: static; justify-content: flex-end; margin: 6px 0 0; } }
+.udc-map-ctl [hidden] { display: none; }
 .udc-map.is-playing .udc-map-plate { cursor: pointer; }
 .udc-map.is-skipped * { animation: none !important; }   /* a place's dot in the key waits for its text */
 .udc-map-key dd { margin: 1px 0 0; font-family: var(--udc-text); font-size: .82rem; font-style: italic; color: var(--udc-text-ink); }

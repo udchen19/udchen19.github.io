@@ -17,7 +17,7 @@ profile: false
 
 These belong to their rights holders and are not covered by this site’s CC BY-NC-ND license.
 
-**Flight map:** land from [Natural Earth](https://www.naturalearthdata.com/) (public domain); airport positions from Natural Earth, and from [Wikidata](https://www.wikidata.org/) (CC0) for Dubrovnik and Taipei Songshan. Flags in the airport list from [flag-icons](https://github.com/lipis/flag-icons) by Panayiotis Lipiridis (MIT License).
+**Flight map:** land from [Natural Earth](https://www.naturalearthdata.com/) (public domain); airport positions from Natural Earth, and from [Wikidata](https://www.wikidata.org/) (CC0) for Dubrovnik and Taipei Songshan. Flags in the airport list from [flag-icons](https://github.com/lipis/flag-icons) by Panayiotis Lipiridis (MIT License). Music while the map plays: 「王者之獅」, the Uni-Lions’ team song, played by 臺南市管樂團, from the [Uni-Lions’ YouTube channel](https://www.youtube.com/watch?v=aj2p-IHT_R0).
 
 **School and company marks** on the About page, each from its owner’s own site, shown only beside the matching entry; they remain the trademarks of their owners: [University of Illinois](https://brand.illinois.edu/), [National Yang Ming Chiao Tung University](https://brand.nycu.edu.tw/), [師大附中](https://www.hs.ntnu.edu.tw/), [林口國中](http://www.lkjh.ntpc.edu.tw/), [長庚國小](https://www.cgps.tyc.edu.tw/), [Peter Hills with St Mary’s & St Paul’s](https://www.peterhillsschool.co.uk/), [Kapito](https://www.kapito.ai/).
 

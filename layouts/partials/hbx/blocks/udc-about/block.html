@@ -122,8 +122,13 @@
         <circle class="udc-map-ring" r="0" visibility="hidden"/>
       </svg>
       </div>
-      {{- /* Outside the plate, so the plate's ink texture does not eat into it. */}}
-      <button type="button" class="udc-map-skip" hidden>Skip ›</button>
+      {{- /* Outside the plate, so the plate's ink texture does not eat into it. While the map plays, music plays
+             under it and Mute sits beside Skip; once it ends, Skip becomes Replay (UD, 2026-11-20).
+             Music: 王者之獅, the Uni-Lions' team song, played by 臺南市管樂團 (2023-04-03), credited in design-credits.md. */}}
+      <div class="udc-map-ctl" data-music="{{ "media/flight-map-music.mp3" | relURL }}">
+        <button type="button" class="udc-map-mute" hidden>Mute</button>
+        <button type="button" class="udc-map-skip" hidden>Skip ›</button>
+      </div>
       <figcaption id="udc-map-cap" class="udc-map-cap">
         <dl class="udc-map-key">
           {{- /* Places that share a note share one entry in the key. */}}

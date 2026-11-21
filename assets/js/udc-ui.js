@@ -320,12 +320,51 @@
         const p = ports.find(x => x.dataset.code === code); if (!p) return;
         p.classList.add('is-flash'); setTimeout(() => p.classList.remove('is-flash'), 900);
       };
-      const skipBtn = fig.querySelector('.udc-map-skip');
-      let typing = 0;
+      const skipBtn = fig.querySelector('.udc-map-skip'), muteBtn = fig.querySelector('.udc-map-mute');
+      // Music under the journey (UD, 2026-11-20): it fades in over the first second and fades out over one second
+      // when the journey ends, is skipped or folded. Loaded only on first play. The fades go through Web Audio,
+      // since iPhones ignore an audio element's volume.
+      const musicSrc = fig.querySelector('.udc-map-ctl')?.dataset.music;
+      let music = null, ac = null, gain = null, stopAt = 0, muted = false;
+      const FADE = 1;
+      const musicStart = () => {
+        if (!musicSrc) return;
+        if (!music) {
+          music = new Audio(musicSrc); music.preload = 'auto';
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) { ac = new AC(); gain = ac.createGain(); ac.createMediaElementSource(music).connect(gain).connect(ac.destination); }
+        }
+        clearTimeout(stopAt); music.muted = muted;
+        music.currentTime = 0;
+        if (ac) {
+          ac.resume?.(); const t = ac.currentTime;
+          gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(0, t); gain.gain.linearRampToValueAtTime(1, t + FADE);
+        }
+        music.play().catch(() => {});
+      };
+      const musicStop = () => {
+        if (!music || music.paused) return;
+        if (ac) {
+          const t = ac.currentTime;
+          gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value, t); gain.gain.linearRampToValueAtTime(0, t + FADE);
+        }
+        clearTimeout(stopAt); stopAt = setTimeout(() => music.pause(), FADE * 1000);
+      };
+      muteBtn?.addEventListener('click', e => {
+        e.stopPropagation();
+        muted = !muted; muteBtn.textContent = muted ? 'Unmute' : 'Mute';
+        if (music) music.muted = muted;
+      });
+      let typing = 0, isPlaying = false;
       // While it plays, the two lists under the map stay hidden and out of reach; they appear complete at the end.
+      // Then Skip reads Replay (UD, 2026-11-20).
       const lists = [...fig.querySelectorAll('.udc-map-events, .udc-map-ports')];
       const playing = on => {
-        details?.classList.toggle('is-playing', on); if (skipBtn) skipBtn.hidden = !on;
+        isPlaying = on;
+        details?.classList.toggle('is-playing', on);
+        if (skipBtn) { skipBtn.textContent = on ? 'Skip ›' : 'Replay'; skipBtn.hidden = matchMedia('(prefers-reduced-motion: reduce)').matches; }
+        if (muteBtn) muteBtn.hidden = !on;
+        if (on) musicStart(); else musicStop();
         lists.forEach(l => { l.inert = on; });
       };
       const skip = () => {
@@ -333,7 +372,13 @@
         keys.forEach(k => { k.done = true; k.div.removeAttribute('data-wait'); k.chars.forEach(c => { c.style.visibility = ''; }); });
         if (when) { whenDate.textContent = dates[dates.length - 1]?.[1] || ''; setCap(null); when.classList.add('is-done'); }
       };
-      skipBtn?.addEventListener('click', e => { e.stopPropagation(); skip(); });
+      // Replay: the drawing starts over from the unfolding, as on first opening (is-skipped, then off, restarts the CSS animations).
+      const replay = () => {
+        clear(); details?.classList.add('is-skipped'); void details?.offsetWidth;
+        keys.forEach(k => { k.done = false; }); caps.forEach(c => { c.flashed = false; });
+        typeKeys();
+      };
+      skipBtn?.addEventListener('click', e => { e.stopPropagation(); if (isPlaying) skip(); else replay(); });
       // While it plays, a click on the map skips instead of naming an airport (capture: before the map's own handler).
       plate.addEventListener('click', e => { if (details?.classList.contains('is-playing')) { e.stopPropagation(); skip(); } }, true);
       const typeKeys = () => {
