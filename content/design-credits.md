@@ -17,6 +17,8 @@ profile: false
 
 These belong to their rights holders and are not covered by this site’s CC BY-NC-ND license.
 
+**Ryan** (萊恩), the Uni-Lions’ mascot, in the footer and the tab icon: the head from the Uni-Lions’ official Ryan bag artwork on [Lion Crew](https://lioncrew.uni-lions.com.tw/collections/2025%E8%90%8A%E6%81%A9%E7%B3%BB%E5%88%97%E5%95%86%E5%93%81), with the chin completed from their 2025 Ryan card holder, then cleaned up with an image model (paws and background removed, outline only around the head). Ryan belongs to the Uni-Lions and is not covered by this site’s license.
+
 **Flight map:** land from [Natural Earth](https://www.naturalearthdata.com/) (public domain); airport positions from Natural Earth, and from [Wikidata](https://www.wikidata.org/) (CC0) for Dubrovnik and Taipei Songshan. Flags in the airport list from [flag-icons](https://github.com/lipis/flag-icons) by Panayiotis Lipiridis (MIT License). Music while the map plays: 「王者之獅」, the Uni-Lions’ team song, played by 臺南市管樂團, from the [Uni-Lions’ YouTube channel](https://www.youtube.com/watch?v=aj2p-IHT_R0).
 
 **School and company marks** on the About page, each from its owner’s own site, shown only beside the matching entry; they remain the trademarks of their owners: [University of Illinois](https://brand.illinois.edu/), [National Yang Ming Chiao Tung University](https://brand.nycu.edu.tw/), [師大附中](https://www.hs.ntnu.edu.tw/), [林口國中](http://www.lkjh.ntpc.edu.tw/), [長庚國小](https://www.cgps.tyc.edu.tw/), [Peter Hills with St Mary’s & St Paul’s](https://www.peterhillsschool.co.uk/), [Kapito](https://www.kapito.ai/).
