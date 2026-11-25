@@ -7,14 +7,14 @@ tags:
   - HCI
   - Intelligent Agents
   - Notifications
-date: '2026-08-18'
+date: '2026-08-31'
 links:
   - icon: academicons/acm
     name: Paper (MobileHCI ’26)
     url: /publication/intelligent-notification-systems/
   - type: pdf
     name: PDF
-    url: 'https://people.cs.nycu.edu.tw/~armuro/pubs/chen-et-al-2026-mobilehci.pdf'
+    url: 'https://dl.acm.org/doi/pdf/10.1145/3821653'
 ---
 
 Through a reanalysis of interview and design-workshop data, we studied what people want from future notification systems. Participants envisioned proactive agents that surface actionable takeaways, progressively disclose details, support follow-up actions, connect notifications with outside context, and distribute awareness across people and objects.
