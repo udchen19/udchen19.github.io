@@ -21,8 +21,6 @@ links:
 hugoblox:
   ids:
     doi: 10.1145/3821653
-# doi.org does not resolve this DOI yet (checked 2026-11-16): no DOI link until it does; Cite keeps it.
-doi_pending: true
 ---
 
 I led the reanalysis of an existing interview and design-workshop dataset and the development of the resulting paper.
